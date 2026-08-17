@@ -1,0 +1,198 @@
+import AuditCore
+import AuditRules
+import Foundation
+import SnapshotStore
+import SwiftSyntaxFrontend
+
+public struct LoadedSemanticInput: Sendable {
+    public let snapshot: SemanticSnapshot
+    public let identity: String
+
+    public init(snapshot: SemanticSnapshot, identity: String) {
+        self.snapshot = snapshot
+        self.identity = identity
+    }
+}
+
+public enum SemanticInputError: Error, Equatable, LocalizedError {
+    case invalidRevision(String)
+    case noSwiftFiles(String)
+    case unsafeGitPath(String)
+
+    public var errorDescription: String? {
+        switch self {
+        case .invalidRevision(let revision): "invalid git revision \(revision)"
+        case .noSwiftFiles(let revision): "git revision \(revision) contains no Swift source files"
+        case .unsafeGitPath(let path): "unsafe path in git tree: \(path)"
+        }
+    }
+}
+
+public struct SemanticInputLoader: Sendable {
+    private let runner: any ProcessRunning
+    private let timeout: TimeInterval
+
+    public init(runner: any ProcessRunning = BoundedProcessRunner(), timeout: TimeInterval = 10) {
+        self.runner = runner
+        self.timeout = timeout
+    }
+
+    public func loadOperand(_ operand: String, repositoryURL: URL) throws -> LoadedSemanticInput {
+        let candidate = URL(fileURLWithPath: operand).standardizedFileURL
+        if FileManager.default.fileExists(atPath: candidate.path) {
+            let snapshot = try SnapshotReader().read(from: candidate)
+            return LoadedSemanticInput(snapshot: snapshot, identity: snapshotIdentity(snapshot.manifest))
+        }
+        return try loadRevision(operand, repositoryURL: repositoryURL)
+    }
+
+    public func loadRevision(_ revision: String, repositoryURL: URL) throws -> LoadedSemanticInput {
+        let repository = try repositoryRoot(from: repositoryURL)
+        let commitResult = try runChecked(
+            "git",
+            ["-C", repository.path, "rev-parse", "--verify", "\(revision)^{commit}"]
+        )
+        let commit = commitResult.outputString.trimmingCharacters(in: .whitespacesAndNewlines)
+        guard !commit.isEmpty else { throw SemanticInputError.invalidRevision(revision) }
+        let listing = try runChecked(
+            "git",
+            ["-C", repository.path, "ls-tree", "-r", "-z", "--full-tree", commit, "--"]
+        )
+        let entries = try parseTreeEntries(listing.standardOutput).filter {
+            ($0.mode == "100644" || $0.mode == "100755") && $0.type == "blob" &&
+                URL(fileURLWithPath: $0.path).pathExtension.lowercased() == "swift"
+        }.sorted { $0.path < $1.path }
+        guard !entries.isEmpty else { throw SemanticInputError.noSwiftFiles(revision) }
+
+        let container = FileManager.default.temporaryDirectory
+            .appendingPathComponent("swiftui-audit-revision-\(UUID().uuidString)", isDirectory: true)
+        let sourceRoot = container.appendingPathComponent(repository.lastPathComponent, isDirectory: true)
+        try FileManager.default.createDirectory(at: sourceRoot, withIntermediateDirectories: true)
+        defer { try? FileManager.default.removeItem(at: container) }
+        for entry in entries {
+            try validateGitPath(entry.path)
+            let destination = sourceRoot.appendingPathComponent(entry.path)
+            try FileManager.default.createDirectory(
+                at: destination.deletingLastPathComponent(), withIntermediateDirectories: true
+            )
+            let blob = try runChecked("git", ["-C", repository.path, "cat-file", "blob", entry.objectID])
+            try blob.standardOutput.write(to: destination, options: .atomic)
+            if entry.mode == "100755" {
+                try FileManager.default.setAttributes([.posixPermissions: 0o755], ofItemAtPath: destination.path)
+            }
+        }
+        let graph = try GraphScanner().scan(path: sourceRoot.path)
+        let report = AuditEngine().audit(graph: graph)
+        let manifest = SnapshotManifest(
+            toolVersion: report.toolVersion,
+            swiftVersion: swiftVersion(),
+            repositoryRevision: commit,
+            generatedFrom: "."
+        )
+        return LoadedSemanticInput(
+            snapshot: SemanticSnapshot(manifest: manifest, graph: graph, report: report),
+            identity: commit
+        )
+    }
+
+    public func loadLive(sourceURL: URL) throws -> LoadedSemanticInput {
+        let source = sourceURL.standardizedFileURL.resolvingSymlinksInPath()
+        let graph = try GraphScanner().scan(path: source.path)
+        let report = AuditEngine().audit(graph: graph)
+        let revision = (try? repositoryRevision(for: source)) ?? "unavailable"
+        let manifest = SnapshotManifest(
+            toolVersion: report.toolVersion,
+            swiftVersion: swiftVersion(),
+            repositoryRevision: revision,
+            generatedFrom: "."
+        )
+        return LoadedSemanticInput(
+            snapshot: SemanticSnapshot(manifest: manifest, graph: graph, report: report),
+            identity: "working:\(source.lastPathComponent)"
+        )
+    }
+
+    private func repositoryRoot(from url: URL) throws -> URL {
+        let result = try runChecked("git", ["-C", url.standardizedFileURL.path, "rev-parse", "--show-toplevel"])
+        return URL(
+            fileURLWithPath: result.outputString.trimmingCharacters(in: .whitespacesAndNewlines),
+            isDirectory: true
+        ).standardizedFileURL.resolvingSymlinksInPath()
+    }
+
+    private func repositoryRevision(for source: URL) throws -> String {
+        let root = try repositoryRoot(from: source)
+        return try runChecked("git", ["-C", root.path, "rev-parse", "HEAD"])
+            .outputString.trimmingCharacters(in: .whitespacesAndNewlines)
+    }
+
+    private func swiftVersion() -> String {
+        guard let result = try? runner.run("swift", arguments: ["--version"], currentDirectory: nil, timeout: timeout),
+              result.status == 0 else { return "unavailable" }
+        return result.outputString.replacingOccurrences(of: "\n", with: " ")
+            .trimmingCharacters(in: .whitespacesAndNewlines)
+    }
+
+    private func runChecked(_ command: String, _ arguments: [String]) throws -> BoundedProcessResult {
+        let result: BoundedProcessResult
+        do {
+            result = try runner.run(command, arguments: arguments, currentDirectory: nil, timeout: timeout)
+        } catch {
+            throw error
+        }
+        guard result.status == 0 else {
+            if command == "git", arguments.contains("--verify") {
+                let requested = arguments.last ?? "unknown"
+                throw SemanticInputError.invalidRevision(String(requested).replacingOccurrences(of: "^{commit}", with: ""))
+            }
+            throw BoundedProcessError.failed(
+                ([command] + arguments).joined(separator: " "),
+                result.status,
+                result.errorString.trimmingCharacters(in: .whitespacesAndNewlines)
+            )
+        }
+        return result
+    }
+
+    private func validateGitPath(_ path: String) throws {
+        let components = NSString(string: path).pathComponents
+        if path.hasPrefix("/") || components.contains("..") || path.contains("\0") {
+            throw SemanticInputError.unsafeGitPath(path)
+        }
+    }
+
+    private func parseTreeEntries(_ data: Data) throws -> [GitTreeEntry] {
+        try data.split(separator: 0).map { record in
+            guard let tab = record.firstIndex(of: 0x09) else {
+                throw BoundedProcessError.failed("git ls-tree", 0, "malformed tree record")
+            }
+            let header = record[..<tab].split(separator: 0x20, omittingEmptySubsequences: true)
+            guard header.count == 3 else {
+                throw BoundedProcessError.failed("git ls-tree", 0, "malformed tree metadata")
+            }
+            let pathBytes = record[record.index(after: tab)...]
+            guard let path = String(bytes: pathBytes, encoding: .utf8) else {
+                throw SemanticInputError.unsafeGitPath("<non-UTF8>")
+            }
+            return GitTreeEntry(
+                mode: String(decoding: header[0], as: UTF8.self),
+                type: String(decoding: header[1], as: UTF8.self),
+                objectID: String(decoding: header[2], as: UTF8.self),
+                path: path
+            )
+        }
+    }
+
+    private func snapshotIdentity(_ manifest: SnapshotManifest) -> String {
+        manifest.repositoryRevision == "unavailable"
+            ? "snapshot:\(manifest.generatedFrom)"
+            : manifest.repositoryRevision
+    }
+}
+
+private struct GitTreeEntry {
+    let mode: String
+    let type: String
+    let objectID: String
+    let path: String
+}
