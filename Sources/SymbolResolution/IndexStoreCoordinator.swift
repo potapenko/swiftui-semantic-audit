@@ -90,7 +90,7 @@ public struct IndexEnrichmentCoordinator: Sendable {
     public init(
         helperExecutable: URL,
         runner: any ProcessRunning = BoundedProcessRunner(),
-        timeout: TimeInterval = 30,
+        timeout: TimeInterval = 120,
         temporaryRoot: URL = FileManager.default.temporaryDirectory
     ) {
         self.helperExecutable = helperExecutable

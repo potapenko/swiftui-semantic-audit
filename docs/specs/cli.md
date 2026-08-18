@@ -133,7 +133,7 @@ Default path is `.`. Inspect without mutation:
 
 **CLI-FAIL-001.** Never silently parse stderr as JSON or treat a failed command as an empty result.
 
-**CLI-FAIL-002.** External Git/Swift/Xcode/index helper operations have explicit bounds (current implementation uses 10–30 second operation timeouts depending on the boundary).
+**CLI-FAIL-002.** External Git/Swift/Xcode/index helper operations have explicit bounds (current implementation uses 10–120 second operation timeouts depending on the boundary and allows the compiler-index helper the largest bound for full projects).
 
 **CLI-FAIL-003.** Preserve produced artifacts and retry only the failed/missing stage when safe. Do not mutate branches or worktrees for revision analysis.
 
