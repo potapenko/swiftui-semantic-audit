@@ -9,6 +9,43 @@ import SwiftSyntaxFrontend
 import XCTest
 
 final class SymbolResolutionTests: XCTestCase {
+    func testCollisionSafeFileLocalIdentitiesRemapToDistinctCompilerUSRs() throws {
+        let fixture = try makeIndexedCollisionFixture()
+        defer { try? FileManager.default.removeItem(at: fixture.container) }
+        let syntax = try GraphScanner().scan(path: fixture.source.path)
+        let localTypes = syntax.nodes.filter { $0.qualifiedName == "IndexedCollision.Local" }
+        XCTAssertEqual(localTypes.count, 2)
+        XCTAssertEqual(Set(localTypes.map(\.id)).count, 2)
+
+        let indexed = try directEnrichment(syntax, fixture: fixture, databaseName: "collision-db").graph
+        let remapped = indexed.nodes.filter {
+            $0.name == "Local" && $0.evidence.contains { $0.kind == "indexed-occurrence" }
+        }
+        XCTAssertEqual(indexed.resolution, "indexed")
+        XCTAssertEqual(remapped.count, 2)
+        XCTAssertEqual(Set(remapped.map(\.id)).count, 2)
+    }
+
+    func testConfiguredRolesFeaturesAndTypedEdgesSurviveIndexedEnrichment() throws {
+        let fixture = try makeIndexedBoundaryFixture()
+        defer { try? FileManager.default.removeItem(at: fixture.container) }
+        let syntax = try GraphScanner().scan(path: fixture.source.path)
+        let configuration = try AnalysisConfiguration(
+            typeRoles: ["IndexedBoundary.IndexedPagerModel": .applicationModel],
+            typeFeatures: ["IndexedBoundary.IndexedPagerModel": "paging"]
+        )
+        let configured = configuration.applying(to: syntax)
+        let indexed = try directEnrichment(configured, fixture: fixture, databaseName: "configured-db").graph
+
+        let model = try XCTUnwrap(indexed.nodes.first { $0.name == "IndexedPagerModel" })
+        XCTAssertTrue(model.roles.contains("application-model"))
+        XCTAssertEqual(model.feature, "paging")
+        XCTAssertEqual(indexed.configurationDigest, configuration.digest)
+        XCTAssertTrue(indexed.edges.contains { edge in
+            edge.kind == .typedAs && indexed.nodes.contains { $0.id == edge.to && $0.id == model.id }
+        })
+    }
+
     func testBoundaryTopologyAndFindingsSurviveExplicitIndexedEnrichment() throws {
         let fixture = try makeIndexedBoundaryFixture()
         defer { try? FileManager.default.removeItem(at: fixture.container) }
@@ -459,6 +496,24 @@ final class SymbolResolutionTests: XCTestCase {
             }
         }
         """.write(to: source.appendingPathComponent("Fixture.swift"), atomically: true, encoding: .utf8)
+        let store = source.appendingPathComponent(".build/debug/index/store", isDirectory: true)
+        try buildIndex(source: source, store: store, output: container.appendingPathComponent("output"))
+        return Fixture(container: container, source: source, store: store)
+    }
+
+    private func makeIndexedCollisionFixture() throws -> Fixture {
+        let container = FileManager.default.temporaryDirectory
+            .appendingPathComponent("swiftui-audit-collision-index-tests-\(UUID().uuidString)", isDirectory: true)
+        let source = container.appendingPathComponent("IndexedCollision", isDirectory: true)
+        try FileManager.default.createDirectory(at: source, withIntermediateDirectories: true)
+        try """
+        private struct Local { var value: Int }
+        func first() -> Int { Local(value: 1).value }
+        """.write(to: source.appendingPathComponent("A.swift"), atomically: true, encoding: .utf8)
+        try """
+        private struct Local { var value: Int }
+        func second() -> Int { Local(value: 2).value }
+        """.write(to: source.appendingPathComponent("B.swift"), atomically: true, encoding: .utf8)
         let store = source.appendingPathComponent(".build/debug/index/store", isDirectory: true)
         try buildIndex(source: source, store: store, output: container.appendingPathComponent("output"))
         return Fixture(container: container, source: source, store: store)

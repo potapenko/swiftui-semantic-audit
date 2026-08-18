@@ -20,6 +20,7 @@ public enum SemanticInputError: Error, Equatable, LocalizedError {
     case noSwiftFiles(String)
     case unsafeGitPath(String)
     case resolutionMismatch(baseline: String, current: String)
+    case configurationMismatch(baseline: String, current: String)
 
     public var errorDescription: String? {
         switch self {
@@ -30,6 +31,9 @@ public enum SemanticInputError: Error, Equatable, LocalizedError {
             "semantic resolution mismatch: baseline is \(baseline), current is \(current). " +
                 "Use a baseline with the same resolution, provide a usable --index-store for an indexed baseline, " +
                 "or pass --syntax-only with a syntax-only baseline."
+        case .configurationMismatch(let baseline, let current):
+            "analysis configuration mismatch: baseline is \(baseline), current is \(current). " +
+                "Use inputs produced from the same canonical .swiftui-audit.json configuration."
         }
     }
 }
@@ -64,18 +68,23 @@ public struct SemanticInputLoader: Sendable {
             "git",
             ["-C", repository.path, "ls-tree", "-r", "-z", "--full-tree", commit, "--"]
         )
-        let entries = try parseTreeEntries(listing.standardOutput).filter {
+        let treeEntries = try parseTreeEntries(listing.standardOutput)
+        let entries = treeEntries.filter {
             ($0.mode == "100644" || $0.mode == "100755") && $0.type == "blob" &&
                 URL(fileURLWithPath: $0.path).pathExtension.lowercased() == "swift"
         }.sorted { $0.path < $1.path }
         guard !entries.isEmpty else { throw SemanticInputError.noSwiftFiles(revision) }
+        let configurationEntry = treeEntries.first {
+            ($0.mode == "100644" || $0.mode == "100755") && $0.type == "blob" &&
+                $0.path == ".swiftui-audit.json"
+        }
 
         let container = FileManager.default.temporaryDirectory
             .appendingPathComponent("swiftui-audit-revision-\(UUID().uuidString)", isDirectory: true)
         let sourceRoot = container.appendingPathComponent(repository.lastPathComponent, isDirectory: true)
         try FileManager.default.createDirectory(at: sourceRoot, withIntermediateDirectories: true)
         defer { try? FileManager.default.removeItem(at: container) }
-        for entry in entries {
+        for entry in entries + [configurationEntry].compactMap({ $0 }) {
             try validateGitPath(entry.path)
             let destination = sourceRoot.appendingPathComponent(entry.path)
             try FileManager.default.createDirectory(
@@ -87,13 +96,16 @@ public struct SemanticInputLoader: Sendable {
                 try FileManager.default.setAttributes([.posixPermissions: 0o755], ofItemAtPath: destination.path)
             }
         }
-        let graph = try GraphScanner().scan(path: sourceRoot.path)
+        let syntaxGraph = try GraphScanner().scan(path: sourceRoot.path)
+        let configuration = try AnalysisConfiguration.load(explicitURL: nil, sourceURL: sourceRoot)
+        let graph = configuration?.applying(to: syntaxGraph) ?? syntaxGraph
         let report = AuditEngine().audit(graph: graph)
         let manifest = SnapshotManifest(
             toolVersion: report.toolVersion,
             swiftVersion: swiftVersion(),
             repositoryRevision: commit,
-            generatedFrom: "."
+            generatedFrom: ".",
+            configurationDigest: graph.configurationDigest
         )
         return LoadedSemanticInput(
             snapshot: SemanticSnapshot(manifest: manifest, graph: graph, report: report),
@@ -104,11 +116,14 @@ public struct SemanticInputLoader: Sendable {
     public func loadLive(
         sourceURL: URL,
         indexSelection: IndexSelection = .syntaxOnly,
+        configurationURL: URL? = nil,
         helperExecutable: URL? = nil,
         indexTimeout: TimeInterval = 30
     ) throws -> LoadedSemanticInput {
         let source = sourceURL.standardizedFileURL.resolvingSymlinksInPath()
-        let syntaxGraph = try GraphScanner().scan(path: source.path)
+        let unconfiguredGraph = try GraphScanner().scan(path: source.path)
+        let configuration = try AnalysisConfiguration.load(explicitURL: configurationURL, sourceURL: source)
+        let syntaxGraph = configuration?.applying(to: unconfiguredGraph) ?? unconfiguredGraph
         let graph: SemanticGraph
         if indexSelection == .syntaxOnly {
             graph = syntaxGraph
@@ -128,7 +143,8 @@ public struct SemanticInputLoader: Sendable {
             toolVersion: report.toolVersion,
             swiftVersion: swiftVersion(),
             repositoryRevision: revision,
-            generatedFrom: "."
+            generatedFrom: ".",
+            configurationDigest: graph.configurationDigest
         )
         return LoadedSemanticInput(
             snapshot: SemanticSnapshot(manifest: manifest, graph: graph, report: report),
@@ -140,6 +156,7 @@ public struct SemanticInputLoader: Sendable {
         sourceURL: URL,
         baseline: LoadedSemanticInput,
         requestedSelection: IndexSelection,
+        configurationURL: URL? = nil,
         helperExecutable: URL? = nil,
         indexTimeout: TimeInterval = 30
     ) throws -> LoadedSemanticInput {
@@ -166,6 +183,7 @@ public struct SemanticInputLoader: Sendable {
         let current = try loadLive(
             sourceURL: sourceURL,
             indexSelection: selection,
+            configurationURL: configurationURL,
             helperExecutable: helperExecutable,
             indexTimeout: indexTimeout
         )
@@ -187,6 +205,18 @@ public struct SemanticInputLoader: Sendable {
                 current: current.snapshot.report.resolution == currentResolution
                     ? currentResolution
                     : "inconsistent graph/report (\(currentResolution)/\(current.snapshot.report.resolution))"
+            )
+        }
+        let baselineConfiguration = base.snapshot.graph.configurationDigest
+        let currentConfiguration = current.snapshot.graph.configurationDigest
+        guard base.snapshot.report.configurationDigest == baselineConfiguration,
+              current.snapshot.report.configurationDigest == currentConfiguration,
+              base.snapshot.manifest.configurationDigest == baselineConfiguration,
+              current.snapshot.manifest.configurationDigest == currentConfiguration,
+              baselineConfiguration == currentConfiguration else {
+            throw SemanticInputError.configurationMismatch(
+                baseline: baselineConfiguration,
+                current: currentConfiguration
             )
         }
     }

@@ -1,7 +1,7 @@
 # Rule and adjudication contract
 
-Revision: `spec-2`  
-Rule set: ten required rules  
+Revision: `spec-3`
+Rule set: twenty-nine required rules
 Status: active
 
 ## Engine
@@ -34,6 +34,52 @@ Status: active
 
 **RULE-BROAD-INPUT-001 — `broad-observable-input`.** Detect a View that directly reads, writes, calls, or projects members through an externally observed or injected model representation. Require member-use topology; forwarding without direct member use is not enough. Exclude View-owned local `State` and roots already represented by the higher-severity observable-mirror topology. Severity `medium`; confidence `candidate`; candidate patterns `focused-input`, `focused-binding`, `action-closure`.
 
+## Architecture rules
+
+**RULE-MODEL-DESC-001 — `model-aware-descendant`.** With an exact configured application/feature model, controller, store, or presenter role, detect a non-composition-root View that accepts the owner through a typed property or initializer boundary. Severity `medium`; confidence `candidate`; pattern `focused-input`.
+
+**RULE-MULTI-OWNER-001 — `multi-owner-component`.** Detect a non-root View with two or more independent configured mutable/reference owner inputs. Report one finding with every owner and typed boundary. Severity `high`; confidence `strong-inference`.
+
+**RULE-CROSS-FEATURE-001 — `cross-feature-owner-dependency`.** Detect a View assigned to one configured feature that reads, writes, calls, observes, or accepts an owner assigned to a different feature. Severity `high`; confidence `strong-inference`.
+
+**RULE-SERVICE-VIEW-001 — `service-or-repository-in-view`.** Detect a non-root View accepting a configured repository, service, player, dependency bundle, or effect sink. Severity `high`; confidence `strong-inference`.
+
+**RULE-ENV-COMMAND-001 — `environment-command-router`.** Detect an injected environment value whose typed/configured topology exposes callbacks or commands used by the View. Exclude bounded passive system values and configured passive values unless callable topology is present. Severity `medium`; confidence `candidate`.
+
+**RULE-MULTI-SOURCE-BINDING-001 — `multi-source-binding`.** Detect an explicit Binding whose getter/setter reads or writes multiple independent semantic values, or whose setter reconstructs an aggregate using both the new value and current state. Severity `medium`; confidence `strong-inference`.
+
+**RULE-MANUAL-OWNER-SYNC-001 — `manual-owner-synchronization`.** Detect a local mutable representation copied from an external owner in two or more lifecycle-triggered paths without a proven reciprocal Binding or real commit/discard transaction. Severity `high`; confidence `strong-inference`.
+
+**RULE-LIFECYCLE-COMMAND-001 — `hidden-command-in-lifecycle`.** Detect model commands, dispatch, apply, clamp, normalization, or awaited work from `onAppear`, `onChange`, or `task`, excluding configured composition roots and purely local cancellable animation. Severity `medium`; confidence `candidate`.
+
+**RULE-VIEW-EFFECT-001 — `view-owned-external-effect`.** Detect a non-root leaf/presentation View initiating configured model/service/player/repository work outside an already reported lifecycle-command path. Severity `high`; confidence `candidate`.
+
+**RULE-FOCUS-LIFECYCLE-001 — `imperative-focus-lifecycle`.** Detect `FocusState` writes from lifecycle, delayed task/dispatch, or restoration callbacks. Direct user-action focus changes remain agent-adjudicated. Severity `medium`; confidence `strong-inference`.
+
+**RULE-SELECTION-LOOP-001 — `selection-corrective-loop`.** Detect multiple local focus/selection restoration states participating in corrective copy/write cycles triggered by focus, modal, or text changes. A single editor-owned `TextSelection` is clean. Severity `high`; confidence `strong-inference`.
+
+## Layout and platform rules
+
+**RULE-GEOMETRY-LAYOUT-001 — `geometry-driven-product-layout`.** Detect GeometryReader/proxy, geometry-change, global/local frame, coordinate-space, or PreferenceKey values used to determine product layout. Exclude `Shape.path(in:)` and `Canvas` local drawing coordinates. Severity `medium`; confidence `candidate`.
+
+**RULE-GEOMETRY-ESCAPE-001 — `geometry-escapes-layout-boundary`.** Detect measured geometry passed to a child View, helper, or presentation DTO beyond the immediate layout closure. Severity `medium`; confidence `strong-inference`.
+
+**RULE-GEOMETRY-EFFECT-001 — `geometry-triggered-model-effect`.** Detect geometry flow that reaches a configured model/service/player/repository command, pagination, network, or playback call. Severity `high`; confidence `strong-inference`.
+
+**RULE-MANUAL-POSITION-001 — `manual-positioning-as-layout`.** Detect `offset` or `position` arguments derived from container/sibling geometry. Exclude local animation-only transforms that do not determine product layout. Severity `medium`; confidence `candidate`.
+
+**RULE-GESTURE-BUTTON-001 — `gesture-button-emulation`.** Detect a tap gesture combined with manual button accessibility traits/action on the same View chain. Severity `medium`; confidence `strong-inference`; pattern `Button`.
+
+**RULE-PLATFORM-UPDATE-001 — `imperative-platform-view-update`.** Detect `updateNSView`/`updateUIView` that pushes presentation values, callbacks, request counters, or commands into an existing native view. An empty update method is clean. Severity `high`; confidence `strong-inference`.
+
+**RULE-GLOBAL-PLATFORM-001 — `direct-global-platform-command`.** Detect a non-root View directly invoking bounded global AppKit/UIKit application, responder-chain, or event-monitor commands. Severity `high`; confidence `strong-inference`.
+
+**RULE-PREVIEW-COMPOSITION-001 — `preview-requires-app-composition`.** Detect a reusable non-root View preview that constructs configured application composition or supplies configured owner/service graph inputs. Severity `medium`; confidence `candidate`.
+
+## Finding dominance
+
+**RULE-DOM-001.** Suppress a generic finding for the same evidence path when a more specific rule explains it: model-aware suppresses broad input for one boundary; multi-owner suppresses per-owner model-aware findings; lifecycle-command suppresses view-effect for the same call; geometry effect/escape/manual positioning suppress generic geometry-layout for the same chain. Existing mirror rules retain precedence over broad observable input.
+
 ## Required distinctions
 
 **RULE-EXC-001 — Direct Binding.** A correctly owned direct Binding produces no violation merely for being mutable or externally owned.
@@ -49,6 +95,12 @@ Status: active
 **RULE-EXC-006 — Weak similarity.** Names, types, and UI proximity alone cannot cluster semantic values or trigger automatic refactoring.
 
 **RULE-EXC-007 — Component owner.** A View-owned local model without an external observation/injection boundary is not a broad observable input. A screen or container may legitimately receive a model; `broad-observable-input` therefore remains a candidate for agent adjudication.
+
+**RULE-EXC-008 — Local presentation state.** State used only for local animation/transition presentation and written only by local animation lifecycle is not stored derived product state.
+
+**RULE-EXC-009 — Native layout/drawing.** Canvas and Shape-local coordinates are not product geometry. A narrow immutable representable with an empty update method is not imperative platform update.
+
+**RULE-EXC-010 — Exact authority.** Composition roots, product roles, feature boundaries, and passive custom environment values come only from validated configuration or bounded compiler/platform facts, never name regexes.
 
 ## Agent adjudication
 

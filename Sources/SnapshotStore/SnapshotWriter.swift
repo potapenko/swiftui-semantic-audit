@@ -18,6 +18,7 @@ public struct SnapshotWriter: Sendable {
         let canonicalGraph = SemanticGraph(
             schemaVersion: graph.schemaVersion,
             resolution: graph.resolution,
+            configurationDigest: graph.configurationDigest,
             nodes: graph.nodes.map {
                 SemanticNode(
                     id: $0.id,
@@ -25,7 +26,9 @@ public struct SnapshotWriter: Sendable {
                     name: $0.name,
                     qualifiedName: $0.qualifiedName,
                     evidence: Array(Set($0.evidence)).sorted(by: Evidence.canonicalOrder),
-                    confidence: $0.confidence
+                    confidence: $0.confidence,
+                    roles: $0.roles,
+                    feature: $0.feature
                 )
             },
             edges: graph.edges.map {
@@ -155,12 +158,18 @@ private struct CanonicalFinding: Encodable {
 
 enum SnapshotValidator {
     static func validate(graph: SemanticGraph, report: AuditReport, manifest: SnapshotManifest) throws {
-        guard manifest.schemaVersion == 1 else { throw SnapshotError.unsupportedSchema(manifest.schemaVersion) }
+        guard manifest.schemaVersion == ToolMetadata.schemaVersion else {
+            throw SnapshotError.unsupportedSchema(manifest.schemaVersion)
+        }
         guard graph.schemaVersion == manifest.schemaVersion else {
             throw SnapshotError.inconsistentSchema(graph.schemaVersion, manifest.schemaVersion)
         }
         guard graph.resolution == report.resolution else {
             throw SnapshotError.inconsistentResolution(graph.resolution, report.resolution)
+        }
+        guard graph.configurationDigest == report.configurationDigest,
+              graph.configurationDigest == manifest.configurationDigest else {
+            throw SnapshotError.malformedFile("manifest.json", "configuration digest mismatch")
         }
         if manifest.generatedFrom.hasPrefix("/") { throw SnapshotError.absolutePath(manifest.generatedFrom) }
 

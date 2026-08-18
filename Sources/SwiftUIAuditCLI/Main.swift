@@ -44,7 +44,11 @@ struct Snapshot: ParsableCommand {
         )
         let graph = try loadResolvedGraph(path: locations.source.path, options: resolution)
         let report = AuditEngine().audit(graph: graph)
-        let manifest = SnapshotManifestFactory.make(sourcePath: locations.source.path, toolVersion: report.toolVersion)
+        let manifest = SnapshotManifestFactory.make(
+            sourcePath: locations.source.path,
+            toolVersion: report.toolVersion,
+            configurationDigest: graph.configurationDigest
+        )
         try SnapshotWriter().write(
             graph: graph,
             report: report,
@@ -106,8 +110,8 @@ struct Slice: ParsableCommand {
         let report: AuditReport
         switch resolved {
         case .snapshot(let url):
-            if resolution.indexStore != nil {
-                throw ValidationError("--index-store applies only when slicing live source")
+            if resolution.indexStore != nil || resolution.config != nil {
+                throw ValidationError("--index-store and --config apply only when slicing live source")
             }
             let snapshot = try SnapshotReader().read(from: url)
             graph = snapshot.graph
@@ -144,7 +148,7 @@ struct Slice: ParsableCommand {
 
 struct Audit: ParsableCommand {
     static let configuration = CommandConfiguration(
-        abstract: "Evaluate the six SwiftUI state/data-flow rules."
+        abstract: "Evaluate the SwiftUI state/data-flow and architecture rules."
     )
 
     enum OutputFormat: String, ExpressibleByArgument {

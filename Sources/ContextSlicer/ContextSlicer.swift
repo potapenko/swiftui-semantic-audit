@@ -359,8 +359,8 @@ public struct ContextSlicer: Sendable {
     private static func priority(_ kind: EdgeKind) -> Int {
         switch kind {
         case .writes, .reads, .copiesTo, .binds, .aliases: 0
-        case .owns, .observes, .injects: 1
-        case .passes, .calls, .triggers, .sets, .derivesFrom: 2
+        case .owns, .observes, .injects, .typedAs: 1
+        case .passes, .flowsTo, .calls, .triggers, .sets, .derivesFrom: 2
         case .creates: 3
         }
     }

@@ -1,7 +1,7 @@
 # Semantic IR contract
 
-Revision: `spec-2`  
-Schema: `1`  
+Revision: `spec-3`
+Schema: `2`
 Status: active
 
 ## Graph model
@@ -29,6 +29,10 @@ derivesFrom triggers aliases creates
 **IR-GRAPH-006 — Canonical graph.** A graph contains `schemaVersion`, `resolution`, sorted nodes, and sorted edges. Canonical JSON is pretty-printed with sorted keys, unescaped slashes, and a trailing newline.
 
 **IR-GRAPH-007 — Explicit Binding construction.** Represent `Binding(get:set:)` with a generated `binding` node using `binding-construction` evidence. The node creates its getter and setter closures; a `sets` edge identifies the setter role, and enclosing controls may bind to the constructed node. A factory context is recorded as evidence without adding a schema-v2 node or edge kind.
+
+**IR-GRAPH-008 — Typed architecture facts.** Schema v2 adds `typedAs` and `flowsTo` edge kinds. `typedAs` connects a declaration/input to its declared type. `flowsTo` preserves non-assignment argument/closure-parameter value flow used by geometry, focus, selection, and effect rules. Nodes may carry sorted configured `roles` and one optional `feature`; these are deterministic configuration facts, not inferred names.
+
+**IR-GRAPH-009 — Collision-safe frontend identity.** Syntax nodes carry relative-file and lexical structural discriminators until an indexed declaration/use can be remapped to its compiler USR. Multiple provisional nodes may share a human `qualifiedName`; selectors must reject ambiguity.
 
 ## Evidence and confidence
 
@@ -81,7 +85,7 @@ findings.jsonl
 summary.json
 ```
 
-**IR-SNAP-002 — Manifest.** `manifest.json` contains schema/tool/Swift versions, repository revision, and relative `generatedFrom`.
+**IR-SNAP-002 — Manifest.** `manifest.json` contains schema/tool/Swift versions, repository revision, relative `generatedFrom`, and the canonical analysis-configuration digest or `none`.
 
 **IR-SNAP-003 — JSONL.** Nodes, edges, and findings use one sorted compact JSON record per line with a final newline. Summary JSON contains resolution, counts, metrics, and semantic values.
 
@@ -125,3 +129,5 @@ DERIVATION_CHANGED SOURCE_OF_TRUTH_COUNT_CHANGED
 **IR-RES-001.** Use `resolution: "syntax-only"` for frontend-only graphs and `resolution: "indexed"` only after accepted compiler-index enrichment.
 
 **IR-RES-002.** Preserve resolution consistently across graph, audit report, snapshot, slice, diff, and check. Reject mixed or internally inconsistent inputs.
+
+**IR-RES-003.** Indexed enrichment occurs after collision-safe syntax extraction and remaps every unambiguous declaration/use to compiler USR identity while preserving configured roles, feature, evidence, and topology.

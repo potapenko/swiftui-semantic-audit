@@ -162,7 +162,7 @@ final class GraphScannerTests: XCTestCase {
         let ids = Set(graph.nodes.map(\.id))
 
         XCTAssertEqual(first, second)
-        XCTAssertEqual(graph.schemaVersion, 1)
+        XCTAssertEqual(graph.schemaVersion, 2)
         XCTAssertEqual(graph.resolution, "syntax-only")
         XCTAssertTrue(graph.edges.allSatisfy { ids.contains($0.from) && ids.contains($0.to) })
         XCTAssertNoThrow(try JSONSerialization.jsonObject(with: first))
@@ -176,7 +176,7 @@ final class GraphScannerTests: XCTestCase {
         }.map { "\(nodesByID[$0.from]!) -> \(nodesByID[$0.to]!)" }.sorted()
 
         XCTAssertEqual(graph.nodes.count, 42)
-        XCTAssertEqual(graph.edges.count, 77)
+        XCTAssertEqual(graph.edges.count, 83)
         XCTAssertEqual(observedPairs, [
             "GraphExtraction.Controls.environmentModel -> GraphExtraction.Controls.environmentModel.query",
             "GraphExtraction.Controls.model -> GraphExtraction.Controls.model.mode",

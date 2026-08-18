@@ -33,6 +33,8 @@ public enum EdgeKind: String, Codable, CaseIterable, Sendable {
     case triggers
     case aliases
     case creates
+    case typedAs
+    case flowsTo
 }
 
 public enum Confidence: String, Codable, CaseIterable, Sendable {
@@ -63,6 +65,8 @@ public struct SemanticNode: Codable, Hashable, Sendable {
     public let qualifiedName: String
     public let evidence: [Evidence]
     public let confidence: Confidence
+    public let roles: [String]
+    public let feature: String?
 
     public init(
         id: String,
@@ -70,7 +74,9 @@ public struct SemanticNode: Codable, Hashable, Sendable {
         name: String,
         qualifiedName: String,
         evidence: [Evidence],
-        confidence: Confidence = .deterministic
+        confidence: Confidence = .deterministic,
+        roles: [String] = [],
+        feature: String? = nil
     ) {
         self.id = id
         self.kind = kind
@@ -78,6 +84,8 @@ public struct SemanticNode: Codable, Hashable, Sendable {
         self.qualifiedName = qualifiedName
         self.evidence = evidence
         self.confidence = confidence
+        self.roles = Array(Set(roles)).sorted()
+        self.feature = feature
     }
 }
 
@@ -109,12 +117,20 @@ public struct SemanticEdge: Codable, Hashable, Sendable {
 public struct SemanticGraph: Codable, Equatable, Sendable {
     public let schemaVersion: Int
     public let resolution: String
+    public let configurationDigest: String
     public let nodes: [SemanticNode]
     public let edges: [SemanticEdge]
 
-    public init(schemaVersion: Int = 1, resolution: String = "syntax-only", nodes: [SemanticNode], edges: [SemanticEdge]) {
+    public init(
+        schemaVersion: Int = ToolMetadata.schemaVersion,
+        resolution: String = "syntax-only",
+        configurationDigest: String = "none",
+        nodes: [SemanticNode],
+        edges: [SemanticEdge]
+    ) {
         self.schemaVersion = schemaVersion
         self.resolution = resolution
+        self.configurationDigest = configurationDigest
         self.nodes = nodes.sorted(by: SemanticNode.canonicalOrder)
         self.edges = edges.sorted(by: SemanticEdge.canonicalOrder)
     }

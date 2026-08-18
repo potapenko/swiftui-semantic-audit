@@ -97,7 +97,9 @@ public struct IndexStoreDBResolver: SymbolResolver, Sendable {
                 name: canonical.name,
                 qualifiedName: canonical.qualifiedName,
                 evidence: Array(Set(node.evidence + compilerEvidence)).sorted(by: Evidence.canonicalOrder),
-                confidence: .deterministic
+                confidence: .deterministic,
+                roles: Array(Set(node.roles + canonical.roles)).sorted(),
+                feature: node.feature ?? canonical.feature
             )
             nodesByID[id] = merge(nodesByID[id], remapped)
         }
@@ -113,7 +115,9 @@ public struct IndexStoreDBResolver: SymbolResolver, Sendable {
                 name: declaration?.name ?? symbol.name,
                 qualifiedName: declaration?.qualifiedName ?? "\(symbol.moduleName).\(symbol.name)",
                 evidence: Array(Set(symbol.evidence)).sorted(by: Evidence.canonicalOrder),
-                confidence: .deterministic
+                confidence: .deterministic,
+                roles: declaration?.roles ?? [],
+                feature: declaration?.feature
             )
         }
 
@@ -170,6 +174,7 @@ public struct IndexStoreDBResolver: SymbolResolver, Sendable {
         let indexed = SemanticGraph(
             schemaVersion: graph.schemaVersion,
             resolution: "indexed",
+            configurationDigest: graph.configurationDigest,
             nodes: Array(nodesByID.values),
             edges: Array(edgesByID.values)
         )
@@ -245,7 +250,9 @@ public struct IndexStoreDBResolver: SymbolResolver, Sendable {
             name: chosen.name,
             qualifiedName: chosen.qualifiedName,
             evidence: Array(Set(lhs.evidence + rhs.evidence)).sorted(by: Evidence.canonicalOrder),
-            confidence: .deterministic
+            confidence: .deterministic,
+            roles: Array(Set(lhs.roles + rhs.roles)).sorted(),
+            feature: lhs.feature ?? rhs.feature
         )
     }
 
@@ -267,7 +274,9 @@ public struct IndexStoreDBResolver: SymbolResolver, Sendable {
     }
 
     private func isCompilerResolvableUseSite(_ node: SemanticNode) -> Bool {
-        let resolvableEvidence = Set(["member-access", "assignment-target", "function-call", "call-expression"])
+        let resolvableEvidence = Set([
+            "member-access", "assignment-target", "function-call", "function-call-target", "call-expression",
+        ])
         return node.evidence.contains { resolvableEvidence.contains($0.kind) }
     }
 

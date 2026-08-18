@@ -7,6 +7,44 @@ import SwiftSyntaxFrontend
 import XCTest
 
 final class SemanticDiffTests: XCTestCase {
+    func testComparisonRejectsDifferentConfigurationDigests() throws {
+        func input(_ digest: String) -> LoadedSemanticInput {
+            let graph = SemanticGraph(configurationDigest: digest, nodes: [], edges: [])
+            let report = AuditReport(
+                resolution: "syntax-only",
+                configurationDigest: digest,
+                metrics: AuditMetrics(
+                    mutableSemanticValues: 0,
+                    stateRepresentations: 0,
+                    bindingEdges: 0,
+                    manualSynchronizationEdges: 0,
+                    callbackTunnels: 0,
+                    derivedMutableValues: 0,
+                    duplicatedSourcesOfTruth: 0,
+                    ownershipViolations: 0
+                ),
+                semanticValues: [],
+                findings: []
+            )
+            let manifest = SnapshotManifest(
+                swiftVersion: "test",
+                repositoryRevision: "test",
+                generatedFrom: ".",
+                configurationDigest: digest
+            )
+            return LoadedSemanticInput(
+                snapshot: SemanticSnapshot(manifest: manifest, graph: graph, report: report),
+                identity: digest
+            )
+        }
+
+        XCTAssertThrowsError(
+            try SemanticInputLoader().validateMatchingResolution(base: input("a"), current: input("b"))
+        ) {
+            XCTAssertEqual($0 as? SemanticInputError, .configurationMismatch(baseline: "a", current: "b"))
+        }
+    }
+
     func testUnchangedSnapshotHasNoChangesAndStableJSON() throws {
         let snapshot = syntheticPair().base
         let report = SemanticDiffEngine().compare(base: snapshot, current: snapshot)

@@ -9,9 +9,10 @@ import XCTest
 final class ContextSlicerTests: XCTestCase {
     func testEveryMandatoryFindingProducesDeterministicStrictValidSlice() throws {
         let (graph, report) = try mixedAudit()
-        XCTAssertEqual(Set(report.findings.map(\.rule)), Set(RuleID.allCases))
+        let stateFlowRules = Array(RuleID.allCases.prefix(10))
+        XCTAssertEqual(Set(report.findings.map(\.rule)), Set(stateFlowRules))
 
-        for rule in RuleID.allCases {
+        for rule in stateFlowRules {
             let finding = try XCTUnwrap(report.findings.first { $0.rule == rule })
             let first = try ContextSlicer().slice(graph: graph, report: report, findingID: finding.id)
             let second = try ContextSlicer().slice(graph: graph, report: report, findingID: finding.id)

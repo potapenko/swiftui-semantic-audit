@@ -53,6 +53,7 @@ struct Check: ParsableCommand {
             sourceURL: URL(fileURLWithPath: path),
             baseline: baselineInput,
             requestedSelection: try resolution.selection(),
+            configurationURL: resolution.configurationURL(),
             helperExecutable: try currentExecutableURL()
         )
         let diff = SemanticDiffEngine().compare(

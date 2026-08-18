@@ -57,6 +57,15 @@ public struct GraphScanner: Sendable {
 
         for item in parsed {
             let converter = SourceLocationConverter(fileName: item.relativePath, tree: item.tree)
+            DeclarationVisitor(
+                builder: builder,
+                file: item.relativePath,
+                converter: converter,
+                predeclareOnly: true
+            ).walk(item.tree)
+        }
+        for item in parsed {
+            let converter = SourceLocationConverter(fileName: item.relativePath, tree: item.tree)
             DeclarationVisitor(builder: builder, file: item.relativePath, converter: converter).walk(item.tree)
         }
         for item in parsed {
@@ -114,11 +123,18 @@ private final class GraphBuilder {
         name: String,
         qualifiedName: String,
         discriminator: String = "declaration",
+        identityFile: String? = nil,
         evidence: Evidence,
         mergeEvidence: Bool = false
     ) -> String {
-        let id = StableID.node(module: moduleName, qualifiedName: qualifiedName, kind: kind, discriminator: discriminator)
-        let identity = [kind.rawValue, name, qualifiedName, discriminator].joined(separator: "|")
+        let stableDiscriminator = identityFile.map { "file:\($0)|\(discriminator)" } ?? discriminator
+        let id = StableID.node(
+            module: moduleName,
+            qualifiedName: qualifiedName,
+            kind: kind,
+            discriminator: stableDiscriminator
+        )
+        let identity = [kind.rawValue, name, qualifiedName, stableDiscriminator].joined(separator: "|")
         if let existing = nodes[id] {
             let extensionPlaceholder = existing.evidence.allSatisfy { $0.kind == "extension-declaration" }
             let canonicalDeclaration = evidence.kind == "type-declaration" || evidence.kind == "swiftui-view"
@@ -131,7 +147,9 @@ private final class GraphBuilder {
                     name: existing.name,
                     qualifiedName: existing.qualifiedName,
                     evidence: canonicalEvidence(existing.evidence + [evidence]),
-                    confidence: existing.confidence
+                    confidence: existing.confidence,
+                    roles: existing.roles,
+                    feature: existing.feature
                 )
             }
         } else {
@@ -167,23 +185,38 @@ private final class GraphBuilder {
         }
     }
 
-    func nodeID(qualifiedName: String) -> String? {
-        unique(qualifiedIndex[qualifiedName])
+    func nodeID(qualifiedName: String, file: String? = nil) -> String? {
+        unique(preferred(qualifiedIndex[qualifiedName], file: file))
     }
 
     func node(id: String) -> SemanticNode? {
         nodes[id]
     }
 
-    func resolve(name rawName: String, scopes: [String]) -> String? {
+    func mergeEvidence(into id: String, evidence: Evidence) {
+        guard let existing = nodes[id] else { return }
+        nodes[id] = SemanticNode(
+            id: existing.id,
+            kind: existing.kind,
+            name: existing.name,
+            qualifiedName: existing.qualifiedName,
+            evidence: canonicalEvidence(existing.evidence + [evidence]),
+            confidence: existing.confidence,
+            roles: existing.roles,
+            feature: existing.feature
+        )
+    }
+
+    func resolve(name rawName: String, scopes: [String], file: String? = nil) -> String? {
         let name = normalizedReference(rawName)
         guard !name.isEmpty else { return nil }
         for scope in scopes.reversed() {
-            if let matches = qualifiedIndex["\(scope).\(name)"] {
-                return unique(matches)
+            if let matches = qualifiedIndex["\(scope).\(name)"],
+               let resolved = unique(preferred(matches, file: file)) {
+                return resolved
             }
         }
-        return unique(qualifiedIndex[name])
+        return unique(preferred(qualifiedIndex[name], file: file))
     }
 
     func ownedNodes(of ownerID: String, kind: NodeKind) -> [SemanticNode] {
@@ -203,6 +236,12 @@ private final class GraphBuilder {
     private func unique(_ ids: [String]?) -> String? {
         guard let ids, ids.count == 1 else { return nil }
         return ids[0]
+    }
+
+    private func preferred(_ ids: [String]?, file: String?) -> [String]? {
+        guard let ids, let file, ids.count > 1 else { return ids }
+        let local = ids.filter { nodes[$0]?.evidence.contains { $0.file == file } == true }
+        return local.isEmpty ? ids : local
     }
 
     private func canonicalEvidence(_ values: [Evidence]) -> [Evidence] {
@@ -301,6 +340,27 @@ private class BaseVisitor: SyntaxVisitor {
         value.filter { !$0.isWhitespace }
     }
 
+    func fileScopedIdentity(_ modifiers: DeclModifierListSyntax) -> String? {
+        modifiers.contains { modifier in
+            modifier.name.text == "private" || modifier.name.text == "fileprivate"
+        } ? file : nil
+    }
+
+    func stableNodeID(
+        qualifiedName: String,
+        kind: NodeKind,
+        discriminator: String,
+        identityFile: String?
+    ) -> String {
+        let stableDiscriminator = identityFile.map { "file:\($0)|\(discriminator)" } ?? discriminator
+        return StableID.node(
+            module: builder.moduleName,
+            qualifiedName: qualifiedName,
+            kind: kind,
+            discriminator: stableDiscriminator
+        )
+    }
+
     private func structuralScopes(for node: some SyntaxProtocol) -> [String] {
         var scopes: [String] = []
         var ancestor = node.parent
@@ -341,6 +401,18 @@ private class BaseVisitor: SyntaxVisitor {
 }
 
 private final class DeclarationVisitor: BaseVisitor {
+    private let predeclareOnly: Bool
+
+    init(
+        builder: GraphBuilder,
+        file: String,
+        converter: SourceLocationConverter,
+        predeclareOnly: Bool = false
+    ) {
+        self.predeclareOnly = predeclareOnly
+        super.init(builder: builder, file: file, converter: converter)
+    }
+
     override func visit(_ node: StructDeclSyntax) -> SyntaxVisitorContinueKind {
         enterType(name: node.name.text, isView: node.inheritanceClause?.inheritedTypes.contains(where: {
             $0.type.trimmedDescription.split(separator: ".").last == "View"
@@ -372,13 +444,17 @@ private final class DeclarationVisitor: BaseVisitor {
     override func visitPost(_ node: ActorDeclSyntax) { leaveOwner() }
 
     override func visit(_ node: ExtensionDeclSyntax) -> SyntaxVisitorContinueKind {
+        if predeclareOnly { return .skipChildren }
         enterExtension(node)
         return .visitChildren
     }
 
-    override func visitPost(_ node: ExtensionDeclSyntax) { leaveOwner() }
+    override func visitPost(_ node: ExtensionDeclSyntax) {
+        if !predeclareOnly { leaveOwner() }
+    }
 
     override func visit(_ node: FunctionDeclSyntax) -> SyntaxVisitorContinueKind {
+        if predeclareOnly { return .skipChildren }
         let name = node.name.text
         let qualifiedName = scopedQualified(name, node: node)
         let id = builder.addNode(
@@ -386,6 +462,7 @@ private final class DeclarationVisitor: BaseVisitor {
             name: name,
             qualifiedName: qualifiedName,
             discriminator: functionDiscriminator(node),
+            identityFile: file,
             evidence: evidence(node, kind: "function-declaration")
         )
         builder.addEdge(kind: .owns, from: currentOwnerID, to: id, evidence: evidence(node, kind: "declaration-ownership"))
@@ -394,9 +471,12 @@ private final class DeclarationVisitor: BaseVisitor {
         return .visitChildren
     }
 
-    override func visitPost(_ node: FunctionDeclSyntax) { leaveOwner() }
+    override func visitPost(_ node: FunctionDeclSyntax) {
+        if !predeclareOnly { leaveOwner() }
+    }
 
     override func visit(_ node: VariableDeclSyntax) -> SyntaxVisitorContinueKind {
+        if predeclareOnly { return .skipChildren }
         let wrapper = wrapperName(node)
         for binding in node.bindings {
             guard let identifier = binding.pattern.as(IdentifierPatternSyntax.self)?.identifier.text else { continue }
@@ -406,8 +486,15 @@ private final class DeclarationVisitor: BaseVisitor {
                 kind: kind,
                 name: identifier,
                 qualifiedName: qualifiedName,
+                identityFile: file,
                 evidence: evidence(binding, kind: wrapper == nil ? "property-declaration" : "property-wrapper")
             )
+            if let wrapper {
+                builder.mergeEvidence(
+                    into: propertyID,
+                    evidence: evidence(binding, kind: "property-wrapper:\(wrapper)")
+                )
+            }
             builder.addEdge(
                 kind: SwiftUIVocabulary.ownershipEdge(forPropertyWrapper: wrapper),
                 from: currentOwnerID,
@@ -418,10 +505,17 @@ private final class DeclarationVisitor: BaseVisitor {
         return .visitChildren
     }
 
-    private func enterType(name: String, isView: Bool, node: some SyntaxProtocol) {
+    private func enterType(name: String, isView: Bool, node: some DeclGroupSyntax) {
         let kind: NodeKind = isView ? .view : .type
         let qualifiedName = scopedQualified(name, node: node)
-        let id = builder.addNode(kind: kind, name: name, qualifiedName: qualifiedName, evidence: evidence(node, kind: isView ? "swiftui-view" : "type-declaration"))
+        let id = builder.addNode(
+            kind: kind,
+            name: name,
+            qualifiedName: qualifiedName,
+            identityFile: fileScopedIdentity(node.modifiers),
+            evidence: evidence(node, kind: isView ? "swiftui-view" : "type-declaration"),
+            mergeEvidence: !predeclareOnly
+        )
         builder.addEdge(kind: .owns, from: currentOwnerID, to: id, evidence: evidence(node, kind: "declaration-ownership"))
         ownerIDs.append(id)
         ownerNames.append(qualifiedName)
@@ -430,16 +524,10 @@ private final class DeclarationVisitor: BaseVisitor {
     private func enterExtension(_ node: ExtensionDeclSyntax) {
         let extendedName = node.extendedType.trimmedDescription
         let resolved = scopedResolutionCandidates(extendedName, node: node).lazy
-            .compactMap { self.builder.nodeID(qualifiedName: $0) }.first ??
-            builder.resolve(name: extendedName, scopes: ownerNames)
+            .compactMap { self.builder.nodeID(qualifiedName: $0, file: self.file) }.first ??
+            builder.resolve(name: extendedName, scopes: ownerNames, file: file)
         if let resolved, let type = builder.node(id: resolved) {
-            _ = builder.addNode(
-                kind: type.kind,
-                name: type.name,
-                qualifiedName: type.qualifiedName,
-                evidence: evidence(node, kind: "extension-declaration"),
-                mergeEvidence: true
-            )
+            builder.mergeEvidence(into: resolved, evidence: evidence(node, kind: "extension-declaration"))
             ownerIDs.append(resolved)
             ownerNames.append(type.qualifiedName)
             return
@@ -593,11 +681,11 @@ private final class RelationshipVisitor: BaseVisitor {
     override func visit(_ node: FunctionDeclSyntax) -> SyntaxVisitorContinueKind {
         let name = node.name.text
         let qualifiedName = scopedQualified(name, node: node)
-        let id = StableID.node(
-            module: builder.moduleName,
+        let id = stableNodeID(
             qualifiedName: qualifiedName,
             kind: .function,
-            discriminator: functionDiscriminator(node)
+            discriminator: functionDiscriminator(node),
+            identityFile: file
         )
         ownerIDs.append(id)
         ownerNames.append(functionScopeName(node, qualifiedName: qualifiedName))
@@ -605,6 +693,28 @@ private final class RelationshipVisitor: BaseVisitor {
     }
 
     override func visitPost(_ node: FunctionDeclSyntax) { leaveOwner() }
+
+    override func visit(_ node: VariableDeclSyntax) -> SyntaxVisitorContinueKind {
+        for binding in node.bindings {
+            guard let identifier = binding.pattern.as(IdentifierPatternSyntax.self)?.identifier.text,
+                  let type = binding.typeAnnotation?.type,
+                  let typeName = declaredTypeName(type.trimmedDescription),
+                  let propertyID = builder.nodeID(
+                    qualifiedName: scopedQualified(identifier, node: binding),
+                    file: file
+                  )
+            else { continue }
+            let typeID = resolveReference(typeName, node: type) ?? boundedSystemType(typeName, node: type)
+            guard let typeID else { continue }
+            builder.addEdge(
+                kind: .typedAs,
+                from: propertyID,
+                to: typeID,
+                evidence: evidence(type, kind: "declared-type")
+            )
+        }
+        return .visitChildren
+    }
 
     override func visit(_ node: ClosureExprSyntax) -> SyntaxVisitorContinueKind {
         let parent = generatedOwner(for: node) ?? (currentOwnerID, currentOwnerName)
@@ -616,6 +726,7 @@ private final class RelationshipVisitor: BaseVisitor {
             name: name,
             qualifiedName: qualifiedName,
             discriminator: "closure:\(ordinal)",
+            identityFile: file,
             evidence: evidence(node, kind: "closure-expression")
         )
         builder.addEdge(kind: .creates, from: parent.0, to: id, evidence: evidence(node, kind: "closure-expression"))
@@ -639,10 +750,27 @@ private final class RelationshipVisitor: BaseVisitor {
                     name: parameter.name,
                     qualifiedName: "\(qualifiedName).\(parameter.name)",
                     discriminator: "onchange-new-value:\(parameter.position)",
+                    identityFile: file,
                     evidence: parameter.evidence
                 )
                 builder.addEdge(kind: .owns, from: id, to: parameterID, evidence: parameter.evidence)
                 builder.addEdge(kind: .aliases, from: parameterID, to: parameter.observedID, evidence: parameter.evidence)
+            }
+        }
+        if builder.node(id: parent.0)?.name.hasPrefix("GeometryReader#") == true {
+            for (position, parameterName) in Self.closureParameterNames(in: node).sorted().enumerated() {
+                let parameterEvidence = evidence(node, kind: "geometry-proxy")
+                let parameterID = builder.addNode(
+                    kind: .input,
+                    name: parameterName,
+                    qualifiedName: "\(qualifiedName).\(parameterName)",
+                    discriminator: "geometry-proxy:\(position)",
+                    identityFile: file,
+                    evidence: parameterEvidence
+                )
+                builder.addEdge(kind: .owns, from: id, to: parameterID, evidence: parameterEvidence)
+                builder.addEdge(kind: .flowsTo, from: parent.0, to: parameterID, evidence: parameterEvidence)
+                referenceAliases[parameterName] = parameterID
             }
         }
         closureReferenceFrames.append(ClosureReferenceFrame(
@@ -675,8 +803,10 @@ private final class RelationshipVisitor: BaseVisitor {
         }
 
         if SwiftUIVocabulary.modifiers.contains(callName) {
-            let kind: NodeKind = callName == "onChange" ? .event : .effect
+            let kind: NodeKind = ["onChange", "onTapGesture", "accessibilityAction"].contains(callName)
+                ? .event : .effect
             let id = makeGenerated(kind: kind, role: callName, node: node, evidenceKind: "swiftui-modifier")
+            addArgumentFlows(from: node, to: id)
             if callName == "onChange", let source = argument(named: "of", in: node), let sourceID = resolveOrCreate(source, evidence: callEvidence) {
                 builder.addEdge(kind: .triggers, from: sourceID, to: id, evidence: evidence(source, kind: "onchange-source"))
                 if let closure = node.trailingClosure,
@@ -717,7 +847,13 @@ private final class RelationshipVisitor: BaseVisitor {
         }
 
         if SwiftUIVocabulary.containers.contains(callName) {
-            _ = makeGenerated(kind: .effect, role: callName, node: node, evidenceKind: "swiftui-container")
+            let id = makeGenerated(kind: .effect, role: callName, node: node, evidenceKind: "swiftui-container")
+            addArgumentFlows(from: node, to: id)
+            return .visitChildren
+        }
+
+        if SwiftUIVocabulary.platformCommands.contains(callName) {
+            _ = makeGenerated(kind: .effect, role: callName, node: node, evidenceKind: "platform-command")
             return .visitChildren
         }
 
@@ -732,6 +868,16 @@ private final class RelationshipVisitor: BaseVisitor {
                     kind: isAssignmentTransformCall(node) ? "assignment-transform-call" : "function-call"
                 )
             )
+            for argument in node.arguments where argument.expression.as(ClosureExprSyntax.self) == nil {
+                if let sourceID = resolveOrCreate(argument.expression, evidence: callEvidence) {
+                    builder.addEdge(
+                        kind: .flowsTo,
+                        from: sourceID,
+                        to: calleeID,
+                        evidence: evidence(argument, kind: "argument-flow")
+                    )
+                }
+            }
         }
 
         if callName.first?.isUppercase == true,
@@ -759,6 +905,39 @@ private final class RelationshipVisitor: BaseVisitor {
             }
         }
         return .visitChildren
+    }
+
+    override func visit(_ node: MacroExpansionExprSyntax) -> SyntaxVisitorContinueKind {
+        guard node.macroName.text == "Preview" else { return .visitChildren }
+        makePreview(node)
+        return .visitChildren
+    }
+
+    override func visit(_ node: MacroExpansionDeclSyntax) -> SyntaxVisitorContinueKind {
+        guard node.macroName.text == "Preview" else { return .visitChildren }
+        makePreview(node)
+        return .visitChildren
+    }
+
+    private func makePreview(_ node: some SyntaxProtocol) {
+        let ordinal = nextOrdinal(role: "Preview", owner: currentOwnerName)
+        let name = "Preview#\(ordinal)"
+        let qualifiedName = qualified(name)
+        let id = builder.addNode(
+            kind: .effect,
+            name: name,
+            qualifiedName: qualifiedName,
+            discriminator: "preview:\(ordinal)",
+            identityFile: file,
+            evidence: evidence(node, kind: "preview-composition")
+        )
+        builder.addEdge(
+            kind: .creates,
+            from: currentOwnerID,
+            to: id,
+            evidence: evidence(node, kind: "preview-composition")
+        )
+        generatedCallOwners[syntaxKey(node)] = (id, qualifiedName)
     }
 
     override func visit(_ node: MemberAccessExprSyntax) -> SyntaxVisitorContinueKind {
@@ -828,10 +1007,15 @@ private final class RelationshipVisitor: BaseVisitor {
         assignmentTargetRanges.removeLast()
     }
 
-    private func enterExistingType(name: String, isView: Bool, node: some SyntaxProtocol) {
+    private func enterExistingType(name: String, isView: Bool, node: some DeclGroupSyntax) {
         let qualifiedName = scopedQualified(name, node: node)
         let kind: NodeKind = isView ? .view : .type
-        let id = StableID.node(module: builder.moduleName, qualifiedName: qualifiedName, kind: kind)
+        let id = stableNodeID(
+            qualifiedName: qualifiedName,
+            kind: kind,
+            discriminator: "declaration",
+            identityFile: fileScopedIdentity(node.modifiers)
+        )
         ownerIDs.append(id)
         ownerNames.append(qualifiedName)
     }
@@ -839,8 +1023,8 @@ private final class RelationshipVisitor: BaseVisitor {
     private func enterExistingExtension(_ node: ExtensionDeclSyntax) {
         let extendedName = node.extendedType.trimmedDescription
         let resolved = scopedResolutionCandidates(extendedName, node: node).lazy
-            .compactMap { self.builder.nodeID(qualifiedName: $0) }.first ??
-            builder.resolve(name: extendedName, scopes: ownerNames)
+            .compactMap { self.builder.nodeID(qualifiedName: $0, file: self.file) }.first ??
+            builder.resolve(name: extendedName, scopes: ownerNames, file: file)
         let name = extendedName.split(separator: ".").last.map(String.init) ?? extendedName
         let qualifiedName = scopedQualified(extendedName, node: node)
         let id = resolved ?? StableID.node(module: builder.moduleName, qualifiedName: qualifiedName, kind: .type)
@@ -857,6 +1041,7 @@ private final class RelationshipVisitor: BaseVisitor {
             name: name,
             qualifiedName: qualifiedName,
             discriminator: "\(role):\(ordinal)",
+            identityFile: file,
             evidence: evidence(node, kind: evidenceKind)
         )
         builder.addEdge(kind: .creates, from: currentOwnerID, to: id, evidence: evidence(node, kind: evidenceKind))
@@ -874,6 +1059,7 @@ private final class RelationshipVisitor: BaseVisitor {
             name: name,
             qualifiedName: qualifiedName,
             discriminator: "binding-construction:\(ordinal)",
+            identityFile: file,
             evidence: evidence(node, kind: "binding-construction")
         )
         if isBindingFactoryContext(node) {
@@ -882,6 +1068,7 @@ private final class RelationshipVisitor: BaseVisitor {
                 name: name,
                 qualifiedName: qualifiedName,
                 discriminator: "binding-construction:\(ordinal)",
+                identityFile: file,
                 evidence: evidence(node, kind: "binding-factory"),
                 mergeEvidence: true
             )
@@ -915,6 +1102,7 @@ private final class RelationshipVisitor: BaseVisitor {
             name: projectionName,
             qualifiedName: qualifiedName,
             discriminator: "projection:\(baseReference)",
+            identityFile: file,
             evidence: evidence(node, kind: "binding-projection")
         )
         builder.addEdge(kind: .creates, from: controlID, to: projectionID, evidence: evidence(node, kind: "binding-projection"))
@@ -935,12 +1123,20 @@ private final class RelationshipVisitor: BaseVisitor {
                 .split(separator: ".").first.map(String.init),
               let rootID = resolveReference(rootName, node: expression),
               let root = builder.node(id: rootID),
-              root.kind == .input || root.kind == .observableState
+              [.input, .observableState, .property, .binding, .state].contains(root.kind)
         else { return nil }
-        return resolveOrCreate(text: text, node: expression, evidenceKind: "function-call-target")
+        return resolveOrCreate(
+            text: text,
+            node: expression,
+            evidenceKind: "function-call-target"
+        )
     }
 
-    private func resolveOrCreate(text: String, node: some SyntaxProtocol, evidenceKind: String) -> String? {
+    private func resolveOrCreate(
+        text: String,
+        node: some SyntaxProtocol,
+        evidenceKind: String
+    ) -> String? {
         guard let reference = firstReference(in: text) else { return nil }
         if let resolved = resolveReference(reference, node: node) { return resolved }
         guard reference.contains(".") else { return nil }
@@ -950,6 +1146,7 @@ private final class RelationshipVisitor: BaseVisitor {
             name: name,
             qualifiedName: "\(nearestDeclarationScope).\(reference.replacingOccurrences(of: "self.", with: ""))",
             discriminator: "syntax-reference",
+            identityFile: file,
             evidence: evidence(node, kind: evidenceKind),
             mergeEvidence: true
         )
@@ -961,12 +1158,16 @@ private final class RelationshipVisitor: BaseVisitor {
         if let rootName,
            let rootID = resolveReference(rootName, node: node),
            let root = builder.node(id: rootID),
-           root.kind == .input || root.kind == .observableState {
+           [.input, .observableState, .property, .binding, .state].contains(root.kind) {
             builder.addEdge(
                 kind: .observes,
                 from: rootID,
                 to: memberID,
-                evidence: evidence(node, kind: "observable-member")
+                evidence: evidence(
+                    node,
+                    kind: root.kind == .input || root.kind == .observableState
+                        ? "observable-member" : "member-reference"
+                )
             )
         }
         return memberID
@@ -974,6 +1175,48 @@ private final class RelationshipVisitor: BaseVisitor {
 
     private func argument(named name: String, in call: FunctionCallExprSyntax) -> ExprSyntax? {
         call.arguments.first(where: { $0.label?.text == name })?.expression
+    }
+
+    private func addArgumentFlows(from call: FunctionCallExprSyntax, to targetID: String) {
+        for argument in call.arguments where argument.expression.as(ClosureExprSyntax.self) == nil {
+            guard let sourceID = resolveOrCreate(
+                argument.expression,
+                evidence: evidence(argument, kind: "argument-flow")
+            ) else { continue }
+            builder.addEdge(
+                kind: .flowsTo,
+                from: sourceID,
+                to: targetID,
+                evidence: evidence(argument, kind: "argument-flow")
+            )
+        }
+    }
+
+    private func declaredTypeName(_ text: String) -> String? {
+        let withoutOptional = text
+            .replacingOccurrences(of: "?", with: "")
+            .replacingOccurrences(of: "!", with: "")
+            .trimmingCharacters(in: .whitespacesAndNewlines)
+        let head = withoutOptional.split(separator: "<", maxSplits: 1).first.map(String.init) ?? withoutOptional
+        let candidate = head.split(whereSeparator: { $0.isWhitespace }).last.map(String.init) ?? head
+        guard !candidate.isEmpty, candidate != "some", candidate != "any" else { return nil }
+        return candidate
+    }
+
+    private func boundedSystemType(_ name: String, node: some SyntaxProtocol) -> String? {
+        let qualifiedName: String
+        switch name {
+        case "TextSelection": qualifiedName = "SwiftUI.TextSelection"
+        default: return nil
+        }
+        return builder.addNode(
+            kind: .type,
+            name: name,
+            qualifiedName: qualifiedName,
+            discriminator: "bounded-system-type",
+            evidence: evidence(node, kind: "bounded-system-type"),
+            mergeEvidence: true
+        )
     }
 
     private func onChangeNewValueParameter(
@@ -1040,8 +1283,7 @@ private final class RelationshipVisitor: BaseVisitor {
     private func generatedOwner(for closure: ClosureExprSyntax) -> (String, String)? {
         var ancestor = closure.parent
         while let syntax = ancestor {
-            if let call = syntax.as(FunctionCallExprSyntax.self),
-               let owner = generatedCallOwners[syntaxKey(call)] {
+            if let owner = generatedCallOwners[syntaxKey(syntax)] {
                 return owner
             }
             ancestor = syntax.parent
@@ -1052,8 +1294,7 @@ private final class RelationshipVisitor: BaseVisitor {
     private func enclosingGeneratedOwner(for call: FunctionCallExprSyntax) -> (String, String)? {
         var ancestor = call.parent
         while let syntax = ancestor {
-            if let enclosingCall = syntax.as(FunctionCallExprSyntax.self),
-               let owner = generatedCallOwners[syntaxKey(enclosingCall)] {
+            if let owner = generatedCallOwners[syntaxKey(syntax)] {
                 return owner
             }
             ancestor = syntax.parent
@@ -1170,9 +1411,9 @@ private final class RelationshipVisitor: BaseVisitor {
             if frame.boundNames.contains(reference) { return nil }
         }
         for candidate in scopedResolutionCandidates(reference, node: node) {
-            if let id = builder.nodeID(qualifiedName: candidate) { return id }
+            if let id = builder.nodeID(qualifiedName: candidate, file: file) { return id }
         }
-        return builder.resolve(name: reference, scopes: ownerNames)
+        return builder.resolve(name: reference, scopes: ownerNames, file: file)
     }
 
     private func leaveOwner() {

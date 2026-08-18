@@ -1,8 +1,8 @@
 # CLI contract
 
-Revision: `spec-2`  
+Revision: `spec-3`
 Executable: `swiftui-audit`  
-Tool version in schema: `0.2.0`  
+Tool version in schema: `0.3.0`
 Status: active, unreleased
 
 All syntax below was verified against the accepted P1–P5 executable help.
@@ -27,13 +27,17 @@ All syntax below was verified against the accepted P1–P5 executable help.
 
 **CLI-RES-004.** Indexed enrichment is macOS-only. It is bounded by an external process timeout and marks an accepted graph `resolution: "indexed"`.
 
+**CLI-CFG-001.** Live-source `scan`, `audit`, `snapshot`, `slice`, and `check` accept `--config <path>`. Without it they apply the bounded discovery rule in `CFG-005`. Explicit invalid configuration fails; absence means topology-only analysis.
+
+**CLI-CFG-002.** JSON reports and snapshot manifests expose the canonical configuration digest. Diff/check reject different digests. Git-revision operands use only a `.swiftui-audit.json` blob at the revision root.
+
 ## `scan`
 
 **CLI-SCAN-001.** Syntax:
 
 ```text
 swiftui-audit scan <path> [--format json] [--output <file>]
-                     [--index-store <path> | --syntax-only]
+                     [--index-store <path> | --syntax-only] [--config <path>]
 ```
 
 Build a semantic graph for one Swift file or directory. JSON is the only and default format. `--output` writes atomically to the explicit file instead of stdout.
@@ -44,10 +48,10 @@ Build a semantic graph for one Swift file or directory. JSON is the only and def
 
 ```text
 swiftui-audit audit <path> [--format json]
-                      [--index-store <path> | --syntax-only]
+                      [--index-store <path> | --syntax-only] [--config <path>]
 ```
 
-Evaluate exactly the ten current rules. Human output reports total and per-rule counts; JSON emits the complete audit report.
+Evaluate exactly the twenty-nine current rules. Human output reports total and per-rule counts; JSON emits the complete audit report.
 
 ## `snapshot`
 
@@ -55,7 +59,7 @@ Evaluate exactly the ten current rules. Human output reports total and per-rule 
 
 ```text
 swiftui-audit snapshot [<path>] [--output <directory>] [--format json]
-                         [--index-store <path> | --syntax-only]
+                         [--index-store <path> | --syntax-only] [--config <path>]
 ```
 
 Defaults: source `.`, output `.semantic`. Persist exactly the five files in [IR-SNAP-001](semantic-ir.md#persistent-snapshot). Optional JSON stdout is a manifest+summary receipt.
@@ -71,7 +75,7 @@ Defaults: source `.`, output `.semantic`. Persist exactly the five files in [IR-
 ```text
 swiftui-audit slice [<input>] (--finding <id> | --symbol <selector>)
                       [--format llm-json] [--token-budget <positive-int>]
-                      [--index-store <path> | --syntax-only]
+                      [--index-store <path> | --syntax-only] [--config <path>]
 ```
 
 Require exactly one selector. Input resolution order is an explicit input, then `.semantic`, then live source. `--index-store` applies only to live source.
@@ -98,7 +102,7 @@ Each operand is an existing snapshot directory or a Git revision. Default reposi
 swiftui-audit check --baseline <snapshot-or-revision> [<current-source>]
                      [--repository <path>] [--fail-on-new low|medium|high]
                      [--format json]
-                     [--index-store <path> | --syntax-only]
+                     [--index-store <path> | --syntax-only] [--config <path>]
 ```
 
 Defaults: current source `.`, repository `.`, threshold `high`. Load current source at resolution compatible with the baseline, diff, and fail only when a new finding reaches the threshold.

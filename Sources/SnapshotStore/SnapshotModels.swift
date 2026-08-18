@@ -7,19 +7,22 @@ public struct SnapshotManifest: Codable, Equatable, Sendable {
     public let swiftVersion: String
     public let repositoryRevision: String
     public let generatedFrom: String
+    public let configurationDigest: String
 
     public init(
-        schemaVersion: Int = 1,
+        schemaVersion: Int = ToolMetadata.schemaVersion,
         toolVersion: String = ToolMetadata.version,
         swiftVersion: String,
         repositoryRevision: String,
-        generatedFrom: String
+        generatedFrom: String,
+        configurationDigest: String = "none"
     ) {
         self.schemaVersion = schemaVersion
         self.toolVersion = toolVersion
         self.swiftVersion = swiftVersion
         self.repositoryRevision = repositoryRevision
         self.generatedFrom = generatedFrom
+        self.configurationDigest = configurationDigest
     }
 }
 

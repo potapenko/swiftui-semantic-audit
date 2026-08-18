@@ -14,6 +14,9 @@ struct ResolutionOptions: ParsableArguments {
     @Flag(name: .long, help: "Disable all compiler-index enrichment.")
     var syntaxOnly = false
 
+    @Option(name: .long, help: "Explicit .swiftui-audit.json analysis configuration path.")
+    var config: String?
+
     func selection() throws -> IndexSelection {
         if syntaxOnly && indexStore != nil {
             throw ValidationError("--syntax-only and --index-store cannot be used together")
@@ -24,11 +27,20 @@ struct ResolutionOptions: ParsableArguments {
         }
         return .automatic
     }
+
+    func configurationURL() -> URL? {
+        config.map { URL(fileURLWithPath: $0) }
+    }
 }
 
 func loadResolvedGraph(path: String, options: ResolutionOptions) throws -> SemanticGraph {
     let source = URL(fileURLWithPath: path).standardizedFileURL.resolvingSymlinksInPath()
-    let graph = try GraphScanner().scan(path: source.path)
+    let syntaxGraph = try GraphScanner().scan(path: source.path)
+    let configuration = try AnalysisConfiguration.load(
+        explicitURL: options.configurationURL(),
+        sourceURL: source
+    )
+    let graph = configuration?.applying(to: syntaxGraph) ?? syntaxGraph
     return try IndexEnrichmentCoordinator(helperExecutable: currentExecutableURL()).enrich(
         graph: graph,
         sourceRoot: source,

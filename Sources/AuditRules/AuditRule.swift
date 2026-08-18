@@ -20,6 +20,25 @@ public struct AuditEngine: Sendable {
         BindingFactoryRule(),
         ObservableModelTunnelRule(),
         BroadObservableInputRule(),
+        ArchitectureRule(.modelAwareDescendant),
+        ArchitectureRule(.multiOwnerComponent),
+        ArchitectureRule(.crossFeatureOwnerDependency),
+        ArchitectureRule(.serviceOrRepositoryInView),
+        ArchitectureRule(.environmentCommandRouter),
+        ArchitectureRule(.multiSourceBinding),
+        ArchitectureRule(.manualOwnerSynchronization),
+        ArchitectureRule(.hiddenCommandInLifecycle),
+        ArchitectureRule(.viewOwnedExternalEffect),
+        ArchitectureRule(.imperativeFocusLifecycle),
+        ArchitectureRule(.selectionCorrectiveLoop),
+        ArchitectureRule(.geometryDrivenProductLayout),
+        ArchitectureRule(.geometryEscapesLayoutBoundary),
+        ArchitectureRule(.geometryTriggeredModelEffect),
+        ArchitectureRule(.manualPositioningAsLayout),
+        ArchitectureRule(.gestureButtonEmulation),
+        ArchitectureRule(.imperativePlatformViewUpdate),
+        ArchitectureRule(.directGlobalPlatformCommand),
+        ArchitectureRule(.previewRequiresAppComposition),
     ]) {
         self.rules = rules
     }
@@ -30,7 +49,9 @@ public struct AuditEngine: Sendable {
         for finding in rules.flatMap({ $0.evaluate(graph: graph, normalization: normalization) }) {
             findingsByID[finding.id] = finding
         }
-        let findings = findingsByID.values.sorted { ($0.rule.rawValue, $0.id) < ($1.rule.rawValue, $1.id) }
+        let findings = applyFindingDominance(Array(findingsByID.values)).sorted {
+            ($0.rule.rawValue, $0.id) < ($1.rule.rawValue, $1.id)
+        }
         let index = GraphIndex(graph)
         let mutableValues = normalization.semanticValues.filter { value in
             value.representations.contains { id in
@@ -59,6 +80,7 @@ public struct AuditEngine: Sendable {
         )
         return AuditReport(
             resolution: graph.resolution,
+            configurationDigest: graph.configurationDigest,
             metrics: metrics,
             semanticValues: normalization.semanticValues,
             findings: findings

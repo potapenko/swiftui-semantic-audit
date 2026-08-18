@@ -1,6 +1,6 @@
 # Acceptance and QA contract
 
-Revision: `spec-4`
+Revision: `spec-5`
 Status: active  
 Release state: unreleased
 
@@ -26,6 +26,16 @@ Release state: unreleased
 
 **ACC-FIX-010 — Logical source count.** Prove focused Binding and observable projection chains have one logical source, while an external borrowed root mirrored into a distinct local State still has two and reports one duplication.
 
+**ACC-FIX-011 — Identity and configuration.** Prove same-named legal file-local declarations in different files do not collide, remain file-scoped in syntax mode, and remap to distinct compiler USRs in indexed mode. Validate configuration schema, exact roles/features/roots, discovery, canonical digest, and fail-closed invalid inputs.
+
+**ACC-FIX-012 — Component architecture.** Positive fixtures cover configured model descendants, multiple owners, cross-feature dependencies, service/repository/effect inputs, and environment command routers. Negative fixtures cover composition roots, focused value/action APIs, passive environment, and unconfigured role-like names.
+
+**ACC-FIX-013 — Binding/lifecycle/focus.** Cover multi-source Bindings, one-way lifecycle owner synchronization, hidden lifecycle commands, leaf external effects, imperative FocusState, and selection correction. Preserve direct projections, reversible transforms, transactions, local animation state, and direct user focus actions.
+
+**ACC-FIX-014 — Layout/platform.** Cover all four geometry findings, gesture button emulation, nonempty representable updates, direct global commands, and preview composition. Preserve Canvas, Shape-local coordinates, local animation transforms, Button, empty representable updates, and focused previews.
+
+**ACC-FIX-015 — Dominance.** Prove one generic/specific path does not produce redundant findings under `RULE-DOM-001`.
+
 ## Build and tests
 
 **ACC-TEST-001.** Resolve only intentionally, then run locked verification:
@@ -42,6 +52,10 @@ swift test --disable-automatic-resolution
 **ACC-TEST-004.** P6 itself must not modify accepted Swift product source, dependencies, existing tests, or fixtures.
 
 **ACC-TEST-005.** `BOUNDARY-001` must exercise every new rule in deterministic frontend tests and at least one fresh explicit indexed integration path. Indexed enrichment must preserve new generated binding topology and finding identity.
+
+**ACC-TEST-006.** `ARCHITECTURE-001` advances tool version to `0.3.0` and schema to v2. Every new rule has positive and negative deterministic fixtures; identity/config/type topology has fresh explicit indexed coverage; snapshot/diff/check enforce configuration digest equality.
+
+**ACC-TEST-007.** The `ARCHITECTURE-001` implementation candidate has 76 passing tests, including all prior suites, four focused architecture/configuration tests, configuration-mismatch comparison, and two new explicit IndexStoreDB tests.
 
 ## Determinism and safety
 
@@ -67,7 +81,7 @@ swift test --disable-automatic-resolution
 - `doctor . --format json`;
 - `audit Sources --syntax-only --format json`.
 
-**ACC-DOG-002.** Require valid schema v1 JSON, expected resolution, a passing baseline check, an empty same-input semantic diff, a nonempty bounded slice for a real finding, and no command timeout.
+**ACC-DOG-002.** Require valid schema v2 JSON, expected resolution, a passing baseline check, an empty same-input semantic diff, a nonempty bounded slice for a real finding, and no command timeout.
 
 **ACC-DOG-003.** Dogfood does not require zero legacy findings. CI policy is no new high-severity finding relative to the compatible baseline.
 
@@ -103,7 +117,7 @@ swift test --disable-automatic-resolution
 1. checkout;
 2. verify Swift >= 6.3 and print Xcode version;
 3. resolve, build, and test;
-4. audit fixtures and `Sources` in syntax-only JSON mode;
+4. audit legacy rule fixtures, configured architecture fixtures, negative architecture fixtures, and `Sources` in syntax-only JSON mode;
 5. snapshot fixtures twice and compare all five files byte for byte;
 6. compare the generated snapshot with the committed baseline using exact semantic-file bytes and the revision-only manifest normalization in `ACC-DET-003`;
 7. run `check --fail-on-new high`;
@@ -114,7 +128,7 @@ swift test --disable-automatic-resolution
 
 ## Definition of Done map
 
-**ACC-DOD-001.** Swift CLI, SwiftSyntax frontend, stable graph, deterministic JSON/JSONL, relative source provenance, and ten rules are present.
+**ACC-DOD-001.** Swift CLI, SwiftSyntax frontend, stable graph, deterministic JSON/JSONL, relative source provenance, and twenty-nine rules are present.
 
 **ACC-DOD-002.** Fixtures distinguish direct Binding, manual Binding patterns, mirrors, transactions, derived state, tunnels, observable mirrors, and transformations.
 
@@ -126,4 +140,6 @@ swift test --disable-automatic-resolution
 
 **ACC-DOD-006.** Public documentation, one routing skill, three specialist skills, deterministic dogfood baseline, and CI are complete while the release remains truthfully `unreleased`.
 
-**ACC-DOD-007.** Tool version `0.2.0` ships ten rules, explicit custom Binding topology, topology-based logical source counting, bounded component-boundary findings, updated agent adjudication guidance, and regenerated deterministic baselines while retaining schema version 1.
+**ACC-DOD-007.** Tool version `0.2.0` baseline shipped ten rules and schema v1.
+
+**ACC-DOD-008.** Tool version `0.3.0` ships schema v2, collision-safe indexed extraction, explicit configuration, twenty-nine rules, dominance, complete negative fixtures, updated skills, deterministic baselines, and hosted CI while remaining unreleased.

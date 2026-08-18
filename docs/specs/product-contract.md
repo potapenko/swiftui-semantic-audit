@@ -1,7 +1,7 @@
 # Product contract
 
-Revision: `spec-4`
-Authority: epoch `tz-v4`, pinned base digest, `ROUTER-001`, `INDEXED-SKILLS-001`, and `BOUNDARY-001` in the [registry](README.md)
+Revision: `spec-5`
+Authority: epoch `tz-v5`, pinned base digest and authorized addenda through `ARCHITECTURE-001` in the [registry](README.md)
 Status: active, unreleased
 
 ## Goal and consumer
@@ -69,6 +69,8 @@ Swift source → SwiftSyntax facts → optional indexed facts → semantic graph
 
 **PC-OPS-008 — Boundary analysis.** Represent explicit `Binding(get:set:)` construction and its getter/setter closures, detect command-shaped setters and Binding factories, identify the same observable model crossing multiple View boundaries, and emit a candidate when a leaf View directly depends on externally observed model members. Keep deterministic topology separate from the agent's decision about legitimate screen ownership or component isolation.
 
+**PC-OPS-009 — Architecture analysis.** With explicit project classification where product roles are required, detect model-aware descendants, multiple mutable/reference owners, cross-feature owner dependencies, service/repository presentation inputs, environment command routers, multi-source Binding topology, lifecycle-owned synchronization/effects, imperative focus/selection correction, geometry-driven product behavior, gesture button emulation, imperative representable updates, direct global platform commands, and preview composition pressure.
+
 ## Resolution and platform
 
 **PC-RES-001 — Syntax-only guarantee.** Support useful analysis without a build or index and label it `resolution: "syntax-only"`.
@@ -83,7 +85,7 @@ Swift source → SwiftSyntax facts → optional indexed facts → semantic graph
 
 **PC-SAFE-001 — Deterministic serialization.** Sort graph entities, findings, semantic values, changes, and JSON keys canonically. Repeated snapshot generation from unchanged source, toolchain, revision, and resolution must be byte-equivalent across all five files. When comparing a committed baseline across later commits, `nodes.jsonl`, `edges.jsonl`, `findings.jsonl`, and `summary.json` remain byte-exact; only `manifest.json.repositoryRevision` may be normalized, while every other manifest field remains exact and the fresh revision must equal the checked-out `HEAD`.
 
-**PC-SAFE-002 — Stable identity.** Prefer compiler symbol identity; otherwise derive IDs from module, qualified declaration, kind, and structural discriminator. Do not use line number as primary identity.
+**PC-SAFE-002 — Stable identity.** Prefer compiler USR identity. Before indexed remapping, derive collision-safe IDs from module, normalized relative file, qualified declaration, kind, signature, and lexical structural path. Do not use line number as primary identity. Resolve same-named file-local declarations inside their own file before considering module-wide candidates.
 
 **PC-SAFE-003 — Relative provenance.** Never persist absolute source paths in canonical graph evidence or `generatedFrom`.
 
@@ -99,7 +101,7 @@ Swift source → SwiftSyntax facts → optional indexed facts → semantic graph
 
 **PC-SCOPE-001 — Supported vocabulary.** Cover SwiftUI view discovery, `@State`, `@Binding`, `@Bindable`, `@Environment`, property access, assignments, callbacks/closures, initializer propagation, `.onChange`, `.onAppear`, `.task`, `.task(id:)`, and common controls (`TextField`, `Toggle`, `Slider`, `Picker`) to the extent exercised by accepted fixtures.
 
-**PC-SCOPE-002 — Required rules.** Ship mirrored state, manual two-way synchronization, value+setter pair, callback Binding tunnel, observable-state mirror, stored derived state, command-shaped Binding, Binding factory, observable-model tunnel, and broad observable input.
+**PC-SCOPE-002 — Required rules.** Ship the twenty-nine rules enumerated in [`rules.md`](rules.md), preserving deterministic topology and explicit role authority.
 
 **PC-SCOPE-003 — Full rebuild.** A full graph rebuild is acceptable in the PoC. Incremental caching by content/tool/schema hash is a future direction, not a current guarantee.
 
@@ -111,9 +113,9 @@ Swift source → SwiftSyntax facts → optional indexed facts → semantic graph
 
 **PC-NONGOAL-002.** Do not provide automatic source rewriting, embedded LLM API integration, an IDE plugin, GUI, Xcode extension, security analysis, or performance analysis.
 
-**PC-NONGOAL-003.** Future analysis of concurrency, async tasks, actors, dependency injection, navigation, persistence, resources, networking, errors, and general effects is directional context only, not current behavior.
+**PC-NONGOAL-003.** General analysis of concurrency, actors, dependency injection, navigation, persistence, resources, networking, and errors remains directional context. `ARCHITECTURE-001` permits only bounded call/effect topology needed by its named lifecycle, view-effect, Binding, geometry, and platform-command rules.
 
-**PC-NONGOAL-004.** Do not classify arbitrary plain properties as feature models, controllers, or services from names or types alone. General component-role inference requires a later typed semantic contract; `broad-observable-input` is limited to explicit observed/injected topology and remains an agent-adjudicated candidate.
+**PC-NONGOAL-004.** Do not classify arbitrary properties as application roles from names or type spelling alone. Role-aware rules require exact configuration under [`analysis-config.md`](analysis-config.md). Explicit observed/injected topology may still produce the existing agent-adjudicated `broad-observable-input` candidate.
 
 ## Dogfood and release
 

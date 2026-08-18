@@ -31,7 +31,9 @@ public struct SnapshotReader: Sendable {
         }
 
         let manifest: SnapshotManifest = try decodeJSON("manifest.json", in: directory)
-        guard manifest.schemaVersion == 1 else { throw SnapshotError.unsupportedSchema(manifest.schemaVersion) }
+        guard manifest.schemaVersion == ToolMetadata.schemaVersion else {
+            throw SnapshotError.unsupportedSchema(manifest.schemaVersion)
+        }
         let summary: SnapshotSummary = try decodeJSON("summary.json", in: directory)
         let nodes: [SemanticNode] = try decodeLines("nodes.jsonl", in: directory)
         let edges: [SemanticEdge] = try decodeLines("edges.jsonl", in: directory)
@@ -43,6 +45,7 @@ public struct SnapshotReader: Sendable {
         let graph = SemanticGraph(
             schemaVersion: manifest.schemaVersion,
             resolution: summary.resolution,
+            configurationDigest: manifest.configurationDigest,
             nodes: nodes,
             edges: edges
         )
@@ -50,6 +53,7 @@ public struct SnapshotReader: Sendable {
             schemaVersion: manifest.schemaVersion,
             toolVersion: manifest.toolVersion,
             resolution: summary.resolution,
+            configurationDigest: manifest.configurationDigest,
             metrics: summary.metrics,
             semanticValues: summary.semanticValues,
             findings: findings

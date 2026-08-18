@@ -1,0 +1,7 @@
+{
+  "schemaVersion": 1,
+  "compositionRoots": ["ArchitectureNegative.AppRoot"],
+  "typeRoles": {
+    "ArchitectureNegative.AppModel": "application-model"
+  }
+}

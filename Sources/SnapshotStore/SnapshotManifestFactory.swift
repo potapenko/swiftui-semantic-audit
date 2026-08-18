@@ -2,7 +2,11 @@ import AuditCore
 import Foundation
 
 public enum SnapshotManifestFactory {
-    public static func make(sourcePath: String, toolVersion: String = ToolMetadata.version) -> SnapshotManifest {
+    public static func make(
+        sourcePath: String,
+        toolVersion: String = ToolMetadata.version,
+        configurationDigest: String = "none"
+    ) -> SnapshotManifest {
         let sourceURL = URL(fileURLWithPath: sourcePath).standardizedFileURL
         let workingURL = sourceURL.hasDirectoryPath ? sourceURL : sourceURL.deletingLastPathComponent()
         let repositoryRoot = command("git", ["-C", workingURL.path, "rev-parse", "--show-toplevel"])
@@ -15,7 +19,8 @@ public enum SnapshotManifestFactory {
             toolVersion: toolVersion,
             swiftVersion: swiftVersion,
             repositoryRevision: revision,
-            generatedFrom: generatedFrom(sourcePath: sourcePath, sourceURL: sourceURL, repositoryRoot: repositoryRoot)
+            generatedFrom: generatedFrom(sourcePath: sourcePath, sourceURL: sourceURL, repositoryRoot: repositoryRoot),
+            configurationDigest: configurationDigest
         )
     }
 

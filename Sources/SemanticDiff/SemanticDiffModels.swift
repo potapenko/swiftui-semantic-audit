@@ -99,7 +99,7 @@ public struct SemanticDiffReport: Codable, Equatable, Sendable {
     public let affectedSemanticValues: [SemanticValueDelta]
 
     public init(
-        schemaVersion: Int = 1,
+        schemaVersion: Int = ToolMetadata.schemaVersion,
         toolVersion: String = ToolMetadata.version,
         baseIdentity: String,
         currentIdentity: String,
@@ -143,7 +143,7 @@ public struct CheckReport: Codable, Equatable, Sendable {
     public let failingFindings: [AuditFinding]
 
     public init(diff: SemanticDiffReport, threshold: Severity) {
-        self.schemaVersion = 1
+        self.schemaVersion = ToolMetadata.schemaVersion
         self.baselineIdentity = diff.baseIdentity
         self.currentIdentity = diff.currentIdentity
         self.threshold = threshold

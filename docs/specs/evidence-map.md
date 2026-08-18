@@ -1,7 +1,7 @@
 # Specification coverage and evidence map
 
-Revision: `spec-4`
-Authority: ТЗ epoch `tz-v1` plus user-authorized `ROUTER-001`, `INDEXED-SKILLS-001`, and `BOUNDARY-001`, combined epoch `tz-v4`
+Revision: `spec-5`
+Authority: ТЗ epoch `tz-v1` plus user-authorized addenda through `ARCHITECTURE-001`, combined epoch `tz-v5`
 Purpose: route every source section to stable local clauses and evidence owners
 
 This map proves coverage; it does not create new requirements. Source and tests establish realization only after the normative contract is fixed.
@@ -70,6 +70,7 @@ This map proves coverage; it does not create new requirements. Source and tests 
 | `ROUTER-001` | One concise skill link that selects audit, refactor, review, or the smallest valid sequence | `PC-OPS-006`, `ACC-SKILL-001..005` | `skills/swiftui-semantic`, CI validation, forward tests |
 | `INDEXED-SKILLS-001` | Agent workflows require explicit indexed resolution and reject lower-resolution fallback | `PC-OPS-005`, `PC-OPS-007`, `ACC-SKILL-004..006` | all four skills, skill references, CI validation |
 | `BOUNDARY-001` | Custom Binding, Binding factory, observable tunnel/input rules, and logical source counting | `PC-OPS-008`, `PC-SCOPE-002/004`, `RULE-COMMAND/FACTORY/MODEL-TUNNEL/BROAD-INPUT`, `IR-GRAPH-007`, `IR-AUDIT-005`, `ACC-FIX-007..010` | frontend, AuditCore/AuditRules, diff, fixtures, indexed tests |
+| `ARCHITECTURE-001` | Collision-safe identity, exact project configuration, typed/feature topology, and nineteen architecture rules | `PC-OPS-009`, `PC-SAFE-002`, `IR-GRAPH-008/009`, `CFG-*`, architecture/layout/platform `RULE-*`, `ACC-FIX-011..015` | AuditCore configuration, frontend, SymbolResolution, AuditRules, architecture fixtures and indexed tests |
 
 ## Evidence precedence by decision
 
@@ -83,7 +84,7 @@ This map proves coverage; it does not create new requirements. Source and tests 
 
 ## Ownership map
 
-- Product authority: user-approved base epoch `tz-v1` plus explicit `ROUTER-001`, `INDEXED-SKILLS-001`, and `BOUNDARY-001`, combined as `tz-v4`; local documents remain bounded to those authorizations.
+- Product authority: user-approved base epoch `tz-v1` plus explicit addenda through `ARCHITECTURE-001`, combined as `tz-v5`; local documents remain bounded to those authorizations.
 - Semantic schema owner: `AuditCore` plus SnapshotStore transport.
 - Syntax fact owner: SwiftSyntaxFrontend and SwiftUISemantics vocabulary.
 - Compiler fact owner: SymbolResolution/IndexStoreDB on macOS.

@@ -1,0 +1,19 @@
+{
+  "schemaVersion": 1,
+  "compositionRoots": ["ArchitectureTests.AppRoot"],
+  "typeRoles": {
+    "ArchitectureTests.AppModel": "application-model",
+    "ArchitectureTests.CommandRouter": "effect-sink",
+    "ArchitectureTests.FeatureModel": "feature-model",
+    "ArchitectureTests.OtherModel": "feature-model",
+    "ArchitectureTests.SearchRepository": "repository"
+  },
+  "typeFeatures": {
+    "ArchitectureTests.FeatureModel": "feature-a",
+    "ArchitectureTests.OtherModel": "feature-b"
+  },
+  "pathFeatures": {
+    "Features/A/": "feature-a"
+  },
+  "passiveEnvironmentValues": ["locale"]
+}

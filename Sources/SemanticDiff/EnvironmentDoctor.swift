@@ -38,7 +38,7 @@ public struct DoctorReport: Codable, Equatable, Sendable {
         indexStore: DoctorCheck,
         git: DoctorCheck
     ) {
-        self.schemaVersion = 1
+        self.schemaVersion = ToolMetadata.schemaVersion
         self.swift = swift
         self.xcode = xcode
         self.toolchain = toolchain

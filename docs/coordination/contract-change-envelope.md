@@ -13,7 +13,7 @@
 - Allowed specification delta: Editorial project documentation and stable clause/acceptance mappings that faithfully restate the user-supplied contract.
 - Forbidden specification delta: New product behavior, provider-specific LLM integration, SIL/full type-checker foundation, automatic rewriting, GUI/IDE/Xcode extension, or weakening transactional/transform exceptions.
 - Material decisions requiring the user: Only a proven contract conflict, protected-domain expansion, destructive/external authority requirement, or materially different product fork.
-- Current contract revision or epoch: `tz-v4` (`tz-v1` base plus `ROUTER-001`, `INDEXED-SKILLS-001`, and `BOUNDARY-001`).
+- Current contract revision or epoch: `tz-v5` (`tz-v1` base plus authorized addenda through `ARCHITECTURE-001`).
 - Pinned contract digest: `sha256:68f8a43d924659024b7d29fabb9ad302817c271838a7919b24bd942626927cac`.
 - Required review and QA: Independent review of each integration wave, SwiftPM build/test, CLI fixture validation, deterministic byte comparison, semantic diff/check policy verification, and final completion audit.
 
@@ -48,3 +48,14 @@
 - Forbidden expansion: Name-based controller/service classification, full type checking, general effect/concurrency analysis, or automatic component refactoring.
 - Specification delta: `PC-OPS-008`, `PC-SCOPE-002/004`, `PC-NONGOAL-004`, `IR-GRAPH-007`, `IR-AUDIT-005`, four `RULE-*` clauses, `ACC-FIX-007..010`, `ACC-TEST-005`, epoch `tz-v4`.
 - QA: Positive and negative fixtures, syntax-only and explicit indexed tests, full build/test, deterministic baseline regeneration, diff/check/slice/doctor dogfood, four-skill validation, scoped review, commit, and upstream push.
+
+## Contract Delta — ARCHITECTURE-001
+
+- Change mode: `evolve`, with a restore sub-slice for pre-index identity collisions.
+- Authorized by: User approval on 2026-08-18 of the plan derived from the second real-project agent evaluation.
+- Previous behavior: Syntax extraction could collide before compiler-USR enrichment; ten rules covered state-flow and four bounded component boundaries but not explicit application roles, lifecycle/focus/selection architecture, geometry-driven product behavior, platform adapter commands, or preview composition pressure.
+- New behavior: Tool `0.3.0` / schema v2 uses collision-safe provisional identities, exact project configuration, typed/feature topology, and twenty-nine bounded rules with dominance and negative fixtures.
+- Protected behavior: seven commands, deterministic serialization, relative evidence, explicit indexed agent workflows, syntax-only standalone CLI, existing rule exceptions, transformation/transaction/local UI state protections, provider independence, and no rewriting.
+- Forbidden expansion: role inference from spelling, full type checking/SIL/control-flow, generic AppKit/UIKit linting, automatic architecture refactoring, or a new severity above `high`.
+- Specification delta: `PC-OPS-009`, `PC-SAFE-002`, schema v2 `IR-GRAPH-008/009`, `analysis-config.md`, nineteen new rules plus bounded extensions to existing rules, epoch `tz-v5`.
+- QA: collision and same-name cross-file fixtures, real indexed remap, configuration validation/digest tests, positive/negative and dominance matrices, deterministic baselines, full CLI dogfood, skills, hosted CI, scoped commits and pushes.

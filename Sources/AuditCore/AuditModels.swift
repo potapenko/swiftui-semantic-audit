@@ -11,6 +11,25 @@ public enum RuleID: String, Codable, CaseIterable, Sendable {
     case bindingFactory = "binding-factory"
     case observableModelTunnel = "observable-model-tunnel"
     case broadObservableInput = "broad-observable-input"
+    case modelAwareDescendant = "model-aware-descendant"
+    case multiOwnerComponent = "multi-owner-component"
+    case crossFeatureOwnerDependency = "cross-feature-owner-dependency"
+    case serviceOrRepositoryInView = "service-or-repository-in-view"
+    case environmentCommandRouter = "environment-command-router"
+    case multiSourceBinding = "multi-source-binding"
+    case manualOwnerSynchronization = "manual-owner-synchronization"
+    case hiddenCommandInLifecycle = "hidden-command-in-lifecycle"
+    case viewOwnedExternalEffect = "view-owned-external-effect"
+    case imperativeFocusLifecycle = "imperative-focus-lifecycle"
+    case selectionCorrectiveLoop = "selection-corrective-loop"
+    case geometryDrivenProductLayout = "geometry-driven-product-layout"
+    case geometryEscapesLayoutBoundary = "geometry-escapes-layout-boundary"
+    case geometryTriggeredModelEffect = "geometry-triggered-model-effect"
+    case manualPositioningAsLayout = "manual-positioning-as-layout"
+    case gestureButtonEmulation = "gesture-button-emulation"
+    case imperativePlatformViewUpdate = "imperative-platform-view-update"
+    case directGlobalPlatformCommand = "direct-global-platform-command"
+    case previewRequiresAppComposition = "preview-requires-app-composition"
 }
 
 public enum Severity: String, Codable, CaseIterable, Sendable {
@@ -124,14 +143,16 @@ public struct AuditReport: Codable, Equatable, Sendable {
     public let schemaVersion: Int
     public let toolVersion: String
     public let resolution: String
+    public let configurationDigest: String
     public let metrics: AuditMetrics
     public let semanticValues: [NormalizedSemanticValue]
     public let findings: [AuditFinding]
 
     public init(
-        schemaVersion: Int = 1,
+        schemaVersion: Int = ToolMetadata.schemaVersion,
         toolVersion: String = ToolMetadata.version,
         resolution: String,
+        configurationDigest: String = "none",
         metrics: AuditMetrics,
         semanticValues: [NormalizedSemanticValue],
         findings: [AuditFinding]
@@ -139,6 +160,7 @@ public struct AuditReport: Codable, Equatable, Sendable {
         self.schemaVersion = schemaVersion
         self.toolVersion = toolVersion
         self.resolution = resolution
+        self.configurationDigest = configurationDigest
         self.metrics = metrics
         self.semanticValues = semanticValues.sorted { $0.id < $1.id }
         self.findings = findings.sorted {
