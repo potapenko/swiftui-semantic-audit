@@ -70,14 +70,44 @@ jobs:
               Tests/Fixtures/IndexedProject \
               --index-store "$index_root/store" \
               --format json > "$RUNNER_TEMP/indexed-audit.json"
+          realistic_index_root="$RUNNER_TEMP/real-project-patterns-index"
+          mkdir -p "$realistic_index_root/store" "$realistic_index_root/module"
+          realistic_sources=()
+          while IFS= read -r source_file; do
+            realistic_sources+=("$source_file")
+          done < <(find Tests/Fixtures/RealProjectPatterns -name '*.swift' -type f | sort)
+          perl -e 'alarm shift; exec @ARGV' 180 xcrun swiftc \
+            -module-name RealProjectPatterns \
+            -index-store-path "$realistic_index_root/store" \
+            -parse-as-library \
+            -emit-module \
+            "${realistic_sources[@]}" \
+            -o "$realistic_index_root/module/RealProjectPatterns.swiftmodule"
+          perl -e 'alarm shift; exec @ARGV' 180 \
+            swift run --disable-automatic-resolution swiftui-audit audit \
+              Tests/Fixtures/RealProjectPatterns \
+              --index-store "$realistic_index_root/store" \
+              --config Tests/Fixtures/RealProjectPatterns/.swiftui-audit.json \
+              --format json > "$RUNNER_TEMP/real-project-patterns-indexed-audit.json"
           python3 - <<'PY'
           import json
           import os
           from pathlib import Path
 
-          report = json.loads((Path(os.environ["RUNNER_TEMP"]) / "indexed-audit.json").read_text())
+          root = Path(os.environ["RUNNER_TEMP"])
+          report = json.loads((root / "indexed-audit.json").read_text())
           assert report["schemaVersion"] == 2
           assert report["resolution"] == "indexed"
+          realistic = json.loads((root / "real-project-patterns-indexed-audit.json").read_text())
+          assert realistic["schemaVersion"] == 2
+          assert realistic["resolution"] == "indexed"
+          assert realistic["configurationDigest"] != "none"
+          assert len(realistic["findings"]) == 34
+          assert all(
+              not evidence["file"].startswith("Good/")
+              for finding in realistic["findings"]
+              for evidence in finding["evidence"]
+          )
           PY
 
       - name: Audit fixtures and project sources
@@ -99,9 +129,16 @@ jobs:
             swift run --disable-automatic-resolution swiftui-audit audit \
               Tests/Fixtures/ArchitectureNegative --syntax-only --format json \
               > "$RUNNER_TEMP/architecture-negative-audit.json"
+          perl -e 'alarm shift; exec @ARGV' 180 \
+            swift run --disable-automatic-resolution swiftui-audit audit \
+              Tests/Fixtures/RealProjectPatterns \
+              --config Tests/Fixtures/RealProjectPatterns/.swiftui-audit.json \
+              --syntax-only --format json \
+              > "$RUNNER_TEMP/real-project-patterns-audit.json"
           python3 - <<'PY'
           import json
           import os
+          from collections import Counter
           from pathlib import Path
 
           root = Path(os.environ["RUNNER_TEMP"])
@@ -109,6 +146,10 @@ jobs:
           sources = json.loads((root / "source-audit.json").read_text())
           architecture = json.loads((root / "architecture-audit.json").read_text())
           negative = json.loads((root / "architecture-negative-audit.json").read_text())
+          realistic = json.loads((root / "real-project-patterns-audit.json").read_text())
+          realistic_indexed = json.loads(
+              (root / "real-project-patterns-indexed-audit.json").read_text()
+          )
           assert fixtures["schemaVersion"] == sources["schemaVersion"] == 2
           assert fixtures["resolution"] == sources["resolution"] == "syntax-only"
           assert fixtures["findings"], "RuleTests must emit a finding for slice dogfood"
@@ -127,6 +168,22 @@ jobs:
           assert architecture_rules <= {finding["rule"] for finding in architecture["findings"]}
           assert not ({finding["rule"] for finding in negative["findings"]} & architecture_rules)
           assert architecture["configurationDigest"] != "none"
+          assert realistic["resolution"] == "syntax-only"
+          assert realistic["configurationDigest"] != "none"
+          assert len(realistic["findings"]) == 34
+          assert all(
+              not evidence["file"].startswith("Good/")
+              for finding in realistic["findings"]
+              for evidence in finding["evidence"]
+          )
+          finding_matrix = lambda report: Counter(
+              (
+                  finding["rule"],
+                  tuple(sorted({evidence["file"] for evidence in finding["evidence"]})),
+              )
+              for finding in report["findings"]
+          )
+          assert finding_matrix(realistic) == finding_matrix(realistic_indexed)
           (root / "finding-id.txt").write_text(fixtures["findings"][0]["id"])
           PY
 

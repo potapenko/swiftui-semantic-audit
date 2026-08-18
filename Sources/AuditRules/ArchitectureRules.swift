@@ -464,14 +464,23 @@ private struct ArchitectureFacts {
 
     private func typedBoundaries(of view: SemanticNode) -> [TypedBoundary] {
         let boundaryKinds: Set<EdgeKind> = [.owns, .binds, .observes, .injects]
-        return (index.outgoing[view.id] ?? []).filter { boundaryKinds.contains($0.kind) }.flatMap {
+        let candidates = (index.outgoing[view.id] ?? []).filter { boundaryKinds.contains($0.kind) }.flatMap {
             boundary -> [TypedBoundary] in
             guard let property = index.nodes[boundary.to] else { return [] }
             return index.edges(from: property.id, kind: .typedAs).compactMap { typedAs in
                 guard let type = index.nodes[typedAs.to] else { return nil }
                 return TypedBoundary(view: view, property: property, type: type, boundary: boundary, typedAs: typedAs)
             }
-        }.sorted { ($0.property.id, $0.type.id) < ($1.property.id, $1.type.id) }
+        }
+        return Dictionary(grouping: candidates) { "\($0.property.id)|\($0.type.id)" }
+            .values
+            .compactMap { boundaries in
+                boundaries.min {
+                    (boundaryRank($0.boundary.kind), $0.boundary.id, $0.typedAs.id) <
+                        (boundaryRank($1.boundary.kind), $1.boundary.id, $1.typedAs.id)
+                }
+            }
+            .sorted { ($0.property.id, $0.type.id) < ($1.property.id, $1.type.id) }
     }
 
     private func configuredCalls(from actors: Set<String>) -> [ConfiguredCall] {
@@ -484,7 +493,7 @@ private struct ArchitectureFacts {
         if let target = index.nodes[call.to], !target.roles.isEmpty {
             return ConfiguredCall(call: call, root: nil, type: target, support: [])
         }
-        for member in index.edges(to: call.to, kind: .observes) {
+        for member in index.edges(to: call.to, kind: .observes) where sourceRangesOverlap(member, call) {
             guard let root = index.nodes[member.from],
                   let typedAs = index.edges(from: root.id, kind: .typedAs).first,
                   let type = index.nodes[typedAs.to],
@@ -493,6 +502,25 @@ private struct ArchitectureFacts {
             return ConfiguredCall(call: call, root: root, type: type, support: [member, typedAs])
         }
         return nil
+    }
+
+    private func boundaryRank(_ kind: EdgeKind) -> Int {
+        switch kind {
+        case .injects: 0
+        case .binds: 1
+        case .observes: 2
+        case .owns: 3
+        default: 4
+        }
+    }
+
+    private func sourceRangesOverlap(_ lhs: SemanticEdge, _ rhs: SemanticEdge) -> Bool {
+        lhs.evidence.contains { left in
+            rhs.evidence.contains { right in
+                left.file == right.file &&
+                    left.startLine <= right.endLine && right.startLine <= left.endLine
+            }
+        }
     }
 
     private func lifecycleActors(in view: SemanticNode) -> [String: Set<String>] {

@@ -1,0 +1,29 @@
+{
+  "schemaVersion": 1,
+  "compositionRoots": [
+    "RealProjectPatterns.BadAppRoot",
+    "RealProjectPatterns.GoodAppRoot"
+  ],
+  "typeRoles": {
+    "RealProjectPatterns.BadApplicationModel": "application-model",
+    "RealProjectPatterns.BadCommandRouter": "effect-sink",
+    "RealProjectPatterns.BadLibraryModel": "feature-model",
+    "RealProjectPatterns.BadProfileModel": "feature-model",
+    "RealProjectPatterns.BadSearchRepository": "repository",
+    "RealProjectPatterns.GoodApplicationModel": "application-model",
+    "RealProjectPatterns.GoodProfileModel": "feature-model",
+    "RealProjectPatterns.GoodSearchRepository": "repository"
+  },
+  "typeFeatures": {
+    "RealProjectPatterns.BadLibraryModel": "library",
+    "RealProjectPatterns.BadProfileModel": "profile",
+    "RealProjectPatterns.GoodProfileModel": "profile"
+  },
+  "pathFeatures": {
+    "Bad/FeatureProfile/": "profile",
+    "Good/FeatureProfile/": "profile"
+  },
+  "passiveEnvironmentValues": [
+    "locale"
+  ]
+}
