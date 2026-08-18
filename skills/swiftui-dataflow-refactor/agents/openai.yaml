@@ -1,0 +1,4 @@
+interface:
+  display_name: "SwiftUI Dataflow Refactor"
+  short_description: "Refactor SwiftUI ownership and data flow"
+  default_prompt: "Use $swiftui-dataflow-refactor to refactor one SwiftUI semantic-value cluster while preserving behavior."

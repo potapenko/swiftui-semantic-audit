@@ -120,7 +120,9 @@ private final class GraphBuilder {
         let id = StableID.node(module: moduleName, qualifiedName: qualifiedName, kind: kind, discriminator: discriminator)
         let identity = [kind.rawValue, name, qualifiedName, discriminator].joined(separator: "|")
         if let existing = nodes[id] {
-            if nodeIdentityByID[id] != identity || !mergeEvidence {
+            let extensionPlaceholder = existing.evidence.allSatisfy { $0.kind == "extension-declaration" }
+            let canonicalDeclaration = evidence.kind == "type-declaration" || evidence.kind == "swiftui-view"
+            if nodeIdentityByID[id] != identity || (!mergeEvidence && !(extensionPlaceholder && canonicalDeclaration)) {
                 identityCollisions.insert(identity)
             } else {
                 nodes[id] = SemanticNode(
@@ -239,6 +241,22 @@ private class BaseVisitor: SyntaxVisitor {
 
     func qualified(_ name: String) -> String { "\(currentOwnerName).\(name)" }
 
+    func scopedQualified(_ name: String, node: some SyntaxProtocol) -> String {
+        let scopes = structuralScopes(for: node)
+        return ([currentOwnerName] + scopes + [name]).joined(separator: ".")
+    }
+
+    func scopedResolutionCandidates(_ name: String, node: some SyntaxProtocol) -> [String] {
+        let scopes = structuralScopes(for: node)
+        var candidates: [String] = []
+        for owner in ownerNames.reversed() {
+            for count in stride(from: scopes.count, through: 0, by: -1) {
+                candidates.append(([owner] + scopes.prefix(count) + [name]).joined(separator: "."))
+            }
+        }
+        return candidates
+    }
+
     func evidence(_ node: some SyntaxProtocol, kind: String) -> Evidence {
         let start = node.startLocation(converter: converter).line
         let end = node.endLocation(converter: converter).line
@@ -279,8 +297,46 @@ private class BaseVisitor: SyntaxVisitor {
         "\(qualifiedName)[\(functionDiscriminator(node))]"
     }
 
-    private func canonicalSyntax(_ value: String) -> String {
+    func canonicalSyntax(_ value: String) -> String {
         value.filter { !$0.isWhitespace }
+    }
+
+    private func structuralScopes(for node: some SyntaxProtocol) -> [String] {
+        var scopes: [String] = []
+        var ancestor = node.parent
+        while let syntax = ancestor {
+            if let clause = syntax.as(IfConfigClauseSyntax.self) {
+                let keyword = clause.poundKeyword.text.replacingOccurrences(of: "#", with: "")
+                let condition = canonicalSyntax(clause.condition?.trimmedDescription ?? "else")
+                scopes.append("[ifconfig:\(keyword):\(condition):\(structuralPath(of: syntax))]")
+            } else if syntax.is(ClosureExprSyntax.self) {
+                scopes.append("[closure:\(structuralPath(of: syntax))]")
+            } else if let block = syntax.as(CodeBlockSyntax.self),
+                      block.parent?.is(FunctionDeclSyntax.self) != true {
+                scopes.append("[block:\(structuralPath(of: syntax))]")
+            }
+            ancestor = syntax.parent
+        }
+        return scopes.reversed()
+    }
+
+    private func structuralPath(of node: Syntax) -> String {
+        var components: [String] = []
+        var current = node
+        while let parent = current.parent {
+            let children = parent.children(viewMode: .sourceAccurate)
+            if let index = children.index(of: current) {
+                components.append(String(children.distance(from: children.startIndex, to: index)))
+            }
+            if parent.is(SourceFileSyntax.self) || parent.is(FunctionDeclSyntax.self) ||
+                parent.is(StructDeclSyntax.self) || parent.is(ClassDeclSyntax.self) ||
+                parent.is(EnumDeclSyntax.self) || parent.is(ActorDeclSyntax.self) ||
+                parent.is(ExtensionDeclSyntax.self) {
+                break
+            }
+            current = parent
+        }
+        return components.reversed().joined(separator: "-")
     }
 }
 
@@ -315,9 +371,16 @@ private final class DeclarationVisitor: BaseVisitor {
 
     override func visitPost(_ node: ActorDeclSyntax) { leaveOwner() }
 
+    override func visit(_ node: ExtensionDeclSyntax) -> SyntaxVisitorContinueKind {
+        enterExtension(node)
+        return .visitChildren
+    }
+
+    override func visitPost(_ node: ExtensionDeclSyntax) { leaveOwner() }
+
     override func visit(_ node: FunctionDeclSyntax) -> SyntaxVisitorContinueKind {
         let name = node.name.text
-        let qualifiedName = qualified(name)
+        let qualifiedName = scopedQualified(name, node: node)
         let id = builder.addNode(
             kind: .function,
             name: name,
@@ -338,7 +401,7 @@ private final class DeclarationVisitor: BaseVisitor {
         for binding in node.bindings {
             guard let identifier = binding.pattern.as(IdentifierPatternSyntax.self)?.identifier.text else { continue }
             let kind = SwiftUIVocabulary.nodeKind(forPropertyWrapper: wrapper, isCallback: isCallback(binding))
-            let qualifiedName = qualified(identifier)
+            let qualifiedName = scopedQualified(identifier, node: binding)
             let propertyID = builder.addNode(
                 kind: kind,
                 name: identifier,
@@ -357,8 +420,39 @@ private final class DeclarationVisitor: BaseVisitor {
 
     private func enterType(name: String, isView: Bool, node: some SyntaxProtocol) {
         let kind: NodeKind = isView ? .view : .type
-        let qualifiedName = qualified(name)
+        let qualifiedName = scopedQualified(name, node: node)
         let id = builder.addNode(kind: kind, name: name, qualifiedName: qualifiedName, evidence: evidence(node, kind: isView ? "swiftui-view" : "type-declaration"))
+        builder.addEdge(kind: .owns, from: currentOwnerID, to: id, evidence: evidence(node, kind: "declaration-ownership"))
+        ownerIDs.append(id)
+        ownerNames.append(qualifiedName)
+    }
+
+    private func enterExtension(_ node: ExtensionDeclSyntax) {
+        let extendedName = node.extendedType.trimmedDescription
+        let resolved = scopedResolutionCandidates(extendedName, node: node).lazy
+            .compactMap { self.builder.nodeID(qualifiedName: $0) }.first ??
+            builder.resolve(name: extendedName, scopes: ownerNames)
+        if let resolved, let type = builder.node(id: resolved) {
+            _ = builder.addNode(
+                kind: type.kind,
+                name: type.name,
+                qualifiedName: type.qualifiedName,
+                evidence: evidence(node, kind: "extension-declaration"),
+                mergeEvidence: true
+            )
+            ownerIDs.append(resolved)
+            ownerNames.append(type.qualifiedName)
+            return
+        }
+        let name = extendedName.split(separator: ".").last.map(String.init) ?? extendedName
+        let qualifiedName = scopedQualified(extendedName, node: node)
+        let id = builder.addNode(
+            kind: .type,
+            name: name,
+            qualifiedName: qualifiedName,
+            evidence: evidence(node, kind: "extension-declaration"),
+            mergeEvidence: true
+        )
         builder.addEdge(kind: .owns, from: currentOwnerID, to: id, evidence: evidence(node, kind: "declaration-ownership"))
         ownerIDs.append(id)
         ownerNames.append(qualifiedName)
@@ -376,44 +470,128 @@ private final class RelationshipVisitor: BaseVisitor {
         let end: Int
     }
 
+    private struct OnChangeParameterBinding {
+        let observedID: String
+        let name: String
+        let position: Int
+        let evidence: Evidence
+        let createsIdentityAlias: Bool
+    }
+
+    private struct ClosureReferenceFrame {
+        let aliases: [String: String]
+        let boundNames: Set<String>
+    }
+
+    private final class AssignmentParameterUseVisitor: SyntaxVisitor {
+        private final class DirectReferenceVisitor: SyntaxVisitor {
+            let parameterName: String
+            var found = false
+
+            init(parameterName: String) {
+                self.parameterName = parameterName
+                super.init(viewMode: .sourceAccurate)
+            }
+
+            override func visit(_ node: ClosureExprSyntax) -> SyntaxVisitorContinueKind {
+                RelationshipVisitor.closureParameterNames(in: node).contains(parameterName)
+                    ? .skipChildren
+                    : .visitChildren
+            }
+
+            override func visit(_ node: DeclReferenceExprSyntax) -> SyntaxVisitorContinueKind {
+                if node.baseName.text == parameterName {
+                    found = true
+                }
+                return .skipChildren
+            }
+        }
+
+        let parameterName: String
+        var hasAssignmentUse = false
+        var hasIdentityAssignment = false
+
+        init(parameterName: String) {
+            self.parameterName = parameterName
+            super.init(viewMode: .sourceAccurate)
+        }
+
+        override func visit(_ node: SequenceExprSyntax) -> SyntaxVisitorContinueKind {
+            let elements = Array(node.elements)
+            guard let assignmentIndex = elements.firstIndex(where: { $0.is(AssignmentExprSyntax.self) }),
+                  assignmentIndex + 1 < elements.count
+            else { return .visitChildren }
+            let rhsElements = elements[(assignmentIndex + 1)...]
+            let referenceVisitor = DirectReferenceVisitor(parameterName: parameterName)
+            for element in rhsElements {
+                referenceVisitor.walk(element)
+            }
+            guard referenceVisitor.found else { return .skipChildren }
+
+            hasAssignmentUse = true
+            let rhsText = rhsElements.map(\.trimmedDescription).joined(separator: " ")
+            let canonicalRHS = rhsText.filter { !$0.isWhitespace }
+            let canonicalName = parameterName.filter { !$0.isWhitespace }
+            if canonicalRHS == canonicalName || canonicalRHS == "(\(canonicalName))" {
+                hasIdentityAssignment = true
+            }
+            return .skipChildren
+        }
+
+        override func visit(_ node: ClosureExprSyntax) -> SyntaxVisitorContinueKind {
+            RelationshipVisitor.closureParameterNames(in: node).contains(parameterName)
+                ? .skipChildren
+                : .visitChildren
+        }
+    }
+
     private var generatedCounters: [String: Int] = [:]
     private var generatedCallOwners: [SyntaxRangeKey: (id: String, qualifiedName: String)] = [:]
     private var pendingClosureTargets: [SyntaxRangeKey: (target: String, evidenceKind: String)] = [:]
+    private var pendingOnChangeParameters: [SyntaxRangeKey: OnChangeParameterBinding] = [:]
+    private var closureReferenceFrames: [ClosureReferenceFrame] = []
     private var assignmentTargetRanges: [(start: Int, end: Int)?] = []
 
     override func visit(_ node: StructDeclSyntax) -> SyntaxVisitorContinueKind {
         enterExistingType(name: node.name.text, isView: node.inheritanceClause?.inheritedTypes.contains(where: {
             $0.type.trimmedDescription.split(separator: ".").last == "View"
-        }) == true)
+        }) == true, node: node)
         return .visitChildren
     }
 
     override func visitPost(_ node: StructDeclSyntax) { leaveOwner() }
 
     override func visit(_ node: ClassDeclSyntax) -> SyntaxVisitorContinueKind {
-        enterExistingType(name: node.name.text, isView: false)
+        enterExistingType(name: node.name.text, isView: false, node: node)
         return .visitChildren
     }
 
     override func visitPost(_ node: ClassDeclSyntax) { leaveOwner() }
 
     override func visit(_ node: EnumDeclSyntax) -> SyntaxVisitorContinueKind {
-        enterExistingType(name: node.name.text, isView: false)
+        enterExistingType(name: node.name.text, isView: false, node: node)
         return .visitChildren
     }
 
     override func visitPost(_ node: EnumDeclSyntax) { leaveOwner() }
 
     override func visit(_ node: ActorDeclSyntax) -> SyntaxVisitorContinueKind {
-        enterExistingType(name: node.name.text, isView: false)
+        enterExistingType(name: node.name.text, isView: false, node: node)
         return .visitChildren
     }
 
     override func visitPost(_ node: ActorDeclSyntax) { leaveOwner() }
 
+    override func visit(_ node: ExtensionDeclSyntax) -> SyntaxVisitorContinueKind {
+        enterExistingExtension(node)
+        return .visitChildren
+    }
+
+    override func visitPost(_ node: ExtensionDeclSyntax) { leaveOwner() }
+
     override func visit(_ node: FunctionDeclSyntax) -> SyntaxVisitorContinueKind {
         let name = node.name.text
-        let qualifiedName = qualified(name)
+        let qualifiedName = scopedQualified(name, node: node)
         let id = StableID.node(
             module: builder.moduleName,
             qualifiedName: qualifiedName,
@@ -448,12 +626,32 @@ private final class RelationshipVisitor: BaseVisitor {
                 evidence: evidence(node, kind: pending.evidenceKind)
             )
         }
+        var referenceAliases: [String: String] = [:]
+        if let parameter = pendingOnChangeParameters[syntaxKey(node)] {
+            referenceAliases[parameter.name] = parameter.observedID
+            if parameter.createsIdentityAlias {
+                let parameterID = builder.addNode(
+                    kind: .input,
+                    name: parameter.name,
+                    qualifiedName: "\(qualifiedName).\(parameter.name)",
+                    discriminator: "onchange-new-value:\(parameter.position)",
+                    evidence: parameter.evidence
+                )
+                builder.addEdge(kind: .owns, from: id, to: parameterID, evidence: parameter.evidence)
+                builder.addEdge(kind: .aliases, from: parameterID, to: parameter.observedID, evidence: parameter.evidence)
+            }
+        }
+        closureReferenceFrames.append(ClosureReferenceFrame(
+            aliases: referenceAliases,
+            boundNames: Self.closureParameterNames(in: node)
+        ))
         ownerIDs.append(id)
         ownerNames.append(qualifiedName)
         return .visitChildren
     }
 
     override func visitPost(_ node: ClosureExprSyntax) {
+        closureReferenceFrames.removeLast()
         leaveOwner()
     }
 
@@ -466,6 +664,17 @@ private final class RelationshipVisitor: BaseVisitor {
             let id = makeGenerated(kind: kind, role: callName, node: node, evidenceKind: "swiftui-modifier")
             if callName == "onChange", let source = argument(named: "of", in: node), let sourceID = resolveOrCreate(source, evidence: callEvidence) {
                 builder.addEdge(kind: .triggers, from: sourceID, to: id, evidence: evidence(source, kind: "onchange-source"))
+                if let closure = node.trailingClosure,
+                   let parameter = onChangeNewValueParameter(in: closure),
+                   let use = closureParameterAssignmentUse(parameter.name, closure: closure) {
+                    pendingOnChangeParameters[syntaxKey(closure)] = OnChangeParameterBinding(
+                        observedID: sourceID,
+                        name: parameter.name,
+                        position: parameter.position,
+                        evidence: parameter.evidence,
+                        createsIdentityAlias: use
+                    )
+                }
             }
             if callName == "task", let source = argument(named: "id", in: node), let sourceID = resolveOrCreate(source, evidence: callEvidence) {
                 builder.addEdge(kind: .triggers, from: sourceID, to: id, evidence: evidence(source, kind: "task-id"))
@@ -497,12 +706,12 @@ private final class RelationshipVisitor: BaseVisitor {
             return .visitChildren
         }
 
-        if let calleeID = builder.resolve(name: callName, scopes: ownerNames) {
+        if let calleeID = resolveReference(callName, node: node.calledExpression) {
             builder.addEdge(kind: .calls, from: currentOwnerID, to: calleeID, evidence: callEvidence)
         }
 
         if callName.first?.isUppercase == true,
-           let targetTypeID = builder.resolve(name: callName, scopes: ownerNames),
+           let targetTypeID = resolveReference(callName, node: node.calledExpression),
             let targetType = builder.node(id: targetTypeID) {
             for argument in node.arguments {
                 guard let label = argument.label?.text,
@@ -540,7 +749,7 @@ private final class RelationshipVisitor: BaseVisitor {
     override func visit(_ node: DeclReferenceExprSyntax) -> SyntaxVisitorContinueKind {
         guard !isInsideAssignmentTarget(node) else { return .visitChildren }
         let text = node.baseName.text
-        guard !text.hasPrefix("$"), let target = builder.resolve(name: text, scopes: ownerNames), target != currentOwnerID else {
+        guard !text.hasPrefix("$"), let target = resolveReference(text, node: node), target != currentOwnerID else {
             return .visitChildren
         }
         builder.addEdge(kind: .reads, from: currentOwnerID, to: target, evidence: evidence(node, kind: "property-access"))
@@ -595,12 +804,24 @@ private final class RelationshipVisitor: BaseVisitor {
         assignmentTargetRanges.removeLast()
     }
 
-    private func enterExistingType(name: String, isView: Bool) {
-        let qualifiedName = qualified(name)
+    private func enterExistingType(name: String, isView: Bool, node: some SyntaxProtocol) {
+        let qualifiedName = scopedQualified(name, node: node)
         let kind: NodeKind = isView ? .view : .type
         let id = StableID.node(module: builder.moduleName, qualifiedName: qualifiedName, kind: kind)
         ownerIDs.append(id)
         ownerNames.append(qualifiedName)
+    }
+
+    private func enterExistingExtension(_ node: ExtensionDeclSyntax) {
+        let extendedName = node.extendedType.trimmedDescription
+        let resolved = scopedResolutionCandidates(extendedName, node: node).lazy
+            .compactMap { self.builder.nodeID(qualifiedName: $0) }.first ??
+            builder.resolve(name: extendedName, scopes: ownerNames)
+        let name = extendedName.split(separator: ".").last.map(String.init) ?? extendedName
+        let qualifiedName = scopedQualified(extendedName, node: node)
+        let id = resolved ?? StableID.node(module: builder.moduleName, qualifiedName: qualifiedName, kind: .type)
+        ownerIDs.append(id)
+        ownerNames.append(builder.node(id: id)?.qualifiedName ?? "\(currentOwnerName).\(name)")
     }
 
     private func makeGenerated(kind: NodeKind, role: String, node: FunctionCallExprSyntax, evidenceKind: String) -> String {
@@ -645,7 +866,7 @@ private final class RelationshipVisitor: BaseVisitor {
 
     private func resolveOrCreate(text: String, node: some SyntaxProtocol, evidenceKind: String) -> String? {
         guard let reference = firstReference(in: text) else { return nil }
-        if let resolved = builder.resolve(name: reference, scopes: ownerNames) { return resolved }
+        if let resolved = resolveReference(reference, node: node) { return resolved }
         guard reference.contains(".") else { return nil }
         let name = reference.split(separator: ".").last.map(String.init) ?? reference
         let memberID = builder.addNode(
@@ -662,7 +883,7 @@ private final class RelationshipVisitor: BaseVisitor {
             .first
             .map(String.init)
         if let rootName,
-           let rootID = builder.resolve(name: rootName, scopes: ownerNames),
+           let rootID = resolveReference(rootName, node: node),
            let root = builder.node(id: rootID),
            root.kind == .input || root.kind == .observableState {
             builder.addEdge(
@@ -677,6 +898,53 @@ private final class RelationshipVisitor: BaseVisitor {
 
     private func argument(named name: String, in call: FunctionCallExprSyntax) -> ExprSyntax? {
         call.arguments.first(where: { $0.label?.text == name })?.expression
+    }
+
+    private func onChangeNewValueParameter(
+        in closure: ClosureExprSyntax
+    ) -> (name: String, position: Int, evidence: Evidence)? {
+        guard let clause = closure.signature?.parameterClause else { return nil }
+        let parameters: [(name: String, evidence: Evidence)]
+        switch clause {
+        case .simpleInput(let list):
+            parameters = list.map { parameter in
+                (parameter.name.text, evidence(parameter, kind: "onchange-new-value"))
+            }
+        case .parameterClause(let clause):
+            parameters = clause.parameters.map { parameter in
+                (
+                    parameter.secondName?.text ?? parameter.firstName.text,
+                    evidence(parameter, kind: "onchange-new-value")
+                )
+            }
+        }
+        guard parameters.count == 1 || parameters.count == 2 else { return nil }
+        let position = parameters.count - 1
+        let parameter = parameters[position]
+        guard parameter.name != "_" else { return nil }
+        return (parameter.name, position, parameter.evidence)
+    }
+
+    private static func closureParameterNames(in closure: ClosureExprSyntax) -> Set<String> {
+        guard let clause = closure.signature?.parameterClause else { return [] }
+        let names: [String]
+        switch clause {
+        case .simpleInput(let list):
+            names = list.map { $0.name.text }
+        case .parameterClause(let clause):
+            names = clause.parameters.map { $0.secondName?.text ?? $0.firstName.text }
+        }
+        return Set(names.filter { $0 != "_" })
+    }
+
+    private func closureParameterAssignmentUse(
+        _ name: String,
+        closure: ClosureExprSyntax
+    ) -> Bool? {
+        let visitor = AssignmentParameterUseVisitor(parameterName: name)
+        visitor.walk(closure.statements)
+        guard visitor.hasAssignmentUse else { return nil }
+        return visitor.hasIdentityAssignment
     }
 
     private var nearestDeclarationScope: String {
@@ -758,10 +1026,21 @@ private final class RelationshipVisitor: BaseVisitor {
             .split(separator: ".")
             .first
             .map(String.init),
-           let rootID = builder.resolve(name: root, scopes: ownerNames) {
+           let rootID = resolveReference(root, node: node) {
             return rootID
         }
         return resolveOrCreate(text: reference, node: node, evidenceKind: "assignment-source")
+    }
+
+    private func resolveReference(_ reference: String, node: some SyntaxProtocol) -> String? {
+        for frame in closureReferenceFrames.reversed() {
+            if let target = frame.aliases[reference] { return target }
+            if frame.boundNames.contains(reference) { return nil }
+        }
+        for candidate in scopedResolutionCandidates(reference, node: node) {
+            if let id = builder.nodeID(qualifiedName: candidate) { return id }
+        }
+        return builder.resolve(name: reference, scopes: ownerNames)
     }
 
     private func leaveOwner() {

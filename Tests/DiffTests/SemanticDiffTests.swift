@@ -177,6 +177,7 @@ final class SemanticDiffTests: XCTestCase {
         let current = try loader.loadRevision("HEAD", repositoryURL: repository)
         let live = try loader.loadLive(sourceURL: repository)
         XCTAssertEqual(current.snapshot.graph, live.snapshot.graph)
+        XCTAssertEqual(current.snapshot.report, live.snapshot.report)
         XCTAssertTrue(current.snapshot.graph.nodes.contains { $0.qualifiedName.contains("ExecutableTool") })
         XCTAssertTrue(current.snapshot.graph.nodes.contains { $0.qualifiedName.contains("NewlinePath") })
         XCTAssertFalse(current.snapshot.graph.nodes.contains { $0.evidence.contains { $0.file.hasSuffix("Valid.swift") || $0.file.hasSuffix("Dangling.swift") } })
@@ -210,7 +211,7 @@ final class SemanticDiffTests: XCTestCase {
             currentIdentity: current.identity
         )
         XCTAssertEqual(gitDiff, snapshotDiff)
-        XCTAssertEqual(try SnapshotReader().read(from: currentDirectory).graph, current.snapshot.graph)
+        XCTAssertEqual(try SnapshotReader().read(from: currentDirectory), current.snapshot)
         XCTAssertEqual(try gitOutput(runner, ["branch", "--show-current"], repository), branchBefore)
         XCTAssertEqual(try gitOutput(runner, ["status", "--porcelain=v1"], repository), statusBefore)
         XCTAssertThrowsError(try loader.loadRevision("missing-revision", repositoryURL: repository)) {

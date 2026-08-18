@@ -145,6 +145,10 @@ public enum StableID {
         make(prefix: "value", components: [representations.sorted().joined(separator: ",")])
     }
 
+    public static func compilerSymbol(usr: String) -> String {
+        make(prefix: "node", components: ["compiler-usr", usr])
+    }
+
     private static func make(prefix: String, components: [String]) -> String {
         let identity = components.joined(separator: "\u{1F}")
         var hash: UInt64 = 0xcbf29ce484222325

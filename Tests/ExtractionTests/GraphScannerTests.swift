@@ -175,8 +175,8 @@ final class GraphScannerTests: XCTestCase {
             $0.kind == .observes && $0.evidence.contains { $0.kind == "observable-member" }
         }.map { "\(nodesByID[$0.from]!) -> \(nodesByID[$0.to]!)" }.sorted()
 
-        XCTAssertEqual(graph.nodes.count, 41)
-        XCTAssertEqual(graph.edges.count, 72)
+        XCTAssertEqual(graph.nodes.count, 42)
+        XCTAssertEqual(graph.edges.count, 76)
         XCTAssertEqual(observedPairs, [
             "GraphExtraction.Controls.environmentModel -> GraphExtraction.Controls.environmentModel.query",
             "GraphExtraction.Controls.model -> GraphExtraction.Controls.model.mode",
@@ -184,6 +184,190 @@ final class GraphScannerTests: XCTestCase {
             "GraphExtraction.Controls.model -> GraphExtraction.Controls.model.reload",
             "GraphExtraction.Controls.model -> GraphExtraction.Controls.model.volume",
         ])
+    }
+
+    func testOnChangeNewValueParametersPreserveObservedIdentityOnly() throws {
+        let graph = try GraphScanner().scan(path: onChangeParameterFixture.path)
+        let nodes = Dictionary(uniqueKeysWithValues: graph.nodes.map { ($0.qualifiedName, $0) })
+        let external = try XCTUnwrap(nodes["OnChangeParameterFixture.OnChangeParameterEditor.external"])
+        let first = try XCTUnwrap(nodes["OnChangeParameterFixture.OnChangeParameterEditor.first"])
+        let transformed = try XCTUnwrap(nodes["OnChangeParameterFixture.OnChangeParameterEditor.transformed"])
+        let oldCopy = try XCTUnwrap(nodes["OnChangeParameterFixture.OnChangeParameterEditor.oldCopy"])
+        let parameters = graph.nodes.filter {
+            $0.kind == .input && $0.evidence.contains { $0.kind == "onchange-new-value" }
+        }
+
+        XCTAssertEqual(parameters.count, 2)
+        for parameter in parameters {
+            let alias = try XCTUnwrap(graph.edges.first {
+                $0.kind == .aliases && $0.from == parameter.id &&
+                    $0.evidence.contains { $0.kind == "onchange-new-value" }
+            })
+            XCTAssertTrue(alias.to == external.id || alias.to == first.id)
+            XCTAssertTrue(graph.edges.contains { $0.kind == .owns && $0.to == parameter.id })
+        }
+        XCTAssertTrue(graph.edges.contains {
+            $0.kind == .copiesTo && $0.from == external.id && $0.to == first.id
+        })
+        XCTAssertTrue(graph.edges.contains {
+            $0.kind == .copiesTo && $0.from == first.id && $0.to == external.id
+        })
+        XCTAssertTrue(graph.edges.contains {
+            $0.kind == .derivesFrom && $0.from == transformed.id && $0.to == external.id &&
+                $0.evidence.contains { $0.kind == "assignment-transform" }
+        })
+        XCTAssertFalse(graph.edges.contains {
+            $0.kind == .copiesTo && ($0.from == oldCopy.id || $0.to == oldCopy.id)
+        })
+        XCTAssertFalse(graph.nodes.contains { $0.name == "arbitrary" && $0.evidence.contains { $0.kind == "onchange-new-value" } })
+
+        let source = try String(contentsOf: onChangeParameterFixture, encoding: .utf8)
+        let variants = try scanTemporarySourceVariants([source, "\n\n\n" + source])
+        XCTAssertEqual(variants[0].nodes.map(\.id), variants[1].nodes.map(\.id))
+        XCTAssertEqual(variants[0].edges.map(\.id), variants[1].edges.map(\.id))
+        XCTAssertNotEqual(variants[0].nodes.flatMap(\.evidence), variants[1].nodes.flatMap(\.evidence))
+    }
+
+    func testOnChangeParameterUseIsMonotonicAcrossLexicalCaptureAndShadowBoundaries() throws {
+        let graph = try scanTemporarySource("""
+        import SwiftUI
+        struct OrderedParameterEditor: View {
+            @Binding var external: String
+            @State private var direct = ""
+            @State private var captured = ""
+            @State private var transformed = ""
+            @State private var shadowed = ""
+            @State private var deepCaptured = ""
+            @State private var boundaryShadowed = ""
+            func normalize(_ value: String) -> String { value.uppercased() }
+            var body: some View {
+                TextField("Value", text: $direct)
+                    .onChange(of: external) { newValue in
+                        direct = newValue
+                        transformed = normalize(newValue)
+                        transformed = ""
+                    }
+                    .onChange(of: external) { newValue in
+                        withAnimation {
+                            captured = newValue
+                        }
+                    }
+                    .onChange(of: external) { newValue in
+                        direct = newValue
+                        let callback: (String) -> Void = { newValue in
+                            shadowed = newValue
+                        }
+                        callback(newValue)
+                    }
+                    .onChange(of: external) { newValue in
+                        withAnimation {
+                            withAnimation {
+                                deepCaptured = newValue
+                            }
+                            let callback: (String) -> Void = { newValue in
+                                boundaryShadowed = newValue
+                            }
+                            callback(newValue)
+                        }
+                    }
+                    .onChange(of: external) { newValue in
+                        withAnimation {
+                            transformed = normalize(newValue)
+                        }
+                    }
+            }
+        }
+        """)
+        let external = try XCTUnwrap(graph.nodes.first { $0.qualifiedName.hasSuffix("OrderedParameterEditor.external") })
+        let direct = try XCTUnwrap(graph.nodes.first { $0.qualifiedName.hasSuffix("OrderedParameterEditor.direct") })
+        let captured = try XCTUnwrap(graph.nodes.first { $0.qualifiedName.hasSuffix("OrderedParameterEditor.captured") })
+        let transformed = try XCTUnwrap(graph.nodes.first { $0.qualifiedName.hasSuffix("OrderedParameterEditor.transformed") })
+        let shadowed = try XCTUnwrap(graph.nodes.first { $0.qualifiedName.hasSuffix("OrderedParameterEditor.shadowed") })
+        let deepCaptured = try XCTUnwrap(graph.nodes.first { $0.qualifiedName.hasSuffix("OrderedParameterEditor.deepCaptured") })
+        let boundaryShadowed = try XCTUnwrap(graph.nodes.first { $0.qualifiedName.hasSuffix("OrderedParameterEditor.boundaryShadowed") })
+        let aliases = graph.edges.filter {
+            $0.kind == .aliases && $0.evidence.contains { $0.kind == "onchange-new-value" }
+        }
+
+        XCTAssertEqual(aliases.count, 4)
+        XCTAssertTrue(aliases.allSatisfy { $0.to == external.id })
+        XCTAssertTrue(graph.edges.contains { $0.kind == .copiesTo && $0.from == external.id && $0.to == direct.id })
+        XCTAssertTrue(graph.edges.contains { $0.kind == .copiesTo && $0.from == external.id && $0.to == captured.id })
+        XCTAssertTrue(graph.edges.contains { $0.kind == .copiesTo && $0.from == external.id && $0.to == deepCaptured.id })
+        XCTAssertTrue(graph.edges.contains { $0.kind == .derivesFrom && $0.from == transformed.id && $0.to == external.id })
+        XCTAssertFalse(graph.edges.contains { $0.kind == .copiesTo && $0.from == external.id && $0.to == shadowed.id })
+        XCTAssertFalse(graph.edges.contains { $0.kind == .copiesTo && $0.from == external.id && $0.to == boundaryShadowed.id })
+    }
+
+    func testConditionalAndLexicalScopesHaveDistinctStableTopology() throws {
+        let source = try String(contentsOf: identityScopeFixture, encoding: .utf8)
+        let variants = try scanTemporarySourceVariants([source, source, "\n\n\n" + source])
+        let graph = variants[0]
+        let repeated = variants[1]
+        let shifted = variants[2]
+
+        XCTAssertEqual(try graph.jsonData(), try repeated.jsonData())
+        XCTAssertEqual(graph.nodes.map(\.id), shifted.nodes.map(\.id))
+        XCTAssertEqual(graph.edges.map(\.id), shifted.edges.map(\.id))
+        XCTAssertNotEqual(graph.nodes.flatMap(\.evidence), shifted.nodes.flatMap(\.evidence))
+        let nodeIDs = Set(graph.nodes.map(\.id))
+        XCTAssertTrue(graph.edges.allSatisfy { nodeIDs.contains($0.from) && nodeIDs.contains($0.to) })
+
+        let conditionalTypes = graph.nodes.filter { $0.kind == .type && $0.name == "ConditionalService" }
+        let conditionalFunctions = graph.nodes.filter { $0.kind == .function && $0.name == "resolve" }
+        let conditionalResults = graph.nodes.filter { $0.kind == .property && $0.name == "result" }
+        XCTAssertEqual(conditionalTypes.count, 2)
+        XCTAssertEqual(Set(conditionalTypes.map(\.id)).count, 2)
+        XCTAssertTrue(conditionalTypes.allSatisfy { $0.qualifiedName.contains("[ifconfig:") })
+        XCTAssertEqual(conditionalFunctions.count, 2)
+        XCTAssertEqual(conditionalResults.count, 2)
+        for type in conditionalTypes {
+            let functions = graph.edges.filter { $0.kind == .owns && $0.from == type.id }
+                .compactMap { edge in graph.nodes.first { $0.id == edge.to && $0.name == "resolve" } }
+            XCTAssertEqual(functions.count, 1)
+            let function = try XCTUnwrap(functions.first)
+            let ownedResults = graph.edges.filter { $0.kind == .owns && $0.from == function.id }
+                .compactMap { edge in graph.nodes.first { $0.id == edge.to && $0.name == "result" } }
+            XCTAssertEqual(ownedResults.count, 1)
+            XCTAssertTrue(graph.edges.contains {
+                $0.kind == .reads && $0.from == function.id && $0.to == ownedResults[0].id
+            })
+            XCTAssertFalse(graph.edges.contains { edge in
+                edge.kind == .reads && edge.from == function.id &&
+                    conditionalResults.contains { result in
+                        result.id == edge.to && result.id != ownedResults[0].id
+                    }
+            })
+        }
+
+        let repeatedBlockValues = graph.nodes.filter {
+            $0.kind == .property && $0.name == "value" && $0.qualifiedName.contains("repeatedBlocks")
+        }
+        XCTAssertEqual(repeatedBlockValues.count, 2)
+        XCTAssertEqual(Set(repeatedBlockValues.map(\.id)).count, 2)
+        XCTAssertTrue(repeatedBlockValues.allSatisfy { $0.qualifiedName.contains("[block:") })
+
+        let closureValues = graph.nodes.filter {
+            $0.kind == .property && $0.name == "value" && $0.qualifiedName.contains("closureScopes")
+        }
+        XCTAssertEqual(closureValues.count, 2)
+        XCTAssertEqual(Set(closureValues.map(\.id)).count, 2)
+        XCTAssertTrue(closureValues.allSatisfy { $0.qualifiedName.contains("[closure:") })
+        for value in closureValues {
+            XCTAssertEqual(
+                graph.edges.filter { edge in
+                    edge.kind == .reads && edge.to == value.id &&
+                        graph.nodes.contains { node in node.id == edge.from && node.kind == .closure }
+                }.count,
+                1
+            )
+        }
+
+        let scopeHost = try XCTUnwrap(graph.nodes.first { $0.kind == .type && $0.name == "ScopeHost" })
+        XCTAssertTrue(scopeHost.evidence.contains { $0.kind == "type-declaration" })
+        XCTAssertTrue(scopeHost.evidence.contains { $0.kind == "extension-declaration" })
+        let extended = try XCTUnwrap(graph.nodes.first { $0.kind == .function && $0.name == "extended" })
+        XCTAssertTrue(graph.edges.contains { $0.kind == .owns && $0.from == scopeHost.id && $0.to == extended.id })
     }
 
     private func assertEdge(
@@ -230,5 +414,27 @@ final class GraphScannerTests: XCTestCase {
         defer { try? FileManager.default.removeItem(at: root) }
         try source.write(to: root.appendingPathComponent("Fixture.swift"), atomically: true, encoding: .utf8)
         return try GraphScanner().scan(path: root.path)
+    }
+
+    private func scanTemporarySourceVariants(_ sources: [String]) throws -> [SemanticGraph] {
+        let root = FileManager.default.temporaryDirectory
+            .appendingPathComponent("swiftui-audit-extraction-variants-(UUID().uuidString)")
+        try FileManager.default.createDirectory(at: root, withIntermediateDirectories: true)
+        defer { try? FileManager.default.removeItem(at: root) }
+        let file = root.appendingPathComponent("Fixture.swift")
+        return try sources.map { source in
+            try source.write(to: file, atomically: true, encoding: .utf8)
+            return try GraphScanner().scan(path: root.path)
+        }
+    }
+
+    private var identityScopeFixture: URL {
+        URL(fileURLWithPath: #filePath).deletingLastPathComponent()
+            .appendingPathComponent("Fixtures/IdentityScopesFixture.swift")
+    }
+
+    private var onChangeParameterFixture: URL {
+        URL(fileURLWithPath: #filePath).deletingLastPathComponent()
+            .appendingPathComponent("Fixtures/OnChangeParameterFixture.swift")
     }
 }

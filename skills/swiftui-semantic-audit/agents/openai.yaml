@@ -1,0 +1,4 @@
+interface:
+  display_name: "SwiftUI Semantic Audit"
+  short_description: "Audit SwiftUI semantic data flow"
+  default_prompt: "Use $swiftui-semantic-audit to audit this SwiftUI codebase through semantic findings and focused slices."

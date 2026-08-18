@@ -18,8 +18,11 @@ struct Doctor: ParsableCommand {
     var format: OutputFormat?
 
     mutating func run() throws {
-        let doctor = EnvironmentDoctor()
-        let report = doctor.inspect(path: URL(fileURLWithPath: path, isDirectory: true))
+        let doctor = EnvironmentDoctor(timeout: 30)
+        let report = doctor.inspect(
+            path: URL(fileURLWithPath: path, isDirectory: true),
+            helperExecutable: try currentExecutableURL()
+        )
         if format == .json {
             FileHandle.standardOutput.write(try report.jsonData())
         } else {

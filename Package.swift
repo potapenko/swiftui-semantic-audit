@@ -14,11 +14,16 @@ let package = Package(
         .library(name: "SnapshotStore", targets: ["SnapshotStore"]),
         .library(name: "ContextSlicer", targets: ["ContextSlicer"]),
         .library(name: "SemanticDiff", targets: ["SemanticDiff"]),
+        .library(name: "SymbolResolution", targets: ["SymbolResolution"]),
         .executable(name: "swiftui-audit", targets: ["SwiftUIAuditCLI"]),
     ],
     dependencies: [
         .package(url: "https://github.com/swiftlang/swift-syntax.git", exact: "603.0.2"),
         .package(url: "https://github.com/apple/swift-argument-parser.git", exact: "1.8.2"),
+        .package(
+            url: "https://github.com/swiftlang/indexstore-db.git",
+            revision: "003ac41513ba291f10ff1a0147ae68588914668d"
+        ),
     ],
     targets: [
         .target(name: "AuditCore"),
@@ -57,7 +62,19 @@ let package = Package(
                 "AuditCore",
                 "AuditRules",
                 "SnapshotStore",
+                "SymbolResolution",
                 "SwiftSyntaxFrontend",
+            ]
+        ),
+        .target(
+            name: "SymbolResolution",
+            dependencies: [
+                "AuditCore",
+                .product(
+                    name: "IndexStoreDB",
+                    package: "indexstore-db",
+                    condition: .when(platforms: [.macOS])
+                ),
             ]
         ),
         .executableTarget(
@@ -68,6 +85,7 @@ let package = Package(
                 "ContextSlicer",
                 "SemanticDiff",
                 "SnapshotStore",
+                "SymbolResolution",
                 "SwiftSyntaxFrontend",
                 .product(name: "ArgumentParser", package: "swift-argument-parser"),
             ]
@@ -98,7 +116,19 @@ let package = Package(
         ),
         .testTarget(
             name: "DoctorTests",
-            dependencies: ["SemanticDiff"]
+            dependencies: ["SemanticDiff", "SymbolResolution"]
+        ),
+        .testTarget(
+            name: "SymbolResolutionTests",
+            dependencies: [
+                "AuditCore",
+                "AuditRules",
+                "ContextSlicer",
+                "SemanticDiff",
+                "SnapshotStore",
+                "SymbolResolution",
+                "SwiftSyntaxFrontend",
+            ]
         ),
     ]
 )

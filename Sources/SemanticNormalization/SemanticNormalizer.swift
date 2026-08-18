@@ -30,7 +30,9 @@ public struct SemanticNormalizer: Sendable {
             case .copiesTo:
                 return edge.evidence.contains { $0.kind == "assignment" }
             case .aliases:
-                return edge.evidence.contains { $0.kind == "binding-projection" }
+                return edge.evidence.contains {
+                    $0.kind == "binding-projection" || $0.kind == "onchange-new-value"
+                }
             case .passes:
                 return edge.evidence.contains { $0.kind == "initializer-argument" }
             default:
@@ -84,7 +86,7 @@ public struct SemanticNormalizer: Sendable {
         guard localStates.count == 1 else { return nil }
         let local = localStates[0]
         guard let localOwner = declarationOwner(of: local, graph: graph, nodes: nodes) else { return nil }
-        let upstreams = representations.filter { $0 != local && nodes[$0]?.kind != .binding }.sorted()
+        let upstreams = representations.filter { $0 != local }.sorted()
         guard !upstreams.isEmpty else { return nil }
         let identityEdges = graph.edges.filter {
             $0.kind == .copiesTo && representations.contains($0.from) && representations.contains($0.to)

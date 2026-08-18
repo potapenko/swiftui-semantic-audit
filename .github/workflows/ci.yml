@@ -1,0 +1,287 @@
+name: CI
+
+on:
+  push:
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  build-test-dogfood:
+    name: Build, test, and semantic dogfood
+    runs-on: macos-26
+    timeout-minutes: 30
+    env:
+      DEVELOPER_DIR: /Applications/Xcode_26.6.app/Contents/Developer
+      LC_ALL: C
+      LANG: C
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Guard Swift and Xcode toolchain
+        run: |
+          set -euo pipefail
+          test -d "$DEVELOPER_DIR" || {
+            echo "Required Xcode 26.6 is unavailable at $DEVELOPER_DIR" >&2
+            exit 1
+          }
+          swift --version
+          xcodebuild -version
+          python3 - <<'PY'
+          import re
+          import subprocess
+
+          output = subprocess.run(
+              ["swift", "--version"], check=True, capture_output=True, text=True, timeout=30
+          ).stdout
+          match = re.search(r"Swift version (\d+)\.(\d+)", output)
+          if match is None or tuple(map(int, match.groups())) < (6, 3):
+              raise SystemExit(f"Swift >= 6.3 is required; received: {output.strip()}")
+          PY
+
+      - name: Resolve locked dependencies
+        run: |
+          set -euo pipefail
+          perl -e 'alarm shift; exec @ARGV' 600 swift package resolve
+
+      - name: Build and test
+        run: |
+          set -euo pipefail
+          perl -e 'alarm shift; exec @ARGV' 600 swift build --disable-automatic-resolution
+          perl -e 'alarm shift; exec @ARGV' 900 swift test --disable-automatic-resolution
+
+      - name: Prove indexed fixture enrichment
+        run: |
+          set -euo pipefail
+          index_root="$RUNNER_TEMP/indexed-fixture"
+          mkdir -p "$index_root/store" "$index_root/module"
+          perl -e 'alarm shift; exec @ARGV' 180 xcrun swiftc \
+            -module-name IndexedProject \
+            -index-store-path "$index_root/store" \
+            -emit-module \
+            Tests/Fixtures/IndexedProject/Settings.swift \
+            Tests/Fixtures/IndexedProject/Callback.swift \
+            Tests/Fixtures/IndexedProject/Writer.swift \
+            -o "$index_root/module/IndexedProject.swiftmodule"
+          perl -e 'alarm shift; exec @ARGV' 180 \
+            swift run --disable-automatic-resolution swiftui-audit audit \
+              Tests/Fixtures/IndexedProject \
+              --index-store "$index_root/store" \
+              --format json > "$RUNNER_TEMP/indexed-audit.json"
+          python3 - <<'PY'
+          import json
+          import os
+          from pathlib import Path
+
+          report = json.loads((Path(os.environ["RUNNER_TEMP"]) / "indexed-audit.json").read_text())
+          assert report["schemaVersion"] == 1
+          assert report["resolution"] == "indexed"
+          PY
+
+      - name: Audit fixtures and project sources
+        run: |
+          set -euo pipefail
+          perl -e 'alarm shift; exec @ARGV' 180 \
+            swift run --disable-automatic-resolution swiftui-audit audit \
+              Tests/Fixtures/RuleTests --syntax-only --format json \
+              > "$RUNNER_TEMP/rule-audit.json"
+          perl -e 'alarm shift; exec @ARGV' 180 \
+            swift run --disable-automatic-resolution swiftui-audit audit \
+              Sources --syntax-only --format json \
+              > "$RUNNER_TEMP/source-audit.json"
+          python3 - <<'PY'
+          import json
+          import os
+          from pathlib import Path
+
+          root = Path(os.environ["RUNNER_TEMP"])
+          fixtures = json.loads((root / "rule-audit.json").read_text())
+          sources = json.loads((root / "source-audit.json").read_text())
+          assert fixtures["schemaVersion"] == sources["schemaVersion"] == 1
+          assert fixtures["resolution"] == sources["resolution"] == "syntax-only"
+          assert fixtures["findings"], "RuleTests must emit a finding for slice dogfood"
+          (root / "finding-id.txt").write_text(fixtures["findings"][0]["id"])
+          PY
+
+      - name: Prove snapshot determinism and baseline policy
+        run: |
+          set -euo pipefail
+          first="$RUNNER_TEMP/rule-snapshot-first"
+          second="$RUNNER_TEMP/rule-snapshot-second"
+          perl -e 'alarm shift; exec @ARGV' 180 \
+            swift run --disable-automatic-resolution swiftui-audit snapshot \
+              Tests/Fixtures/RuleTests --output "$first" --syntax-only --format json \
+              > "$RUNNER_TEMP/snapshot-first.json"
+          perl -e 'alarm shift; exec @ARGV' 180 \
+            swift run --disable-automatic-resolution swiftui-audit snapshot \
+              Tests/Fixtures/RuleTests --output "$second" --syntax-only --format json \
+              > "$RUNNER_TEMP/snapshot-second.json"
+          diff -ru "$first" "$second"
+          test "$(find "$first" -type f | wc -l | tr -d ' ')" = 5
+          for artifact in nodes.jsonl edges.jsonl findings.jsonl summary.json; do
+            cmp "Tests/Baselines/RuleTests/$artifact" "$first/$artifact"
+          done
+          python3 - <<'PY'
+          import json
+          import os
+          import subprocess
+          from pathlib import Path
+
+          expected_keys = {
+              "generatedFrom",
+              "repositoryRevision",
+              "schemaVersion",
+              "swiftVersion",
+              "toolVersion",
+          }
+          baseline = json.loads(Path("Tests/Baselines/RuleTests/manifest.json").read_text())
+          generated_path = Path(os.environ["RUNNER_TEMP"]) / "rule-snapshot-first" / "manifest.json"
+          generated = json.loads(generated_path.read_text())
+          if set(baseline) != expected_keys or set(generated) != expected_keys:
+              raise SystemExit(
+                  f"unexpected manifest fields: baseline={sorted(baseline)}, "
+                  f"generated={sorted(generated)}"
+              )
+          head = subprocess.run(
+              ["git", "rev-parse", "HEAD"],
+              check=True,
+              capture_output=True,
+              text=True,
+              timeout=30,
+          ).stdout.strip()
+          if generated["repositoryRevision"] != head:
+              raise SystemExit(
+                  "fresh snapshot repositoryRevision does not match checked-out HEAD: "
+                  f"{generated['repositoryRevision']} != {head}"
+              )
+          for manifest in (baseline, generated):
+              revision = manifest.pop("repositoryRevision")
+              if not isinstance(revision, str) or not revision:
+                  raise SystemExit("repositoryRevision must be a nonempty string")
+          normalize = lambda value: json.dumps(
+              value, ensure_ascii=False, separators=(",", ":"), sort_keys=True
+          )
+          if normalize(baseline) != normalize(generated):
+              raise SystemExit("manifest differs beyond repositoryRevision")
+          PY
+          perl -e 'alarm shift; exec @ARGV' 180 \
+            swift run --disable-automatic-resolution swiftui-audit diff \
+              "$first" "$second" --format json > "$RUNNER_TEMP/semantic-diff.json"
+          perl -e 'alarm shift; exec @ARGV' 180 \
+            swift run --disable-automatic-resolution swiftui-audit check \
+              --baseline Tests/Baselines/RuleTests \
+              Tests/Fixtures/RuleTests \
+              --fail-on-new high --syntax-only --format json \
+              > "$RUNNER_TEMP/check.json"
+          python3 - <<'PY'
+          import json
+          import os
+          from pathlib import Path
+
+          root = Path(os.environ["RUNNER_TEMP"])
+          semantic_diff = json.loads((root / "semantic-diff.json").read_text())
+          check = json.loads((root / "check.json").read_text())
+          assert semantic_diff["changes"] == []
+          assert semantic_diff["newFindings"] == []
+          assert semantic_diff["resolvedFindings"] == []
+          assert check["passed"] is True
+          assert check["failingFindings"] == []
+          PY
+
+      - name: Exercise slice and doctor JSON
+        run: |
+          set -euo pipefail
+          finding_id="$(cat "$RUNNER_TEMP/finding-id.txt")"
+          perl -e 'alarm shift; exec @ARGV' 180 \
+            swift run --disable-automatic-resolution swiftui-audit slice \
+              Tests/Fixtures/RuleTests \
+              --finding "$finding_id" \
+              --syntax-only --format llm-json --token-budget 10000 \
+              > "$RUNNER_TEMP/slice.json"
+          perl -e 'alarm shift; exec @ARGV' 180 \
+            swift run --disable-automatic-resolution swiftui-audit doctor . --format json \
+              > "$RUNNER_TEMP/doctor.json"
+          python3 - <<'PY'
+          import json
+          import os
+          from pathlib import Path
+
+          root = Path(os.environ["RUNNER_TEMP"])
+          slice_data = json.loads((root / "slice.json").read_text())
+          doctor = json.loads((root / "doctor.json").read_text())
+          assert slice_data["finding"] is not None
+          assert slice_data["nodes"] and slice_data["sourceEvidence"]
+          assert slice_data["metadata"]["estimatedTokens"] <= 10000
+          assert doctor["schemaVersion"] == 1
+          assert doctor["overallStatus"] != "error"
+          PY
+
+      - name: Validate skills, YAML, and relative links
+        run: |
+          set -euo pipefail
+          ruby <<'RUBY'
+          require "yaml"
+          require "pathname"
+
+          expected = %w[
+            swiftui-semantic-audit
+            swiftui-dataflow-refactor
+            swiftui-change-review
+          ]
+          actual = Dir.children("skills").sort
+          abort("unexpected skill set: #{actual.inspect}") unless actual == expected.sort
+
+          expected.each do |name|
+            root = Pathname("skills") / name
+            skill = root / "SKILL.md"
+            text = skill.read
+            unfinished_markers = ["TO" + "DO", "TB" + "D", "FIX" + "ME"]
+            abort("placeholder in #{skill}") if unfinished_markers.any? { |marker| text.match?(/\b#{Regexp.escape(marker)}\b/i) }
+            abort("#{skill} exceeds 500 lines") if text.lines.length >= 500
+            match = text.match(/\A---\n(.*?)\n---\n/m)
+            abort("invalid frontmatter in #{skill}") unless match
+            frontmatter = YAML.safe_load(match[1], permitted_classes: [], aliases: false)
+            abort("wrong frontmatter keys in #{skill}") unless frontmatter.keys.sort == %w[description name]
+            abort("name mismatch in #{skill}") unless frontmatter["name"] == name
+
+            metadata_path = root / "agents" / "openai.yaml"
+            metadata_text = metadata_path.read
+            metadata = YAML.safe_load(metadata_text, permitted_classes: [], aliases: false)
+            interface = metadata.fetch("interface")
+            required = %w[default_prompt display_name short_description]
+            abort("wrong interface keys in #{metadata_path}") unless interface.keys.sort == required.sort
+            abort("unquoted interface string in #{metadata_path}") unless metadata_text.lines.drop(1).all? { |line| line.match?(/:\s+".*"\s*$/) }
+            length = interface.fetch("short_description").length
+            abort("short description length #{length} in #{metadata_path}") unless (25..64).cover?(length)
+            prompt = interface.fetch("default_prompt")
+            abort("default prompt missing $#{name}") unless prompt.include?("$#{name}")
+            abort("default prompt must be one sentence") unless prompt.scan(/[.!?](?:\s|\z)/).length == 1
+
+            links = text.scan(/\[[^\]]+\]\(([^)]+)\)/).flatten
+            links.each do |target|
+              next if target.match?(/\A(?:https?:|#)/)
+              path = root / target.split("#", 2).first
+              abort("broken link #{target} in #{skill}") unless path.exist?
+            end
+          end
+          RUBY
+
+      - name: Check documentation links and formatting
+        run: |
+          set -euo pipefail
+          ruby <<'RUBY'
+          require "pathname"
+
+          files = [Pathname("README.md")] + Pathname("docs/specs").glob("*.md")
+          files.each do |file|
+            file.read.scan(/\[[^\]]+\]\(([^)]+)\)/).flatten.each do |target|
+              next if target.match?(/\A(?:https?:|#)/)
+              relative = target.split("#", 2).first
+              path = file.dirname / relative
+              abort("broken link #{target} in #{file}") unless path.exist?
+            end
+          end
+          RUBY
+          git diff --check

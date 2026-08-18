@@ -130,7 +130,9 @@ struct GraphIndex {
     func isSourceOfTruth(_ id: String) -> Bool {
         guard let node = nodes[id] else { return false }
         if node.kind == .state || node.kind == .observableState { return true }
-        if node.kind == .binding { return false }
+        if node.kind == .binding {
+            return node.evidence.contains { $0.kind == "property-wrapper" }
+        }
         return edges(to: id, kind: .writes).isEmpty == false
     }
 
@@ -146,11 +148,13 @@ struct GraphIndex {
         var emitted: Set<String> = []
         var result: [IdentityPair] = []
         for edge in copies.sorted(by: { $0.id < $1.id }) {
+            guard edge.from != edge.to else { continue }
             let ordered = [edge.from, edge.to].sorted()
             let key = ordered.joined(separator: "|")
             guard emitted.insert(key).inserted,
                   let forward = byDirection["\(ordered[0])|\(ordered[1])"]?.first,
-                  let reverse = byDirection["\(ordered[1])|\(ordered[0])"]?.first
+                  let reverse = byDirection["\(ordered[1])|\(ordered[0])"]?.first,
+                  forward.id != reverse.id
             else { continue }
             result.append(IdentityPair(lhs: ordered[0], rhs: ordered[1], forward: forward, reverse: reverse))
         }

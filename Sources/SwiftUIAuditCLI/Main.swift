@@ -5,6 +5,7 @@ import ContextSlicer
 import Foundation
 import SemanticDiff
 import SnapshotStore
+import SymbolResolution
 import SwiftSyntaxFrontend
 
 @main
@@ -12,7 +13,7 @@ struct SwiftUIAudit: ParsableCommand {
     static let configuration = CommandConfiguration(
         commandName: "swiftui-audit",
         abstract: "Build a deterministic semantic graph from Swift/SwiftUI source.",
-        subcommands: [Scan.self, Audit.self, Snapshot.self, Slice.self, Diff.self, Check.self, Doctor.self]
+        subcommands: [Scan.self, Audit.self, Snapshot.self, Slice.self, Diff.self, Check.self, Doctor.self, IndexEnrichHelper.self]
     )
 }
 
@@ -34,12 +35,14 @@ struct Snapshot: ParsableCommand {
     @Option(name: .long, help: "Emit a deterministic machine-readable summary.")
     var format: OutputFormat?
 
+    @OptionGroup var resolution: ResolutionOptions
+
     mutating func run() throws {
         let locations = try SnapshotPathPolicy.validate(
             sourceURL: URL(fileURLWithPath: path),
             outputURL: URL(fileURLWithPath: output)
         )
-        let graph = try GraphScanner().scan(path: locations.source.path)
+        let graph = try loadResolvedGraph(path: locations.source.path, options: resolution)
         let report = AuditEngine().audit(graph: graph)
         let manifest = SnapshotManifestFactory.make(sourcePath: locations.source.path, toolVersion: report.toolVersion)
         try SnapshotWriter().write(
@@ -85,6 +88,8 @@ struct Slice: ParsableCommand {
     @Option(name: .long, help: "Conservative maximum estimated token count.")
     var tokenBudget: Int?
 
+    @OptionGroup var resolution: ResolutionOptions
+
     mutating func validate() throws {
         guard (finding == nil) != (symbol == nil) else {
             throw ValidationError("provide exactly one of --finding or --symbol")
@@ -101,11 +106,14 @@ struct Slice: ParsableCommand {
         let report: AuditReport
         switch resolved {
         case .snapshot(let url):
+            if resolution.indexStore != nil {
+                throw ValidationError("--index-store applies only when slicing live source")
+            }
             let snapshot = try SnapshotReader().read(from: url)
             graph = snapshot.graph
             report = snapshot.report
         case .source(let url):
-            graph = try GraphScanner().scan(path: url.path)
+            graph = try loadResolvedGraph(path: url.path, options: resolution)
             report = AuditEngine().audit(graph: graph)
         }
 
@@ -149,8 +157,10 @@ struct Audit: ParsableCommand {
     @Option(name: .long, help: "Emit deterministic machine-readable output.")
     var format: OutputFormat?
 
+    @OptionGroup var resolution: ResolutionOptions
+
     mutating func run() throws {
-        let graph = try GraphScanner().scan(path: path)
+        let graph = try loadResolvedGraph(path: path, options: resolution)
         let report = AuditEngine().audit(graph: graph)
         if format == .json {
             FileHandle.standardOutput.write(try report.jsonData())
@@ -168,7 +178,7 @@ struct Audit: ParsableCommand {
 
 struct Scan: ParsableCommand {
     static let configuration = CommandConfiguration(
-        abstract: "Parse Swift source and emit a syntax-only semantic graph."
+        abstract: "Parse Swift source and emit a semantic graph."
     )
 
     enum OutputFormat: String, ExpressibleByArgument {
@@ -184,8 +194,10 @@ struct Scan: ParsableCommand {
     @Option(name: .long, help: "Write JSON to this explicit file path.")
     var output: String?
 
+    @OptionGroup var resolution: ResolutionOptions
+
     mutating func run() throws {
-        let graph = try GraphScanner().scan(path: path)
+        let graph = try loadResolvedGraph(path: path, options: resolution)
         let data = try graph.jsonData()
         if let output {
             try data.write(to: URL(fileURLWithPath: output), options: .atomic)

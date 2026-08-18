@@ -28,6 +28,7 @@ struct Diff: ParsableCommand {
         let repositoryURL = URL(fileURLWithPath: repository, isDirectory: true)
         let baseInput = try loader.loadOperand(base, repositoryURL: repositoryURL)
         let currentInput = try loader.loadOperand(current, repositoryURL: repositoryURL)
+        try loader.validateMatchingResolution(base: baseInput, current: currentInput)
         let engine = SemanticDiffEngine()
         let report = engine.compare(
             base: baseInput.snapshot,

@@ -11,7 +11,6 @@ public struct MirroredStateRule: AuditRule {
             let stateIDs = pair.nodes.filter { index.nodes[$0]?.kind == .state }
             guard stateIDs.count == 1,
                   !pair.nodes.contains(where: index.isObservableMember),
-                  !index.hasBindingRepresentation(pair.nodes),
                   normalization.valueByRepresentation[pair.lhs]?.classification == nil
             else { return nil }
             return AuditFinding(
@@ -36,7 +35,6 @@ public struct ManualTwoWaySyncRule: AuditRule {
         return index.identityPairs().compactMap { pair in
             guard pair.nodes.allSatisfy(index.isMutableRepresentation),
                   !pair.nodes.contains(where: index.isObservableMember),
-                  !index.hasBindingRepresentation(pair.nodes),
                   normalization.valueByRepresentation[pair.lhs]?.classification == nil
             else { return nil }
             return AuditFinding(
@@ -119,13 +117,13 @@ public struct ValueSetterPairRule: AuditRule {
                 $0.kind == .property || $0.kind == .input
             }
             for callback in callbacks {
-                let callbackForwarding = index.edges(from: callback.id, kind: .passes).contains {
-                    index.nodes[$0.to]?.kind == .callback
-                }
-                guard !callbackForwarding,
-                      let callbackCall = index.edges(to: callback.id, kind: .calls).first
-                else { continue }
                 for value in values {
+                    guard let qualifyingCall = qualifyingCall(
+                        to: callback.id,
+                        using: value.id,
+                        index: index,
+                        normalization: normalization
+                    ) else { continue }
                     let valuePasses = index.edges(to: value.id, kind: .passes)
                     let callbackPasses = index.edges(to: callback.id, kind: .passes).filter {
                         index.nodes[$0.from]?.kind == .closure
@@ -136,7 +134,13 @@ public struct ValueSetterPairRule: AuditRule {
                             guard let setterWrite = setterActors.sorted().flatMap({ index.edges(from: $0, kind: .writes) })
                                 .first(where: { $0.to == valuePass.from })
                             else { continue }
-                            let supportingEdges = [valuePass, callbackPass, setterWrite, callbackCall]
+                            let supportingEdges = [
+                                valuePass,
+                                callbackPass,
+                                setterWrite,
+                                qualifyingCall.call,
+                                qualifyingCall.identitySupport,
+                            ]
                             findings.append(AuditFinding(
                                 rule: identifier,
                                 severity: .medium,
@@ -152,6 +156,25 @@ public struct ValueSetterPairRule: AuditRule {
             }
         }
         return findings
+    }
+
+    private func qualifyingCall(
+        to callback: String,
+        using value: String,
+        index: GraphIndex,
+        normalization: NormalizationResult
+    ) -> (call: SemanticEdge, identitySupport: SemanticEdge)? {
+        guard let semanticValue = normalization.valueByRepresentation[value]?.id else { return nil }
+        for call in index.edges(to: callback, kind: .calls) {
+            for event in index.edges(to: call.from, kind: .creates).map(\.from).sorted() {
+                if let trigger = index.edges(to: event, kind: .triggers).first(where: {
+                    normalization.valueByRepresentation[$0.from]?.id == semanticValue
+                }) {
+                    return (call, trigger)
+                }
+            }
+        }
+        return nil
     }
 }
 

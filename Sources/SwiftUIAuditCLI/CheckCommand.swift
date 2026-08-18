@@ -41,13 +41,20 @@ struct Check: ParsableCommand {
     @Option(name: .long, help: "Emit deterministic JSON.")
     var format: OutputFormat?
 
+    @OptionGroup var resolution: ResolutionOptions
+
     mutating func run() throws {
         let loader = SemanticInputLoader()
         let baselineInput = try loader.loadOperand(
             baseline,
             repositoryURL: URL(fileURLWithPath: repository, isDirectory: true)
         )
-        let currentInput = try loader.loadLive(sourceURL: URL(fileURLWithPath: path))
+        let currentInput = try loader.loadComparableLive(
+            sourceURL: URL(fileURLWithPath: path),
+            baseline: baselineInput,
+            requestedSelection: try resolution.selection(),
+            helperExecutable: try currentExecutableURL()
+        )
         let diff = SemanticDiffEngine().compare(
             base: baselineInput.snapshot,
             current: currentInput.snapshot,

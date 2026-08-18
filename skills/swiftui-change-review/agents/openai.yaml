@@ -1,0 +1,4 @@
+interface:
+  display_name: "SwiftUI Change Review"
+  short_description: "Review SwiftUI semantic data-flow changes"
+  default_prompt: "Use $swiftui-change-review to review these SwiftUI changes by semantic diff before source diff."

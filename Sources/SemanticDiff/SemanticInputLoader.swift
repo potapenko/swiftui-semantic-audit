@@ -2,6 +2,7 @@ import AuditCore
 import AuditRules
 import Foundation
 import SnapshotStore
+import SymbolResolution
 import SwiftSyntaxFrontend
 
 public struct LoadedSemanticInput: Sendable {
@@ -18,12 +19,17 @@ public enum SemanticInputError: Error, Equatable, LocalizedError {
     case invalidRevision(String)
     case noSwiftFiles(String)
     case unsafeGitPath(String)
+    case resolutionMismatch(baseline: String, current: String)
 
     public var errorDescription: String? {
         switch self {
         case .invalidRevision(let revision): "invalid git revision \(revision)"
         case .noSwiftFiles(let revision): "git revision \(revision) contains no Swift source files"
         case .unsafeGitPath(let path): "unsafe path in git tree: \(path)"
+        case .resolutionMismatch(let baseline, let current):
+            "semantic resolution mismatch: baseline is \(baseline), current is \(current). " +
+                "Use a baseline with the same resolution, provide a usable --index-store for an indexed baseline, " +
+                "or pass --syntax-only with a syntax-only baseline."
         }
     }
 }
@@ -95,9 +101,27 @@ public struct SemanticInputLoader: Sendable {
         )
     }
 
-    public func loadLive(sourceURL: URL) throws -> LoadedSemanticInput {
+    public func loadLive(
+        sourceURL: URL,
+        indexSelection: IndexSelection = .syntaxOnly,
+        helperExecutable: URL? = nil,
+        indexTimeout: TimeInterval = 30
+    ) throws -> LoadedSemanticInput {
         let source = sourceURL.standardizedFileURL.resolvingSymlinksInPath()
-        let graph = try GraphScanner().scan(path: source.path)
+        let syntaxGraph = try GraphScanner().scan(path: source.path)
+        let graph: SemanticGraph
+        if indexSelection == .syntaxOnly {
+            graph = syntaxGraph
+        } else {
+            guard let helperExecutable else {
+                throw IndexResolutionError.unavailableLibrary("helper executable was not provided")
+            }
+            graph = try IndexEnrichmentCoordinator(
+                helperExecutable: helperExecutable,
+                runner: runner,
+                timeout: indexTimeout
+            ).enrich(graph: syntaxGraph, sourceRoot: source, selection: indexSelection)
+        }
         let report = AuditEngine().audit(graph: graph)
         let revision = (try? repositoryRevision(for: source)) ?? "unavailable"
         let manifest = SnapshotManifest(
@@ -110,6 +134,61 @@ public struct SemanticInputLoader: Sendable {
             snapshot: SemanticSnapshot(manifest: manifest, graph: graph, report: report),
             identity: "working:\(source.lastPathComponent)"
         )
+    }
+
+    public func loadComparableLive(
+        sourceURL: URL,
+        baseline: LoadedSemanticInput,
+        requestedSelection: IndexSelection,
+        helperExecutable: URL? = nil,
+        indexTimeout: TimeInterval = 30
+    ) throws -> LoadedSemanticInput {
+        let baselineResolution = baseline.snapshot.graph.resolution
+        guard baseline.snapshot.report.resolution == baselineResolution else {
+            throw SemanticInputError.resolutionMismatch(
+                baseline: "inconsistent graph/report (\(baselineResolution)/\(baseline.snapshot.report.resolution))",
+                current: "not loaded"
+            )
+        }
+        let selection: IndexSelection
+        switch (baselineResolution, requestedSelection) {
+        case ("syntax-only", .automatic), ("syntax-only", .syntaxOnly):
+            selection = .syntaxOnly
+        case ("syntax-only", .explicit):
+            throw SemanticInputError.resolutionMismatch(baseline: baselineResolution, current: "explicit indexed")
+        case ("indexed", .syntaxOnly):
+            throw SemanticInputError.resolutionMismatch(baseline: baselineResolution, current: "syntax-only")
+        case ("indexed", .automatic), ("indexed", .explicit):
+            selection = requestedSelection
+        default:
+            throw SemanticInputError.resolutionMismatch(baseline: baselineResolution, current: "unsupported")
+        }
+        let current = try loadLive(
+            sourceURL: sourceURL,
+            indexSelection: selection,
+            helperExecutable: helperExecutable,
+            indexTimeout: indexTimeout
+        )
+        try validateMatchingResolution(base: baseline, current: current)
+        return current
+    }
+
+    public func validateMatchingResolution(base: LoadedSemanticInput, current: LoadedSemanticInput) throws {
+        let baselineResolution = base.snapshot.graph.resolution
+        let currentResolution = current.snapshot.graph.resolution
+        guard base.snapshot.report.resolution == baselineResolution,
+              current.snapshot.report.resolution == currentResolution,
+              baselineResolution == currentResolution
+        else {
+            throw SemanticInputError.resolutionMismatch(
+                baseline: base.snapshot.report.resolution == baselineResolution
+                    ? baselineResolution
+                    : "inconsistent graph/report (\(baselineResolution)/\(base.snapshot.report.resolution))",
+                current: current.snapshot.report.resolution == currentResolution
+                    ? currentResolution
+                    : "inconsistent graph/report (\(currentResolution)/\(current.snapshot.report.resolution))"
+            )
+        }
     }
 
     private func repositoryRoot(from url: URL) throws -> URL {

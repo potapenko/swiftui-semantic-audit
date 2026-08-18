@@ -1,5 +1,6 @@
 import AuditCore
 import Foundation
+import SymbolResolution
 
 public enum DoctorStatus: String, Codable, Sendable {
     case ok
@@ -67,7 +68,7 @@ public struct EnvironmentDoctor: Sendable {
         self.timeout = timeout
     }
 
-    public func inspect(path: URL) -> DoctorReport {
+    public func inspect(path: URL, helperExecutable: URL? = nil) -> DoctorReport {
         let root = path.standardizedFileURL.resolvingSymlinksInPath()
         let swiftResult = validatedSwift()
         let swift = swiftResult.check
@@ -75,7 +76,7 @@ public struct EnvironmentDoctor: Sendable {
         let toolchain = validatedToolchain()
         let projectType = projectCheck(root)
         let swiftSyntax = swiftSyntaxCheck(root, swiftVersion: swiftResult.version)
-        let indexStore = indexStoreCheck(root)
+        let indexStore = indexStoreCheck(root, helperExecutable: helperExecutable)
         let gitCommand = validatedGit()
         let git: DoctorCheck
         if gitCommand.status == .ok {
@@ -236,17 +237,51 @@ public struct EnvironmentDoctor: Sendable {
         )
     }
 
-    private func indexStoreCheck(_ root: URL) -> DoctorCheck {
-        let build = root.appendingPathComponent(".build", isDirectory: true)
-        guard let enumerator = FileManager.default.enumerator(
-            at: build,
-            includingPropertiesForKeys: [.isDirectoryKey],
-            options: []
-        ) else { return DoctorCheck(status: .warning, detail: "not found (optional in syntax-only mode)") }
-        for case let url as URL in enumerator where url.path.hasSuffix("/index/store") {
-            return DoctorCheck(status: .ok, detail: "available under .build")
+    private func indexStoreCheck(_ root: URL, helperExecutable: URL?) -> DoctorCheck {
+        guard IndexStoreBackend.isAvailable else {
+            return DoctorCheck(status: .warning, detail: "IndexStoreDB backend unavailable; syntax-only mode remains available")
         }
-        return DoctorCheck(status: .warning, detail: "not found (optional in syntax-only mode)")
+        let libraryProbe = probe("/usr/bin/xcrun", arguments: ["--find", "swiftc"])
+        guard let swiftcResult = libraryProbe.result, swiftcResult.status == 0 else {
+            return DoctorCheck(status: .warning, detail: "IndexStoreDB backend available; swiftc toolchain path unavailable")
+        }
+        let swiftc = URL(fileURLWithPath: swiftcResult.outputString.trimmingCharacters(in: .whitespacesAndNewlines))
+            .standardizedFileURL.resolvingSymlinksInPath()
+        let library = swiftc.deletingLastPathComponent().deletingLastPathComponent()
+            .appendingPathComponent("lib/libIndexStore.dylib")
+        guard FileManager.default.fileExists(atPath: library.path) else {
+            return DoctorCheck(status: .warning, detail: "IndexStoreDB backend available; libIndexStore.dylib not found")
+        }
+        let candidates = IndexStoreLocator().automaticStores(sourceRoot: root)
+        guard candidates.count == 1, let candidate = candidates.first else {
+            let detail = candidates.isEmpty ? "no validated raw store candidate" : "ambiguous validated raw store candidates: \(candidates.count)"
+            return DoctorCheck(status: .warning, detail: "IndexStoreDB backend/library ready; \(detail)")
+        }
+        guard let helperExecutable else {
+            return DoctorCheck(status: .warning, detail: "IndexStoreDB backend/library/raw store ready; coverage not queried")
+        }
+        do {
+            let moduleName = root.lastPathComponent.isEmpty ? "Project" : root.lastPathComponent
+            let module = SemanticNode(
+                id: StableID.node(module: moduleName, qualifiedName: moduleName, kind: .module),
+                kind: .module,
+                name: moduleName,
+                qualifiedName: moduleName,
+                evidence: [Evidence(file: ".", startLine: 1, endLine: 1, kind: "module-root")]
+            )
+            let graph = SemanticGraph(nodes: [module], edges: [])
+            let enriched = try IndexEnrichmentCoordinator(
+                helperExecutable: helperExecutable,
+                runner: runner,
+                timeout: timeout
+            ).enrich(graph: graph, sourceRoot: root, selection: .explicit(candidate))
+            guard enriched.resolution == "indexed" else {
+                return DoctorCheck(status: .warning, detail: "validated raw store has no accepted project coverage")
+            }
+            return DoctorCheck(status: .ok, detail: "IndexStoreDB backend/library/raw store/project coverage ready")
+        } catch {
+            return DoctorCheck(status: .warning, detail: "IndexStoreDB readiness failed: \(error.localizedDescription)")
+        }
     }
 }
 
