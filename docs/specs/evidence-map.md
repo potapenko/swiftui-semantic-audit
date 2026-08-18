@@ -1,7 +1,7 @@
 # Specification coverage and evidence map
 
-Revision: `spec-1`  
-Authority: ТЗ epoch `tz-v1`  
+Revision: `spec-2`
+Authority: ТЗ epoch `tz-v1` plus user-authorized `ROUTER-001`, combined epoch `tz-v2`
 Purpose: route every source section to stable local clauses and evidence owners
 
 This map proves coverage; it does not create new requirements. Source and tests establish realization only after the normative contract is fixed.
@@ -44,7 +44,7 @@ This map proves coverage; it does not create new requirements. Source and tests 
 | 34 | Audit skill | `PC-OPS-005`, `ACC-SKILL-*` | `skills/swiftui-semantic-audit` |
 | 35 | Refactor skill | `PC-OPS-005`, `ACC-SKILL-*` | `skills/swiftui-dataflow-refactor` |
 | 36 | Change-review skill | `PC-OPS-005`, `ACC-SKILL-*` | `skills/swiftui-change-review` |
-| 37 | Skill prohibitions | `PC-INV-003`, `RULE-REM-003` | all three skills |
+| 37 | Skill prohibitions | `PC-INV-003`, `RULE-REM-003` | router plus all three specialist skills |
 | 38 | PoC syntax vocabulary | `PC-SCOPE-001` | frontend/vocabulary/tests |
 | 39 | Six required rules | `PC-SCOPE-002`, `RULE-*` | AuditRules/RuleTests |
 | 40 | Deferred features | `PC-NONGOAL-*` | release baseline limitations |
@@ -63,6 +63,12 @@ This map proves coverage; it does not create new requirements. Source and tests 
 | 53 | Long-term direction | `PC-NONGOAL-003` | non-binding roadmap context |
 | 54 | Final product definition | `PC-GOAL-001..003` | README/product contract |
 
+## Router addendum coverage
+
+| Addendum | Subject | Local contract | Realization/evidence owner |
+| --- | --- | --- | --- |
+| `ROUTER-001` | One concise skill link that selects audit, refactor, review, or the smallest valid sequence | `PC-OPS-006`, `ACC-SKILL-001..005` | `skills/swiftui-semantic`, CI validation, forward tests |
+
 ## Evidence precedence by decision
 
 | Decision | Expected contract | Protected behavior | Required evidence |
@@ -75,7 +81,7 @@ This map proves coverage; it does not create new requirements. Source and tests 
 
 ## Ownership map
 
-- Product authority: user-approved epoch `tz-v1`; local documents are faithful restatements.
+- Product authority: user-approved base epoch `tz-v1` plus explicit `ROUTER-001`, combined as `tz-v2`; local documents remain bounded to those authorizations.
 - Semantic schema owner: `AuditCore` plus SnapshotStore transport.
 - Syntax fact owner: SwiftSyntaxFrontend and SwiftUISemantics vocabulary.
 - Compiler fact owner: SymbolResolution/IndexStoreDB on macOS.

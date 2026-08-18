@@ -1,6 +1,6 @@
 # Acceptance and QA contract
 
-Revision: `spec-1`  
+Revision: `spec-2`
 Status: active  
 Release state: unreleased
 
@@ -63,17 +63,20 @@ swift test --disable-automatic-resolution
 
 ## Skills
 
-**ACC-SKILL-001.** Create exactly:
+**ACC-SKILL-001.** Create exactly one user-facing router and three specialist workflows:
 
+- `swiftui-semantic`;
 - `swiftui-semantic-audit`;
 - `swiftui-dataflow-refactor`;
 - `swiftui-change-review`.
 
 **ACC-SKILL-002.** Each skill has frontmatter containing only `name` and trigger-complete `description`, an imperative body under 500 lines, one-level linked references, and generated `agents/openai.yaml` with quoted strings, a 25–64 character short description, and a one-sentence default prompt naming `$skill-name`.
 
-**ACC-SKILL-003.** Run the bundled `quick_validate.py` for all three; parse every YAML file; reject unfinished-marker placeholders and broken relative links.
+**ACC-SKILL-003.** Run the bundled `quick_validate.py` for all four; parse every YAML file; reject unfinished-marker placeholders and broken relative links.
 
 **ACC-SKILL-004.** Every skill preserves JSON stdout discipline, resolution consistency, exact failure policy, provider independence, topology-over-wrapper reasoning, and the deterministic/LLM fact boundary.
+
+**ACC-SKILL-005.** `swiftui-semantic` routes investigation or ambiguity to audit, requested state/data-flow implementation to refactor, and pre-existing changes to review. Mixed tasks use the smallest valid sequence, read the selected specialist completely, preserve handoff state, and never replace specialist acceptance gates with a shortened combined workflow.
 
 ## CI
 
@@ -109,4 +112,4 @@ swift test --disable-automatic-resolution
 
 **ACC-DOD-005.** A refactor can be objectively accepted only when manual synchronization/targeted violations improve, no new high violation appears, ownership does not degrade, and behavior tests pass.
 
-**ACC-DOD-006.** Public documentation, three skills, deterministic dogfood baseline, and CI are complete while the release remains truthfully `unreleased`.
+**ACC-DOD-006.** Public documentation, one routing skill, three specialist skills, deterministic dogfood baseline, and CI are complete while the release remains truthfully `unreleased`.

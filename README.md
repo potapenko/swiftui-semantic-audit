@@ -119,7 +119,11 @@ Compare only inputs with matching resolution. Git-revision operands are syntax-o
 
 Do not optimize for “Binding everywhere” or fewer `@State` properties. Optimize correct ownership, one canonical source of truth, explicit dependencies, minimal manual synchronization, and correct lifetime/transaction behavior.
 
-Reusable workflows live in:
+Use one concise entry point:
+
+- [`swiftui-semantic`](skills/swiftui-semantic/SKILL.md).
+
+It selects or sequences the appropriate specialist workflow:
 
 - [`swiftui-semantic-audit`](skills/swiftui-semantic-audit/SKILL.md);
 - [`swiftui-dataflow-refactor`](skills/swiftui-dataflow-refactor/SKILL.md);
@@ -162,7 +166,7 @@ swift test --disable-automatic-resolution
 swift run --disable-automatic-resolution swiftui-audit doctor . --format json
 ```
 
-The deterministic dogfood baseline for rule fixtures is under [`Tests/Baselines/RuleTests`](Tests/Baselines/RuleTests). CI builds and tests the locked package, audits fixtures and project sources, checks the committed baseline, proves snapshot reproducibility, exercises slicing and doctor output, and validates all three skills.
+The deterministic dogfood baseline for rule fixtures is under [`Tests/Baselines/RuleTests`](Tests/Baselines/RuleTests). CI builds and tests the locked package, audits fixtures and project sources, checks the committed baseline, proves snapshot reproducibility, exercises slicing and doctor output, and validates the routing skill plus all three specialist skills.
 
 Start with the [specification registry](docs/specs/README.md) for the active contract, precedence, evidence ownership, acceptance mapping, and unreleased baseline.
 

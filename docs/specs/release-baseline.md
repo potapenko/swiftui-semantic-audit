@@ -1,8 +1,8 @@
 # Unreleased implementation baseline
 
-Revision: `spec-1`  
+Revision: `spec-2`
 Baseline state: `unreleased`  
-Contract epoch: `tz-v1`
+Contract epoch: `tz-v2`
 
 **BASE-REL-001 — No public release claim.** This repository has an accepted PoC implementation and release-path workflows, but this document does not claim a tag, package distribution, website, Homebrew formula, plugin, or other public release.
 
@@ -34,7 +34,9 @@ Contract epoch: `tz-v1`
 | P3 | five-file snapshot and bounded slice | 29 tests; deterministic store, safe replacement, fixed-point budgets |
 | P4 | semantic diff, check policy, doctor | 47 tests; per-cluster counts, resolution-safe loading, structured doctor |
 | P5 | real IndexStoreDB enrichment | 53 tests; compiler USRs/read/write/call relations, mixed-mode guard, canonical use-site merge |
-| P6 | skills, self-contained specs, baseline, dogfood, CI | integration candidate: 64 tests; source scan 3,134 nodes/6,150 edges and audit 0 findings; RuleTests baseline 268 nodes/521 edges/14 findings; terminal acceptance pending |
+| P6 | specialist skills, self-contained specs, baseline, dogfood, CI | accepted: three specialist skills; 64 tests; source scan 3,134 nodes/6,150 edges and audit 0 findings; RuleTests baseline 268 nodes/521 edges/14 findings |
+| P7 | requirement-by-requirement completion | accepted with compatible PoC residuals across all 54 source sections |
+| P8 | single skill entry point | accepted: `swiftui-semantic` routes to three accepted specialist workflows; four-skill validation, four fresh-context routing scenarios, and independent review pass |
 
 ## Current contract surface
 
@@ -62,6 +64,8 @@ Contract epoch: `tz-v1`
 
 **BASE-CAP-008.** The accepted value-setter evidence repair leaves counts and metrics unchanged while retaining each matching event-trigger edge in its finding. `LabeledSetter` is `finding:871672afc5e64d2` with `edge:df78fa011860918b`; `ValueSetterPair` is `finding:c988942f3dcf8158` with `edge:fec6154e7fee5d1f`. This records current evidence completeness and does not add another rule.
 
+**BASE-CAP-009.** The agent workflow surface contains one concise user-facing router, `swiftui-semantic`, and three specialist skills for audit, refactor, and change review. The router selects or sequences specialists without duplicating their workflow or weakening their gates.
+
 ## Accepted residuals and limits
 
 **BASE-LIM-001 — PoC extraction.** Syntax-only extraction remains intentionally bounded to the PoC vocabulary. A nested closure passed through an unregistered call can attach to an outer registered call, and receiver identity for same-named member calls is conservative. The frontend is not a full type checker, SIL pipeline, or full interprocedural/alias/control-flow analyzer.
@@ -78,8 +82,8 @@ Contract epoch: `tz-v1`
 
 **BASE-LIM-007 — Deferred rules/features.** Suspicious Binding setter and general ownership-mismatch concepts remain adjudication guidance rather than additional shipped PoC rules. Automatic rewriting, embedded LLM APIs, GUI/IDE/Xcode extensions, broad Swift framework analysis, and SIL remain out of scope.
 
-## Release evidence required next
+## Router acceptance evidence
 
-**BASE-NEXT-001.** P6 acceptance requires the three validated skills, self-contained docs, deterministic committed baseline, local dogfood, locked build/64-test pass, and syntactically valid macOS CI.
+**BASE-NEXT-001.** `ROUTER-001` acceptance evidence includes official validation of all four skills, an exact four-skill CI inventory, and fresh-context routing tests that select audit, refactor, review, and the mixed sequence correctly.
 
-**BASE-NEXT-002.** Completion requires an independent requirement-by-requirement review against [`acceptance.md`](acceptance.md), with any known acceptance failure reported rather than hidden as a residual.
+**BASE-NEXT-002.** Independent `ROUTER-R1` review accepted the concise routing, intact specialist gates, contract links, exact four-skill CI requirement, and unchanged Swift product and baseline semantics. The only accepted residual is the first hosted GitHub Actions run, pending because commit/push was not authorized.

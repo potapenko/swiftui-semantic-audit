@@ -1,7 +1,7 @@
 # Product contract
 
-Revision: `spec-1`  
-Authority: epoch `tz-v1`, pinned digest in the [registry](README.md)  
+Revision: `spec-2`
+Authority: epoch `tz-v2`, pinned base digest and `ROUTER-001` in the [registry](README.md)
 Status: active, unreleased
 
 ## Goal and consumer
@@ -61,7 +61,9 @@ Swift source → SwiftSyntax facts → optional indexed facts → semantic graph
 
 **PC-OPS-004 — Environment diagnosis.** Provide a non-mutating `doctor` command for Swift, Xcode/toolchain, project type, SwiftSyntax compatibility, Index Store readiness, and Git.
 
-**PC-OPS-005 — Agent workflows.** Supply reusable audit, refactor, and change-review skills that use JSON first, slice before source, preserve resolution, and enforce the LLM fact boundary.
+**PC-OPS-005 — Specialist agent workflows.** Supply reusable audit, refactor, and change-review skills that use JSON first, slice before source, preserve resolution, and enforce the LLM fact boundary.
+
+**PC-OPS-006 — Single routing entry point.** Supply `swiftui-semantic` as the concise user-facing skill. It classifies the requested outcome, loads only the appropriate specialist workflow first, and sequences audit, refactor, and review only when the task crosses those phases. It must preserve deterministic facts, resolution, baseline identities, evidence, invariants, and failure state across handoffs rather than duplicating or weakening specialist gates.
 
 ## Resolution and platform
 

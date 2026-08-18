@@ -226,6 +226,7 @@ jobs:
           require "pathname"
 
           expected = %w[
+            swiftui-semantic
             swiftui-semantic-audit
             swiftui-dataflow-refactor
             swiftui-change-review
