@@ -306,14 +306,64 @@ jobs:
           ruby <<'RUBY'
           require "pathname"
 
-          files = [Pathname("README.md")] + Pathname("docs/specs").glob("*.md")
+          public_pages = %w[
+            docs/README.md
+            docs/getting-started/README.md
+            docs/getting-started/installation.md
+            docs/getting-started/first-audit.md
+            docs/concepts/README.md
+            docs/concepts/why-semantic-audit.md
+            docs/concepts/functional-swiftui.md
+            docs/concepts/deterministic-facts-and-agent-judgment.md
+            docs/workflows/README.md
+            docs/workflows/audit.md
+            docs/workflows/refactor.md
+            docs/workflows/change-review.md
+            docs/reference/README.md
+            docs/reference/cli.md
+            docs/reference/configuration.md
+            docs/reference/rules.md
+            docs/reference/outputs-snapshots-and-diff.md
+            docs/development/README.md
+          ].map { |path| Pathname(path) }
+          missing_pages = public_pages.reject(&:file?)
+          abort("missing public documentation: #{missing_pages.join(', ')}") unless missing_pages.empty?
+
+          def anchors_for(file)
+            counts = Hash.new(0)
+            anchors = []
+            file.read(encoding: "UTF-8").each_line do |line|
+              match = line.match(/^\#{1,6}\s+(.+?)\s*\#*\s*$/)
+              next unless match
+
+              text = match[1].gsub(/<[^>]+>/, "").gsub(/[`*_~]/, "")
+              slug = text.downcase.gsub(/[^\p{Alnum}\p{M}\s_-]/u, "").strip.gsub(/\s+/, "-")
+              suffix = counts[slug]
+              counts[slug] += 1
+              anchors << (suffix.zero? ? slug : "#{slug}-#{suffix}")
+            end
+            anchors
+          end
+
+          files = [Pathname("README.md")] + Pathname("docs").glob("**/*.md").sort
           files.each do |file|
             file.read(encoding: "UTF-8").scan(/\[[^\]]+\]\(([^)]+)\)/).flatten.each do |target|
-              next if target.match?(/\A(?:https?:|#)/)
-              relative = target.split("#", 2).first
-              path = file.dirname / relative
+              next if target.match?(/\Ahttps?:/)
+              relative, fragment = target.split("#", 2)
+              path = relative.empty? ? file : (file.dirname / relative).cleanpath
               abort("broken link #{target} in #{file}") unless path.exist?
+              if fragment && !fragment.empty? && path.file? && path.extname == ".md"
+                abort("broken anchor ##{fragment} in #{file}") unless anchors_for(path).include?(fragment)
+              end
             end
           end
+
+          rule_source = Pathname("Sources/AuditCore/AuditModels.swift").read(encoding: "UTF-8")
+          rule_enum = rule_source[/public enum RuleID.*?^}/m]
+          abort("RuleID declaration not found") unless rule_enum
+          rule_ids = rule_enum.scan(/^\s*case\s+\w+\s*=\s*"([^"]+)"/).flatten
+          rule_reference = Pathname("docs/reference/rules.md").read(encoding: "UTF-8")
+          missing_rules = rule_ids.reject { |identifier| rule_reference.include?("`#{identifier}`") }
+          abort("rules missing from public reference: #{missing_rules.join(', ')}") unless missing_rules.empty?
           RUBY
           git diff --check

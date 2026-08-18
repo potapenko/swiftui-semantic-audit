@@ -1,0 +1,181 @@
+# CLI reference
+
+`swiftui-audit` 0.3.0 exposes seven public subcommands. JSON written to stdout is the machine contract. Diagnostics belong on stderr, and callers must always inspect process status.
+
+Run the executable help for the checked-out build:
+
+```bash
+swiftui-audit --help
+swiftui-audit <command> --help
+```
+
+When developing inside this repository, replace `swiftui-audit` with:
+
+```bash
+swift run --disable-automatic-resolution swiftui-audit
+```
+
+## Commands
+
+### `scan`
+
+```text
+swiftui-audit scan <path> [--format json] [--output <file>]
+                     [--index-store <path> | --syntax-only] [--config <path>]
+```
+
+Build the canonical semantic graph for one Swift file or a directory. JSON is the only and default format. `--output` writes atomically to the selected file instead of stdout.
+
+### `audit`
+
+```text
+swiftui-audit audit <path> [--format json]
+                      [--index-store <path> | --syntax-only] [--config <path>]
+```
+
+Normalize state/data flow and evaluate all 29 current rules. Human output gives total and per-rule counts. JSON contains the complete report, metrics, semantic values, and findings.
+
+### `snapshot`
+
+```text
+swiftui-audit snapshot [<path>] [--output <directory>] [--format json]
+                         [--index-store <path> | --syntax-only] [--config <path>]
+```
+
+Defaults: source `.`, output `.semantic`. The output directory contains exactly five canonical files. Optional JSON stdout is a manifest and summary receipt.
+
+The command rejects unsafe or overlapping source/output paths and refuses to replace a nonempty directory unless it is already a valid snapshot.
+
+### `slice`
+
+```text
+swiftui-audit slice [<input>] (--finding <id> | --symbol <selector>)
+                      [--format llm-json] [--token-budget <positive-int>]
+                      [--index-store <path> | --syntax-only] [--config <path>]
+```
+
+Select exactly one finding or symbol and return a bounded context envelope. Input resolution is:
+
+1. explicit input;
+2. `.semantic` in the current directory;
+3. live source.
+
+Resolution and config options apply to live source. A snapshot already carries its evidence mode and configuration digest. Symbol selectors accept an exact stable ID, an exact qualified name, or an unambiguous suffix.
+
+### `diff`
+
+```text
+swiftui-audit diff <base> <current> [--repository <path>] [--format json]
+```
+
+Each operand is a snapshot directory or a Git commit revision. Snapshot inputs must use the same resolution and configuration digest. Git operands are reconstructed from validated Swift blobs in a temporary directory and analyzed syntax-only; the command does not checkout, switch branches, or create worktrees.
+
+### `check`
+
+```text
+swiftui-audit check --baseline <snapshot-or-revision> [<current-source>]
+                     [--repository <path>] [--fail-on-new low|medium|high]
+                     [--format json]
+                     [--index-store <path> | --syntax-only] [--config <path>]
+```
+
+Defaults: current source `.`, repository `.`, threshold `high`. The command fails only when a new finding reaches or exceeds the threshold.
+
+A syntax-only baseline forces automatic current analysis to syntax-only. An indexed baseline requires usable indexed current analysis. Mixed modes or different configuration digests fail before policy evaluation.
+
+Policy failure exits with status `2` and still emits the requested machine report.
+
+### `doctor`
+
+```text
+swiftui-audit doctor [<path>] [--format json]
+```
+
+Default path: `.`. The command inspects without mutation:
+
+- Swift version and recognizable semantic version;
+- Xcode version and build when available;
+- the `xcrun` Swift toolchain path;
+- Swift package, Xcode project, or source-directory type;
+- SwiftSyntax release-train compatibility;
+- IndexStoreDB, compiler library, raw store, and coverage readiness on macOS;
+- Git version and worktree membership.
+
+Swift, Git, or SwiftSyntax incompatibility can make the overall result an error. Xcode and index readiness may be warnings because standalone syntax-only operation remains available.
+
+## Resolution options
+
+Live-source `scan`, `audit`, `snapshot`, `slice`, and `check` support:
+
+| Option | Behavior |
+| --- | --- |
+| `--syntax-only` | Disable index enrichment and report `resolution: "syntax-only"`. |
+| `--index-store <path>` | Require a validated compiler Index Store and report `resolution: "indexed"`; failure is terminal. |
+| Neither | Search conservative local `.build` candidates; enrich only when one validated store covers the project, otherwise remain syntax-only. |
+
+`--syntax-only` and `--index-store` are mutually exclusive.
+
+The bundled agent workflows do not use automatic fallback. They require an explicit fresh Index Store and reject any result other than `indexed`.
+
+## Configuration
+
+The live-source commands accept `--config <path>`. Without it, discovery is deliberately narrow:
+
+- directory analysis reads only `.swiftui-audit.json` directly inside that directory;
+- file analysis reads only `.swiftui-audit.json` in the file's parent;
+- there is no ancestor walk or home-directory default.
+
+See [Configuration](configuration.md).
+
+## Machine-output discipline
+
+- Parse JSON or JSONL only from stdout or the explicit output file.
+- Treat stderr as diagnostics, never as an empty JSON substitute.
+- Check exit status before interpreting the payload.
+- Preserve `resolution`, schema/tool versions, and `configurationDigest` with stored results.
+- Do not compare syntax-only and indexed results.
+
+JSON uses sorted keys, unescaped slashes, and a final newline. Canonical collections and records are sorted by stable identity.
+
+## Failure policy
+
+The CLI fails closed for invalid arguments, unsafe paths, malformed snapshots, invalid revisions, explicit index failure, ambiguous selectors, insufficient positive slice budgets, inconsistent graph/report data, mixed resolution, and mismatched configuration.
+
+External Git, Swift, Xcode, and index-helper operations have explicit timeouts. A timeout fails the current attempt instead of waiting indefinitely.
+
+## Examples
+
+Standalone syntax-only audit:
+
+```bash
+swiftui-audit audit Sources --syntax-only --format json
+```
+
+Indexed, configured agent evidence:
+
+```bash
+swiftui-audit audit Sources \
+  --index-store /absolute/path/to/index/store \
+  --config .swiftui-audit.json \
+  --format json
+```
+
+Canonical baseline and policy check:
+
+```bash
+swiftui-audit snapshot Sources \
+  --output .semantic/base \
+  --index-store /absolute/path/to/index/store \
+  --config .swiftui-audit.json \
+  --format json
+
+swiftui-audit check \
+  --baseline .semantic/base \
+  Sources \
+  --fail-on-new high \
+  --index-store /absolute/path/to/current/index/store \
+  --config .swiftui-audit.json \
+  --format json
+```
+
+Normative detail: [`docs/specs/cli.md`](../specs/cli.md).
