@@ -2,7 +2,7 @@ import AuditCore
 import Foundation
 
 public enum SnapshotManifestFactory {
-    public static func make(sourcePath: String, toolVersion: String = "0.1.0") -> SnapshotManifest {
+    public static func make(sourcePath: String, toolVersion: String = ToolMetadata.version) -> SnapshotManifest {
         let sourceURL = URL(fileURLWithPath: sourcePath).standardizedFileURL
         let workingURL = sourceURL.hasDirectoryPath ? sourceURL : sourceURL.deletingLastPathComponent()
         let repositoryRoot = command("git", ["-C", workingURL.path, "rev-parse", "--show-toplevel"])

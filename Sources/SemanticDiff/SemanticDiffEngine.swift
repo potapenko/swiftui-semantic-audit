@@ -321,13 +321,7 @@ public struct SemanticDiffEngine: Sendable {
     }
 
     private func sourceCount(_ value: NormalizedSemanticValue, graph: SemanticGraph) -> Int {
-        let nodes = Dictionary(uniqueKeysWithValues: graph.nodes.map { ($0.id, $0) })
-        return value.representations.filter { id in
-            guard let node = nodes[id] else { return false }
-            if node.kind == .state || node.kind == .observableState { return true }
-            if node.kind == .binding { return false }
-            return graph.edges.contains { $0.kind == .writes && $0.to == id }
-        }.count
+        LogicalSourceCounter.count(for: value, in: graph)
     }
 
     private func identity(for manifest: SnapshotManifest) -> String {

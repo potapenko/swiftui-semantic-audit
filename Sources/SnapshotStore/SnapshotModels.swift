@@ -10,7 +10,7 @@ public struct SnapshotManifest: Codable, Equatable, Sendable {
 
     public init(
         schemaVersion: Int = 1,
-        toolVersion: String = "0.1.0",
+        toolVersion: String = ToolMetadata.version,
         swiftVersion: String,
         repositoryRevision: String,
         generatedFrom: String

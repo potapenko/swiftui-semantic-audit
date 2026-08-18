@@ -1,6 +1,6 @@
 # Semantic IR contract
 
-Revision: `spec-1`  
+Revision: `spec-2`  
 Schema: `1`  
 Status: active
 
@@ -27,6 +27,8 @@ derivesFrom triggers aliases creates
 **IR-GRAPH-005 — Stable edge.** An edge contains stable `id`, `kind`, `from`, `to`, evidence, and confidence. Endpoints must exist in the same graph.
 
 **IR-GRAPH-006 — Canonical graph.** A graph contains `schemaVersion`, `resolution`, sorted nodes, and sorted edges. Canonical JSON is pretty-printed with sorted keys, unescaped slashes, and a trailing newline.
+
+**IR-GRAPH-007 — Explicit Binding construction.** Represent `Binding(get:set:)` with a generated `binding` node using `binding-construction` evidence. The node creates its getter and setter closures; a `sets` edge identifies the setter role, and enclosing controls may bind to the constructed node. A factory context is recorded as evidence without adding a schema-v2 node or edge kind.
 
 ## Evidence and confidence
 
@@ -64,6 +66,8 @@ Never upgrade confidence because an intended remediation seems likely.
 **IR-AUDIT-003 — Raw metrics.** Track mutable semantic values, state representations, Binding edges, manual synchronization edges, callback tunnels, derived mutable values, duplicated sources of truth, and ownership violations.
 
 **IR-AUDIT-004 — Suggestions.** Suggested patterns are candidates, not edits or proof of intent.
+
+**IR-AUDIT-005 — Logical sources.** Source counts operate on a normalized semantic value. Count owned mutable roots plus at most one unconnected external borrowed root. Do not count each Binding projection or `@Bindable` receiver independently; preserve a distinct external root when a local State mirrors it without an upstream pass/alias path.
 
 ## Persistent snapshot
 

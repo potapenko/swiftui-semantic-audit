@@ -13,7 +13,7 @@
 - Allowed specification delta: Editorial project documentation and stable clause/acceptance mappings that faithfully restate the user-supplied contract.
 - Forbidden specification delta: New product behavior, provider-specific LLM integration, SIL/full type-checker foundation, automatic rewriting, GUI/IDE/Xcode extension, or weakening transactional/transform exceptions.
 - Material decisions requiring the user: Only a proven contract conflict, protected-domain expansion, destructive/external authority requirement, or materially different product fork.
-- Current contract revision or epoch: `tz-v3` (`tz-v1` base plus `ROUTER-001` and `INDEXED-SKILLS-001`).
+- Current contract revision or epoch: `tz-v4` (`tz-v1` base plus `ROUTER-001`, `INDEXED-SKILLS-001`, and `BOUNDARY-001`).
 - Pinned contract digest: `sha256:68f8a43d924659024b7d29fabb9ad302817c271838a7919b24bd942626927cac`.
 - Required review and QA: Independent review of each integration wave, SwiftPM build/test, CLI fixture validation, deterministic byte comparison, semantic diff/check policy verification, and final completion audit.
 
@@ -37,3 +37,14 @@
 - Compatibility: Agent workflow behavior changes intentionally before public release; CLI behavior and public flags remain unchanged.
 - Specification delta: `PC-OPS-005`, `PC-OPS-007`, `ACC-SKILL-004..006`, epoch `tz-v3`.
 - QA: Four-skill validation, YAML/link validation, zero frontend-only guidance under `skills/`, explicit indexed command review, and CI regression enforcement.
+
+## Contract Delta — BOUNDARY-001
+
+- Change mode: `evolve`.
+- Authorized by: User approval on 2026-08-18 of the implementation plan derived from external real-project evaluation.
+- Previous behavior: The frontend did not model `Binding(get:set:)`; the six rules did not report command-shaped setters, Binding factories, observable model propagation, or broad observed leaf inputs; wrapper instances could inflate `duplicatedSourcesOfTruth`.
+- New behavior: Tool version `0.2.0` retains schema v1, models explicit custom Binding topology, ships four bounded additional findings, and counts logical ownership roots rather than wrapper instances.
+- Protected behavior: Existing six rules and exceptions, deterministic/LLM boundary, syntax-only CLI support, indexed-only agent workflows, seven commands, snapshot safety, resolution integrity, provider independence, and no automatic rewriting.
+- Forbidden expansion: Name-based controller/service classification, full type checking, general effect/concurrency analysis, or automatic component refactoring.
+- Specification delta: `PC-OPS-008`, `PC-SCOPE-002/004`, `PC-NONGOAL-004`, `IR-GRAPH-007`, `IR-AUDIT-005`, four `RULE-*` clauses, `ACC-FIX-007..010`, `ACC-TEST-005`, epoch `tz-v4`.
+- QA: Positive and negative fixtures, syntax-only and explicit indexed tests, full build/test, deterministic baseline regeneration, diff/check/slice/doctor dogfood, four-skill validation, scoped review, commit, and upstream push.

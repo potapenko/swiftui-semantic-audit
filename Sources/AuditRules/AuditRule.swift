@@ -16,6 +16,10 @@ public struct AuditEngine: Sendable {
         CallbackBindingTunnelRule(),
         ObservableStateMirrorRule(),
         StoredDerivedStateRule(),
+        CommandShapedBindingRule(),
+        BindingFactoryRule(),
+        ObservableModelTunnelRule(),
+        BroadObservableInputRule(),
     ]) {
         self.rules = rules
     }
@@ -36,7 +40,7 @@ public struct AuditEngine: Sendable {
         }
         let duplicatedValues = mutableValues.filter { value in
             guard value.classification == nil else { return false }
-            return value.representations.filter { index.isSourceOfTruth($0) }.count > 1
+            return LogicalSourceCounter.count(for: value, in: graph) > 1
         }
         let manualFindings = findings.filter { $0.rule == .manualTwoWaySync }
         let metrics = AuditMetrics(
@@ -124,15 +128,6 @@ struct GraphIndex {
     func isMutableRepresentation(_ id: String) -> Bool {
         guard let node = nodes[id] else { return false }
         if [.state, .binding, .observableState].contains(node.kind) { return true }
-        return edges(to: id, kind: .writes).isEmpty == false
-    }
-
-    func isSourceOfTruth(_ id: String) -> Bool {
-        guard let node = nodes[id] else { return false }
-        if node.kind == .state || node.kind == .observableState { return true }
-        if node.kind == .binding {
-            return node.evidence.contains { $0.kind == "property-wrapper" }
-        }
         return edges(to: id, kind: .writes).isEmpty == false
     }
 

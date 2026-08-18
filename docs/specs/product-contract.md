@@ -1,7 +1,7 @@
 # Product contract
 
-Revision: `spec-3`
-Authority: epoch `tz-v3`, pinned base digest, `ROUTER-001`, and `INDEXED-SKILLS-001` in the [registry](README.md)
+Revision: `spec-4`
+Authority: epoch `tz-v4`, pinned base digest, `ROUTER-001`, `INDEXED-SKILLS-001`, and `BOUNDARY-001` in the [registry](README.md)
 Status: active, unreleased
 
 ## Goal and consumer
@@ -10,7 +10,7 @@ Status: active, unreleased
 
 **PC-GOAL-002 — Primary consumer.** Optimize the interface for coding agents. Present state, ownership, dependencies, reads, writes, bindings, effects, derivation, and synchronization paths before full source.
 
-**PC-GOAL-003 — Practical outcome.** Enable an agent to detect imperative SwiftUI state-flow patterns, prove duplicated/manual synchronization, adjudicate intent, and verify a behavior-preserving move toward canonical declarative data architecture.
+**PC-GOAL-003 — Practical outcome.** Enable an agent to detect imperative SwiftUI state-flow patterns, prove duplicated/manual synchronization and selected component-boundary leaks, adjudicate intent, and verify a behavior-preserving move toward canonical declarative data architecture.
 
 ## Semantic-first architecture
 
@@ -67,6 +67,8 @@ Swift source → SwiftSyntax facts → optional indexed facts → semantic graph
 
 **PC-OPS-007 — Indexed agent boundary.** Agent-facing semantic audit, refactor, and review workflows require a fresh validated compiler Index Store, pass its path explicitly for live-source analysis, and accept only `resolution: "indexed"`. They must not recommend the build-free frontend mode, omit resolution flags in reliance on automatic discovery, or present a lower-resolution result as a semantic workflow result. Missing indexed coverage is a blocking evidence failure, not permission to weaken the workflow. The standalone CLI retains its build-free fallback for non-agent uses and deterministic test/dogfood coverage.
 
+**PC-OPS-008 — Boundary analysis.** Represent explicit `Binding(get:set:)` construction and its getter/setter closures, detect command-shaped setters and Binding factories, identify the same observable model crossing multiple View boundaries, and emit a candidate when a leaf View directly depends on externally observed model members. Keep deterministic topology separate from the agent's decision about legitimate screen ownership or component isolation.
+
 ## Resolution and platform
 
 **PC-RES-001 — Syntax-only guarantee.** Support useful analysis without a build or index and label it `resolution: "syntax-only"`.
@@ -97,9 +99,11 @@ Swift source → SwiftSyntax facts → optional indexed facts → semantic graph
 
 **PC-SCOPE-001 — Supported vocabulary.** Cover SwiftUI view discovery, `@State`, `@Binding`, `@Bindable`, `@Environment`, property access, assignments, callbacks/closures, initializer propagation, `.onChange`, `.onAppear`, `.task`, `.task(id:)`, and common controls (`TextField`, `Toggle`, `Slider`, `Picker`) to the extent exercised by accepted fixtures.
 
-**PC-SCOPE-002 — Required rules.** Ship mirrored state, manual two-way synchronization, value+setter pair, callback Binding tunnel, observable-state mirror, and stored derived state.
+**PC-SCOPE-002 — Required rules.** Ship mirrored state, manual two-way synchronization, value+setter pair, callback Binding tunnel, observable-state mirror, stored derived state, command-shaped Binding, Binding factory, observable-model tunnel, and broad observable input.
 
 **PC-SCOPE-003 — Full rebuild.** A full graph rebuild is acceptable in the PoC. Incremental caching by content/tool/schema hash is a future direction, not a current guarantee.
+
+**PC-SCOPE-004 — Source-count semantics.** Count logical ownership roots, not wrapper instances. A focused `State → Binding → Binding` chain has one source; an external borrowed Binding or observable root plus a distinct local State has two. Binding projections and `@Bindable` receivers are representations, not independent owners.
 
 ## Non-goals
 
@@ -108,6 +112,8 @@ Swift source → SwiftSyntax facts → optional indexed facts → semantic graph
 **PC-NONGOAL-002.** Do not provide automatic source rewriting, embedded LLM API integration, an IDE plugin, GUI, Xcode extension, security analysis, or performance analysis.
 
 **PC-NONGOAL-003.** Future analysis of concurrency, async tasks, actors, dependency injection, navigation, persistence, resources, networking, errors, and general effects is directional context only, not current behavior.
+
+**PC-NONGOAL-004.** Do not classify arbitrary plain properties as feature models, controllers, or services from names or types alone. General component-role inference requires a later typed semantic contract; `broad-observable-input` is limited to explicit observed/injected topology and remains an agent-adjudicated candidate.
 
 ## Dogfood and release
 

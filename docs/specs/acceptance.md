@@ -1,6 +1,6 @@
 # Acceptance and QA contract
 
-Revision: `spec-3`
+Revision: `spec-4`
 Status: active  
 Release state: unreleased
 
@@ -18,6 +18,14 @@ Release state: unreleased
 
 **ACC-FIX-006 — Closure-parameter scope.** Prove that an unshadowed nested closure may capture an outer `onChange` parameter with identity preserved, a same-name nested parameter is a lexical shadow barrier, and transformed captures produce derivation rather than identity-copy topology.
 
+**ACC-FIX-007 — Binding construction.** Prove that explicit custom Binding construction records one binding node, distinct getter/setter closures, a setter-role edge, enclosing control binding, and stable relative evidence in syntax-only and indexed graphs.
+
+**ACC-FIX-008 — Boundary findings.** Prove exact findings for command-only and write-plus-effect setters, non-View Binding factories, two-boundary observable tunnels, and broad observed leaf inputs.
+
+**ACC-FIX-009 — Boundary exclusions.** Prove no new finding for a direct custom Binding, transformation-only setter, focused Binding chain, View-owned local model, focused value/action input, transactional draft, or intentional transformation.
+
+**ACC-FIX-010 — Logical source count.** Prove focused Binding and observable projection chains have one logical source, while an external borrowed root mirrored into a distinct local State still has two and reports one duplication.
+
 ## Build and tests
 
 **ACC-TEST-001.** Resolve only intentionally, then run locked verification:
@@ -32,6 +40,8 @@ swift test --disable-automatic-resolution
 **ACC-TEST-003.** The current integration candidate has 64 passing tests after the separately owned stable-identity, Binding-mirror/distinct-endpoint, lexical closure-parameter, and value-setter evidence repairs.
 
 **ACC-TEST-004.** P6 itself must not modify accepted Swift product source, dependencies, existing tests, or fixtures.
+
+**ACC-TEST-005.** `BOUNDARY-001` must exercise every new rule in deterministic frontend tests and at least one fresh explicit indexed integration path. Indexed enrichment must preserve new generated binding topology and finding identity.
 
 ## Determinism and safety
 
@@ -115,3 +125,5 @@ swift test --disable-automatic-resolution
 **ACC-DOD-005.** A refactor can be objectively accepted only when manual synchronization/targeted violations improve, no new high violation appears, ownership does not degrade, and behavior tests pass.
 
 **ACC-DOD-006.** Public documentation, one routing skill, three specialist skills, deterministic dogfood baseline, and CI are complete while the release remains truthfully `unreleased`.
+
+**ACC-DOD-007.** Tool version `0.2.0` ships ten rules, explicit custom Binding topology, topology-based logical source counting, bounded component-boundary findings, updated agent adjudication guidance, and regenerated deterministic baselines while retaining schema version 1.

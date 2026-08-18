@@ -1,7 +1,7 @@
 # Rule and adjudication contract
 
-Revision: `spec-1`  
-Rule set: six required PoC rules  
+Revision: `spec-2`  
+Rule set: ten required rules  
 Status: active
 
 ## Engine
@@ -26,6 +26,14 @@ Status: active
 
 **RULE-DERIVED-001 — `stored-derived-state`.** Detect mutable state derived from one or more inputs without an identity cycle back. Include unary derivation; exclude identity transformation cycles. Severity `medium`; confidence `strong-inference`; candidate pattern `derived-value`.
 
+**RULE-COMMAND-001 — `command-shaped-binding`.** Detect an explicit `Binding(get:set:)` whose setter executes a standalone command/callback call instead of a direct value write, or combines a direct write with an additional standalone call. Do not report a getter plus one direct identity write, or a transformation call used only to produce the assigned value. Severity `medium`; confidence `strong-inference`; candidate patterns `action-closure`, `focused-binding`.
+
+**RULE-FACTORY-001 — `binding-factory`.** Detect an explicit Binding construction in a non-View function or computed property whose declared result is `Binding`. This is architectural evidence, not proof that the factory is wrong. Severity `medium`; confidence `candidate`; candidate patterns `focused-binding`, `action-closure`.
+
+**RULE-MODEL-TUNNEL-001 — `observable-model-tunnel`.** Detect one normalized semantic value containing an owned/external observable representation passed through at least two View initializer boundaries into observed representations. Report the exact boundary depth. Severity `medium`; confidence `strong-inference`; candidate patterns `focused-input`, `focused-binding`, `action-closure`.
+
+**RULE-BROAD-INPUT-001 — `broad-observable-input`.** Detect a View that directly reads, writes, calls, or projects members through an externally observed or injected model representation. Require member-use topology; forwarding without direct member use is not enough. Exclude View-owned local `State` and roots already represented by the higher-severity observable-mirror topology. Severity `medium`; confidence `candidate`; candidate patterns `focused-input`, `focused-binding`, `action-closure`.
+
 ## Required distinctions
 
 **RULE-EXC-001 — Direct Binding.** A correctly owned direct Binding produces no violation merely for being mutable or externally owned.
@@ -36,9 +44,11 @@ Status: active
 
 **RULE-EXC-004 — Legitimate local UI state.** View-owned state with an independent UI lifetime and no duplicated external canonical value is valid.
 
-**RULE-EXC-005 — Binding effects.** The presence of Binding does not prove good architecture. Unrelated analytics, persistence, or other effects in a setter require agent review; the current six-rule PoC does not claim the deferred suspicious-setter rule is implemented.
+**RULE-EXC-005 — Binding effects.** The presence of Binding does not prove good architecture. A custom setter with a standalone command or unrelated effect is reported, while a direct identity setter and a transformation used only to compute the assigned value remain clean.
 
 **RULE-EXC-006 — Weak similarity.** Names, types, and UI proximity alone cannot cluster semantic values or trigger automatic refactoring.
+
+**RULE-EXC-007 — Component owner.** A View-owned local model without an external observation/injection boundary is not a broad observable input. A screen or container may legitimately receive a model; `broad-observable-input` therefore remains a candidate for agent adjudication.
 
 ## Agent adjudication
 
@@ -74,5 +84,15 @@ Status: active
 | `BindingTransactionalDraft` | no finding; one transactional semantic value |
 | `BindingIndependentLocalState` | no finding |
 | `BindingSelfCopy` | no finding; one self-copy is not a reciprocal pair |
+| `CommandBinding` | `command-shaped-binding`, `broad-observable-input` |
+| `BindingWithEffect` | `command-shaped-binding` |
+| `BindingFactory` | `binding-factory` only |
+| `ObservableModelTunnel` | `observable-model-tunnel`, depth 2 |
+| `BroadObservableInput` | `broad-observable-input` |
+| `DirectCustomBinding` | none |
+| `TransformedBinding` | none |
+| `FocusedBindingChain` | none; one logical source of truth |
+| `LocalModelOwner` | none |
+| `FocusedActionInput` | none |
 
 Perturbation fixtures prove renamed transactions, missing/fake discard, labeled setters, unary derivation, identity-transform exclusion, mismatched tunnels, and minimum tunnel depth.

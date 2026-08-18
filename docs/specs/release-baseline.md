@@ -1,8 +1,8 @@
 # Unreleased implementation baseline
 
-Revision: `spec-3`
+Revision: `spec-4`
 Baseline state: `unreleased`  
-Contract epoch: `tz-v3`
+Contract epoch: `tz-v4`
 
 **BASE-REL-001 — No public release claim.** This repository has an accepted PoC implementation and release-path workflows, but this document does not claim a tag, package distribution, website, Homebrew formula, plugin, or other public release.
 
@@ -91,3 +91,5 @@ Contract epoch: `tz-v3`
 **BASE-NEXT-002.** Independent `ROUTER-R1` review accepted the concise routing, intact specialist gates, contract links, exact four-skill CI requirement, and unchanged Swift product and baseline semantics. The only accepted residual is the first hosted GitHub Actions run, pending because commit/push was not authorized.
 
 **BASE-NEXT-003.** `INDEXED-SKILLS-001` acceptance requires zero frontend-only guidance under `skills/`, explicit index-store commands in every live-source specialist workflow, indexed-only handoffs and review snapshots, four-skill validation, YAML/link validation, and the CI regression guard.
+
+**BASE-NEXT-004.** `BOUNDARY-001` acceptance requires tool version `0.2.0`, schema version 1, ten exact rules, custom Binding construction topology, logical source-count fixtures, syntax-only and fresh explicit indexed evidence, a regenerated five-file RuleTests baseline, and updated agent adjudication guidance. Final counts and hashes replace this planning clause only after verification.

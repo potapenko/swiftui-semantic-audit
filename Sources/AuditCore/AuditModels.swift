@@ -7,6 +7,10 @@ public enum RuleID: String, Codable, CaseIterable, Sendable {
     case callbackBindingTunnel = "callback-binding-tunnel"
     case observableStateMirror = "observable-state-mirror"
     case storedDerivedState = "stored-derived-state"
+    case commandShapedBinding = "command-shaped-binding"
+    case bindingFactory = "binding-factory"
+    case observableModelTunnel = "observable-model-tunnel"
+    case broadObservableInput = "broad-observable-input"
 }
 
 public enum Severity: String, Codable, CaseIterable, Sendable {
@@ -126,7 +130,7 @@ public struct AuditReport: Codable, Equatable, Sendable {
 
     public init(
         schemaVersion: Int = 1,
-        toolVersion: String = "0.1.0",
+        toolVersion: String = ToolMetadata.version,
         resolution: String,
         metrics: AuditMetrics,
         semanticValues: [NormalizedSemanticValue],

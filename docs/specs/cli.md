@@ -1,8 +1,8 @@
 # CLI contract
 
-Revision: `spec-1`  
+Revision: `spec-2`  
 Executable: `swiftui-audit`  
-Tool version in schema: `0.1.0`  
+Tool version in schema: `0.2.0`  
 Status: active, unreleased
 
 All syntax below was verified against the accepted P1–P5 executable help.
@@ -47,7 +47,7 @@ swiftui-audit audit <path> [--format json]
                       [--index-store <path> | --syntax-only]
 ```
 
-Evaluate exactly the six current PoC rules. Human output reports total and per-rule counts; JSON emits the complete audit report.
+Evaluate exactly the ten current rules. Human output reports total and per-rule counts; JSON emits the complete audit report.
 
 ## `snapshot`
 

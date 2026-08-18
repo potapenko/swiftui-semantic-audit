@@ -100,7 +100,7 @@ public struct SemanticDiffReport: Codable, Equatable, Sendable {
 
     public init(
         schemaVersion: Int = 1,
-        toolVersion: String = "0.1.0",
+        toolVersion: String = ToolMetadata.version,
         baseIdentity: String,
         currentIdentity: String,
         beforeMetrics: AuditMetrics,

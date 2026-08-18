@@ -325,6 +325,25 @@ public struct ContextSlicer: Sendable {
 
     private func questionsFor(finding: AuditFinding?, selection: String) -> [String] {
         if let finding {
+            switch finding.rule {
+            case .commandShapedBinding:
+                return [
+                    "Does the setter represent value mutation, or an application command/effect that should remain explicit?",
+                    "Would a focused Binding plus a separate action preserve ownership and side-effect timing?",
+                ]
+            case .bindingFactory:
+                return [
+                    "Why does the non-View owner vend Binding instead of values and actions?",
+                    "Which owner, lifetime, transformation, and side effects must a replacement preserve?",
+                ]
+            case .observableModelTunnel, .broadObservableInput:
+                return [
+                    "Is the receiving View a legitimate screen/container owner or a reusable component boundary?",
+                    "Which focused values, bindings, and actions express the minimum required dependency surface?",
+                ]
+            default:
+                break
+            }
             return [
                 "Which representation should own the affected semantic value?",
                 "Does the evidence support \(finding.rule.rawValue), an intentional transformation, or transactional behavior?",

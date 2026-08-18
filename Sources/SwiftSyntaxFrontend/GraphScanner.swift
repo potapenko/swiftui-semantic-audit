@@ -548,6 +548,7 @@ private final class RelationshipVisitor: BaseVisitor {
     private var generatedCounters: [String: Int] = [:]
     private var generatedCallOwners: [SyntaxRangeKey: (id: String, qualifiedName: String)] = [:]
     private var pendingClosureTargets: [SyntaxRangeKey: (target: String, evidenceKind: String)] = [:]
+    private var pendingBindingSetters: [SyntaxRangeKey: (binding: String, evidence: Evidence)] = [:]
     private var pendingOnChangeParameters: [SyntaxRangeKey: OnChangeParameterBinding] = [:]
     private var closureReferenceFrames: [ClosureReferenceFrame] = []
     private var assignmentTargetRanges: [(start: Int, end: Int)?] = []
@@ -618,6 +619,9 @@ private final class RelationshipVisitor: BaseVisitor {
             evidence: evidence(node, kind: "closure-expression")
         )
         builder.addEdge(kind: .creates, from: parent.0, to: id, evidence: evidence(node, kind: "closure-expression"))
+        if let setter = pendingBindingSetters[syntaxKey(node)] {
+            builder.addEdge(kind: .sets, from: setter.binding, to: id, evidence: setter.evidence)
+        }
         if let pending = pendingClosureTargets[syntaxKey(node)] {
             builder.addEdge(
                 kind: .passes,
@@ -658,6 +662,17 @@ private final class RelationshipVisitor: BaseVisitor {
     override func visit(_ node: FunctionCallExprSyntax) -> SyntaxVisitorContinueKind {
         let callName = calledName(node.calledExpression)
         let callEvidence = evidence(node, kind: "function-call")
+
+        if callName == "Binding",
+           argument(named: "get", in: node)?.as(ClosureExprSyntax.self) != nil,
+           let setter = argument(named: "set", in: node)?.as(ClosureExprSyntax.self) {
+            let bindingID = makeBindingConstruction(node)
+            pendingBindingSetters[syntaxKey(setter)] = (
+                binding: bindingID,
+                evidence: evidence(setter, kind: "binding-setter")
+            )
+            return .visitChildren
+        }
 
         if SwiftUIVocabulary.modifiers.contains(callName) {
             let kind: NodeKind = callName == "onChange" ? .event : .effect
@@ -706,8 +721,17 @@ private final class RelationshipVisitor: BaseVisitor {
             return .visitChildren
         }
 
-        if let calleeID = resolveReference(callName, node: node.calledExpression) {
-            builder.addEdge(kind: .calls, from: currentOwnerID, to: calleeID, evidence: callEvidence)
+        if let calleeID = resolveReference(callName, node: node.calledExpression) ??
+            resolveObservedCallTarget(node.calledExpression) {
+            builder.addEdge(
+                kind: .calls,
+                from: currentOwnerID,
+                to: calleeID,
+                evidence: evidence(
+                    node,
+                    kind: isAssignmentTransformCall(node) ? "assignment-transform-call" : "function-call"
+                )
+            )
         }
 
         if callName.first?.isUppercase == true,
@@ -840,6 +864,46 @@ private final class RelationshipVisitor: BaseVisitor {
         return id
     }
 
+    private func makeBindingConstruction(_ node: FunctionCallExprSyntax) -> String {
+        let parent = enclosingGeneratedOwner(for: node) ?? (currentOwnerID, currentOwnerName)
+        let ordinal = nextOrdinal(role: "Binding", owner: parent.1)
+        let name = "Binding#\(ordinal)"
+        let qualifiedName = "\(parent.1).\(name)"
+        let bindingID = builder.addNode(
+            kind: .binding,
+            name: name,
+            qualifiedName: qualifiedName,
+            discriminator: "binding-construction:\(ordinal)",
+            evidence: evidence(node, kind: "binding-construction")
+        )
+        if isBindingFactoryContext(node) {
+            _ = builder.addNode(
+                kind: .binding,
+                name: name,
+                qualifiedName: qualifiedName,
+                discriminator: "binding-construction:\(ordinal)",
+                evidence: evidence(node, kind: "binding-factory"),
+                mergeEvidence: true
+            )
+        }
+        builder.addEdge(
+            kind: .creates,
+            from: parent.0,
+            to: bindingID,
+            evidence: evidence(node, kind: "binding-construction")
+        )
+        if builder.node(id: parent.0)?.evidence.contains(where: { $0.kind == "swiftui-control" }) == true {
+            builder.addEdge(
+                kind: .binds,
+                from: parent.0,
+                to: bindingID,
+                evidence: evidence(node, kind: "control-binding")
+            )
+        }
+        generatedCallOwners[syntaxKey(node)] = (bindingID, qualifiedName)
+        return bindingID
+    }
+
     private func addBindingProjection(text: String, controlID: String, node: some SyntaxProtocol) {
         guard let projected = firstReference(in: text), projected.contains("$") else { return }
         let baseReference = projected.replacingOccurrences(of: "$", with: "")
@@ -862,6 +926,18 @@ private final class RelationshipVisitor: BaseVisitor {
 
     private func resolveOrCreate(_ expression: ExprSyntax, evidence: Evidence) -> String? {
         resolveOrCreate(text: expression.trimmedDescription, node: expression, evidenceKind: evidence.kind)
+    }
+
+    private func resolveObservedCallTarget(_ expression: ExprSyntax) -> String? {
+        let text = expression.trimmedDescription
+        guard let reference = firstReference(in: text), reference.contains("."),
+              let rootName = reference.replacingOccurrences(of: "self.", with: "")
+                .split(separator: ".").first.map(String.init),
+              let rootID = resolveReference(rootName, node: expression),
+              let root = builder.node(id: rootID),
+              root.kind == .input || root.kind == .observableState
+        else { return nil }
+        return resolveOrCreate(text: text, node: expression, evidenceKind: "function-call-target")
     }
 
     private func resolveOrCreate(text: String, node: some SyntaxProtocol, evidenceKind: String) -> String? {
@@ -971,6 +1047,62 @@ private final class RelationshipVisitor: BaseVisitor {
             ancestor = syntax.parent
         }
         return nil
+    }
+
+    private func enclosingGeneratedOwner(for call: FunctionCallExprSyntax) -> (String, String)? {
+        var ancestor = call.parent
+        while let syntax = ancestor {
+            if let enclosingCall = syntax.as(FunctionCallExprSyntax.self),
+               let owner = generatedCallOwners[syntaxKey(enclosingCall)] {
+                return owner
+            }
+            ancestor = syntax.parent
+        }
+        return nil
+    }
+
+    private func isBindingFactoryContext(_ call: FunctionCallExprSyntax) -> Bool {
+        guard !ownerIDs.contains(where: { builder.node(id: $0)?.kind == .view }) else { return false }
+        var ancestor = call.parent
+        while let syntax = ancestor {
+            if let function = syntax.as(FunctionDeclSyntax.self) {
+                return isBindingType(function.signature.returnClause?.type.trimmedDescription)
+            }
+            if let binding = syntax.as(PatternBindingSyntax.self),
+               let type = binding.typeAnnotation?.type.trimmedDescription {
+                return isBindingType(type)
+            }
+            if syntax.is(StructDeclSyntax.self) || syntax.is(ClassDeclSyntax.self) ||
+                syntax.is(EnumDeclSyntax.self) || syntax.is(ActorDeclSyntax.self) {
+                return false
+            }
+            ancestor = syntax.parent
+        }
+        return false
+    }
+
+    private func isBindingType(_ type: String?) -> Bool {
+        guard let type else { return false }
+        let canonical = type.filter { !$0.isWhitespace }
+        return canonical == "Binding" || canonical.hasPrefix("Binding<") ||
+            canonical.contains(".Binding<")
+    }
+
+    private func isAssignmentTransformCall(_ call: FunctionCallExprSyntax) -> Bool {
+        var ancestor = call.parent
+        while let syntax = ancestor {
+            if let sequence = syntax.as(SequenceExprSyntax.self) {
+                let elements = Array(sequence.elements)
+                guard let assignment = elements.firstIndex(where: { $0.is(AssignmentExprSyntax.self) }),
+                      assignment + 1 < elements.count
+                else { return false }
+                let rhsStart = elements[assignment + 1].positionAfterSkippingLeadingTrivia.utf8Offset
+                return call.positionAfterSkippingLeadingTrivia.utf8Offset >= rhsStart
+            }
+            if syntax.is(CodeBlockItemSyntax.self) { return false }
+            ancestor = syntax.parent
+        }
+        return false
     }
 
     private func syntaxKey(_ node: some SyntaxProtocol) -> SyntaxRangeKey {
