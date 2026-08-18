@@ -1,6 +1,6 @@
 # Acceptance and QA contract
 
-Revision: `spec-5`
+Revision: `spec-6`
 Status: active  
 Release state: unreleased
 
@@ -36,6 +36,10 @@ Release state: unreleased
 
 **ACC-FIX-015 — Dominance.** Prove one generic/specific path does not produce redundant findings under `RULE-DOM-001`.
 
+**ACC-FIX-016 — Realistic multi-file patterns.** Maintain one compilable, configured SwiftUI corpus with paired bad and good implementations across state flow, owner/component boundaries, lifecycle/focus/selection, geometry, platform adapters, and previews. Require an exact per-file rule/count matrix, exact severity/confidence, valid relative evidence, and no finding whose evidence points into a good counterpart.
+
+**ACC-FIX-017 — Scale and resolution invariance.** Adding at least forty clean SwiftUI source files to the realistic corpus must preserve every existing finding exactly. Two fresh explicit IndexStoreDB enrichments must be byte-identical, retain `resolution: "indexed"`, and preserve the syntax-mode per-rule/per-file finding matrix without duplication or loss.
+
 ## Build and tests
 
 **ACC-TEST-001.** Resolve only intentionally, then run locked verification:
@@ -56,6 +60,8 @@ swift test --disable-automatic-resolution
 **ACC-TEST-006.** `ARCHITECTURE-001` advances tool version to `0.3.0` and schema to v2. Every new rule has positive and negative deterministic fixtures; identity/config/type topology has fresh explicit indexed coverage; snapshot/diff/check enforce configuration digest equality.
 
 **ACC-TEST-007.** The `ARCHITECTURE-001` implementation candidate has 77 passing tests, including all prior suites, four focused architecture/configuration tests, accessor/switch-case identity coverage, configuration-mismatch comparison, and two new explicit IndexStoreDB tests.
+
+**ACC-TEST-008.** `REALISTIC-FIXTURES-001` advances the accepted suite to 81 passing tests: three deterministic realistic-corpus rule tests and one fresh explicit indexed parity test. The restore sub-slice deduplicates multiple frontend/compiler ownership edges for one typed View boundary and associates a compiler-shared method call only with receiver evidence from the same source range.
 
 ## Determinism and safety
 
@@ -118,13 +124,14 @@ swift test --disable-automatic-resolution
 2. verify Swift >= 6.3 and print Xcode version;
 3. resolve, build, and test;
 4. audit legacy rule fixtures, configured architecture fixtures, negative architecture fixtures, and `Sources` in syntax-only JSON mode;
-5. snapshot fixtures twice and compare all five files byte for byte;
-6. compare the generated snapshot with the committed baseline using exact semantic-file bytes and the revision-only manifest normalization in `ACC-DET-003`;
-7. run `check --fail-on-new high`;
-8. slice an emitted real finding;
-9. run doctor JSON;
-10. validate all skills and their YAML metadata without repository or global-environment mutation, and reject frontend-only resolution guidance anywhere under `skills/`;
-11. parse JSON/YAML and check placeholders/links.
+5. compile and audit `RealProjectPatterns` through a fresh explicit Index Store and audit the same corpus in syntax-only mode, requiring 34 findings, no good-file evidence, and an identical per-rule/per-file matrix;
+6. snapshot fixtures twice and compare all five files byte for byte;
+7. compare the generated snapshot with the committed baseline using exact semantic-file bytes and the revision-only manifest normalization in `ACC-DET-003`;
+8. run `check --fail-on-new high`;
+9. slice an emitted real finding;
+10. run doctor JSON;
+11. validate all skills and their YAML metadata without repository or global-environment mutation, and reject frontend-only resolution guidance anywhere under `skills/`;
+12. parse JSON/YAML and check placeholders/links.
 
 ## Definition of Done map
 
@@ -143,3 +150,5 @@ swift test --disable-automatic-resolution
 **ACC-DOD-007.** Tool version `0.2.0` baseline shipped ten rules and schema v1.
 
 **ACC-DOD-008.** Tool version `0.3.0` ships schema v2, collision-safe indexed extraction, explicit configuration, twenty-nine rules, dominance, complete negative fixtures, updated skills, deterministic baselines, and hosted CI while remaining unreleased.
+
+**ACC-DOD-009.** A compilable multi-file realistic corpus proves 34 exact findings across 24 rules, clean paired alternatives, forty-file distractor invariance, and syntax/indexed matrix parity without changing the twenty-nine-rule product contract.

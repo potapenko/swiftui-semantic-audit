@@ -1,6 +1,6 @@
 # Unreleased implementation baseline
 
-Revision: `spec-5`
+Revision: `spec-6`
 Baseline state: `unreleased`  
 Contract epoch: `tz-v5`
 
@@ -11,6 +11,8 @@ Contract epoch: `tz-v5`
 **BASE-REL-003 — Boundary-analysis revision.** The `BOUNDARY-001` product implementation is commit `e81f10d4b06ae1c738b8302d579858854fc69a44`, present on `origin/master`. The regenerated RuleTests manifest records that exact product-source revision; the accompanying tests, baseline, documentation, and skill guidance are its acceptance evidence.
 
 **BASE-REL-004 — Architecture-analysis revision.** The `ARCHITECTURE-001` implementation is product commit `2e9207fe1093995e7abd4880ca17745ee2b0b28b`, collision-scope restore commit `5d16cc3b9ef441be448b16554c9c4e662f573f4a`, bounded large-project index timeout commit `f02927a3ecb38eeee89ab23fd77f58c50c6560b7`, and indexed-enrichment topology optimization commit `91da0c92eb95812a642819634998772f66493a13`. The schema-v2 RuleTests manifest records the latter exact product-source revision; the subsequent baseline, CI, documentation, and skill checkpoint is its acceptance evidence.
+
+**BASE-REL-005 — Realistic-fixtures revision.** `REALISTIC-FIXTURES-001` product/test commit `551158bccb7b1eabf87111fffaada78dddd8becc` is present on `origin/master`. It adds the compilable multi-file regression corpus and restores one-boundary/one-finding semantics plus receiver-specific indexed effect association without changing tool version, schema, rule count, or the canonical RuleTests semantic baseline.
 
 ## Dependency and platform baseline
 
@@ -43,6 +45,7 @@ Contract epoch: `tz-v5`
 | P8 | single skill entry point | accepted: `swiftui-semantic` routes to three accepted specialist workflows; four-skill validation, four fresh-context routing scenarios, and independent review pass |
 | P9 | boundary analysis and logical roots | accepted: tool 0.2.0/schema v1; ten rules; explicit custom Binding topology; 69 tests including fresh indexed enrichment; deterministic 353/664/20 RuleTests baseline; full CLI dogfood pass |
 | P10 | architecture analysis | accepted: tool 0.3.0/schema v2; collision-safe identities; exact configuration; 29 rules; 77 tests; deterministic 353/713/20 RuleTests baseline; configured positive/negative and indexed evidence; full local CLI dogfood; hosted CI pass |
+| P11 | realistic architecture regression corpus | accepted: 81 tests; 34 exact findings across 24 rules; paired clean alternatives; forty-file distractor invariance; two fresh byte-identical indexed enrichments; syntax/indexed rule-file parity; CLI/CI coverage |
 
 ## Current contract surface
 
@@ -66,7 +69,7 @@ Contract epoch: `tz-v5`
 
 **BASE-CAP-006.** The current P1 extraction fixture contains 42 nodes and 83 edges (SHA-256 `ae2f86326085816ee62f9d3fcf8a1531f007df80d2f60a895d2a9f1ea7241ceb`). Schema v2 adds bounded typed/value-flow facts while preserving accepted lexical behavior: identity for an unshadowed nested `onChange` parameter capture, a same-name nested parameter as a shadow barrier, and derivation for transformed captures.
 
-**BASE-CAP-007.** Current syntax-only Sources dogfood produces 3,991 nodes and 10,288 edges (SHA-256 `9f94a74b41aa9093c114409a011d3245ad08dee53d5acfd180f2ce55b3d0ed21`). Its audit has zero findings and SHA-256 `0d97671de1eec7a47e6ac5c724eaea8b425dc5dc2b2e4e877ead24387cd1ef91`.
+**BASE-CAP-007.** Current syntax-only Sources dogfood produces 4,010 nodes and 10,320 edges (SHA-256 `993d138b78d2cfa73d9bc75b4d4cabea1789e895ebe58cd3dc3d937d7f6c86fe`). Its audit has zero findings and SHA-256 `5cd4100a19a799e7210ae5d28bfada1a9f5f87fc577212fde85a069379e25940`.
 
 **BASE-CAP-008.** The accepted value-setter evidence repair leaves counts and metrics unchanged while retaining each matching event-trigger edge in its finding. `LabeledSetter` is `finding:871672afc5e64d2` with `edge:df78fa011860918b`; `ValueSetterPair` is `finding:c988942f3dcf8158` with `edge:fec6154e7fee5d1f`. This records current evidence completeness and does not add another rule.
 
@@ -75,6 +78,8 @@ Contract epoch: `tz-v5`
 **BASE-CAP-010.** All agent-facing semantic workflows require an explicit validated compiler Index Store and accept only indexed results. They do not recommend frontend-only analysis or automatic fallback. Change review requires compatible indexed snapshots; the CLI's build-free mode remains available outside the agent workflow and continues to support deterministic fixtures, baselines, and dogfood.
 
 **BASE-CAP-011.** The configured architecture fixture emits all nineteen new rule identifiers across 25 findings with digest `99b15b05460746f3931ce87b3f44a6da374ae6f8b4b332562432070e69ada3b9`; the configured negative fixture emits none of those identifiers. Finding dominance removes overlapping generic paths.
+
+**BASE-CAP-012.** `Tests/Fixtures/RealProjectPatterns` is a compilable configured SwiftUI corpus with bad/good pairs in twelve source files. Syntax-only and explicit indexed audits each emit the same 34-entry per-rule/per-file matrix spanning 24 rules, and no finding evidence points into `Good/`. The accepted repeated indexed audit SHA-256 is `bb03a5d3418a244fe66d8d7a3304a9e82b95dbd71daaf44e8c119466c123a96a`.
 
 ## Accepted residuals and limits
 
@@ -92,6 +97,8 @@ Contract epoch: `tz-v5`
 
 **BASE-LIM-007 — Bounded architecture analysis.** Role- and feature-aware conclusions require exact validated configuration and remain silent without it. Syntax extraction is not a full type checker or general control-flow/effect engine; architecture rules cover only their documented SwiftUI, lifecycle, geometry, representable, and platform-command topology. Automatic rewriting, embedded LLM APIs, GUI/IDE/Xcode extensions, broad Swift framework analysis, and SIL remain out of scope.
 
+**BASE-LIM-008 — Behavioral value freshness.** Collection-window exhaustion, stale captured values in already mounted Views, pagination progression, and similar runtime/control-flow defects are not inferred by the current twenty-nine rules. They require behavior tests or a separately authorized rule/IR evolution and must not be reported as architecture findings without deterministic topology.
+
 ## Router acceptance evidence
 
 **BASE-NEXT-001.** `ROUTER-001` acceptance evidence includes official validation of all four skills, an exact four-skill CI inventory, and fresh-context routing tests that select audit, refactor, review, and the mixed sequence correctly.
@@ -103,3 +110,5 @@ Contract epoch: `tz-v5`
 **BASE-NEXT-004.** `BOUNDARY-001` is locally accepted with tool version `0.2.0`, schema version 1, ten exact rules, custom Binding construction topology, logical source-count fixtures, syntax-only and fresh explicit indexed evidence, a deterministic regenerated five-file RuleTests baseline, 69 passing tests, updated agent adjudication guidance, and passing audit/snapshot/diff/check/slice/doctor dogfood. Hosted CI on the integrated P9 checkpoint is required external release evidence and its terminal result is reported in the checkpoint handoff.
 
 **BASE-NEXT-005.** `ARCHITECTURE-001` acceptance evidence includes 77 passing tests, locked build, fresh explicit IndexStoreDB identity/configuration coverage, byte-identical schema-v2 snapshots, empty same-input diff, passing high-severity check, bounded slice, healthy doctor, zero Sources findings, all nineteen configured positive rules, zero configured negative rules, and four validated skills. Integration checkpoint `1821b72de6d75a48a2a2b672a191e408c324bd02` is present on `origin/master`; hosted GitHub Actions run `32130756118` passed every CI step in 4m06s.
+
+**BASE-NEXT-006.** `REALISTIC-FIXTURES-001` acceptance evidence includes locked build, 81 passing tests, a 34-finding syntax audit, two byte-identical 34-finding indexed audits, exact syntax/indexed rule-file parity, forty clean distractors with unchanged findings, 25/0 legacy architecture positive/negative findings, zero Sources findings, exact canonical RuleTests semantic files, revision-only manifest normalization, valid CI YAML, and clean diff checks. Hosted CI for product/test commit `551158b…` remains external follow-up evidence until the run completes.

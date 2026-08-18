@@ -59,3 +59,14 @@
 - Forbidden expansion: role inference from spelling, full type checking/SIL/control-flow, generic AppKit/UIKit linting, automatic architecture refactoring, or a new severity above `high`.
 - Specification delta: `PC-OPS-009`, `PC-SAFE-002`, schema v2 `IR-GRAPH-008/009`, `analysis-config.md`, nineteen new rules plus bounded extensions to existing rules, epoch `tz-v5`.
 - QA: collision and same-name cross-file fixtures, real indexed remap, configuration validation/digest tests, positive/negative and dominance matrices, deterministic baselines, full CLI dogfood, skills, hosted CI, scoped commits and pushes.
+
+## Contract Delta — REALISTIC-FIXTURES-001
+
+- Change mode: `evolve` for acceptance coverage, with a `restore` sub-slice for existing indexed architecture semantics.
+- Authorized by: User approval on 2026-08-18 of a realistic multi-file bad/good architecture test pack derived from the read-only Playphrase evaluation.
+- Previous behavior: The 77-test suite covered every rule with focused fixtures, but did not prove exact findings in one compilable multi-file feature corpus, stability amid many clean files, or syntax/indexed per-rule/per-file parity. Indexed enrichment could treat `owns` plus `observes`/`injects` for one property as multiple typed boundaries and could associate a compiler-shared method target with receiver evidence from another View.
+- New behavior: A twelve-file configured corpus emits exactly 34 findings across 24 rules, keeps all good counterparts clean, preserves findings with forty added clean files, and produces the same matrix in two byte-identical fresh indexed enrichments. Typed boundaries prefer one specific SwiftUI boundary edge, and configured calls require receiver evidence from the same source range.
+- Protected behavior: Tool `0.3.0`, schema v2, twenty-nine rules and their severities/exceptions, exact role configuration, seven CLI commands, standalone build-free support, indexed-only agent workflows, canonical RuleTests baseline, provider independence, and no rewriting.
+- Forbidden expansion: A thirtieth rule, general control-flow/value-freshness inference, role inference from names, behavior claims for stale mounted values or collection-window progression, or changes to Playphrase source.
+- Specification delta: `ACC-FIX-016..017`, `ACC-TEST-008`, `ACC-CI-004`, `ACC-DOD-009`, local revision `spec-6`; product epoch remains `tz-v5`.
+- QA: locked build and 81 tests; exact syntax/indexed 34-finding matrix; byte-stable repeated indexed output; forty-file distractor test; old architecture positive/negative checks; Sources dogfood; canonical baseline comparison; CI YAML parse; scoped commits and pushes.

@@ -1,6 +1,6 @@
 # Specification coverage and evidence map
 
-Revision: `spec-5`
+Revision: `spec-6`
 Authority: ТЗ epoch `tz-v1` plus user-authorized addenda through `ARCHITECTURE-001`, combined epoch `tz-v5`
 Purpose: route every source section to stable local clauses and evidence owners
 
@@ -63,7 +63,7 @@ This map proves coverage; it does not create new requirements. Source and tests 
 | 53 | Long-term direction | `PC-NONGOAL-003` | non-binding roadmap context |
 | 54 | Final product definition | `PC-GOAL-001..003` | README/product contract |
 
-## Router addendum coverage
+## Authorized addendum coverage
 
 | Addendum | Subject | Local contract | Realization/evidence owner |
 | --- | --- | --- | --- |
@@ -71,6 +71,7 @@ This map proves coverage; it does not create new requirements. Source and tests 
 | `INDEXED-SKILLS-001` | Agent workflows require explicit indexed resolution and reject lower-resolution fallback | `PC-OPS-005`, `PC-OPS-007`, `ACC-SKILL-004..006` | all four skills, skill references, CI validation |
 | `BOUNDARY-001` | Custom Binding, Binding factory, observable tunnel/input rules, and logical source counting | `PC-OPS-008`, `PC-SCOPE-002/004`, `RULE-COMMAND/FACTORY/MODEL-TUNNEL/BROAD-INPUT`, `IR-GRAPH-007`, `IR-AUDIT-005`, `ACC-FIX-007..010` | frontend, AuditCore/AuditRules, diff, fixtures, indexed tests |
 | `ARCHITECTURE-001` | Collision-safe identity, exact project configuration, typed/feature topology, and nineteen architecture rules | `PC-OPS-009`, `PC-SAFE-002`, `IR-GRAPH-008/009`, `CFG-*`, architecture/layout/platform `RULE-*`, `ACC-FIX-011..015` | AuditCore configuration, frontend, SymbolResolution, AuditRules, architecture fixtures and indexed tests |
+| `REALISTIC-FIXTURES-001` | Compilable multi-file good/bad corpus, mixed-directory invariance, and syntax/indexed matrix parity | existing `RULE-*`, `ACC-FIX-016..017`, `ACC-TEST-008`, `ACC-DOD-009` | `RealProjectPatterns`, focused rule/indexed tests, CLI CI dogfood |
 
 ## Evidence precedence by decision
 
@@ -84,7 +85,7 @@ This map proves coverage; it does not create new requirements. Source and tests 
 
 ## Ownership map
 
-- Product authority: user-approved base epoch `tz-v1` plus explicit addenda through `ARCHITECTURE-001`, combined as `tz-v5`; local documents remain bounded to those authorizations.
+- Product authority: user-approved base epoch `tz-v1` plus explicit semantic addenda through `ARCHITECTURE-001`, combined as `tz-v5`; `REALISTIC-FIXTURES-001` adds acceptance evidence and a restore of existing indexed semantics without advancing the product epoch.
 - Semantic schema owner: `AuditCore` plus SnapshotStore transport.
 - Syntax fact owner: SwiftSyntaxFrontend and SwiftUISemantics vocabulary.
 - Compiler fact owner: SymbolResolution/IndexStoreDB on macOS.
