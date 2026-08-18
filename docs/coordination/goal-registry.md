@@ -1,8 +1,8 @@
 # Goal Registry
 
-Contract epoch: `tz-v4`
+Contract epoch: `tz-v5`
 
-Branch: `master` (`e81f10d4b06ae1c738b8302d579858854fc69a44`, equal to `origin/master` at the `BOUNDARY-001` product checkpoint)
+Branch: `master` (local `ARCHITECTURE-001` product revisions through `f02927a3ecb38eeee89ab23fd77f58c50c6560b7`; `origin/master` remains at `e81f10d4b06ae1c738b8302d579858854fc69a44` until the P10 integration push)
 
 Approved write set: `Package.swift`, `Package.resolved`, `.gitignore`, `Sources/**`, `Tests/**`, `skills/**`, `docs/**`, `README.md`, `.github/workflows/**`
 
@@ -23,3 +23,4 @@ Approved write set: `Package.swift`, `Package.resolved`, `.gitignore`, `Sources/
 | P7-COMPLETION | Completion | verification | 0 | Verified Definition of Done | `/root/review_graph_cli`, `/root/review_rules`, `/root/review_skills_ci`, `/root/completion_integrator` | P1–P6 | None | accepted | P7I final completion accepted with compatible residuals: locked build; 64 tests; seven public commands; P1 42/76; RuleTests 268/521/14; Sources 3,134/6,150/0; exact canonical baseline; indexed 31/57; three skills and CI validated; Git state preserved | Compatible PoC limits are documented in `docs/specs/release-baseline.md`; first hosted GitHub Actions run remains pending because commit/push was not authorized |
 | P8-WORKFLOW-ROUTER | Workflow router | shipping_product | 0 | One concise `$swiftui-semantic` entry point | primary agent | P7-COMPLETION, `ROUTER-001` | `skills/swiftui-semantic/**`, focused README/spec/CI/coordination files | accepted | ROUTER-R1 accepted with residual: official validation 4/4; exact CI inventory and links pass; locked build and 64 tests pass; fresh audit/refactor/review/mixed routes preserve specialist gates | First hosted GitHub Actions run remains pending because commit/push was not authorized |
 | P9-BOUNDARY-ANALYSIS | Boundary analysis | shipping_product | 0 | Detect custom Binding effects and broad observable boundaries without inflating source counts | primary agent | P8-WORKFLOW-ROUTER, `INDEXED-SKILLS-001`, `BOUNDARY-001` | focused `Sources/**`, `Tests/**`, `docs/**`, `skills/**`, `README.md`, `.github/workflows/ci.yml` | accepted | Product commit `e81f10d`; tool 0.2.0/schema v1; ten exact rules; 69 tests; fresh explicit indexed enrichment; deterministic RuleTests 353/664/20; full local CLI dogfood; four skills validated | Hosted CI terminal result is recorded in the checkpoint handoff |
+| P10-ARCHITECTURE-ANALYSIS | Architecture analysis | shipping_product | 0 | Collision-safe identity, exact classification, and 29 bounded rules | primary agent | P9-BOUNDARY-ANALYSIS, `ARCHITECTURE-001` | focused `Sources/**`, `Tests/**`, `docs/**`, `skills/**`, `README.md`, `.github/workflows/ci.yml` | integration-candidate | Product commits `2e9207f` + `5d16cc3` + `f02927a`; tool 0.3.0/schema v2; 77 tests; fresh explicit indexed identity/configuration evidence; deterministic RuleTests 353/713/20; all 19 configured rules and zero negative-fixture architecture findings; full local CLI dogfood; four skills validated | Acceptance checkpoint push and hosted CI are pending |

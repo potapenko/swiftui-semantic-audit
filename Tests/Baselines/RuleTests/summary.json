@@ -1,5 +1,5 @@
 {
-  "edgeCount" : 664,
+  "edgeCount" : 713,
   "findingCount" : 20,
   "metrics" : {
     "bindingEdges" : 34,
@@ -17,98 +17,145 @@
     {
       "confidence" : "deterministic",
       "evidence" : [
+
+      ],
+      "id" : "value:10dfbdcd163500b3",
+      "relationEdges" : [
+
+      ],
+      "representations" : [
+        "node:d50d39ddd5ecd727"
+      ]
+    },
+    {
+      "confidence" : "deterministic",
+      "evidence" : [
+
+      ],
+      "id" : "value:12c567a0c7e2b45b",
+      "relationEdges" : [
+
+      ],
+      "representations" : [
+        "node:34ccf2c5d398ca30"
+      ]
+    },
+    {
+      "confidence" : "deterministic",
+      "evidence" : [
+
+      ],
+      "id" : "value:133fd86d4ad53d96",
+      "relationEdges" : [
+
+      ],
+      "representations" : [
+        "node:97686a1ca49a6384"
+      ]
+    },
+    {
+      "confidence" : "deterministic",
+      "evidence" : [
+
+      ],
+      "id" : "value:14d1680a17f21b23",
+      "relationEdges" : [
+
+      ],
+      "representations" : [
+        "node:889a1e5d8308f732"
+      ]
+    },
+    {
+      "confidence" : "deterministic",
+      "evidence" : [
+
+      ],
+      "id" : "value:168aa11cf4217156",
+      "relationEdges" : [
+
+      ],
+      "representations" : [
+        "node:6e8634cba162068b"
+      ]
+    },
+    {
+      "confidence" : "deterministic",
+      "evidence" : [
+
+      ],
+      "id" : "value:1a08d3aa2159bc5",
+      "relationEdges" : [
+
+      ],
+      "representations" : [
+        "node:11db564e73f5cbdf"
+      ]
+    },
+    {
+      "confidence" : "deterministic",
+      "evidence" : [
+        {
+          "endLine" : 39,
+          "file" : "CallbackTunnelMismatch/Fixture.swift",
+          "kind" : "initializer-argument",
+          "startLine" : 39
+        }
+      ],
+      "id" : "value:1beff913803ed223",
+      "relationEdges" : [
+        "edge:2d4177a0fd8d32fd"
+      ],
+      "representations" : [
+        "node:5c0aaf7d76e91de",
+        "node:bedfaa27d9841730"
+      ]
+    },
+    {
+      "confidence" : "deterministic",
+      "evidence" : [
+
+      ],
+      "id" : "value:20defd4bba4bb8a7",
+      "relationEdges" : [
+
+      ],
+      "representations" : [
+        "node:4e5ad7092b1db2d0"
+      ]
+    },
+    {
+      "confidence" : "deterministic",
+      "evidence" : [
         {
           "endLine" : 8,
-          "file" : "BindingMirroredLocally/Fixture.swift",
+          "file" : "BidirectionalOnChange/Fixture.swift",
           "kind" : "binding-projection",
           "startLine" : 8
         },
         {
           "endLine" : 10,
-          "file" : "BindingMirroredLocally/Fixture.swift",
+          "file" : "BidirectionalOnChange/Fixture.swift",
           "kind" : "assignment",
           "startLine" : 10
         },
         {
           "endLine" : 13,
-          "file" : "BindingMirroredLocally/Fixture.swift",
+          "file" : "BidirectionalOnChange/Fixture.swift",
           "kind" : "assignment",
           "startLine" : 13
-        },
-        {
-          "endLine" : 16,
-          "file" : "BindingMirroredLocally/Fixture.swift",
-          "kind" : "assignment",
-          "startLine" : 16
         }
       ],
-      "id" : "value:12dd69d66bb7eb0b",
+      "id" : "value:28babb9030d69cdc",
       "relationEdges" : [
-        "edge:6c3911d691aa8943",
-        "edge:7b28f6930ad4cd8b",
-        "edge:f8321ad4f81e0b7d"
+        "edge:304370bf08a28d5d",
+        "edge:d3e8b1d0caf26de9",
+        "edge:d6d701f22dc04fb5"
       ],
       "representations" : [
-        "node:266037537f86861f",
-        "node:99f356835359dcf4",
-        "node:d0163ad106147cfc"
-      ]
-    },
-    {
-      "confidence" : "deterministic",
-      "evidence" : [
-        {
-          "endLine" : 25,
-          "file" : "LabeledSetter/Fixture.swift",
-          "kind" : "initializer-argument",
-          "startLine" : 25
-        }
-      ],
-      "id" : "value:12f6768666a6c33d",
-      "relationEdges" : [
-        "edge:9c20e4687db246e3"
-      ],
-      "representations" : [
-        "node:94fcc1e17562ded3",
-        "node:9fa8cc9b51ad3683"
-      ]
-    },
-    {
-      "confidence" : "deterministic",
-      "evidence" : [
-        {
-          "endLine" : 8,
-          "file" : "UnaryDerived/Fixture.swift",
-          "kind" : "binding-projection",
-          "startLine" : 8
-        }
-      ],
-      "id" : "value:180384c0081fa091",
-      "relationEdges" : [
-        "edge:f623d4ffecc63f97"
-      ],
-      "representations" : [
-        "node:2aeec6f28121c8d5",
-        "node:e624c2e1570cafdf"
-      ]
-    },
-    {
-      "confidence" : "deterministic",
-      "evidence" : [
-        {
-          "endLine" : 10,
-          "file" : "IdentityTransform/Fixture.swift",
-          "kind" : "binding-projection",
-          "startLine" : 10
-        }
-      ],
-      "id" : "value:18c27a4f9b1a19cc",
-      "relationEdges" : [
-        "edge:16740b386ab9fb78"
-      ],
-      "representations" : [
-        "node:396425e5edd495a8",
-        "node:f9126cdf39231b34"
+        "node:553f0e3b0667276",
+        "node:798c7c37c667aa9c",
+        "node:fd31adb11f270f14"
       ]
     },
     {
@@ -116,206 +163,12 @@
       "evidence" : [
 
       ],
-      "id" : "value:19ebdf805ad3050e",
+      "id" : "value:28cef3970f0af2cf",
       "relationEdges" : [
 
       ],
       "representations" : [
-        "node:88819aef36f26d9a"
-      ]
-    },
-    {
-      "confidence" : "deterministic",
-      "evidence" : [
-
-      ],
-      "id" : "value:1a5d56f55d2c36c6",
-      "relationEdges" : [
-
-      ],
-      "representations" : [
-        "node:fb35a5acdf39c57d"
-      ]
-    },
-    {
-      "confidence" : "deterministic",
-      "evidence" : [
-
-      ],
-      "id" : "value:1a841c607761e65b",
-      "relationEdges" : [
-
-      ],
-      "representations" : [
-        "node:1cee600b151d1d0"
-      ]
-    },
-    {
-      "confidence" : "deterministic",
-      "evidence" : [
-        {
-          "endLine" : 10,
-          "file" : "BindingIndependentLocalState/Fixture.swift",
-          "kind" : "binding-projection",
-          "startLine" : 10
-        }
-      ],
-      "id" : "value:215df330ba56609b",
-      "relationEdges" : [
-        "edge:67e72fb641816131"
-      ],
-      "representations" : [
-        "node:9acd235ea1c1d802",
-        "node:fb2a05a2d5f04fe1"
-      ]
-    },
-    {
-      "confidence" : "deterministic",
-      "evidence" : [
-        {
-          "endLine" : 9,
-          "file" : "IdentityTransform/Fixture.swift",
-          "kind" : "binding-projection",
-          "startLine" : 9
-        }
-      ],
-      "id" : "value:2452d917cd40da43",
-      "relationEdges" : [
-        "edge:fbb2385b3e9944b9"
-      ],
-      "representations" : [
-        "node:114a20b70c55412d",
-        "node:ebc6574b04aabf48"
-      ]
-    },
-    {
-      "confidence" : "deterministic",
-      "evidence" : [
-
-      ],
-      "id" : "value:26b8c3c93c06f1e1",
-      "relationEdges" : [
-
-      ],
-      "representations" : [
-        "node:6f8a2974673efce0"
-      ]
-    },
-    {
-      "confidence" : "deterministic",
-      "evidence" : [
-
-      ],
-      "id" : "value:274befeca2847bff",
-      "relationEdges" : [
-
-      ],
-      "representations" : [
-        "node:c83109086ce42239"
-      ]
-    },
-    {
-      "confidence" : "deterministic",
-      "evidence" : [
-
-      ],
-      "id" : "value:2c84a029e632981b",
-      "relationEdges" : [
-
-      ],
-      "representations" : [
-        "node:15c2158e810665f"
-      ]
-    },
-    {
-      "confidence" : "deterministic",
-      "evidence" : [
-
-      ],
-      "id" : "value:2cfc5d44a2c0d18d",
-      "relationEdges" : [
-
-      ],
-      "representations" : [
-        "node:5dd3870b9dc4887"
-      ]
-    },
-    {
-      "confidence" : "deterministic",
-      "evidence" : [
-
-      ],
-      "id" : "value:354ad5b85ad55dea",
-      "relationEdges" : [
-
-      ],
-      "representations" : [
-        "node:ec65d9add6ef8bc"
-      ]
-    },
-    {
-      "confidence" : "deterministic",
-      "evidence" : [
-
-      ],
-      "id" : "value:36ed533c8b485133",
-      "relationEdges" : [
-
-      ],
-      "representations" : [
-        "node:9a7c10c6af154171"
-      ]
-    },
-    {
-      "confidence" : "deterministic",
-      "evidence" : [
-
-      ],
-      "id" : "value:3726c241293152fe",
-      "relationEdges" : [
-
-      ],
-      "representations" : [
-        "node:31be067b3ba1ec11"
-      ]
-    },
-    {
-      "confidence" : "deterministic",
-      "evidence" : [
-
-      ],
-      "id" : "value:38075b538366cac3",
-      "relationEdges" : [
-
-      ],
-      "representations" : [
-        "node:21a8515077dd1e7"
-      ]
-    },
-    {
-      "confidence" : "deterministic",
-      "evidence" : [
-        {
-          "endLine" : 7,
-          "file" : "BindingSelfCopy/Fixture.swift",
-          "kind" : "binding-projection",
-          "startLine" : 7
-        },
-        {
-          "endLine" : 9,
-          "file" : "BindingSelfCopy/Fixture.swift",
-          "kind" : "assignment",
-          "startLine" : 9
-        }
-      ],
-      "id" : "value:3885b14fbe733bc0",
-      "relationEdges" : [
-        "edge:86dcdff5924461f3",
-        "edge:a9700b17a4bff078"
-      ],
-      "representations" : [
-        "node:44b2bed4a69f1981",
-        "node:9776761c0ee45088"
+        "node:8a56430003425555"
       ]
     },
     {
@@ -334,15 +187,15 @@
           "startLine" : 28
         }
       ],
-      "id" : "value:3b3f8d7ba6849e04",
+      "id" : "value:29e83037943c1918",
       "relationEdges" : [
-        "edge:3bce41aa52452780",
-        "edge:fc4d65a6b2a4c24d"
+        "edge:7a396f93a990b76b",
+        "edge:b1d656710995063c"
       ],
       "representations" : [
-        "node:61a79a209a04715d",
-        "node:8ed35a123d7e5783",
-        "node:fe94ef434dbaf28c"
+        "node:1b488bad68ef2e9a",
+        "node:29845c3bcbc0106b",
+        "node:d23fc331572e28f0"
       ]
     },
     {
@@ -350,12 +203,238 @@
       "evidence" : [
 
       ],
-      "id" : "value:3e354ee9acbf9636",
+      "id" : "value:2d96ed3852c60bce",
       "relationEdges" : [
 
       ],
       "representations" : [
-        "node:78d2537ac8e17e63"
+        "node:2bc88eafd0b8464d"
+      ]
+    },
+    {
+      "confidence" : "deterministic",
+      "evidence" : [
+
+      ],
+      "id" : "value:2f359d170c2f5fad",
+      "relationEdges" : [
+
+      ],
+      "representations" : [
+        "node:e42ca68f373245de"
+      ]
+    },
+    {
+      "confidence" : "deterministic",
+      "evidence" : [
+
+      ],
+      "id" : "value:3151367734891a02",
+      "relationEdges" : [
+
+      ],
+      "representations" : [
+        "node:8be04e9c302e2a66"
+      ]
+    },
+    {
+      "confidence" : "deterministic",
+      "evidence" : [
+
+      ],
+      "id" : "value:3178c88ee6fccbc9",
+      "relationEdges" : [
+
+      ],
+      "representations" : [
+        "node:77c26e9919796530"
+      ]
+    },
+    {
+      "confidence" : "deterministic",
+      "evidence" : [
+
+      ],
+      "id" : "value:32ecdaa2707e4ee5",
+      "relationEdges" : [
+
+      ],
+      "representations" : [
+        "node:99e8074f34da0a09"
+      ]
+    },
+    {
+      "confidence" : "deterministic",
+      "evidence" : [
+
+      ],
+      "id" : "value:33a7bf8a99da0857",
+      "relationEdges" : [
+
+      ],
+      "representations" : [
+        "node:cf3cfd4685a9e4b9"
+      ]
+    },
+    {
+      "confidence" : "deterministic",
+      "evidence" : [
+
+      ],
+      "id" : "value:3bcfabb459986347",
+      "relationEdges" : [
+
+      ],
+      "representations" : [
+        "node:2c2f6b7d32c9e3c4"
+      ]
+    },
+    {
+      "confidence" : "deterministic",
+      "evidence" : [
+
+      ],
+      "id" : "value:3d2679e6c7c48b35",
+      "relationEdges" : [
+
+      ],
+      "representations" : [
+        "node:9145e6e5e3c4b6e"
+      ]
+    },
+    {
+      "confidence" : "deterministic",
+      "evidence" : [
+
+      ],
+      "id" : "value:3df80a89f00f39fd",
+      "relationEdges" : [
+
+      ],
+      "representations" : [
+        "node:e2ca5c24e8c2f12"
+      ]
+    },
+    {
+      "confidence" : "deterministic",
+      "evidence" : [
+
+      ],
+      "id" : "value:3e131d75855efc15",
+      "relationEdges" : [
+
+      ],
+      "representations" : [
+        "node:aabe10a15e1653be"
+      ]
+    },
+    {
+      "confidence" : "deterministic",
+      "evidence" : [
+
+      ],
+      "id" : "value:45976f23bf9f49a0",
+      "relationEdges" : [
+
+      ],
+      "representations" : [
+        "node:292fc01cbf4fb9ce"
+      ]
+    },
+    {
+      "confidence" : "deterministic",
+      "evidence" : [
+
+      ],
+      "id" : "value:46a71563eb7c72a0",
+      "relationEdges" : [
+
+      ],
+      "representations" : [
+        "node:71cb988a3e639dff"
+      ]
+    },
+    {
+      "confidence" : "deterministic",
+      "evidence" : [
+
+      ],
+      "id" : "value:4a1b50e9b6868b1d",
+      "relationEdges" : [
+
+      ],
+      "representations" : [
+        "node:eb28f74b580a2ad9"
+      ]
+    },
+    {
+      "confidence" : "deterministic",
+      "evidence" : [
+
+      ],
+      "id" : "value:4bcfe5b71bff7633",
+      "relationEdges" : [
+
+      ],
+      "representations" : [
+        "node:e8e359c3efd0b43c"
+      ]
+    },
+    {
+      "confidence" : "deterministic",
+      "evidence" : [
+        {
+          "endLine" : 25,
+          "file" : "LabeledSetter/Fixture.swift",
+          "kind" : "initializer-argument",
+          "startLine" : 25
+        }
+      ],
+      "id" : "value:4ea20e4401398755",
+      "relationEdges" : [
+        "edge:6986a47e8f755e0b"
+      ],
+      "representations" : [
+        "node:245538df8bb280f2",
+        "node:d71f3ca01e3eba4e"
+      ]
+    },
+    {
+      "confidence" : "deterministic",
+      "evidence" : [
+        {
+          "endLine" : 9,
+          "file" : "IdentityTransform/Fixture.swift",
+          "kind" : "binding-projection",
+          "startLine" : 9
+        }
+      ],
+      "id" : "value:4fee0161813ffb27",
+      "relationEdges" : [
+        "edge:e8fb4caf4abc4939"
+      ],
+      "representations" : [
+        "node:3b8b50d06b724bba",
+        "node:7d4376b179f468a5"
+      ]
+    },
+    {
+      "confidence" : "deterministic",
+      "evidence" : [
+        {
+          "endLine" : 8,
+          "file" : "UnaryDerived/Fixture.swift",
+          "kind" : "binding-projection",
+          "startLine" : 8
+        }
+      ],
+      "id" : "value:512e4edd58eb3bd6",
+      "relationEdges" : [
+        "edge:a0e96c5e91c20a06"
+      ],
+      "representations" : [
+        "node:41acc395fc7d45d4",
+        "node:45c5bf735ebb1cea"
       ]
     },
     {
@@ -363,34 +442,34 @@
       "evidence" : [
         {
           "endLine" : 20,
-          "file" : "CallbackTunnelMismatch/Fixture.swift",
+          "file" : "CallbackTunnel/Fixture.swift",
           "kind" : "initializer-argument",
           "startLine" : 20
         },
         {
-          "endLine" : 30,
-          "file" : "CallbackTunnelMismatch/Fixture.swift",
+          "endLine" : 29,
+          "file" : "CallbackTunnel/Fixture.swift",
           "kind" : "initializer-argument",
-          "startLine" : 30
+          "startLine" : 29
         },
         {
-          "endLine" : 39,
-          "file" : "CallbackTunnelMismatch/Fixture.swift",
+          "endLine" : 37,
+          "file" : "CallbackTunnel/Fixture.swift",
           "kind" : "initializer-argument",
-          "startLine" : 39
+          "startLine" : 37
         }
       ],
-      "id" : "value:3f43624b8dd24a2e",
+      "id" : "value:53049d09f0a05e26",
       "relationEdges" : [
-        "edge:7c1dd408f38ef67d",
-        "edge:852444ec109dd8bd",
-        "edge:fa35f1312a82323a"
+        "edge:4d41f21dc1e4d680",
+        "edge:79e7f6d966f1ec7e",
+        "edge:d31f313fa00cdb95"
       ],
       "representations" : [
-        "node:1177798bc197d31c",
-        "node:423936483d5a45d2",
-        "node:5152ee62439c6dc8",
-        "node:fdc9643c525d9122"
+        "node:5a48b5905d4a3fe4",
+        "node:a1b2e683cc27960a",
+        "node:c9243aa08405f394",
+        "node:fa7e2539252b0900"
       ]
     },
     {
@@ -398,12 +477,12 @@
       "evidence" : [
 
       ],
-      "id" : "value:406af2155792d221",
+      "id" : "value:543628f320621505",
       "relationEdges" : [
 
       ],
       "representations" : [
-        "node:9587c152b5052b4f"
+        "node:d0d1c7b2ac1b571e"
       ]
     },
     {
@@ -411,12 +490,12 @@
       "evidence" : [
 
       ],
-      "id" : "value:43a07a6fc35d2a5e",
+      "id" : "value:5a995511c2cf0522",
       "relationEdges" : [
 
       ],
       "representations" : [
-        "node:c7776710f15dadc5"
+        "node:c1eb53499d76fd47"
       ]
     },
     {
@@ -424,12 +503,12 @@
       "evidence" : [
 
       ],
-      "id" : "value:44da16d231c70c1d",
+      "id" : "value:5bc1243d96e34ead",
       "relationEdges" : [
 
       ],
       "representations" : [
-        "node:e1b5e5df798047bd"
+        "node:7664398b8f24055e"
       ]
     },
     {
@@ -437,31 +516,46 @@
       "evidence" : [
 
       ],
-      "id" : "value:47951923eb20c168",
+      "id" : "value:5d959dfff1748cd2",
       "relationEdges" : [
 
       ],
       "representations" : [
-        "node:a38fe1c111a3a987"
+        "node:2da6d6f3f34f574f"
       ]
     },
     {
       "confidence" : "deterministic",
       "evidence" : [
         {
-          "endLine" : 10,
-          "file" : "IntentionalTransformation/Fixture.swift",
+          "endLine" : 8,
+          "file" : "TransactionFakeDiscard/Fixture.swift",
+          "kind" : "assignment",
+          "startLine" : 8
+        },
+        {
+          "endLine" : 15,
+          "file" : "TransactionFakeDiscard/Fixture.swift",
           "kind" : "binding-projection",
-          "startLine" : 10
+          "startLine" : 15
+        },
+        {
+          "endLine" : 19,
+          "file" : "TransactionFakeDiscard/Fixture.swift",
+          "kind" : "assignment",
+          "startLine" : 19
         }
       ],
-      "id" : "value:48eda8268e6bb23b",
+      "id" : "value:612ffd9795293f9b",
       "relationEdges" : [
-        "edge:82da7e76443084f9"
+        "edge:20651c9189d4b84f",
+        "edge:68052746a82ce591",
+        "edge:f66976753f0cb577"
       ],
       "representations" : [
-        "node:af447e2fc8d5d058",
-        "node:e869bc21aa79fc14"
+        "node:5310e3e5bf8e796",
+        "node:7013bf9695e84d1f",
+        "node:ac3fc56dfe1e8082"
       ]
     },
     {
@@ -469,12 +563,12 @@
       "evidence" : [
 
       ],
-      "id" : "value:493ff66652c18f2c",
+      "id" : "value:61bac59ec30e8c95",
       "relationEdges" : [
 
       ],
       "representations" : [
-        "node:a8ad816f0af3f332"
+        "node:f10789442e9c17ee"
       ]
     },
     {
@@ -482,12 +576,208 @@
       "evidence" : [
 
       ],
-      "id" : "value:49cdb20fd8854e09",
+      "id" : "value:63bb29d40ad06e2e",
       "relationEdges" : [
 
       ],
       "representations" : [
-        "node:9c13278d2f3edd23"
+        "node:e19aee078447a37f"
+      ]
+    },
+    {
+      "confidence" : "deterministic",
+      "evidence" : [
+        {
+          "endLine" : 11,
+          "file" : "DerivedState/Fixture.swift",
+          "kind" : "binding-projection",
+          "startLine" : 11
+        }
+      ],
+      "id" : "value:648c95ffcf40321f",
+      "relationEdges" : [
+        "edge:802e009507533c89"
+      ],
+      "representations" : [
+        "node:2045729c8135c020",
+        "node:3703744f309fc7a9"
+      ]
+    },
+    {
+      "confidence" : "deterministic",
+      "evidence" : [
+        {
+          "endLine" : 18,
+          "file" : "TunnelDepthTwo/Fixture.swift",
+          "kind" : "initializer-argument",
+          "startLine" : 18
+        },
+        {
+          "endLine" : 26,
+          "file" : "TunnelDepthTwo/Fixture.swift",
+          "kind" : "initializer-argument",
+          "startLine" : 26
+        }
+      ],
+      "id" : "value:64f48fdcc6b5d5c3",
+      "relationEdges" : [
+        "edge:5476d23b7f980f85",
+        "edge:ce6221d6f953ce02"
+      ],
+      "representations" : [
+        "node:12bc773cf1626537",
+        "node:1adfbac22a7c1b70",
+        "node:c827148e1c4aea75"
+      ]
+    },
+    {
+      "classification" : "transactional-draft",
+      "confidence" : "strong-inference",
+      "evidence" : [
+        {
+          "endLine" : 8,
+          "file" : "TransactionRenamed/Fixture.swift",
+          "kind" : "assignment",
+          "startLine" : 8
+        },
+        {
+          "endLine" : 12,
+          "file" : "TransactionRenamed/Fixture.swift",
+          "kind" : "assignment",
+          "startLine" : 12
+        },
+        {
+          "endLine" : 17,
+          "file" : "TransactionRenamed/Fixture.swift",
+          "kind" : "binding-projection",
+          "startLine" : 17
+        },
+        {
+          "endLine" : 18,
+          "file" : "TransactionRenamed/Fixture.swift",
+          "kind" : "closure-expression",
+          "startLine" : 18
+        },
+        {
+          "endLine" : 18,
+          "file" : "TransactionRenamed/Fixture.swift",
+          "kind" : "function-call",
+          "startLine" : 18
+        },
+        {
+          "endLine" : 18,
+          "file" : "TransactionRenamed/Fixture.swift",
+          "kind" : "swiftui-action",
+          "startLine" : 18
+        },
+        {
+          "endLine" : 19,
+          "file" : "TransactionRenamed/Fixture.swift",
+          "kind" : "closure-expression",
+          "startLine" : 19
+        },
+        {
+          "endLine" : 19,
+          "file" : "TransactionRenamed/Fixture.swift",
+          "kind" : "function-call",
+          "startLine" : 19
+        },
+        {
+          "endLine" : 19,
+          "file" : "TransactionRenamed/Fixture.swift",
+          "kind" : "swiftui-action",
+          "startLine" : 19
+        },
+        {
+          "endLine" : 21,
+          "file" : "TransactionRenamed/Fixture.swift",
+          "kind" : "assignment",
+          "startLine" : 21
+        }
+      ],
+      "id" : "value:66c64c7266d0c04a",
+      "relationEdges" : [
+        "edge:1c2e4df4ac84225e",
+        "edge:372c8def8249687a",
+        "edge:3e5726d50cf27e81",
+        "edge:407c11291d8ec0b",
+        "edge:6bcdd1a8cfd5279f",
+        "edge:9e1aa594f7609ae4",
+        "edge:acf8b04e3889c6b5",
+        "edge:b2d23690951dd764",
+        "edge:e8b46ccb6e9d80bc",
+        "edge:e90acad7f612194f",
+        "edge:f7681f8c03b56e1a"
+      ],
+      "representations" : [
+        "node:7fec6183bf2c7613",
+        "node:e3dd54138d5894a8",
+        "node:f85c902947e69d43"
+      ]
+    },
+    {
+      "confidence" : "deterministic",
+      "evidence" : [
+
+      ],
+      "id" : "value:678ba1fcf48bb559",
+      "relationEdges" : [
+
+      ],
+      "representations" : [
+        "node:8ec369b5a3e7fbf1"
+      ]
+    },
+    {
+      "confidence" : "deterministic",
+      "evidence" : [
+
+      ],
+      "id" : "value:6c176e33eaa112f0",
+      "relationEdges" : [
+
+      ],
+      "representations" : [
+        "node:8f2eca9a7635a255"
+      ]
+    },
+    {
+      "confidence" : "deterministic",
+      "evidence" : [
+
+      ],
+      "id" : "value:6ca42e2a36cf7146",
+      "relationEdges" : [
+
+      ],
+      "representations" : [
+        "node:4898271df6eefd04"
+      ]
+    },
+    {
+      "confidence" : "deterministic",
+      "evidence" : [
+
+      ],
+      "id" : "value:6e15acffa8038cca",
+      "relationEdges" : [
+
+      ],
+      "representations" : [
+        "node:26049f2c246024f9"
+      ]
+    },
+    {
+      "confidence" : "deterministic",
+      "evidence" : [
+
+      ],
+      "id" : "value:6edf1d290dec6bb7",
+      "relationEdges" : [
+
+      ],
+      "representations" : [
+        "node:8d1b5dd249f24b3d"
       ]
     },
     {
@@ -500,38 +790,12 @@
           "startLine" : 8
         }
       ],
-      "id" : "value:4aa01e5fc3b7caac",
+      "id" : "value:70cd8dd2d2f1a004",
       "relationEdges" : [
-        "edge:becc252293aaa55f"
+        "edge:d0653491bb9e8c77"
       ],
       "representations" : [
-        "node:62116e994704807f"
-      ]
-    },
-    {
-      "confidence" : "deterministic",
-      "evidence" : [
-
-      ],
-      "id" : "value:4adcd7c7c067fe5e",
-      "relationEdges" : [
-
-      ],
-      "representations" : [
-        "node:3462739b2a93535c"
-      ]
-    },
-    {
-      "confidence" : "deterministic",
-      "evidence" : [
-
-      ],
-      "id" : "value:529101b811b12cab",
-      "relationEdges" : [
-
-      ],
-      "representations" : [
-        "node:1c85f7eaad0db777"
+        "node:800942ee845b8a82"
       ]
     },
     {
@@ -599,24 +863,24 @@
           "startLine" : 21
         }
       ],
-      "id" : "value:555ade9f3238aa9",
+      "id" : "value:76e9ca1cfa8b9200",
       "relationEdges" : [
-        "edge:10696eb4de7eaeb1",
-        "edge:18f168acd19357f3",
-        "edge:2186b266b38d75aa",
-        "edge:3e1a41efe0160aa5",
-        "edge:5c3f39dd6c98a91d",
-        "edge:64932a52c5753282",
-        "edge:65a557841b8cc5a6",
-        "edge:68145fd5f503c8d",
-        "edge:6ab3c2aa34d08b84",
-        "edge:6f05e48a9a37abaf",
-        "edge:cfc9cae599933ca2"
+        "edge:117d9fb73fe347c3",
+        "edge:2122d0c31b1a1559",
+        "edge:2957a5b5e45ee6b0",
+        "edge:536d6bd88d98d216",
+        "edge:763a6b0d9e10fe60",
+        "edge:7ed56f57eac2591c",
+        "edge:9f13e4a643a9e54c",
+        "edge:b5f06b1af4af5437",
+        "edge:d36d4cf77bb788b2",
+        "edge:dd762efec92e4100",
+        "edge:e78828e77ae77c2b"
       ],
       "representations" : [
-        "node:7d41e3b055132f85",
-        "node:91f663dd0558fa67",
-        "node:9e21b0654dea931c"
+        "node:30297edfff95c90b",
+        "node:d5e9af163c7e417a",
+        "node:de9fd03615d40819"
       ]
     },
     {
@@ -624,12 +888,12 @@
       "evidence" : [
 
       ],
-      "id" : "value:57e6df2fb128a1c3",
+      "id" : "value:7a61b425d5f0b7db",
       "relationEdges" : [
 
       ],
       "representations" : [
-        "node:c5b16e0a6faf6d40"
+        "node:a657b2a7aea29f12"
       ]
     },
     {
@@ -637,59 +901,91 @@
       "evidence" : [
 
       ],
-      "id" : "value:5a5de682a955ad31",
+      "id" : "value:7ab4614cf94656af",
       "relationEdges" : [
 
       ],
       "representations" : [
-        "node:732611663e2c59dc"
-      ]
-    },
-    {
-      "confidence" : "deterministic",
-      "evidence" : [
-
-      ],
-      "id" : "value:5b17636f9f8e7142",
-      "relationEdges" : [
-
-      ],
-      "representations" : [
-        "node:8d6f00698820ff6b"
+        "node:146a0ea926f58150"
       ]
     },
     {
       "confidence" : "deterministic",
       "evidence" : [
         {
-          "endLine" : 8,
-          "file" : "TransactionFakeDiscard/Fixture.swift",
-          "kind" : "assignment",
-          "startLine" : 8
+          "endLine" : 10,
+          "file" : "DerivedState/Fixture.swift",
+          "kind" : "binding-projection",
+          "startLine" : 10
+        }
+      ],
+      "id" : "value:7e1f02be39bcde4a",
+      "relationEdges" : [
+        "edge:98ca0bb3cc6b99f6"
+      ],
+      "representations" : [
+        "node:7835204a21045118",
+        "node:e6fcea012eeec35"
+      ]
+    },
+    {
+      "confidence" : "deterministic",
+      "evidence" : [
+
+      ],
+      "id" : "value:7efc0e7b825c89f5",
+      "relationEdges" : [
+
+      ],
+      "representations" : [
+        "node:32228154f96aeee8"
+      ]
+    },
+    {
+      "confidence" : "deterministic",
+      "evidence" : [
+
+      ],
+      "id" : "value:7f6850073b642bb7",
+      "relationEdges" : [
+
+      ],
+      "representations" : [
+        "node:c6e8c6c44d2cb335"
+      ]
+    },
+    {
+      "confidence" : "deterministic",
+      "evidence" : [
+        {
+          "endLine" : 13,
+          "file" : "ObservableMirror/Fixture.swift",
+          "kind" : "binding-projection",
+          "startLine" : 13
         },
         {
           "endLine" : 15,
-          "file" : "TransactionFakeDiscard/Fixture.swift",
-          "kind" : "binding-projection",
+          "file" : "ObservableMirror/Fixture.swift",
+          "kind" : "assignment",
           "startLine" : 15
         },
         {
-          "endLine" : 19,
-          "file" : "TransactionFakeDiscard/Fixture.swift",
+          "endLine" : 18,
+          "file" : "ObservableMirror/Fixture.swift",
           "kind" : "assignment",
-          "startLine" : 19
+          "startLine" : 18
         }
       ],
-      "id" : "value:5c7055b842be8e5d",
+      "id" : "value:8220d3baf0ed9cb8",
       "relationEdges" : [
-        "edge:693d0fc80fd76f49",
-        "edge:9883b317efe9b03d",
-        "edge:d1e14ec234b9bf0f"
+        "edge:4ee5736f9b471e90",
+        "edge:6f10272c06d86c6b",
+        "edge:abba05b4f933f300"
       ],
       "representations" : [
-        "node:d87a7125da4471c9",
-        "node:e9faa14253b66be8",
-        "node:ff68c9d96722964c"
+        "node:a3a729d54b7975ea",
+        "node:aa9676070fee461",
+        "node:e73f0da802318cca"
       ]
     },
     {
@@ -697,46 +993,31 @@
       "evidence" : [
 
       ],
-      "id" : "value:5cddf709487f4c84",
+      "id" : "value:8976e5bb48628baf",
       "relationEdges" : [
 
       ],
       "representations" : [
-        "node:fcb13e749556366f"
+        "node:4724c483ab84d06f"
       ]
     },
     {
       "confidence" : "deterministic",
       "evidence" : [
-        {
-          "endLine" : 8,
-          "file" : "BidirectionalOnChange/Fixture.swift",
-          "kind" : "binding-projection",
-          "startLine" : 8
-        },
         {
           "endLine" : 10,
-          "file" : "BidirectionalOnChange/Fixture.swift",
-          "kind" : "assignment",
+          "file" : "BindingIndependentLocalState/Fixture.swift",
+          "kind" : "binding-projection",
           "startLine" : 10
-        },
-        {
-          "endLine" : 13,
-          "file" : "BidirectionalOnChange/Fixture.swift",
-          "kind" : "assignment",
-          "startLine" : 13
         }
       ],
-      "id" : "value:5f731f75846940ec",
+      "id" : "value:8c004f0aebd7c813",
       "relationEdges" : [
-        "edge:23b4f9498bdb767a",
-        "edge:7aec1257578ba99a",
-        "edge:b4cecb7b6c27eab9"
+        "edge:dd275396204e0f29"
       ],
       "representations" : [
-        "node:374c06c4a1273ea5",
-        "node:46acb820313513",
-        "node:b8dfd5d9f3c35e21"
+        "node:1249102d2c2c41d3",
+        "node:9fb37a7e5011999c"
       ]
     },
     {
@@ -744,12 +1025,90 @@
       "evidence" : [
 
       ],
-      "id" : "value:645bfa4704d18fb6",
+      "id" : "value:8fb0bfe7441ad47b",
       "relationEdges" : [
 
       ],
       "representations" : [
-        "node:9200160340b7ac5"
+        "node:cc28329bea70fbb1"
+      ]
+    },
+    {
+      "confidence" : "deterministic",
+      "evidence" : [
+
+      ],
+      "id" : "value:90aaf01e708840c5",
+      "relationEdges" : [
+
+      ],
+      "representations" : [
+        "node:f005b0a369bd876a"
+      ]
+    },
+    {
+      "confidence" : "deterministic",
+      "evidence" : [
+
+      ],
+      "id" : "value:947f7c2f20b64afc",
+      "relationEdges" : [
+
+      ],
+      "representations" : [
+        "node:9a855a3e7e234942"
+      ]
+    },
+    {
+      "confidence" : "deterministic",
+      "evidence" : [
+
+      ],
+      "id" : "value:9a1cfb78faa250c5",
+      "relationEdges" : [
+
+      ],
+      "representations" : [
+        "node:efe323ddf26aed17"
+      ]
+    },
+    {
+      "confidence" : "deterministic",
+      "evidence" : [
+
+      ],
+      "id" : "value:9c050d63f61beef1",
+      "relationEdges" : [
+
+      ],
+      "representations" : [
+        "node:d764f3dc171d52af"
+      ]
+    },
+    {
+      "confidence" : "deterministic",
+      "evidence" : [
+
+      ],
+      "id" : "value:9f22c30b679bc704",
+      "relationEdges" : [
+
+      ],
+      "representations" : [
+        "node:8c60671f3851805b"
+      ]
+    },
+    {
+      "confidence" : "deterministic",
+      "evidence" : [
+
+      ],
+      "id" : "value:a33953d8df1d9613",
+      "relationEdges" : [
+
+      ],
+      "representations" : [
+        "node:bfd8b514e2b82353"
       ]
     },
     {
@@ -762,13 +1121,13 @@
           "startLine" : 7
         }
       ],
-      "id" : "value:6adecb60bd1c9633",
+      "id" : "value:a57b0c2df8352da1",
       "relationEdges" : [
-        "edge:fabd3f349da97395"
+        "edge:59900306e919a357"
       ],
       "representations" : [
-        "node:a4d82b9ede81d7dc",
-        "node:fe98d282cbf59d15"
+        "node:4358a2c0565c6a8e",
+        "node:7d624bbc3cb386fd"
       ]
     },
     {
@@ -836,24 +1195,24 @@
           "startLine" : 22
         }
       ],
-      "id" : "value:6b40ff29f5882195",
+      "id" : "value:a5daf294910cde59",
       "relationEdges" : [
-        "edge:1023b1bacebdbe60",
-        "edge:29e21cb31d3bca6c",
-        "edge:5c381afc66f2af69",
-        "edge:71797de158a2fe58",
-        "edge:7623d2eeb319a334",
-        "edge:84332e016afa6ab2",
-        "edge:adc962d0dcf1a9a7",
-        "edge:d2100800cfbd8ad2",
-        "edge:dd1d562b034498ed",
-        "edge:e5f00adb59499c58",
-        "edge:ee00930a8a0b930e"
+        "edge:3bf78499c892b98d",
+        "edge:3d05d91a2385d7ef",
+        "edge:744c015bc9409457",
+        "edge:83174cefb6d7207b",
+        "edge:af0292aa4da1a8e",
+        "edge:b7b5ce6e4d6fec42",
+        "edge:ce06856a45e5fd45",
+        "edge:e0d6cd7bc4c1b",
+        "edge:e7755f483b4f5732",
+        "edge:f505b82c3fef6d3c",
+        "edge:f839432fcd3d1235"
       ],
       "representations" : [
-        "node:27747b2a3e3ac030",
-        "node:74976bcbeccd14fc",
-        "node:dd8b7b38486777d"
+        "node:593babd31f32e33b",
+        "node:7d1029a79f96d8f3",
+        "node:ccfa7afc49fd3862"
       ]
     },
     {
@@ -861,12 +1220,12 @@
       "evidence" : [
 
       ],
-      "id" : "value:6c6bda11798624ed",
+      "id" : "value:a82fce65a18e6b0d",
       "relationEdges" : [
 
       ],
       "representations" : [
-        "node:10785b587b9e41c5"
+        "node:4c2ecdeac307fcc6"
       ]
     },
     {
@@ -874,305 +1233,12 @@
       "evidence" : [
 
       ],
-      "id" : "value:6df34aa0201074d0",
+      "id" : "value:ab5e40b12327bc65",
       "relationEdges" : [
 
       ],
       "representations" : [
-        "node:701cb16d9780a12c"
-      ]
-    },
-    {
-      "confidence" : "deterministic",
-      "evidence" : [
-
-      ],
-      "id" : "value:75010e2301920fb0",
-      "relationEdges" : [
-
-      ],
-      "representations" : [
-        "node:4b011ee03f30a59f"
-      ]
-    },
-    {
-      "confidence" : "deterministic",
-      "evidence" : [
-        {
-          "endLine" : 39,
-          "file" : "CallbackTunnelMismatch/Fixture.swift",
-          "kind" : "initializer-argument",
-          "startLine" : 39
-        }
-      ],
-      "id" : "value:755f95c051038559",
-      "relationEdges" : [
-        "edge:dac6b8db510d5b2b"
-      ],
-      "representations" : [
-        "node:25b9ade212577780",
-        "node:b80e042b861fa116"
-      ]
-    },
-    {
-      "confidence" : "deterministic",
-      "evidence" : [
-
-      ],
-      "id" : "value:79b18696e6df7c72",
-      "relationEdges" : [
-
-      ],
-      "representations" : [
-        "node:12cd8f9bec78e329"
-      ]
-    },
-    {
-      "confidence" : "deterministic",
-      "evidence" : [
-
-      ],
-      "id" : "value:7cc3eb405224b156",
-      "relationEdges" : [
-
-      ],
-      "representations" : [
-        "node:8d3281eb01ea7747"
-      ]
-    },
-    {
-      "confidence" : "deterministic",
-      "evidence" : [
-
-      ],
-      "id" : "value:7d7feff742c28023",
-      "relationEdges" : [
-
-      ],
-      "representations" : [
-        "node:f6b749854b74499"
-      ]
-    },
-    {
-      "classification" : "transactional-draft",
-      "confidence" : "strong-inference",
-      "evidence" : [
-        {
-          "endLine" : 8,
-          "file" : "TransactionRenamed/Fixture.swift",
-          "kind" : "assignment",
-          "startLine" : 8
-        },
-        {
-          "endLine" : 12,
-          "file" : "TransactionRenamed/Fixture.swift",
-          "kind" : "assignment",
-          "startLine" : 12
-        },
-        {
-          "endLine" : 17,
-          "file" : "TransactionRenamed/Fixture.swift",
-          "kind" : "binding-projection",
-          "startLine" : 17
-        },
-        {
-          "endLine" : 18,
-          "file" : "TransactionRenamed/Fixture.swift",
-          "kind" : "closure-expression",
-          "startLine" : 18
-        },
-        {
-          "endLine" : 18,
-          "file" : "TransactionRenamed/Fixture.swift",
-          "kind" : "function-call",
-          "startLine" : 18
-        },
-        {
-          "endLine" : 18,
-          "file" : "TransactionRenamed/Fixture.swift",
-          "kind" : "swiftui-action",
-          "startLine" : 18
-        },
-        {
-          "endLine" : 19,
-          "file" : "TransactionRenamed/Fixture.swift",
-          "kind" : "closure-expression",
-          "startLine" : 19
-        },
-        {
-          "endLine" : 19,
-          "file" : "TransactionRenamed/Fixture.swift",
-          "kind" : "function-call",
-          "startLine" : 19
-        },
-        {
-          "endLine" : 19,
-          "file" : "TransactionRenamed/Fixture.swift",
-          "kind" : "swiftui-action",
-          "startLine" : 19
-        },
-        {
-          "endLine" : 21,
-          "file" : "TransactionRenamed/Fixture.swift",
-          "kind" : "assignment",
-          "startLine" : 21
-        }
-      ],
-      "id" : "value:7dcc28d1ece2a83b",
-      "relationEdges" : [
-        "edge:2c7d3f2d6fa19628",
-        "edge:41e36e78615ef93e",
-        "edge:46e7a5ffad330dc2",
-        "edge:7cbedb62d018605d",
-        "edge:8f2d7ea531d220cc",
-        "edge:b41bdaf626f951de",
-        "edge:b579bdef0a419c4d",
-        "edge:bd965fc72855431c",
-        "edge:e5a2a65e41a9e6b4",
-        "edge:f47a7e6397b128d7",
-        "edge:fabdaa721476e1f5"
-      ],
-      "representations" : [
-        "node:7731bf7096c4f60f",
-        "node:a33686bc87eecb22",
-        "node:f53e3c3a538b28b2"
-      ]
-    },
-    {
-      "confidence" : "deterministic",
-      "evidence" : [
-
-      ],
-      "id" : "value:7e5ba857177ea745",
-      "relationEdges" : [
-
-      ],
-      "representations" : [
-        "node:aa408492723dce16"
-      ]
-    },
-    {
-      "confidence" : "deterministic",
-      "evidence" : [
-
-      ],
-      "id" : "value:7e8c93790d593748",
-      "relationEdges" : [
-
-      ],
-      "representations" : [
-        "node:c13fc0284c445388"
-      ]
-    },
-    {
-      "confidence" : "deterministic",
-      "evidence" : [
-
-      ],
-      "id" : "value:7ee7277fc0009a2a",
-      "relationEdges" : [
-
-      ],
-      "representations" : [
-        "node:7fe967e51088929f"
-      ]
-    },
-    {
-      "confidence" : "deterministic",
-      "evidence" : [
-        {
-          "endLine" : 11,
-          "file" : "DerivedState/Fixture.swift",
-          "kind" : "binding-projection",
-          "startLine" : 11
-        }
-      ],
-      "id" : "value:80873a2aa490fbd2",
-      "relationEdges" : [
-        "edge:eecdd8c8cf1f1996"
-      ],
-      "representations" : [
-        "node:80fb56ba35497e51",
-        "node:b9abb15e4fe25e00"
-      ]
-    },
-    {
-      "confidence" : "deterministic",
-      "evidence" : [
-
-      ],
-      "id" : "value:8536aaf65906942c",
-      "relationEdges" : [
-
-      ],
-      "representations" : [
-        "node:ccf3c8dcc37a0b64"
-      ]
-    },
-    {
-      "confidence" : "deterministic",
-      "evidence" : [
-        {
-          "endLine" : 13,
-          "file" : "ObservableMirror/Fixture.swift",
-          "kind" : "binding-projection",
-          "startLine" : 13
-        },
-        {
-          "endLine" : 15,
-          "file" : "ObservableMirror/Fixture.swift",
-          "kind" : "assignment",
-          "startLine" : 15
-        },
-        {
-          "endLine" : 18,
-          "file" : "ObservableMirror/Fixture.swift",
-          "kind" : "assignment",
-          "startLine" : 18
-        }
-      ],
-      "id" : "value:88d924004120c517",
-      "relationEdges" : [
-        "edge:2ece431e277ffcef",
-        "edge:7b36e028861e5aaf",
-        "edge:9e9bcaea59a516d5"
-      ],
-      "representations" : [
-        "node:55987609bc18d230",
-        "node:99771b676afa2c1",
-        "node:e1acb47a635471e1"
-      ]
-    },
-    {
-      "confidence" : "deterministic",
-      "evidence" : [
-
-      ],
-      "id" : "value:89cea426fb2421c6",
-      "relationEdges" : [
-
-      ],
-      "representations" : [
-        "node:30cc873f0604c984"
-      ]
-    },
-    {
-      "confidence" : "deterministic",
-      "evidence" : [
-        {
-          "endLine" : 24,
-          "file" : "ValueSetterPair/Fixture.swift",
-          "kind" : "initializer-argument",
-          "startLine" : 24
-        }
-      ],
-      "id" : "value:8a6dfcac6b670ec8",
-      "relationEdges" : [
-        "edge:e64e364932bb444c"
-      ],
-      "representations" : [
-        "node:1ef8f419bd7c9310",
-        "node:f443d4b8271304"
+        "node:8aaeec58527c696"
       ]
     },
     {
@@ -1180,18 +1246,18 @@
       "evidence" : [
         {
           "endLine" : 9,
-          "file" : "IntentionalTransformation/Fixture.swift",
+          "file" : "BindingIndependentLocalState/Fixture.swift",
           "kind" : "binding-projection",
           "startLine" : 9
         }
       ],
-      "id" : "value:8de44ee7b109c294",
+      "id" : "value:b05e6d9db136a03e",
       "relationEdges" : [
-        "edge:642c628c625b40e6"
+        "edge:de53c5367d8763f6"
       ],
       "representations" : [
-        "node:6218b33aef385e24",
-        "node:86922c28166f389"
+        "node:82cd3dce96644ffb",
+        "node:cd3772f34b7a8388"
       ]
     },
     {
@@ -1199,12 +1265,12 @@
       "evidence" : [
 
       ],
-      "id" : "value:8f66069df711d04d",
+      "id" : "value:b0fb7d8a089c4000",
       "relationEdges" : [
 
       ],
       "representations" : [
-        "node:609410c75307ec90"
+        "node:5a2462c78dfe6cf9"
       ]
     },
     {
@@ -1212,12 +1278,12 @@
       "evidence" : [
 
       ],
-      "id" : "value:91bd393ff4ab07c6",
+      "id" : "value:b14ebab5379431e4",
       "relationEdges" : [
 
       ],
       "representations" : [
-        "node:5f8570a746dbae1e"
+        "node:882291916637546"
       ]
     },
     {
@@ -1225,12 +1291,12 @@
       "evidence" : [
 
       ],
-      "id" : "value:91e60b2cbf88dba3",
+      "id" : "value:b436eacd27c0de68",
       "relationEdges" : [
 
       ],
       "representations" : [
-        "node:667a86dc4f9bdcfa"
+        "node:894219bc69371b2a"
       ]
     },
     {
@@ -1238,442 +1304,12 @@
       "evidence" : [
 
       ],
-      "id" : "value:93214d7d28a02160",
+      "id" : "value:b83e7a61be0e4cd0",
       "relationEdges" : [
 
       ],
       "representations" : [
-        "node:6c2f5c12c49ff43d"
-      ]
-    },
-    {
-      "confidence" : "deterministic",
-      "evidence" : [
-
-      ],
-      "id" : "value:936a93bc0cc5cbbb",
-      "relationEdges" : [
-
-      ],
-      "representations" : [
-        "node:c6e52b91e99d8b19"
-      ]
-    },
-    {
-      "confidence" : "deterministic",
-      "evidence" : [
-        {
-          "endLine" : 8,
-          "file" : "TransactionMissingDiscard/Fixture.swift",
-          "kind" : "assignment",
-          "startLine" : 8
-        },
-        {
-          "endLine" : 13,
-          "file" : "TransactionMissingDiscard/Fixture.swift",
-          "kind" : "binding-projection",
-          "startLine" : 13
-        },
-        {
-          "endLine" : 16,
-          "file" : "TransactionMissingDiscard/Fixture.swift",
-          "kind" : "assignment",
-          "startLine" : 16
-        }
-      ],
-      "id" : "value:94d800050371c868",
-      "relationEdges" : [
-        "edge:30359abacbf32499",
-        "edge:5f947d83468bf5c9",
-        "edge:e2a9fa84f700d54f"
-      ],
-      "representations" : [
-        "node:542e5cbe0bc7bc8c",
-        "node:b76c2541346d101",
-        "node:edede7a8b4ed9475"
-      ]
-    },
-    {
-      "confidence" : "deterministic",
-      "evidence" : [
-
-      ],
-      "id" : "value:9db65718245a4eb",
-      "relationEdges" : [
-
-      ],
-      "representations" : [
-        "node:4c46770b50392af5"
-      ]
-    },
-    {
-      "confidence" : "deterministic",
-      "evidence" : [
-
-      ],
-      "id" : "value:9ea4b4653d027d9a",
-      "relationEdges" : [
-
-      ],
-      "representations" : [
-        "node:b863d0550a604379"
-      ]
-    },
-    {
-      "confidence" : "deterministic",
-      "evidence" : [
-
-      ],
-      "id" : "value:a0ba73f821f58915",
-      "relationEdges" : [
-
-      ],
-      "representations" : [
-        "node:1e3eea36a5dff610"
-      ]
-    },
-    {
-      "confidence" : "deterministic",
-      "evidence" : [
-
-      ],
-      "id" : "value:a485fab5ea94dc44",
-      "relationEdges" : [
-
-      ],
-      "representations" : [
-        "node:b246f594356e9f69"
-      ]
-    },
-    {
-      "confidence" : "deterministic",
-      "evidence" : [
-
-      ],
-      "id" : "value:a7e8e34884ae8105",
-      "relationEdges" : [
-
-      ],
-      "representations" : [
-        "node:c9b0161f03ade863"
-      ]
-    },
-    {
-      "confidence" : "deterministic",
-      "evidence" : [
-
-      ],
-      "id" : "value:ac1433e932d0ab68",
-      "relationEdges" : [
-
-      ],
-      "representations" : [
-        "node:b1f730ea102bb08c"
-      ]
-    },
-    {
-      "confidence" : "deterministic",
-      "evidence" : [
-
-      ],
-      "id" : "value:add1bb371790cea2",
-      "relationEdges" : [
-
-      ],
-      "representations" : [
-        "node:79fd8960ee54ad02"
-      ]
-    },
-    {
-      "confidence" : "deterministic",
-      "evidence" : [
-
-      ],
-      "id" : "value:ae0bbb59543ab3c",
-      "relationEdges" : [
-
-      ],
-      "representations" : [
-        "node:4178c74819e419b"
-      ]
-    },
-    {
-      "confidence" : "deterministic",
-      "evidence" : [
-
-      ],
-      "id" : "value:af377b7aaef4f864",
-      "relationEdges" : [
-
-      ],
-      "representations" : [
-        "node:4ee6d52fc1965c1d"
-      ]
-    },
-    {
-      "confidence" : "deterministic",
-      "evidence" : [
-
-      ],
-      "id" : "value:b23dd390ed904604",
-      "relationEdges" : [
-
-      ],
-      "representations" : [
-        "node:c7288ad69b20e871"
-      ]
-    },
-    {
-      "confidence" : "deterministic",
-      "evidence" : [
-        {
-          "endLine" : 10,
-          "file" : "DerivedState/Fixture.swift",
-          "kind" : "binding-projection",
-          "startLine" : 10
-        }
-      ],
-      "id" : "value:b334b038c70c2ee6",
-      "relationEdges" : [
-        "edge:cf06e1a8ef6d5ac2"
-      ],
-      "representations" : [
-        "node:1e0d9db62c3777a1",
-        "node:b110e2fa1afd2cb0"
-      ]
-    },
-    {
-      "confidence" : "deterministic",
-      "evidence" : [
-
-      ],
-      "id" : "value:b3b83e733e361b16",
-      "relationEdges" : [
-
-      ],
-      "representations" : [
-        "node:2ce3ff349e1c044c"
-      ]
-    },
-    {
-      "confidence" : "deterministic",
-      "evidence" : [
-
-      ],
-      "id" : "value:b6c93390eedf6c19",
-      "relationEdges" : [
-
-      ],
-      "representations" : [
-        "node:5442c57ba9f849e8"
-      ]
-    },
-    {
-      "confidence" : "deterministic",
-      "evidence" : [
-
-      ],
-      "id" : "value:b7c47c9a24adcd28",
-      "relationEdges" : [
-
-      ],
-      "representations" : [
-        "node:b7044d0e0ba0f6c7"
-      ]
-    },
-    {
-      "confidence" : "deterministic",
-      "evidence" : [
-
-      ],
-      "id" : "value:c29e744a03a72af8",
-      "relationEdges" : [
-
-      ],
-      "representations" : [
-        "node:8a471b919d91edce"
-      ]
-    },
-    {
-      "confidence" : "deterministic",
-      "evidence" : [
-
-      ],
-      "id" : "value:c68213ed6200d8fe",
-      "relationEdges" : [
-
-      ],
-      "representations" : [
-        "node:6c70c2f11015013d"
-      ]
-    },
-    {
-      "confidence" : "deterministic",
-      "evidence" : [
-
-      ],
-      "id" : "value:caaf9fc063f9a4e1",
-      "relationEdges" : [
-
-      ],
-      "representations" : [
-        "node:18de7b102e53baee"
-      ]
-    },
-    {
-      "confidence" : "deterministic",
-      "evidence" : [
-
-      ],
-      "id" : "value:cd3a20c39a51abc",
-      "relationEdges" : [
-
-      ],
-      "representations" : [
-        "node:a6a73de2951df46c"
-      ]
-    },
-    {
-      "confidence" : "deterministic",
-      "evidence" : [
-
-      ],
-      "id" : "value:d0e3577135b09cb2",
-      "relationEdges" : [
-
-      ],
-      "representations" : [
-        "node:64a3045ad402f93a"
-      ]
-    },
-    {
-      "confidence" : "deterministic",
-      "evidence" : [
-
-      ],
-      "id" : "value:d25b6e15ee8cd501",
-      "relationEdges" : [
-
-      ],
-      "representations" : [
-        "node:8564b1997ef2cded"
-      ]
-    },
-    {
-      "confidence" : "deterministic",
-      "evidence" : [
-
-      ],
-      "id" : "value:d7a965c262b45cc3",
-      "relationEdges" : [
-
-      ],
-      "representations" : [
-        "node:db9fb4332bf7e0e4"
-      ]
-    },
-    {
-      "confidence" : "deterministic",
-      "evidence" : [
-
-      ],
-      "id" : "value:d7ef63e8cde52e6f",
-      "relationEdges" : [
-
-      ],
-      "representations" : [
-        "node:80d9713660805d92"
-      ]
-    },
-    {
-      "confidence" : "deterministic",
-      "evidence" : [
-
-      ],
-      "id" : "value:d81a863cc45ab7d1",
-      "relationEdges" : [
-
-      ],
-      "representations" : [
-        "node:a6b391f605bca614"
-      ]
-    },
-    {
-      "confidence" : "deterministic",
-      "evidence" : [
-
-      ],
-      "id" : "value:d98c94e3b41968bd",
-      "relationEdges" : [
-
-      ],
-      "representations" : [
-        "node:9b9da4e031719f72"
-      ]
-    },
-    {
-      "confidence" : "deterministic",
-      "evidence" : [
-
-      ],
-      "id" : "value:db19534c0ae9e8f2",
-      "relationEdges" : [
-
-      ],
-      "representations" : [
-        "node:ce64d51c271635a5"
-      ]
-    },
-    {
-      "confidence" : "deterministic",
-      "evidence" : [
-
-      ],
-      "id" : "value:db3bb5cb043f7a89",
-      "relationEdges" : [
-
-      ],
-      "representations" : [
-        "node:19cfb7c3e2d4f162"
-      ]
-    },
-    {
-      "confidence" : "deterministic",
-      "evidence" : [
-
-      ],
-      "id" : "value:dc1b061217e34abc",
-      "relationEdges" : [
-
-      ],
-      "representations" : [
-        "node:c33479caef975ec6"
-      ]
-    },
-    {
-      "confidence" : "deterministic",
-      "evidence" : [
-
-      ],
-      "id" : "value:dc5b53e33cbc5844",
-      "relationEdges" : [
-
-      ],
-      "representations" : [
-        "node:c0191d8fe3d793e5"
-      ]
-    },
-    {
-      "confidence" : "deterministic",
-      "evidence" : [
-
-      ],
-      "id" : "value:de1f25a35cb26fc8",
-      "relationEdges" : [
-
-      ],
-      "representations" : [
-        "node:5200d39640766311"
+        "node:f2a6114204c55ba8"
       ]
     },
     {
@@ -1698,17 +1334,43 @@
           "startLine" : 23
         }
       ],
-      "id" : "value:df5f9fc79b05bed7",
+      "id" : "value:ba3bd29763f84109",
       "relationEdges" : [
-        "edge:b34cb0aa9f05cb93",
-        "edge:ed5d74a0584df78c",
-        "edge:fd1e2b10cbd2c530"
+        "edge:2313f78acec1f069",
+        "edge:524da57cf320cd90",
+        "edge:8c01043f49eb8104"
       ],
       "representations" : [
-        "node:3603840ed464068f",
-        "node:9fa102ae459d8b7f",
-        "node:f0f41501bf5496b5",
-        "node:f49c327b9e2311aa"
+        "node:3c8ab8c3b35fc4e",
+        "node:8647985391405495",
+        "node:bbe3f891fe06f519",
+        "node:cff8fffde508e505"
+      ]
+    },
+    {
+      "confidence" : "deterministic",
+      "evidence" : [
+
+      ],
+      "id" : "value:be063560bbd8147b",
+      "relationEdges" : [
+
+      ],
+      "representations" : [
+        "node:faeebc2d8feddf87"
+      ]
+    },
+    {
+      "confidence" : "deterministic",
+      "evidence" : [
+
+      ],
+      "id" : "value:bfec01538df8d43f",
+      "relationEdges" : [
+
+      ],
+      "representations" : [
+        "node:4197472e1ab90ae0"
       ]
     },
     {
@@ -1716,34 +1378,34 @@
       "evidence" : [
         {
           "endLine" : 20,
-          "file" : "CallbackTunnel/Fixture.swift",
+          "file" : "CallbackTunnelMismatch/Fixture.swift",
           "kind" : "initializer-argument",
           "startLine" : 20
         },
         {
-          "endLine" : 29,
-          "file" : "CallbackTunnel/Fixture.swift",
+          "endLine" : 30,
+          "file" : "CallbackTunnelMismatch/Fixture.swift",
           "kind" : "initializer-argument",
-          "startLine" : 29
+          "startLine" : 30
         },
         {
-          "endLine" : 37,
-          "file" : "CallbackTunnel/Fixture.swift",
+          "endLine" : 39,
+          "file" : "CallbackTunnelMismatch/Fixture.swift",
           "kind" : "initializer-argument",
-          "startLine" : 37
+          "startLine" : 39
         }
       ],
-      "id" : "value:ec0bad4b6d89b957",
+      "id" : "value:c30e0e3d04ebc17e",
       "relationEdges" : [
-        "edge:5919cecd71dfac75",
-        "edge:a30c1a448f88f8b7",
-        "edge:ccea2752dc8d6ed"
+        "edge:3c9d419716b1d417",
+        "edge:5aa62ef2cfea4ae9",
+        "edge:825b35ee162db5b0"
       ],
       "representations" : [
-        "node:718d3ae924fc716e",
-        "node:881d19693766a898",
-        "node:906515df87d136de",
-        "node:f85bbf2474766542"
+        "node:4b9337e4fbd11eac",
+        "node:53d8344ae141e096",
+        "node:bffd256f3396cd5c",
+        "node:cefafa811fc995fa"
       ]
     },
     {
@@ -1751,12 +1413,12 @@
       "evidence" : [
 
       ],
-      "id" : "value:eff8fad3dac4bdb2",
+      "id" : "value:c373fe4143033e11",
       "relationEdges" : [
 
       ],
       "representations" : [
-        "node:478d193160964407"
+        "node:5fa19951dda191d3"
       ]
     },
     {
@@ -1764,12 +1426,261 @@
       "evidence" : [
 
       ],
-      "id" : "value:f078272314692fc2",
+      "id" : "value:c51b882510ed3736",
       "relationEdges" : [
 
       ],
       "representations" : [
-        "node:d301a1cac4894d16"
+        "node:3fc2b69b95c98301"
+      ]
+    },
+    {
+      "confidence" : "deterministic",
+      "evidence" : [
+
+      ],
+      "id" : "value:c6086c75a0137af8",
+      "relationEdges" : [
+
+      ],
+      "representations" : [
+        "node:2a90a34d30343c5f"
+      ]
+    },
+    {
+      "confidence" : "deterministic",
+      "evidence" : [
+
+      ],
+      "id" : "value:cb895df69c12f966",
+      "relationEdges" : [
+
+      ],
+      "representations" : [
+        "node:4a39da998cfd3087"
+      ]
+    },
+    {
+      "confidence" : "deterministic",
+      "evidence" : [
+
+      ],
+      "id" : "value:cbb8eea396c64502",
+      "relationEdges" : [
+
+      ],
+      "representations" : [
+        "node:589301f52cc93b68"
+      ]
+    },
+    {
+      "confidence" : "deterministic",
+      "evidence" : [
+
+      ],
+      "id" : "value:cd543dcde111e95e",
+      "relationEdges" : [
+
+      ],
+      "representations" : [
+        "node:3bbe119fa79d5e3b"
+      ]
+    },
+    {
+      "confidence" : "deterministic",
+      "evidence" : [
+
+      ],
+      "id" : "value:d0cb173969be362d",
+      "relationEdges" : [
+
+      ],
+      "representations" : [
+        "node:2859778fae3002ef"
+      ]
+    },
+    {
+      "confidence" : "deterministic",
+      "evidence" : [
+        {
+          "endLine" : 8,
+          "file" : "BindingMirroredLocally/Fixture.swift",
+          "kind" : "binding-projection",
+          "startLine" : 8
+        },
+        {
+          "endLine" : 10,
+          "file" : "BindingMirroredLocally/Fixture.swift",
+          "kind" : "assignment",
+          "startLine" : 10
+        },
+        {
+          "endLine" : 13,
+          "file" : "BindingMirroredLocally/Fixture.swift",
+          "kind" : "assignment",
+          "startLine" : 13
+        },
+        {
+          "endLine" : 16,
+          "file" : "BindingMirroredLocally/Fixture.swift",
+          "kind" : "assignment",
+          "startLine" : 16
+        }
+      ],
+      "id" : "value:d1e52d99591bd5d6",
+      "relationEdges" : [
+        "edge:986145eb4ed7b459",
+        "edge:a8d76c7efbedcca5",
+        "edge:b7da8a204ee90d0"
+      ],
+      "representations" : [
+        "node:1e8bf469ee8db356",
+        "node:3770a6fb7a3d119d",
+        "node:7b95306bbfecdc6e"
+      ]
+    },
+    {
+      "confidence" : "deterministic",
+      "evidence" : [
+
+      ],
+      "id" : "value:d27b22aa4b5a71e8",
+      "relationEdges" : [
+
+      ],
+      "representations" : [
+        "node:9519c61f922bf2"
+      ]
+    },
+    {
+      "confidence" : "deterministic",
+      "evidence" : [
+        {
+          "endLine" : 10,
+          "file" : "IntentionalTransformation/Fixture.swift",
+          "kind" : "binding-projection",
+          "startLine" : 10
+        }
+      ],
+      "id" : "value:d4dd190652263eef",
+      "relationEdges" : [
+        "edge:459e994ab749243d"
+      ],
+      "representations" : [
+        "node:164855022a9d4f77",
+        "node:fc2ea4da69e52183"
+      ]
+    },
+    {
+      "confidence" : "deterministic",
+      "evidence" : [
+
+      ],
+      "id" : "value:d6a237cb05ec4b75",
+      "relationEdges" : [
+
+      ],
+      "representations" : [
+        "node:19abbc63f404ca8a"
+      ]
+    },
+    {
+      "confidence" : "deterministic",
+      "evidence" : [
+        {
+          "endLine" : 8,
+          "file" : "TransactionMissingDiscard/Fixture.swift",
+          "kind" : "assignment",
+          "startLine" : 8
+        },
+        {
+          "endLine" : 13,
+          "file" : "TransactionMissingDiscard/Fixture.swift",
+          "kind" : "binding-projection",
+          "startLine" : 13
+        },
+        {
+          "endLine" : 16,
+          "file" : "TransactionMissingDiscard/Fixture.swift",
+          "kind" : "assignment",
+          "startLine" : 16
+        }
+      ],
+      "id" : "value:da2d46eadc831397",
+      "relationEdges" : [
+        "edge:449324391a1beee0",
+        "edge:bd1c6f1ee1257a69",
+        "edge:df3373de2c7b37c5"
+      ],
+      "representations" : [
+        "node:199675199583e09e",
+        "node:674296977ecc6dee",
+        "node:89d93bcc7f6d8151"
+      ]
+    },
+    {
+      "confidence" : "deterministic",
+      "evidence" : [
+
+      ],
+      "id" : "value:db60a5c3a92d4a2",
+      "relationEdges" : [
+
+      ],
+      "representations" : [
+        "node:78cdc4c1d7c614cb"
+      ]
+    },
+    {
+      "confidence" : "deterministic",
+      "evidence" : [
+
+      ],
+      "id" : "value:dc02715da6ee8642",
+      "relationEdges" : [
+
+      ],
+      "representations" : [
+        "node:b437b0355e5ac1c6"
+      ]
+    },
+    {
+      "confidence" : "deterministic",
+      "evidence" : [
+
+      ],
+      "id" : "value:dc16d22edc613bbc",
+      "relationEdges" : [
+
+      ],
+      "representations" : [
+        "node:c3cebee3fa2b22f3"
+      ]
+    },
+    {
+      "confidence" : "deterministic",
+      "evidence" : [
+
+      ],
+      "id" : "value:de11f150e786d36",
+      "relationEdges" : [
+
+      ],
+      "representations" : [
+        "node:3496f3fc37cc37b9"
+      ]
+    },
+    {
+      "confidence" : "deterministic",
+      "evidence" : [
+
+      ],
+      "id" : "value:e526d613b3c954e1",
+      "relationEdges" : [
+
+      ],
+      "representations" : [
+        "node:d8d14601a93477ba"
       ]
     },
     {
@@ -1777,18 +1688,18 @@
       "evidence" : [
         {
           "endLine" : 9,
-          "file" : "BindingIndependentLocalState/Fixture.swift",
+          "file" : "IntentionalTransformation/Fixture.swift",
           "kind" : "binding-projection",
           "startLine" : 9
         }
       ],
-      "id" : "value:f086007839ac5594",
+      "id" : "value:e541d5bde7e86fc8",
       "relationEdges" : [
-        "edge:a9e10844f21976d0"
+        "edge:3416aa8023a682d0"
       ],
       "representations" : [
-        "node:a1189eaeb0da2fd2",
-        "node:cc8b52d6dee44e85"
+        "node:4b72366d0ed6c7f0",
+        "node:e6ab63c587eabeb3"
       ]
     },
     {
@@ -1796,78 +1707,167 @@
       "evidence" : [
 
       ],
-      "id" : "value:f6eea2e0743da5d3",
+      "id" : "value:e5b2e0c31ffc68b9",
       "relationEdges" : [
 
       ],
       "representations" : [
-        "node:8414e87c087e38f3"
-      ]
-    },
-    {
-      "confidence" : "deterministic",
-      "evidence" : [
-
-      ],
-      "id" : "value:f83732e8cdd707f2",
-      "relationEdges" : [
-
-      ],
-      "representations" : [
-        "node:d48e714128bbd230"
-      ]
-    },
-    {
-      "confidence" : "deterministic",
-      "evidence" : [
-
-      ],
-      "id" : "value:f999654c5aed9c90",
-      "relationEdges" : [
-
-      ],
-      "representations" : [
-        "node:d1b95300ac142071"
-      ]
-    },
-    {
-      "confidence" : "deterministic",
-      "evidence" : [
-
-      ],
-      "id" : "value:fa1b56034719528f",
-      "relationEdges" : [
-
-      ],
-      "representations" : [
-        "node:22384aef16f16fd5"
+        "node:c268b17e456faea"
       ]
     },
     {
       "confidence" : "deterministic",
       "evidence" : [
         {
-          "endLine" : 18,
-          "file" : "TunnelDepthTwo/Fixture.swift",
+          "endLine" : 24,
+          "file" : "ValueSetterPair/Fixture.swift",
           "kind" : "initializer-argument",
-          "startLine" : 18
-        },
-        {
-          "endLine" : 26,
-          "file" : "TunnelDepthTwo/Fixture.swift",
-          "kind" : "initializer-argument",
-          "startLine" : 26
+          "startLine" : 24
         }
       ],
-      "id" : "value:fb5396067b5792f4",
+      "id" : "value:e666467b50b7e708",
       "relationEdges" : [
-        "edge:c2d1e5098490483d",
-        "edge:ff39ff962a5512b0"
+        "edge:4cb8804c921bee98"
       ],
       "representations" : [
-        "node:193d53498cae9d4",
-        "node:83af8290907f8325",
-        "node:cf5e5ceae8ec83b3"
+        "node:6a43424b5d657c35",
+        "node:d4101f2a20d34829"
+      ]
+    },
+    {
+      "confidence" : "deterministic",
+      "evidence" : [
+
+      ],
+      "id" : "value:e97b91d966839579",
+      "relationEdges" : [
+
+      ],
+      "representations" : [
+        "node:ed12ae86f7f2b7d6"
+      ]
+    },
+    {
+      "confidence" : "deterministic",
+      "evidence" : [
+
+      ],
+      "id" : "value:eaaff6563edba9a4",
+      "relationEdges" : [
+
+      ],
+      "representations" : [
+        "node:c41c7565574ee807"
+      ]
+    },
+    {
+      "confidence" : "deterministic",
+      "evidence" : [
+
+      ],
+      "id" : "value:eaebd8b0d4da9925",
+      "relationEdges" : [
+
+      ],
+      "representations" : [
+        "node:f5cdc3d75ec8be87"
+      ]
+    },
+    {
+      "confidence" : "deterministic",
+      "evidence" : [
+        {
+          "endLine" : 7,
+          "file" : "BindingSelfCopy/Fixture.swift",
+          "kind" : "binding-projection",
+          "startLine" : 7
+        },
+        {
+          "endLine" : 9,
+          "file" : "BindingSelfCopy/Fixture.swift",
+          "kind" : "assignment",
+          "startLine" : 9
+        }
+      ],
+      "id" : "value:eb94f9ea59a6741a",
+      "relationEdges" : [
+        "edge:4a6591cf72365782",
+        "edge:ba27d96735023f87"
+      ],
+      "representations" : [
+        "node:531f2538f26e1c3d",
+        "node:f3e1b1ac64294f52"
+      ]
+    },
+    {
+      "confidence" : "deterministic",
+      "evidence" : [
+        {
+          "endLine" : 10,
+          "file" : "IdentityTransform/Fixture.swift",
+          "kind" : "binding-projection",
+          "startLine" : 10
+        }
+      ],
+      "id" : "value:f061e0c81be57194",
+      "relationEdges" : [
+        "edge:ec5cf45234b6b1f4"
+      ],
+      "representations" : [
+        "node:579016a0b1be0a45",
+        "node:c73ed85ac2dd9ecd"
+      ]
+    },
+    {
+      "confidence" : "deterministic",
+      "evidence" : [
+
+      ],
+      "id" : "value:f064257482add574",
+      "relationEdges" : [
+
+      ],
+      "representations" : [
+        "node:81abf632f203077a"
+      ]
+    },
+    {
+      "confidence" : "deterministic",
+      "evidence" : [
+
+      ],
+      "id" : "value:fbe26c3e7afa06e5",
+      "relationEdges" : [
+
+      ],
+      "representations" : [
+        "node:b0544f6747466d4a"
+      ]
+    },
+    {
+      "confidence" : "deterministic",
+      "evidence" : [
+
+      ],
+      "id" : "value:fc958a816dbe859d",
+      "relationEdges" : [
+
+      ],
+      "representations" : [
+        "node:c97b3a74a441ad4c"
+      ]
+    },
+    {
+      "confidence" : "deterministic",
+      "evidence" : [
+
+      ],
+      "id" : "value:fddc7552a7f647d",
+      "relationEdges" : [
+
+      ],
+      "representations" : [
+        "node:7a9458de44dbb5f"
       ]
     }
   ]

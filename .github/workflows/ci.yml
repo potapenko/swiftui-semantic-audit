@@ -76,7 +76,7 @@ jobs:
           from pathlib import Path
 
           report = json.loads((Path(os.environ["RUNNER_TEMP"]) / "indexed-audit.json").read_text())
-          assert report["schemaVersion"] == 1
+          assert report["schemaVersion"] == 2
           assert report["resolution"] == "indexed"
           PY
 
@@ -91,6 +91,14 @@ jobs:
             swift run --disable-automatic-resolution swiftui-audit audit \
               Sources --syntax-only --format json \
               > "$RUNNER_TEMP/source-audit.json"
+          perl -e 'alarm shift; exec @ARGV' 180 \
+            swift run --disable-automatic-resolution swiftui-audit audit \
+              Tests/Fixtures/ArchitectureTests --syntax-only --format json \
+              > "$RUNNER_TEMP/architecture-audit.json"
+          perl -e 'alarm shift; exec @ARGV' 180 \
+            swift run --disable-automatic-resolution swiftui-audit audit \
+              Tests/Fixtures/ArchitectureNegative --syntax-only --format json \
+              > "$RUNNER_TEMP/architecture-negative-audit.json"
           python3 - <<'PY'
           import json
           import os
@@ -99,9 +107,26 @@ jobs:
           root = Path(os.environ["RUNNER_TEMP"])
           fixtures = json.loads((root / "rule-audit.json").read_text())
           sources = json.loads((root / "source-audit.json").read_text())
-          assert fixtures["schemaVersion"] == sources["schemaVersion"] == 1
+          architecture = json.loads((root / "architecture-audit.json").read_text())
+          negative = json.loads((root / "architecture-negative-audit.json").read_text())
+          assert fixtures["schemaVersion"] == sources["schemaVersion"] == 2
           assert fixtures["resolution"] == sources["resolution"] == "syntax-only"
           assert fixtures["findings"], "RuleTests must emit a finding for slice dogfood"
+          architecture_rules = {
+              "model-aware-descendant", "multi-owner-component",
+              "cross-feature-owner-dependency", "service-or-repository-in-view",
+              "environment-command-router", "multi-source-binding",
+              "manual-owner-synchronization", "hidden-command-in-lifecycle",
+              "view-owned-external-effect", "imperative-focus-lifecycle",
+              "selection-corrective-loop", "geometry-driven-product-layout",
+              "geometry-escapes-layout-boundary", "geometry-triggered-model-effect",
+              "manual-positioning-as-layout", "gesture-button-emulation",
+              "imperative-platform-view-update", "direct-global-platform-command",
+              "preview-requires-app-composition",
+          }
+          assert architecture_rules <= {finding["rule"] for finding in architecture["findings"]}
+          assert not ({finding["rule"] for finding in negative["findings"]} & architecture_rules)
+          assert architecture["configurationDigest"] != "none"
           (root / "finding-id.txt").write_text(fixtures["findings"][0]["id"])
           PY
 
@@ -131,6 +156,7 @@ jobs:
 
           expected_keys = {
               "generatedFrom",
+              "configurationDigest",
               "repositoryRevision",
               "schemaVersion",
               "swiftVersion",
@@ -214,7 +240,7 @@ jobs:
           assert slice_data["finding"] is not None
           assert slice_data["nodes"] and slice_data["sourceEvidence"]
           assert slice_data["metadata"]["estimatedTokens"] <= 10000
-          assert doctor["schemaVersion"] == 1
+          assert doctor["schemaVersion"] == 2
           assert doctor["overallStatus"] != "error"
           PY
 

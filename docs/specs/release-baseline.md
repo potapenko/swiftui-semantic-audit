@@ -1,14 +1,16 @@
 # Unreleased implementation baseline
 
-Revision: `spec-4`
+Revision: `spec-5`
 Baseline state: `unreleased`  
-Contract epoch: `tz-v4`
+Contract epoch: `tz-v5`
 
 **BASE-REL-001 — No public release claim.** This repository has an accepted PoC implementation and release-path workflows, but this document does not claim a tag, package distribution, website, Homebrew formula, plugin, or other public release.
 
 **BASE-REL-002 — Implementation revision.** P6 began on branch `master` at Git commit `f24751cd25781426ec2c1531243e498534165e60`. Accepted P1–P5 implementation changes, including indexed enrichment, are present in the working tree at that revision. Generated P6 baseline manifests therefore record that Git revision while representing the accepted working tree.
 
 **BASE-REL-003 — Boundary-analysis revision.** The `BOUNDARY-001` product implementation is commit `e81f10d4b06ae1c738b8302d579858854fc69a44`, present on `origin/master`. The regenerated RuleTests manifest records that exact product-source revision; the accompanying tests, baseline, documentation, and skill guidance are its acceptance evidence.
+
+**BASE-REL-004 — Architecture-analysis revision.** The `ARCHITECTURE-001` implementation is product commit `2e9207fe1093995e7abd4880ca17745ee2b0b28b`, collision-scope restore commit `5d16cc3b9ef441be448b16554c9c4e662f573f4a`, and bounded large-project index timeout commit `f02927a3ecb38eeee89ab23fd77f58c50c6560b7`. The schema-v2 RuleTests manifest records the latter exact product-source revision; the subsequent baseline, CI, documentation, and skill checkpoint is its acceptance evidence.
 
 ## Dependency and platform baseline
 
@@ -27,7 +29,7 @@ Contract epoch: `tz-v4`
 
 ## Accepted milestone evidence
 
-**BASE-MILESTONE-001.** Accepted realization:
+**BASE-MILESTONE-001.** Accepted realization and current integration candidate:
 
 | Milestone | Capability | Accepted evidence before P6 |
 | --- | --- | --- |
@@ -40,36 +42,39 @@ Contract epoch: `tz-v4`
 | P7 | requirement-by-requirement completion | accepted with compatible PoC residuals across all 54 source sections |
 | P8 | single skill entry point | accepted: `swiftui-semantic` routes to three accepted specialist workflows; four-skill validation, four fresh-context routing scenarios, and independent review pass |
 | P9 | boundary analysis and logical roots | accepted: tool 0.2.0/schema v1; ten rules; explicit custom Binding topology; 69 tests including fresh indexed enrichment; deterministic 353/664/20 RuleTests baseline; full CLI dogfood pass |
+| P10 | architecture analysis | integration candidate: tool 0.3.0/schema v2; collision-safe identities; exact configuration; 29 rules; 77 tests; deterministic 353/713/20 RuleTests baseline; configured positive/negative and indexed evidence; full local CLI dogfood pass |
 
 ## Current contract surface
 
 **BASE-CAP-001.** Public commands are `scan`, `audit`, `snapshot`, `slice`, `diff`, `check`, and `doctor`, with syntax/index flags documented in [`cli.md`](cli.md).
 
-**BASE-CAP-002.** Graph/audit/snapshot/diff/check/slice schemas are version 1 and tool version `0.2.0`.
+**BASE-CAP-002.** Graph/audit/snapshot/diff/check/slice schemas are version 2 and tool version `0.3.0`. Reports and snapshot manifests carry the canonical analysis-configuration digest or `none`.
 
 **BASE-CAP-003.** The canonical RuleTests dogfood baseline is syntax-only and contains exactly five files under `Tests/Baselines/RuleTests`.
 
 **BASE-CAP-004.** Repeated fresh generation at one revision is byte-identical across all five files. Cross-commit comparison to the committed baseline is byte-exact for the four semantic files; only manifest `repositoryRevision` is normalized, with every other manifest field exact and the fresh revision required to equal `HEAD`.
 
-**BASE-CAP-005.** Current syntax-only RuleTests baseline contains 353 nodes, 664 edges, and 20 findings. Its metrics are 34 Binding edges, 8 manual-synchronization edges, 40 mutable semantic values, 27 state representations, 5 duplicated sources of truth, 5 ownership violations, 2 derived mutable values, and 1 callback tunnel. Canonical file SHA-256 values are:
+**BASE-CAP-005.** Current syntax-only RuleTests baseline contains 353 nodes, 713 edges, and 20 findings. Its metrics are 34 Binding edges, 8 manual-synchronization edges, 40 mutable semantic values, 27 state representations, 5 duplicated sources of truth, 5 ownership violations, 2 derived mutable values, and 1 callback tunnel. Canonical file SHA-256 values are:
 
 | File | SHA-256 |
 | --- | --- |
-| `nodes.jsonl` | `4a00a8e70eed5c0c6d2d9e72fc2283a1bf67e4b09e791ce3a6078bcc0b6d6570` |
-| `edges.jsonl` | `4dc721f7860d4e8d4f621bc2d488d6190dc087290797a4477265cdc7c6fe741d` |
-| `findings.jsonl` | `a93a58a986bd0ecd984f641f08eba17a3dc364cc41887b2c6578878c330aaca8` |
-| `summary.json` | `8316abe13cc935051b7c5242e420bd27aa52c90238926f3dfa97ae2ae6541ff4` |
-| `manifest.json` | `d6686f232cea63123ebe4f6bf2a23cf5dc686d5430fa2a8aefb3033fac0a273c` |
+| `nodes.jsonl` | `bbe26842938f90384520929f9c56f64f12bf816b8eae9fb6035bac7b1fddd4c3` |
+| `edges.jsonl` | `e1ba91905742c9a088790b35e18a46ae5a566254af7728484738ed8ad13a6bf2` |
+| `findings.jsonl` | `9d9305389503bffcaa70651fa233ebb372ef0d4f7edd2bf1901c353a0391c7b3` |
+| `summary.json` | `b37146210fbf1a690985d89c2f617ef892727d8f4597087abaed1739dbc15177` |
+| `manifest.json` | `0813a3977fef62e4797ebacce10d3a9ec1d5ed08403fcb981a1115116d3eed76` |
 
-**BASE-CAP-006.** The current P1 extraction fixture contains 42 nodes and 77 edges (SHA-256 `57abbd33524890eb9544b420d47dd06013527ce12b1c2ad7b538dc3a19aa68db`). The one `BOUNDARY-001` addition is an explicit observable-member call edge required by broad-input analysis. Accepted lexical behavior preserves identity for an unshadowed nested `onChange` parameter capture, treats a same-name nested parameter as a shadow barrier, and represents transformed captures only through derivation.
+**BASE-CAP-006.** The current P1 extraction fixture contains 42 nodes and 83 edges (SHA-256 `ae2f86326085816ee62f9d3fcf8a1531f007df80d2f60a895d2a9f1ea7241ceb`). Schema v2 adds bounded typed/value-flow facts while preserving accepted lexical behavior: identity for an unshadowed nested `onChange` parameter capture, a same-name nested parameter as a shadow barrier, and derivation for transformed captures.
 
-**BASE-CAP-007.** Current syntax-only Sources dogfood produces 3,357 nodes and 6,608 edges (SHA-256 `187ee36e268135d58d9b9e9b4bcaed2cba9023957def77db2b06cfe7b6449b4a`). Its audit has zero findings and SHA-256 `27ef8b8adcde059e2add19a1b48150800b787267bd2d6cabcfba5812fe9ccb33`.
+**BASE-CAP-007.** Current syntax-only Sources dogfood produces 3,987 nodes and 10,276 edges (SHA-256 `702b574af9ab82cfc941219cf188c8078abb130a905e0be3e082a3fd634b0f7b`). Its audit has zero findings and SHA-256 `b1d2b61915ae31bed62d2449b6c42fb4d51de363906898593bc1560c5b5927c0`.
 
 **BASE-CAP-008.** The accepted value-setter evidence repair leaves counts and metrics unchanged while retaining each matching event-trigger edge in its finding. `LabeledSetter` is `finding:871672afc5e64d2` with `edge:df78fa011860918b`; `ValueSetterPair` is `finding:c988942f3dcf8158` with `edge:fec6154e7fee5d1f`. This records current evidence completeness and does not add another rule.
 
 **BASE-CAP-009.** The agent workflow surface contains one concise user-facing router, `swiftui-semantic`, and three specialist skills for audit, refactor, and change review. The router selects or sequences specialists without duplicating their workflow or weakening their gates.
 
 **BASE-CAP-010.** All agent-facing semantic workflows require an explicit validated compiler Index Store and accept only indexed results. They do not recommend frontend-only analysis or automatic fallback. Change review requires compatible indexed snapshots; the CLI's build-free mode remains available outside the agent workflow and continues to support deterministic fixtures, baselines, and dogfood.
+
+**BASE-CAP-011.** The configured architecture fixture emits all nineteen new rule identifiers across 25 findings with digest `99b15b05460746f3931ce87b3f44a6da374ae6f8b4b332562432070e69ada3b9`; the configured negative fixture emits none of those identifiers. Finding dominance removes overlapping generic paths.
 
 ## Accepted residuals and limits
 
@@ -85,7 +90,7 @@ Contract epoch: `tz-v4`
 
 **BASE-LIM-006 — Indexed mode.** Indexed enrichment is macOS-only, skips conservative same-line ambiguities, and auto-discovers only validated local `.build` stores. Explicit selection fails when coverage is absent; automatic mode falls back to syntax-only.
 
-**BASE-LIM-007 — Deferred rules/features.** General typed component-role and ownership-mismatch inference remains adjudication guidance rather than a shipped rule; the new boundary candidates require explicit Binding/Observation topology. Automatic rewriting, embedded LLM APIs, GUI/IDE/Xcode extensions, broad Swift framework analysis, and SIL remain out of scope.
+**BASE-LIM-007 — Bounded architecture analysis.** Role- and feature-aware conclusions require exact validated configuration and remain silent without it. Syntax extraction is not a full type checker or general control-flow/effect engine; architecture rules cover only their documented SwiftUI, lifecycle, geometry, representable, and platform-command topology. Automatic rewriting, embedded LLM APIs, GUI/IDE/Xcode extensions, broad Swift framework analysis, and SIL remain out of scope.
 
 ## Router acceptance evidence
 
@@ -96,3 +101,5 @@ Contract epoch: `tz-v4`
 **BASE-NEXT-003.** `INDEXED-SKILLS-001` acceptance requires zero frontend-only guidance under `skills/`, explicit index-store commands in every live-source specialist workflow, indexed-only handoffs and review snapshots, four-skill validation, YAML/link validation, and the CI regression guard.
 
 **BASE-NEXT-004.** `BOUNDARY-001` is locally accepted with tool version `0.2.0`, schema version 1, ten exact rules, custom Binding construction topology, logical source-count fixtures, syntax-only and fresh explicit indexed evidence, a deterministic regenerated five-file RuleTests baseline, 69 passing tests, updated agent adjudication guidance, and passing audit/snapshot/diff/check/slice/doctor dogfood. Hosted CI on the integrated P9 checkpoint is required external release evidence and its terminal result is reported in the checkpoint handoff.
+
+**BASE-NEXT-005.** `ARCHITECTURE-001` local acceptance evidence includes 77 passing tests, locked build, fresh explicit IndexStoreDB identity/configuration coverage, byte-identical schema-v2 snapshots, empty same-input diff, passing high-severity check, bounded slice, healthy doctor, zero Sources findings, all nineteen configured positive rules, zero configured negative rules, and four validated skills. Hosted CI and upstream presence remain the terminal integration evidence.

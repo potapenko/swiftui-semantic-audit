@@ -33,6 +33,7 @@ Keep these facts unchanged when moving between specialists:
 
 - source path and repository;
 - `indexed` resolution and the validated Index Store identity/path used for live-source analysis;
+- the validated analysis-configuration digest, or the explicit fact that the workflow is topology-only;
 - baseline and current snapshot identities;
 - finding, semantic-value, and symbol IDs;
 - deterministic nodes, edges, evidence, and source locations;

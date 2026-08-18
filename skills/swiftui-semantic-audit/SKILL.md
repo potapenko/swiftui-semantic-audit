@@ -12,13 +12,14 @@ description: Audit Swift and SwiftUI state/data-flow architecture with swiftui-a
 3. Pass `--index-store <path>` explicitly to every live-source audit or slice command. Do not omit it in reliance on automatic discovery.
 4. Parse the result and require `resolution: "indexed"`. Treat any other resolution as insufficient evidence and stop.
 5. Treat the CLI as provider-independent. Do not assume or add an OpenAI, Anthropic, or other model API call.
+6. For role-, feature-, or composition-root-aware analysis, locate and validate the exact project `.swiftui-audit.json`, pass it with `--config <path>`, and retain its digest. If authoritative classification is absent, report that role-aware conclusions are unavailable; never infer roles from names.
 
 ## Audit before source
 
 1. Run JSON audit before opening arbitrary Swift source:
 
    ```bash
-   swiftui-audit audit <source-path> --index-store <path> --format json
+   swiftui-audit audit <source-path> --index-store <path> --config <path> --format json
    ```
 
 2. Parse JSON from stdout. Keep stderr, exit status, and command metadata separate from semantic data.
@@ -26,7 +27,7 @@ description: Audit Swift and SwiftUI state/data-flow architecture with swiftui-a
 4. Select relevant findings. Slice each one before inspecting implementation source:
 
    ```bash
-   swiftui-audit slice <source-path> --finding <finding-id> --index-store <path> --format llm-json --token-budget 10000
+   swiftui-audit slice <source-path> --finding <finding-id> --index-store <path> --config <path> --format llm-json --token-budget 10000
    ```
 
 5. Follow only `sourceEvidence` locations when implementation detail is required. Expand beyond them only when a named dependency cannot be resolved from the slice, and state why.
@@ -61,10 +62,11 @@ Stop and report the exact command, exit status, stderr, and unresolved evidence 
 - indexed enrichment is unavailable, stale, or lacks project coverage;
 - a command returns a resolution other than `indexed`;
 - graph/report or compared-input resolutions disagree;
+- compared inputs use different configuration digests, or required role configuration is absent;
 - evidence cannot establish ownership, lifetime, transformation, or transaction boundaries.
 
 Do not replace missing deterministic facts with model guesses. Return `unknown` and the smallest next evidence request.
 
 ## Report
 
-Report semantic value, current owner and representations, logical source count, read/write/call/synchronization paths, Binding setter role or boundary depth when present, confidence, indexed resolution, validated Index Store path, classification, evidence locations, risk, and a conditional remediation. Separate deterministic CLI facts from LLM adjudication.
+Report semantic value, current owner and representations, logical source count, read/write/call/synchronization paths, Binding setter role or boundary depth when present, confidence, indexed resolution, validated Index Store path, configuration digest or explicit topology-only limitation, classification, evidence locations, risk, and a conditional remediation. Separate deterministic CLI facts from LLM adjudication.

@@ -55,7 +55,7 @@ swift test --disable-automatic-resolution
 
 **ACC-TEST-006.** `ARCHITECTURE-001` advances tool version to `0.3.0` and schema to v2. Every new rule has positive and negative deterministic fixtures; identity/config/type topology has fresh explicit indexed coverage; snapshot/diff/check enforce configuration digest equality.
 
-**ACC-TEST-007.** The `ARCHITECTURE-001` implementation candidate has 76 passing tests, including all prior suites, four focused architecture/configuration tests, configuration-mismatch comparison, and two new explicit IndexStoreDB tests.
+**ACC-TEST-007.** The `ARCHITECTURE-001` implementation candidate has 77 passing tests, including all prior suites, four focused architecture/configuration tests, accessor/switch-case identity coverage, configuration-mismatch comparison, and two new explicit IndexStoreDB tests.
 
 ## Determinism and safety
 

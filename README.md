@@ -1,6 +1,6 @@
 # SwiftUI Semantic Audit
 
-`swiftui-audit` 0.2.0 is a deterministic semantic compiler from Swift/SwiftUI source into a compact state/data-flow graph for coding-agent reasoning, architectural self-audit, and semantic diff.
+`swiftui-audit` 0.3.0 is a deterministic semantic compiler from Swift/SwiftUI source into a compact state/data-flow graph for coding-agent reasoning, architectural self-audit, and semantic diff.
 
 It is not a style linter, source-rewriting bot, or model-backed code reviewer. SwiftSyntax and optional compiler-index enrichment establish facts; rules produce evidence-backed candidates; an agent may adjudicate ambiguous intent without changing syntax, symbol, read/write, or source-location facts.
 
@@ -87,7 +87,7 @@ swift run --disable-automatic-resolution swiftui-audit check \
 | Command | Purpose | Machine format |
 | --- | --- | --- |
 | `scan <path>` | Build the semantic graph | JSON (default); optional `--output <file>` |
-| `audit <path>` | Evaluate the ten PoC state/data-flow rules | `--format json` |
+| `audit <path>` | Evaluate the 29 state/data-flow and architecture rules | `--format json` |
 | `snapshot [path]` | Persist a canonical five-file sidecar | optional JSON summary with `--format json` |
 | `slice [input]` | Return a minimal subgraph for one `--finding` or `--symbol` | `--format llm-json` |
 | `diff <base> <current>` | Compare snapshot directories or Git revisions | `--format json` |
@@ -104,6 +104,8 @@ Run `swiftui-audit <command> --help` for the authoritative arguments.
 - `--index-store <path>`: require an explicit validated raw Index Store;
 - neither flag: try conservative local auto-discovery, otherwise remain syntax-only.
 
+The same live-source commands accept `--config <path>`. Without it, they discover only `.swiftui-audit.json` directly in the analyzed directory (or the analyzed file's parent). The validated configuration supplies exact composition roots, product roles, feature ownership, path features, and passive environment values. Role-aware rules remain silent when their required classification is absent; the tool never guesses application roles from names.
+
 An explicit index request fails if the store, `libIndexStore`, helper, or project coverage is unavailable. Automatic mode enriches only when exactly one validated local candidate covers the project; otherwise it safely falls back to `resolution: "syntax-only"`.
 
 Compare only inputs with matching resolution. Git-revision operands are syntax-only, so use syntax-only snapshots when comparing against them.
@@ -111,12 +113,13 @@ Compare only inputs with matching resolution. Git-revision operands are syntax-o
 ## Agent workflow
 
 1. Build the target to produce a fresh project-covering Index Store, then pass its path explicitly to every live-source agent command.
-2. Run `audit --index-store <path> --format json` before broad source inspection and require `resolution: "indexed"`.
-3. Group relevant findings by semantic value and topology, including custom Binding setters and component boundaries.
-4. Run `slice --index-store <path> --format llm-json` for a finding or unambiguous symbol.
-5. Inspect source only at evidence locations when implementation detail is needed.
-6. Classify accidental mirrors separately from transactions, transformations, command-shaped setters, legitimate model owners, and over-broad component inputs.
-7. After an edit, build/test, refresh the Index Store, audit again, compare indexed snapshots, and run `check`.
+2. Validate the project's `.swiftui-audit.json` when role-aware architecture analysis is in scope and pass it explicitly with `--config <path>`.
+3. Run `audit --index-store <path> --config <path> --format json` before broad source inspection and require `resolution: "indexed"`.
+4. Group relevant findings by semantic value and topology, including custom Binding setters and component boundaries.
+5. Run `slice --index-store <path> --config <path> --format llm-json` for a finding or unambiguous symbol.
+6. Inspect source only at evidence locations when implementation detail is needed.
+7. Classify accidental mirrors separately from transactions, transformations, command-shaped setters, legitimate model owners, and over-broad component inputs.
+8. After an edit, build/test, refresh the Index Store, audit again, compare indexed snapshots, and run `check`.
 
 Do not optimize for “Binding everywhere” or fewer `@State` properties. Optimize correct ownership, one canonical source of truth, explicit dependencies, minimal manual synchronization, and correct lifetime/transaction behavior.
 
@@ -150,8 +153,8 @@ Machine-readable results are written to stdout. Treat stderr and process status 
 
 ## Current limitations
 
-- PoC coverage is the documented SwiftUI vocabulary and ten rules, not a full Swift type checker or general interprocedural analyzer.
-- Component-boundary findings use explicit Observation/Binding topology; the tool does not infer controllers, services, or feature models from names or types alone.
+- PoC coverage is the documented SwiftUI vocabulary and 29 rules, not a full Swift type checker or general interprocedural analyzer.
+- Product roles, features, and composition roots come only from validated configuration; the tool does not infer controllers, services, or feature models from names.
 - Indexed enrichment is macOS-only and conservatively skips ambiguous same-line use-site matches.
 - Automatic index discovery is local to validated `.build` candidates.
 - Full graph rebuild is allowed; there is no incremental cache guarantee.
