@@ -119,6 +119,42 @@ final class GraphScannerTests: XCTestCase {
         }
     }
 
+    func testLocalIdentityDistinguishesAccessorsAndSwitchCases() throws {
+        let graph = try scanTemporarySource("""
+        struct ScopedLocals {
+            var first: Int {
+                let value = 1
+                return value
+            }
+
+            var second: Int {
+                let value = 2
+                return value
+            }
+
+            func selected(_ choice: Bool) -> Int {
+                switch choice {
+                case true:
+                    let value = 3
+                    return value
+                case false:
+                    let value = 4
+                    return value
+                }
+            }
+        }
+        """)
+        let values = graph.nodes.filter { $0.kind == .property && $0.name == "value" }
+
+        XCTAssertEqual(values.count, 4)
+        XCTAssertEqual(Set(values.map(\.id)).count, 4)
+        XCTAssertEqual(Set(values.map(\.qualifiedName)).count, 4)
+        XCTAssertTrue(values.contains { $0.qualifiedName.contains("[accessor:first]") })
+        XCTAssertTrue(values.contains { $0.qualifiedName.contains("[accessor:second]") })
+        XCTAssertEqual(values.filter { $0.qualifiedName.contains("[switch-case:") }.count, 2)
+        XCTAssertEqual(try graph.jsonData(), try graph.jsonData())
+    }
+
     func testEvidenceIsRelativeAndLineLevel() throws {
         let graph = try GraphScanner().scan(path: fixturePath)
         let allEvidence = graph.nodes.flatMap(\.evidence) + graph.edges.flatMap(\.evidence)

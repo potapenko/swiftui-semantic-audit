@@ -371,6 +371,12 @@ private class BaseVisitor: SyntaxVisitor {
                 scopes.append("[ifconfig:\(keyword):\(condition):\(structuralPath(of: syntax))]")
             } else if syntax.is(ClosureExprSyntax.self) {
                 scopes.append("[closure:\(structuralPath(of: syntax))]")
+            } else if let accessor = syntax.as(AccessorBlockSyntax.self) {
+                let owner = accessor.parent?.as(PatternBindingSyntax.self)?
+                    .pattern.as(IdentifierPatternSyntax.self)?.identifier.text
+                scopes.append("[accessor:\(owner ?? structuralPath(of: syntax))]")
+            } else if syntax.is(SwitchCaseSyntax.self) {
+                scopes.append("[switch-case:\(structuralPath(of: syntax))]")
             } else if let block = syntax.as(CodeBlockSyntax.self),
                       block.parent?.is(FunctionDeclSyntax.self) != true {
                 scopes.append("[block:\(structuralPath(of: syntax))]")
