@@ -5,6 +5,12 @@ import Foundation
 import IndexStoreDB
 
 public struct IndexStoreDBResolver: SymbolResolver, Sendable {
+    private struct EdgeTopology: Hashable {
+        let kind: EdgeKind
+        let from: String
+        let to: String
+    }
+
     public init() {}
 
     public func enrich(_ request: IndexEnrichmentRequest) throws -> IndexEnrichmentResponse {
@@ -50,6 +56,9 @@ public struct IndexStoreDBResolver: SymbolResolver, Sendable {
                 $0.roles.contains(.write) || $0.roles.contains(.call)
         }
         let referencesByLocation = Dictionary(grouping: references) { "\($0.file)|\($0.line)" }
+        let evidenceByUSR = Dictionary(grouping: occurrences, by: \.usr).mapValues { values in
+            Array(Set(values.map(\.evidence))).sorted(by: Evidence.canonicalOrder)
+        }
         var syntaxUSR: [String: String] = [:]
         var declarationByUSR: [String: SemanticNode] = [:]
         for node in graph.nodes.sorted(by: { $0.id < $1.id }) {
@@ -89,7 +98,7 @@ public struct IndexStoreDBResolver: SymbolResolver, Sendable {
                 continue
             }
             let id = StableID.compilerSymbol(usr: usr)
-            let compilerEvidence = occurrences.filter { $0.usr == usr }.map(\.evidence)
+            let compilerEvidence = evidenceByUSR[usr] ?? []
             let canonical = declarationByUSR[usr] ?? node
             let remapped = SemanticNode(
                 id: id,
@@ -125,6 +134,7 @@ public struct IndexStoreDBResolver: SymbolResolver, Sendable {
             syntaxUSR[id].map(StableID.compilerSymbol(usr:)) ?? id
         }
         var edgesByID: [String: SemanticEdge] = [:]
+        var edgeIDByTopology: [EdgeTopology: String] = [:]
         for edge in graph.edges.sorted(by: { $0.id < $1.id }) {
             _ = addEdge(
                 kind: edge.kind,
@@ -133,6 +143,7 @@ public struct IndexStoreDBResolver: SymbolResolver, Sendable {
                 evidence: edge.evidence,
                 confidence: edge.confidence,
                 discriminator: "syntax:\(edge.id)",
+                topologyIndex: &edgeIDByTopology,
                 to: &edgesByID
             )
         }
@@ -143,13 +154,13 @@ public struct IndexStoreDBResolver: SymbolResolver, Sendable {
             for relation in occurrence.relations.sorted(by: { ($0.roles.rawValue, $0.usr) < ($1.roles.rawValue, $1.usr) }) {
                 let related = StableID.compilerSymbol(usr: relation.usr)
                 if (occurrence.roles.contains(.definition) || occurrence.roles.contains(.declaration)) && relation.roles.contains(.childOf) {
-                    indexedFacts += addEdge(kind: .owns, from: related, to: target, evidence: [occurrence.evidence], confidence: .deterministic, discriminator: "index-child", to: &edgesByID)
+                    indexedFacts += addEdge(kind: .owns, from: related, to: target, evidence: [occurrence.evidence], confidence: .deterministic, discriminator: "index-child", topologyIndex: &edgeIDByTopology, to: &edgesByID)
                 }
                 if (occurrence.roles.contains(.definition) || occurrence.roles.contains(.declaration)) && relation.roles.contains(.containedBy) {
-                    indexedFacts += addEdge(kind: .owns, from: related, to: target, evidence: [occurrence.evidence], confidence: .deterministic, discriminator: "index-contained", to: &edgesByID)
+                    indexedFacts += addEdge(kind: .owns, from: related, to: target, evidence: [occurrence.evidence], confidence: .deterministic, discriminator: "index-contained", topologyIndex: &edgeIDByTopology, to: &edgesByID)
                 }
                 if relation.roles.contains(.accessorOf) {
-                    indexedFacts += addEdge(kind: .aliases, from: target, to: related, evidence: [occurrence.evidence], confidence: .deterministic, discriminator: "index-accessor", to: &edgesByID)
+                    indexedFacts += addEdge(kind: .aliases, from: target, to: related, evidence: [occurrence.evidence], confidence: .deterministic, discriminator: "index-accessor", topologyIndex: &edgeIDByTopology, to: &edgesByID)
                 }
             }
             let actors = occurrence.relations.filter {
@@ -157,13 +168,13 @@ public struct IndexStoreDBResolver: SymbolResolver, Sendable {
             }.map { StableID.compilerSymbol(usr: $0.usr) }.sorted()
             for actor in Set(actors).sorted() {
                 if occurrence.roles.contains(.read) {
-                    indexedFacts += addEdge(kind: .reads, from: actor, to: target, evidence: [occurrence.evidence.with(kind: "index-read")], confidence: .deterministic, discriminator: "index-read", to: &edgesByID)
+                    indexedFacts += addEdge(kind: .reads, from: actor, to: target, evidence: [occurrence.evidence.with(kind: "index-read")], confidence: .deterministic, discriminator: "index-read", topologyIndex: &edgeIDByTopology, to: &edgesByID)
                 }
                 if occurrence.roles.contains(.write) {
-                    indexedFacts += addEdge(kind: .writes, from: actor, to: target, evidence: [occurrence.evidence.with(kind: "index-write")], confidence: .deterministic, discriminator: "index-write", to: &edgesByID)
+                    indexedFacts += addEdge(kind: .writes, from: actor, to: target, evidence: [occurrence.evidence.with(kind: "index-write")], confidence: .deterministic, discriminator: "index-write", topologyIndex: &edgeIDByTopology, to: &edgesByID)
                 }
                 if occurrence.roles.contains(.call) {
-                    indexedFacts += addEdge(kind: .calls, from: actor, to: target, evidence: [occurrence.evidence.with(kind: "index-call")], confidence: .deterministic, discriminator: "index-call", to: &edgesByID)
+                    indexedFacts += addEdge(kind: .calls, from: actor, to: target, evidence: [occurrence.evidence.with(kind: "index-call")], confidence: .deterministic, discriminator: "index-call", topologyIndex: &edgeIDByTopology, to: &edgesByID)
                 }
             }
         }
@@ -202,14 +213,14 @@ public struct IndexStoreDBResolver: SymbolResolver, Sendable {
         evidence: [Evidence],
         confidence: Confidence,
         discriminator: String,
+        topologyIndex: inout [EdgeTopology: String],
         to edges: inout [String: SemanticEdge]
     ) -> Int {
         guard from != to else { return 0 }
-        if let existing = edges.values.first(where: {
-            $0.kind == kind && $0.from == from && $0.to == to
-        }) {
-            edges[existing.id] = SemanticEdge(
-                id: existing.id, kind: kind, from: from, to: to,
+        let topology = EdgeTopology(kind: kind, from: from, to: to)
+        if let existingID = topologyIndex[topology], let existing = edges[existingID] {
+            edges[existingID] = SemanticEdge(
+                id: existingID, kind: kind, from: from, to: to,
                 evidence: Array(Set(existing.evidence + evidence)).sorted(by: Evidence.canonicalOrder),
                 confidence: strongest(existing.confidence, confidence)
             )
@@ -222,12 +233,14 @@ public struct IndexStoreDBResolver: SymbolResolver, Sendable {
                 evidence: Array(Set(existing.evidence + evidence)).sorted(by: Evidence.canonicalOrder),
                 confidence: confidence
             )
+            topologyIndex[topology] = id
             return 0
         }
         edges[id] = SemanticEdge(
             id: id, kind: kind, from: from, to: to,
             evidence: Array(Set(evidence)).sorted(by: Evidence.canonicalOrder), confidence: confidence
         )
+        topologyIndex[topology] = id
         return 1
     }
 
