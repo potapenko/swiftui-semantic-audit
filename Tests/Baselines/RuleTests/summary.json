@@ -1,17 +1,17 @@
 {
-  "edgeCount" : 521,
-  "findingCount" : 14,
+  "edgeCount" : 664,
+  "findingCount" : 20,
   "metrics" : {
-    "bindingEdges" : 24,
+    "bindingEdges" : 34,
     "callbackTunnels" : 1,
     "derivedMutableValues" : 2,
     "duplicatedSourcesOfTruth" : 5,
     "manualSynchronizationEdges" : 8,
-    "mutableSemanticValues" : 27,
+    "mutableSemanticValues" : 40,
     "ownershipViolations" : 5,
-    "stateRepresentations" : 24
+    "stateRepresentations" : 27
   },
-  "nodeCount" : 268,
+  "nodeCount" : 353,
   "resolution" : "syntax-only",
   "semanticValues" : [
     {
@@ -116,6 +116,19 @@
       "evidence" : [
 
       ],
+      "id" : "value:19ebdf805ad3050e",
+      "relationEdges" : [
+
+      ],
+      "representations" : [
+        "node:88819aef36f26d9a"
+      ]
+    },
+    {
+      "confidence" : "deterministic",
+      "evidence" : [
+
+      ],
       "id" : "value:1a5d56f55d2c36c6",
       "relationEdges" : [
 
@@ -180,12 +193,38 @@
       "evidence" : [
 
       ],
+      "id" : "value:26b8c3c93c06f1e1",
+      "relationEdges" : [
+
+      ],
+      "representations" : [
+        "node:6f8a2974673efce0"
+      ]
+    },
+    {
+      "confidence" : "deterministic",
+      "evidence" : [
+
+      ],
       "id" : "value:274befeca2847bff",
       "relationEdges" : [
 
       ],
       "representations" : [
         "node:c83109086ce42239"
+      ]
+    },
+    {
+      "confidence" : "deterministic",
+      "evidence" : [
+
+      ],
+      "id" : "value:2c84a029e632981b",
+      "relationEdges" : [
+
+      ],
+      "representations" : [
+        "node:15c2158e810665f"
       ]
     },
     {
@@ -230,6 +269,32 @@
     {
       "confidence" : "deterministic",
       "evidence" : [
+
+      ],
+      "id" : "value:3726c241293152fe",
+      "relationEdges" : [
+
+      ],
+      "representations" : [
+        "node:31be067b3ba1ec11"
+      ]
+    },
+    {
+      "confidence" : "deterministic",
+      "evidence" : [
+
+      ],
+      "id" : "value:38075b538366cac3",
+      "relationEdges" : [
+
+      ],
+      "representations" : [
+        "node:21a8515077dd1e7"
+      ]
+    },
+    {
+      "confidence" : "deterministic",
+      "evidence" : [
         {
           "endLine" : 7,
           "file" : "BindingSelfCopy/Fixture.swift",
@@ -251,6 +316,33 @@
       "representations" : [
         "node:44b2bed4a69f1981",
         "node:9776761c0ee45088"
+      ]
+    },
+    {
+      "confidence" : "deterministic",
+      "evidence" : [
+        {
+          "endLine" : 20,
+          "file" : "ObservableModelTunnel/Fixture.swift",
+          "kind" : "initializer-argument",
+          "startLine" : 20
+        },
+        {
+          "endLine" : 28,
+          "file" : "ObservableModelTunnel/Fixture.swift",
+          "kind" : "initializer-argument",
+          "startLine" : 28
+        }
+      ],
+      "id" : "value:3b3f8d7ba6849e04",
+      "relationEdges" : [
+        "edge:3bce41aa52452780",
+        "edge:fc4d65a6b2a4c24d"
+      ],
+      "representations" : [
+        "node:61a79a209a04715d",
+        "node:8ed35a123d7e5783",
+        "node:fe94ef434dbaf28c"
       ]
     },
     {
@@ -317,6 +409,45 @@
     {
       "confidence" : "deterministic",
       "evidence" : [
+
+      ],
+      "id" : "value:43a07a6fc35d2a5e",
+      "relationEdges" : [
+
+      ],
+      "representations" : [
+        "node:c7776710f15dadc5"
+      ]
+    },
+    {
+      "confidence" : "deterministic",
+      "evidence" : [
+
+      ],
+      "id" : "value:44da16d231c70c1d",
+      "relationEdges" : [
+
+      ],
+      "representations" : [
+        "node:e1b5e5df798047bd"
+      ]
+    },
+    {
+      "confidence" : "deterministic",
+      "evidence" : [
+
+      ],
+      "id" : "value:47951923eb20c168",
+      "relationEdges" : [
+
+      ],
+      "representations" : [
+        "node:a38fe1c111a3a987"
+      ]
+    },
+    {
+      "confidence" : "deterministic",
+      "evidence" : [
         {
           "endLine" : 10,
           "file" : "IntentionalTransformation/Fixture.swift",
@@ -338,12 +469,43 @@
       "evidence" : [
 
       ],
+      "id" : "value:493ff66652c18f2c",
+      "relationEdges" : [
+
+      ],
+      "representations" : [
+        "node:a8ad816f0af3f332"
+      ]
+    },
+    {
+      "confidence" : "deterministic",
+      "evidence" : [
+
+      ],
       "id" : "value:49cdb20fd8854e09",
       "relationEdges" : [
 
       ],
       "representations" : [
         "node:9c13278d2f3edd23"
+      ]
+    },
+    {
+      "confidence" : "deterministic",
+      "evidence" : [
+        {
+          "endLine" : 8,
+          "file" : "CommandBinding/Fixture.swift",
+          "kind" : "assignment",
+          "startLine" : 8
+        }
+      ],
+      "id" : "value:4aa01e5fc3b7caac",
+      "relationEdges" : [
+        "edge:becc252293aaa55f"
+      ],
+      "representations" : [
+        "node:62116e994704807f"
       ]
     },
     {
@@ -757,12 +919,38 @@
       "evidence" : [
 
       ],
+      "id" : "value:79b18696e6df7c72",
+      "relationEdges" : [
+
+      ],
+      "representations" : [
+        "node:12cd8f9bec78e329"
+      ]
+    },
+    {
+      "confidence" : "deterministic",
+      "evidence" : [
+
+      ],
       "id" : "value:7cc3eb405224b156",
       "relationEdges" : [
 
       ],
       "representations" : [
         "node:8d3281eb01ea7747"
+      ]
+    },
+    {
+      "confidence" : "deterministic",
+      "evidence" : [
+
+      ],
+      "id" : "value:7d7feff742c28023",
+      "relationEdges" : [
+
+      ],
+      "representations" : [
+        "node:f6b749854b74499"
       ]
     },
     {
@@ -848,6 +1036,19 @@
         "node:7731bf7096c4f60f",
         "node:a33686bc87eecb22",
         "node:f53e3c3a538b28b2"
+      ]
+    },
+    {
+      "confidence" : "deterministic",
+      "evidence" : [
+
+      ],
+      "id" : "value:7e5ba857177ea745",
+      "relationEdges" : [
+
+      ],
+      "representations" : [
+        "node:aa408492723dce16"
       ]
     },
     {
@@ -1024,12 +1225,38 @@
       "evidence" : [
 
       ],
+      "id" : "value:91e60b2cbf88dba3",
+      "relationEdges" : [
+
+      ],
+      "representations" : [
+        "node:667a86dc4f9bdcfa"
+      ]
+    },
+    {
+      "confidence" : "deterministic",
+      "evidence" : [
+
+      ],
       "id" : "value:93214d7d28a02160",
       "relationEdges" : [
 
       ],
       "representations" : [
         "node:6c2f5c12c49ff43d"
+      ]
+    },
+    {
+      "confidence" : "deterministic",
+      "evidence" : [
+
+      ],
+      "id" : "value:936a93bc0cc5cbbb",
+      "relationEdges" : [
+
+      ],
+      "representations" : [
+        "node:c6e52b91e99d8b19"
       ]
     },
     {
@@ -1136,6 +1363,32 @@
       "evidence" : [
 
       ],
+      "id" : "value:ac1433e932d0ab68",
+      "relationEdges" : [
+
+      ],
+      "representations" : [
+        "node:b1f730ea102bb08c"
+      ]
+    },
+    {
+      "confidence" : "deterministic",
+      "evidence" : [
+
+      ],
+      "id" : "value:add1bb371790cea2",
+      "relationEdges" : [
+
+      ],
+      "representations" : [
+        "node:79fd8960ee54ad02"
+      ]
+    },
+    {
+      "confidence" : "deterministic",
+      "evidence" : [
+
+      ],
       "id" : "value:ae0bbb59543ab3c",
       "relationEdges" : [
 
@@ -1194,12 +1447,155 @@
       "evidence" : [
 
       ],
+      "id" : "value:b3b83e733e361b16",
+      "relationEdges" : [
+
+      ],
+      "representations" : [
+        "node:2ce3ff349e1c044c"
+      ]
+    },
+    {
+      "confidence" : "deterministic",
+      "evidence" : [
+
+      ],
+      "id" : "value:b6c93390eedf6c19",
+      "relationEdges" : [
+
+      ],
+      "representations" : [
+        "node:5442c57ba9f849e8"
+      ]
+    },
+    {
+      "confidence" : "deterministic",
+      "evidence" : [
+
+      ],
+      "id" : "value:b7c47c9a24adcd28",
+      "relationEdges" : [
+
+      ],
+      "representations" : [
+        "node:b7044d0e0ba0f6c7"
+      ]
+    },
+    {
+      "confidence" : "deterministic",
+      "evidence" : [
+
+      ],
+      "id" : "value:c29e744a03a72af8",
+      "relationEdges" : [
+
+      ],
+      "representations" : [
+        "node:8a471b919d91edce"
+      ]
+    },
+    {
+      "confidence" : "deterministic",
+      "evidence" : [
+
+      ],
+      "id" : "value:c68213ed6200d8fe",
+      "relationEdges" : [
+
+      ],
+      "representations" : [
+        "node:6c70c2f11015013d"
+      ]
+    },
+    {
+      "confidence" : "deterministic",
+      "evidence" : [
+
+      ],
+      "id" : "value:caaf9fc063f9a4e1",
+      "relationEdges" : [
+
+      ],
+      "representations" : [
+        "node:18de7b102e53baee"
+      ]
+    },
+    {
+      "confidence" : "deterministic",
+      "evidence" : [
+
+      ],
+      "id" : "value:cd3a20c39a51abc",
+      "relationEdges" : [
+
+      ],
+      "representations" : [
+        "node:a6a73de2951df46c"
+      ]
+    },
+    {
+      "confidence" : "deterministic",
+      "evidence" : [
+
+      ],
+      "id" : "value:d0e3577135b09cb2",
+      "relationEdges" : [
+
+      ],
+      "representations" : [
+        "node:64a3045ad402f93a"
+      ]
+    },
+    {
+      "confidence" : "deterministic",
+      "evidence" : [
+
+      ],
+      "id" : "value:d25b6e15ee8cd501",
+      "relationEdges" : [
+
+      ],
+      "representations" : [
+        "node:8564b1997ef2cded"
+      ]
+    },
+    {
+      "confidence" : "deterministic",
+      "evidence" : [
+
+      ],
       "id" : "value:d7a965c262b45cc3",
       "relationEdges" : [
 
       ],
       "representations" : [
         "node:db9fb4332bf7e0e4"
+      ]
+    },
+    {
+      "confidence" : "deterministic",
+      "evidence" : [
+
+      ],
+      "id" : "value:d7ef63e8cde52e6f",
+      "relationEdges" : [
+
+      ],
+      "representations" : [
+        "node:80d9713660805d92"
+      ]
+    },
+    {
+      "confidence" : "deterministic",
+      "evidence" : [
+
+      ],
+      "id" : "value:d81a863cc45ab7d1",
+      "relationEdges" : [
+
+      ],
+      "representations" : [
+        "node:a6b391f605bca614"
       ]
     },
     {
@@ -1220,6 +1616,32 @@
       "evidence" : [
 
       ],
+      "id" : "value:db19534c0ae9e8f2",
+      "relationEdges" : [
+
+      ],
+      "representations" : [
+        "node:ce64d51c271635a5"
+      ]
+    },
+    {
+      "confidence" : "deterministic",
+      "evidence" : [
+
+      ],
+      "id" : "value:db3bb5cb043f7a89",
+      "relationEdges" : [
+
+      ],
+      "representations" : [
+        "node:19cfb7c3e2d4f162"
+      ]
+    },
+    {
+      "confidence" : "deterministic",
+      "evidence" : [
+
+      ],
       "id" : "value:dc1b061217e34abc",
       "relationEdges" : [
 
@@ -1233,12 +1655,60 @@
       "evidence" : [
 
       ],
+      "id" : "value:dc5b53e33cbc5844",
+      "relationEdges" : [
+
+      ],
+      "representations" : [
+        "node:c0191d8fe3d793e5"
+      ]
+    },
+    {
+      "confidence" : "deterministic",
+      "evidence" : [
+
+      ],
       "id" : "value:de1f25a35cb26fc8",
       "relationEdges" : [
 
       ],
       "representations" : [
         "node:5200d39640766311"
+      ]
+    },
+    {
+      "confidence" : "deterministic",
+      "evidence" : [
+        {
+          "endLine" : 7,
+          "file" : "FocusedBindingChain/Fixture.swift",
+          "kind" : "binding-projection",
+          "startLine" : 7
+        },
+        {
+          "endLine" : 15,
+          "file" : "FocusedBindingChain/Fixture.swift",
+          "kind" : "initializer-argument",
+          "startLine" : 15
+        },
+        {
+          "endLine" : 23,
+          "file" : "FocusedBindingChain/Fixture.swift",
+          "kind" : "initializer-argument",
+          "startLine" : 23
+        }
+      ],
+      "id" : "value:df5f9fc79b05bed7",
+      "relationEdges" : [
+        "edge:b34cb0aa9f05cb93",
+        "edge:ed5d74a0584df78c",
+        "edge:fd1e2b10cbd2c530"
+      ],
+      "representations" : [
+        "node:3603840ed464068f",
+        "node:9fa102ae459d8b7f",
+        "node:f0f41501bf5496b5",
+        "node:f49c327b9e2311aa"
       ]
     },
     {
@@ -1319,6 +1789,45 @@
       "representations" : [
         "node:a1189eaeb0da2fd2",
         "node:cc8b52d6dee44e85"
+      ]
+    },
+    {
+      "confidence" : "deterministic",
+      "evidence" : [
+
+      ],
+      "id" : "value:f6eea2e0743da5d3",
+      "relationEdges" : [
+
+      ],
+      "representations" : [
+        "node:8414e87c087e38f3"
+      ]
+    },
+    {
+      "confidence" : "deterministic",
+      "evidence" : [
+
+      ],
+      "id" : "value:f83732e8cdd707f2",
+      "relationEdges" : [
+
+      ],
+      "representations" : [
+        "node:d48e714128bbd230"
+      ]
+    },
+    {
+      "confidence" : "deterministic",
+      "evidence" : [
+
+      ],
+      "id" : "value:f999654c5aed9c90",
+      "relationEdges" : [
+
+      ],
+      "representations" : [
+        "node:d1b95300ac142071"
       ]
     },
     {

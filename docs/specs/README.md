@@ -30,11 +30,11 @@ A local spec edit cannot authorize a semantic change. Any semantic delta require
 | --- | --- | --- | --- | --- | --- |
 | [`product-contract.md`](product-contract.md) | Goal, scope, invariants, LLM boundary, operations, safety, non-goals, workflow routing | Normative restatement of ТЗ §§1–8, 23–27, 33, 37–43, 46–54 plus `ROUTER-001`, `INDEXED-SKILLS-001`, and `BOUNDARY-001` | active / evolving `tz-v4` | Any product decision or behavior claim | unreleased |
 | [`semantic-ir.md`](semantic-ir.md) | Graph, evidence, confidence, semantic values, snapshots, diff | Normative restatement of ТЗ §§3–4, 9–15, 27–33 | active / schema v1 | Reading/writing graph or snapshot contracts | unreleased schema v1 |
-| [`rules.md`](rules.md) | Ten rules, severities, exclusions, adjudication | Normative restatement of ТЗ §§16–25, 33, 38–45 plus `BOUNDARY-001` | active / evolving rule set | Auditing, classifying, refactoring | ten-rule candidate |
+| [`rules.md`](rules.md) | Ten rules, severities, exclusions, adjudication | Normative restatement of ТЗ §§16–25, 33, 38–45 plus `BOUNDARY-001` | active / accepted rule set | Auditing, classifying, refactoring | ten-rule baseline |
 | [`cli.md`](cli.md) | Commands, flags, resolution, stdout/status, path/failure policy | Normative restatement plus accepted P1–P5 interface evidence and `BOUNDARY-001` | active / CLI 0.2.0 | Running or documenting commands | seven public commands |
-| [`acceptance.md`](acceptance.md) | Fixtures, determinism, skills, CI, Definition of Done | Normative acceptance map for ТЗ §§44–51 plus `ROUTER-001` | active | Implementing or verifying | 64-test baseline plus four-skill validation |
-| [`evidence-map.md`](evidence-map.md) | Clause ownership and all-54-section plus router-addendum coverage | Governance map | active | Tracing authority to evidence | P1–P8 map |
-| [`release-baseline.md`](release-baseline.md) | Current realization, dependency pins, residuals | Descriptive evidence; never higher than normative contracts | active / volatile | Release/readiness/status work | unreleased at `f24751c…` + accepted working tree |
+| [`acceptance.md`](acceptance.md) | Fixtures, determinism, skills, CI, Definition of Done | Normative acceptance map for ТЗ §§44–51 plus `ROUTER-001` and `BOUNDARY-001` | active | Implementing or verifying | 69-test baseline plus four-skill validation |
+| [`evidence-map.md`](evidence-map.md) | Clause ownership and all-54-section plus authorized-addendum coverage | Governance map | active | Tracing authority to evidence | P1–P9 map |
+| [`release-baseline.md`](release-baseline.md) | Current realization, dependency pins, residuals | Descriptive evidence; never higher than normative contracts | active / volatile | Release/readiness/status work | unreleased product source at `e81f10d…` plus accepted QA |
 
 ## Domain ownership
 

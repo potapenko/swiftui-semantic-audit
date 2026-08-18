@@ -9,6 +9,29 @@ import SwiftSyntaxFrontend
 import XCTest
 
 final class SymbolResolutionTests: XCTestCase {
+    func testBoundaryTopologyAndFindingsSurviveExplicitIndexedEnrichment() throws {
+        let fixture = try makeIndexedBoundaryFixture()
+        defer { try? FileManager.default.removeItem(at: fixture.container) }
+        let syntax = try GraphScanner().scan(path: fixture.source.path)
+        let indexed = try directEnrichment(syntax, fixture: fixture, databaseName: "boundary-db")
+        let repeated = try directEnrichment(syntax, fixture: fixture, databaseName: "boundary-db-repeat")
+        let binding = try XCTUnwrap(indexed.graph.nodes.first {
+            $0.kind == .binding && $0.evidence.contains { $0.kind == "binding-construction" }
+        })
+        let setter = try XCTUnwrap(indexed.graph.edges.first {
+            $0.kind == .sets && $0.from == binding.id && $0.evidence.contains { $0.kind == "binding-setter" }
+        })
+        let report = AuditEngine().audit(graph: indexed.graph)
+
+        XCTAssertEqual(indexed.graph.resolution, "indexed")
+        XCTAssertEqual(try indexed.graph.jsonData(), try repeated.graph.jsonData())
+        XCTAssertEqual(binding.id, syntax.nodes.first { $0.evidence.contains { $0.kind == "binding-construction" } }?.id)
+        XCTAssertTrue(indexed.graph.nodes.contains { $0.id == setter.to && $0.kind == .closure })
+        XCTAssertEqual(Set(report.findings.map(\.rule)), [.commandShapedBinding, .broadObservableInput])
+        XCTAssertEqual(report.resolution, "indexed")
+        XCTAssertEqual(report.toolVersion, ToolMetadata.version)
+    }
+
     func testActualIndexProvidesStableCrossFileUSRIdentityAndRelations() throws {
         let fixture = try makeIndexedFixture()
         defer { try? FileManager.default.removeItem(at: fixture.container) }
@@ -406,6 +429,36 @@ final class SymbolResolutionTests: XCTestCase {
                 try (prefix + contents).write(to: file, atomically: true, encoding: .utf8)
             }
         }
+        let store = source.appendingPathComponent(".build/debug/index/store", isDirectory: true)
+        try buildIndex(source: source, store: store, output: container.appendingPathComponent("output"))
+        return Fixture(container: container, source: source, store: store)
+    }
+
+    private func makeIndexedBoundaryFixture() throws -> Fixture {
+        let container = FileManager.default.temporaryDirectory
+            .appendingPathComponent("swiftui-audit-boundary-index-tests-\(UUID().uuidString)", isDirectory: true)
+        let source = container.appendingPathComponent("IndexedBoundary", isDirectory: true)
+        try FileManager.default.createDirectory(at: source, withIntermediateDirectories: true)
+        try """
+        import Observation
+        import SwiftUI
+
+        @Observable
+        final class IndexedPagerModel {
+            var page = 0
+            func selectPage(_ page: Int) { self.page = page }
+        }
+
+        struct IndexedCommandPager: View {
+            @Bindable var model: IndexedPagerModel
+            var body: some View {
+                Picker("Page", selection: Binding(
+                    get: { model.page },
+                    set: { model.selectPage($0) }
+                )) { Text("Zero").tag(0) }
+            }
+        }
+        """.write(to: source.appendingPathComponent("Fixture.swift"), atomically: true, encoding: .utf8)
         let store = source.appendingPathComponent(".build/debug/index/store", isDirectory: true)
         try buildIndex(source: source, store: store, output: container.appendingPathComponent("output"))
         return Fixture(container: container, source: source, store: store)

@@ -16,6 +16,8 @@ An audit report contains `schemaVersion`, `toolVersion`, `resolution`, `metrics`
 
 Evidence uses repository-relative `file`, one-based `startLine`/`endLine`, and `kind`. Source locations are proof anchors, not permission to scan unrelated files.
 
+An explicit `Binding(get:set:)` contributes a generated `binding` node, getter/setter closures, a `sets` edge identifying the setter, and enclosing control `binds` topology. `binding-factory` is evidence on that construction rather than a new schema kind. Source-count metrics count logical ownership roots, not every Binding projection or `Bindable` receiver.
+
 ## Slice JSON
 
 An LLM slice contains `finding`, `semanticValues`, `nodes`, `edges`, `sourceEvidence`, `questions`, and `metadata`. Metadata records the selection, requested budget, conservative estimated tokens, and truncation. Mandatory context is retained; too-small budgets fail rather than silently dropping the envelope.

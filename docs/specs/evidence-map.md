@@ -28,7 +28,7 @@ This map proves coverage; it does not create new requirements. Source and tests 
 | 18 | Callback Binding tunnel | `RULE-TUNNEL-001` | callback tunnel fixtures |
 | 19 | Observable mirror | `RULE-OBS-001` | ObservableMirror fixture |
 | 20 | Stored derived state | `RULE-DERIVED-001` | DerivedState/UnaryDerived fixtures |
-| 21 | Suspicious Binding setter | `RULE-EXC-005`, `PC-INV-003` | documented deferred rule boundary |
+| 21 | Suspicious Binding setter | `RULE-COMMAND-001`, `RULE-EXC-005`, `PC-INV-003` | custom Binding positive/negative fixtures |
 | 22 | Ownership mismatch | `PC-INV-001..002`, `RULE-REM-001` | metrics/slices/skills |
 | 23 | Transactional exceptions | `RULE-EXC-002`, `IR-VALUE-004` | transaction fixtures |
 | 24 | LLM adjudicator | `PC-LLM-002`, `RULE-LLM-*` | audit skill |

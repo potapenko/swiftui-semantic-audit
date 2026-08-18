@@ -52,7 +52,7 @@ Status: active
 
 ## Agent adjudication
 
-**RULE-LLM-001 — Allowed classifications.** Classify candidates as accidental mirror, transactional draft, derived state, transformed state, legitimate local UI state, or unknown.
+**RULE-LLM-001 — Allowed classifications.** Classify candidates as accidental mirror, transactional draft, derived state, transformed state, legitimate local UI state, command-shaped mutation, Binding factory boundary, observable-model tunnel, legitimate screen/container ownership, over-broad component input, or unknown.
 
 **RULE-LLM-002 — Allowed additions.** Add intent, semantic name, risk explanation, confidence in the classification, and conditional remediation.
 

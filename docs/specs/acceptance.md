@@ -37,7 +37,7 @@ swift test --disable-automatic-resolution
 
 **ACC-TEST-002.** The accepted pre-P6 baseline is 53 passing tests across extraction, rules, snapshot, context slice, diff, check, doctor, and symbol resolution.
 
-**ACC-TEST-003.** The current integration candidate has 64 passing tests after the separately owned stable-identity, Binding-mirror/distinct-endpoint, lexical closure-parameter, and value-setter evidence repairs.
+**ACC-TEST-003.** The `BOUNDARY-001` integration candidate has 69 passing tests: the accepted 64-test suite plus focused custom-Binding extraction, exact boundary-rule/metric, semantic-diff source-count, and fresh explicit indexed-enrichment coverage.
 
 **ACC-TEST-004.** P6 itself must not modify accepted Swift product source, dependencies, existing tests, or fixtures.
 
@@ -114,7 +114,7 @@ swift test --disable-automatic-resolution
 
 ## Definition of Done map
 
-**ACC-DOD-001.** Swift CLI, SwiftSyntax frontend, stable graph, deterministic JSON/JSONL, relative source provenance, and six rules are present.
+**ACC-DOD-001.** Swift CLI, SwiftSyntax frontend, stable graph, deterministic JSON/JSONL, relative source provenance, and ten rules are present.
 
 **ACC-DOD-002.** Fixtures distinguish direct Binding, manual Binding patterns, mirrors, transactions, derived state, tunnels, observable mirrors, and transformations.
 

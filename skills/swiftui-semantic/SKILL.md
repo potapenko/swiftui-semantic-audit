@@ -1,6 +1,6 @@
 ---
 name: swiftui-semantic
-description: Route SwiftUI state and data-flow work to the appropriate semantic audit, refactor, or change-review workflow. Use when Codex receives one entry point for investigating SwiftUI ownership, fixing synchronization or Binding architecture, reviewing existing changes, or completing a mixed audit-to-refactor-to-review task with swiftui-audit.
+description: Route SwiftUI state and data-flow work to the appropriate semantic audit, refactor, or change-review workflow. Use when Codex receives one entry point for investigating ownership or component boundaries, fixing synchronization or Binding architecture, reviewing existing changes, or completing a mixed audit-to-refactor-to-review task with swiftui-audit.
 ---
 
 # SwiftUI Semantic Workflow
@@ -9,7 +9,7 @@ description: Route SwiftUI state and data-flow work to the appropriate semantic 
 
 Classify the requested outcome before reading broad Swift source:
 
-- Read and follow [swiftui-semantic-audit](../swiftui-semantic-audit/SKILL.md) for investigation, diagnosis, architecture explanation, ownership analysis, or an ambiguous state/data-flow problem.
+- Read and follow [swiftui-semantic-audit](../swiftui-semantic-audit/SKILL.md) for investigation, diagnosis, architecture explanation, ownership or component-boundary analysis, or an ambiguous state/data-flow problem.
 - Read and follow [swiftui-dataflow-refactor](../swiftui-dataflow-refactor/SKILL.md) when the user asks to change SwiftUI state ownership, remove manual synchronization, replace callback plumbing, or correct Binding, Observation, derived-state, or lifetime architecture.
 - Read and follow [swiftui-change-review](../swiftui-change-review/SKILL.md) when changes, commits, snapshots, or a diff already exist and the user asks whether they are safe or architecturally correct.
 
@@ -36,7 +36,7 @@ Keep these facts unchanged when moving between specialists:
 - baseline and current snapshot identities;
 - finding, semantic-value, and symbol IDs;
 - deterministic nodes, edges, evidence, and source locations;
-- established owner, lifetime, write authority, transaction boundary, transformations, side effects, and behavior invariants;
+- established owner, lifetime, write authority, transaction boundary, transformations, custom-Binding effects, component-boundary depth, dependency surface, and behavior invariants;
 - command exit statuses and stderr separately from JSON stdout.
 
 Never reinterpret missing deterministic evidence during a handoff. Return `unknown` or request the smallest missing evidence.

@@ -25,8 +25,9 @@ Affected semantic values include before/after representations and optional repre
 2. Added write paths, mutable representations, or sources of truth.
 3. Removed read/write paths that may encode invariants or effects.
 4. Binding and manual synchronization changes.
-5. Derivation and lifetime changes.
-6. Resolved findings whose removal may be accidental suppression.
+5. Command-shaped setter calls, Binding factories, observable-model tunnels, and broad component inputs.
+6. Logical source-count, derivation, and lifetime changes.
+7. Resolved findings whose removal may be accidental suppression.
 
 ## Semantic versus implementation-only
 

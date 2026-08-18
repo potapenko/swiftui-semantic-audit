@@ -19,7 +19,7 @@ description: Review AI-generated or human SwiftUI changes through semantic diff 
    - For a changed worktree, build it, validate the current Index Store, and create the current snapshot with `--index-store <path>`. Require the caller to provide a compatible indexed baseline snapshot; if it does not exist, report that semantic comparison is blocked.
 4. Parse JSON only from stdout. Keep stderr, command metadata, and exit status separate.
 5. Read [references/review-contract.md](references/review-contract.md) when interpreting change kinds and deciding review priority.
-6. Review ownership changes, new mutable representations, added write paths, removed invariants, Binding additions/removals, manual synchronization, derivation, source-of-truth counts, and state lifetime.
+6. Review ownership changes, new mutable representations, added write/call paths, removed invariants, Binding additions/removals, custom setter effects, model-boundary depth, broad observable inputs, manual synchronization, derivation, logical source counts, and state lifetime.
 7. Slice each suspicious current finding or affected symbol before opening source:
 
    ```bash
@@ -33,7 +33,7 @@ description: Review AI-generated or human SwiftUI changes through semantic diff 
 
 Use model reasoning to classify intent, risk, and remediation. Never let it change AST, symbol, read/write, compiler relation, or source-location facts. Do not assume or invoke a model-provider API from the CLI.
 
-Never recommend “Use Binding everywhere” or “Minimize `@State`.” Review correct ownership, canonical source of truth, explicit dependencies, minimal manual synchronization, correct lifetime, and correct transaction semantics. Guard transactional drafts, intentional transformations, legitimate local UI state, and side effects in Binding setters.
+Never recommend “Use Binding everywhere” or “Minimize `@State`.” Review correct ownership, canonical source of truth, explicit focused dependencies, minimal manual synchronization, correct lifetime, and correct transaction semantics. Guard transactional drafts, intentional transformations, legitimate local UI state, legitimate screen/container model ownership, and side effects in Binding setters.
 
 ## Failure policy
 

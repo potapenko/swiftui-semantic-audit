@@ -1,6 +1,6 @@
 # SwiftUI Semantic Audit
 
-`swiftui-audit` is a deterministic semantic compiler from Swift/SwiftUI source into a compact state/data-flow graph for coding-agent reasoning, architectural self-audit, and semantic diff.
+`swiftui-audit` 0.2.0 is a deterministic semantic compiler from Swift/SwiftUI source into a compact state/data-flow graph for coding-agent reasoning, architectural self-audit, and semantic diff.
 
 It is not a style linter, source-rewriting bot, or model-backed code reviewer. SwiftSyntax and optional compiler-index enrichment establish facts; rules produce evidence-backed candidates; an agent may adjudicate ambiguous intent without changing syntax, symbol, read/write, or source-location facts.
 
@@ -87,7 +87,7 @@ swift run --disable-automatic-resolution swiftui-audit check \
 | Command | Purpose | Machine format |
 | --- | --- | --- |
 | `scan <path>` | Build the semantic graph | JSON (default); optional `--output <file>` |
-| `audit <path>` | Evaluate the six PoC state/data-flow rules | `--format json` |
+| `audit <path>` | Evaluate the ten PoC state/data-flow rules | `--format json` |
 | `snapshot [path]` | Persist a canonical five-file sidecar | optional JSON summary with `--format json` |
 | `slice [input]` | Return a minimal subgraph for one `--finding` or `--symbol` | `--format llm-json` |
 | `diff <base> <current>` | Compare snapshot directories or Git revisions | `--format json` |
@@ -110,12 +110,13 @@ Compare only inputs with matching resolution. Git-revision operands are syntax-o
 
 ## Agent workflow
 
-1. Run `audit --format json` before broad source inspection.
-2. Group relevant findings by semantic value and topology.
-3. Run `slice --format llm-json` for a finding or unambiguous symbol.
-4. Inspect source only at evidence locations when implementation detail is needed.
-5. Classify accidental mirrors separately from transactional drafts, derived values, transformations, and legitimate local UI state.
-6. After an edit, build/test, audit again, compare snapshots, and run `check`.
+1. Build the target to produce a fresh project-covering Index Store, then pass its path explicitly to every live-source agent command.
+2. Run `audit --index-store <path> --format json` before broad source inspection and require `resolution: "indexed"`.
+3. Group relevant findings by semantic value and topology, including custom Binding setters and component boundaries.
+4. Run `slice --index-store <path> --format llm-json` for a finding or unambiguous symbol.
+5. Inspect source only at evidence locations when implementation detail is needed.
+6. Classify accidental mirrors separately from transactions, transformations, command-shaped setters, legitimate model owners, and over-broad component inputs.
+7. After an edit, build/test, refresh the Index Store, audit again, compare indexed snapshots, and run `check`.
 
 Do not optimize for “Binding everywhere” or fewer `@State` properties. Optimize correct ownership, one canonical source of truth, explicit dependencies, minimal manual synchronization, and correct lifetime/transaction behavior.
 
@@ -149,7 +150,8 @@ Machine-readable results are written to stdout. Treat stderr and process status 
 
 ## Current limitations
 
-- PoC coverage is the documented SwiftUI vocabulary and six rules, not a full Swift type checker or general interprocedural analyzer.
+- PoC coverage is the documented SwiftUI vocabulary and ten rules, not a full Swift type checker or general interprocedural analyzer.
+- Component-boundary findings use explicit Observation/Binding topology; the tool does not infer controllers, services, or feature models from names or types alone.
 - Indexed enrichment is macOS-only and conservatively skips ambiguous same-line use-site matches.
 - Automatic index discovery is local to validated `.build` candidates.
 - Full graph rebuild is allowed; there is no incremental cache guarantee.

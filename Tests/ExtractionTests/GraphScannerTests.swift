@@ -176,7 +176,7 @@ final class GraphScannerTests: XCTestCase {
         }.map { "\(nodesByID[$0.from]!) -> \(nodesByID[$0.to]!)" }.sorted()
 
         XCTAssertEqual(graph.nodes.count, 42)
-        XCTAssertEqual(graph.edges.count, 76)
+        XCTAssertEqual(graph.edges.count, 77)
         XCTAssertEqual(observedPairs, [
             "GraphExtraction.Controls.environmentModel -> GraphExtraction.Controls.environmentModel.query",
             "GraphExtraction.Controls.model -> GraphExtraction.Controls.model.mode",
@@ -184,6 +184,37 @@ final class GraphScannerTests: XCTestCase {
             "GraphExtraction.Controls.model -> GraphExtraction.Controls.model.reload",
             "GraphExtraction.Controls.model -> GraphExtraction.Controls.model.volume",
         ])
+    }
+
+    func testExplicitBindingConstructionHasStableGetterSetterAndControlTopology() throws {
+        let graph = try scanTemporarySource("""
+        import SwiftUI
+        struct CustomBindingEditor: View {
+            @Binding var value: Int
+            var body: some View {
+                Picker("Value", selection: Binding(
+                    get: { value },
+                    set: { next in value = next }
+                )) { Text("Zero").tag(0) }
+            }
+        }
+        """)
+        let binding = try XCTUnwrap(graph.nodes.first {
+            $0.kind == .binding && $0.evidence.contains { $0.kind == "binding-construction" }
+        })
+        let createdClosures = graph.edges.filter { $0.kind == .creates && $0.from == binding.id }
+            .compactMap { edge in graph.nodes.first { $0.id == edge.to && $0.kind == .closure } }
+        let setter = try XCTUnwrap(graph.edges.first { $0.kind == .sets && $0.from == binding.id })
+        let controlBinding = try XCTUnwrap(graph.edges.first { $0.kind == .binds && $0.to == binding.id })
+
+        XCTAssertEqual(createdClosures.count, 2)
+        XCTAssertTrue(createdClosures.contains { $0.id == setter.to })
+        XCTAssertTrue(setter.evidence.contains { $0.kind == "binding-setter" })
+        XCTAssertTrue(graph.nodes.contains { $0.id == controlBinding.from && $0.evidence.contains { $0.kind == "swiftui-control" } })
+        XCTAssertTrue((binding.evidence + setter.evidence).allSatisfy {
+            !$0.file.hasPrefix("/") && $0.startLine > 0 && $0.endLine >= $0.startLine
+        })
+        XCTAssertEqual(try graph.jsonData(), try graph.jsonData())
     }
 
     func testOnChangeNewValueParametersPreserveObservedIdentityOnly() throws {

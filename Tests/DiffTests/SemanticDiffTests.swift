@@ -86,6 +86,37 @@ final class SemanticDiffTests: XCTestCase {
         XCTAssertFalse(SemanticDiffEngine().compare(base: bindingOnly, current: empty).changes.contains { $0.kind == .sourceOfTruthCountChanged })
     }
 
+    func testSourceCountTreatsFocusedBindingChainAsOneRootAndBorrowedMirrorAsTwo() {
+        let owner = node("M.Owner", .view)
+        let state = node("M.Owner.value", .state)
+        let middle = boundaryNode("M.Middle.value", .binding)
+        let leaf = boundaryNode("M.Leaf.value", .binding)
+        let value = NormalizedSemanticValue(
+            id: StableID.semanticValue(representations: [state.id, middle.id, leaf.id]),
+            representations: [state.id, middle.id, leaf.id],
+            relationEdges: [], confidence: .strongInference, classification: nil,
+            evidence: state.evidence + middle.evidence + leaf.evidence
+        )
+        let focusedGraph = SemanticGraph(nodes: [owner, state, middle, leaf], edges: [
+            edge(.passes, state, middle, "root-to-middle"),
+            edge(.passes, middle, leaf, "middle-to-leaf"),
+        ])
+        let mirroredGraph = SemanticGraph(nodes: [owner, state, middle, leaf], edges: [
+            edge(.copiesTo, middle, state, "borrowed-to-local"),
+            edge(.copiesTo, state, middle, "local-to-borrowed"),
+        ])
+
+        XCTAssertEqual(LogicalSourceCounter.count(for: value, in: focusedGraph), 1)
+        XCTAssertEqual(LogicalSourceCounter.count(for: value, in: mirroredGraph), 2)
+
+        let base = snapshot(graph: focusedGraph, values: [value], findings: [], duplicated: 0)
+        let current = snapshot(graph: mirroredGraph, values: [value], findings: [], duplicated: 1)
+        assertSourceCount(
+            SemanticDiffEngine().compare(base: base, current: current),
+            before: 1, after: 2, beforeRepresentations: 3, afterRepresentations: 3
+        )
+    }
+
     func testWrapperKindTransitionPreservesDeclarationContinuityAndOwnership() {
         let owner = node("M.Editor", .view)
         let binding = node("M.Editor.value", .binding)
@@ -311,6 +342,16 @@ final class SemanticDiffTests: XCTestCase {
             id: StableID.semanticValue(representations: [node.id]),
             representations: [node.id], relationEdges: [], confidence: .deterministic,
             classification: nil, evidence: node.evidence
+        )
+    }
+
+    private func boundaryNode(_ qualifiedName: String, _ kind: NodeKind) -> SemanticNode {
+        SemanticNode(
+            id: StableID.node(module: "M", qualifiedName: qualifiedName, kind: kind, discriminator: "declaration"),
+            kind: kind,
+            name: qualifiedName.split(separator: ".").last.map(String.init) ?? qualifiedName,
+            qualifiedName: qualifiedName,
+            evidence: [Evidence(file: "Fixture.swift", startLine: 1, endLine: 1, kind: "property-wrapper")]
         )
     }
 

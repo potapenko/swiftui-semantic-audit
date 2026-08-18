@@ -1,6 +1,6 @@
 ---
 name: swiftui-semantic-audit
-description: Audit Swift and SwiftUI state/data-flow architecture with swiftui-audit before reading broad source. Use when Codex needs to investigate state ownership, duplicated mutable representations, manual synchronization, callback plumbing, derived state, Observation or Binding topology, or to explain semantic audit findings in a SwiftUI codebase.
+description: Audit Swift and SwiftUI state/data-flow architecture with swiftui-audit before reading broad source. Use when Codex needs to investigate ownership, duplicated state, synchronization, callback plumbing, custom Binding effects, Observation tunnels, broad component inputs, derived state, or semantic findings in a SwiftUI codebase.
 ---
 
 # SwiftUI Semantic Audit
@@ -42,9 +42,12 @@ Classify each candidate as one of:
 - derived state;
 - transformed state;
 - legitimate local UI state;
+- command-shaped mutation or Binding factory boundary;
+- observable-model tunnel or over-broad component input;
+- legitimate screen/container ownership;
 - unknown when evidence is insufficient.
 
-Base the classification on ownership, read/write topology, lifetime, commit/discard events, and transformations. Do not optimize for wrapper counts. Never prescribe “Use Binding everywhere” or “Minimize `@State`.” Optimize correct ownership, one canonical source of truth, explicit dependencies, minimal manual synchronization, correct lifetime, and correct transaction semantics.
+Base the classification on ownership, read/write/call topology, lifetime, commit/discard events, transformations, explicit Binding getter/setter roles, model-propagation depth, and the receiving View's component role. Treat `binding-factory` and `broad-observable-input` as candidates requiring architectural adjudication. Do not optimize for wrapper counts. Never prescribe “Use Binding everywhere” or “Minimize `@State`.” Optimize correct ownership, one canonical source of truth, explicit dependencies, minimal manual synchronization, focused component inputs, correct lifetime, and correct transaction semantics.
 
 Allow LLM reasoning to add intent, risk, classification, or remediation. Never let it alter AST facts, symbol identities, reads, writes, compiler-derived relations, or source locations.
 
@@ -64,4 +67,4 @@ Do not replace missing deterministic facts with model guesses. Return `unknown` 
 
 ## Report
 
-Report semantic value, current owner and representations, read/write/synchronization paths, confidence, indexed resolution, validated Index Store path, classification, evidence locations, risk, and a conditional remediation. Separate deterministic CLI facts from LLM adjudication.
+Report semantic value, current owner and representations, logical source count, read/write/call/synchronization paths, Binding setter role or boundary depth when present, confidence, indexed resolution, validated Index Store path, classification, evidence locations, risk, and a conditional remediation. Separate deterministic CLI facts from LLM adjudication.

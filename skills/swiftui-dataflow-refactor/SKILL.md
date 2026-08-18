@@ -24,8 +24,8 @@ description: Refactor SwiftUI state ownership and data flow with snapshot, audit
 
 5. Inspect source only at slice evidence locations and directly required declarations.
 6. Establish intended owner, canonical representation, lifetime, write authority, transaction boundary, and behavior invariants before editing.
-7. Choose among owned `State`, external `Binding`, model projection through `Bindable`, injected `Environment` dependency, computed/derived value, or transactional draft. Never “Use Binding everywhere” or “Minimize `@State`.”
-8. Edit only the selected cluster and required call sites. Preserve transformations, side effects, commit/cancel semantics, identity, lifetime, and unrelated APIs.
+7. Choose among owned `State`, external focused `Binding`, model projection through `Bindable`, injected `Environment` dependency, focused value/action inputs, computed/derived value, or transactional draft. Never “Use Binding everywhere” or “Minimize `@State`.”
+8. Edit only the selected cluster and required call sites. When resolving a command-shaped setter or broad observable input, keep value mutation and actions explicit and narrow only the proven component boundary. Preserve transformations, side effects and their timing, commit/cancel semantics, identity, lifetime, legitimate screen/container ownership, and unrelated APIs.
 9. Build and run behavior tests, refreshing the compiler Index Store after the edit.
 10. Re-run audit and create a current snapshot with the refreshed validated Index Store. Require indexed resolution again.
 11. Compare semantic snapshots, then enforce policy:
@@ -41,7 +41,7 @@ Treat JSON stdout as the machine contract. Keep stderr and exit status separate.
 
 ## Reject or stop
 
-Reject the refactor when it introduces a high-severity finding, increases manual synchronization, adds an unexplained mutable/write path, makes ownership ambiguous, weakens an invariant, or changes transaction/lifetime semantics. Treat a failed build or behavior test as a rejection, even when semantic metrics improve.
+Reject the refactor when it introduces a high-severity finding, increases manual synchronization, adds an unexplained mutable/write/call path, makes ownership ambiguous, broadens a component dependency without evidence, hides a Binding setter effect, weakens an invariant, or changes transaction/lifetime semantics. Treat a failed build or behavior test as a rejection, even when semantic metrics improve.
 
 Stop without editing further when a command fails, JSON is invalid, a slice is missing/ambiguous or cannot fit, a fresh explicit index cannot cover the project, any result is not indexed, resolutions differ, snapshot paths are unsafe, or intended ownership remains unknown. Report the exact failure and smallest missing evidence. Never fill deterministic AST/symbol/read/write/source facts with model guesses.
 

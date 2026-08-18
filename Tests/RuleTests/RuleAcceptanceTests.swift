@@ -14,6 +14,20 @@ final class RuleAcceptanceTests: XCTestCase {
         ("CallbackTunnel", [.callbackBindingTunnel]),
         ("ObservableMirror", [.observableStateMirror]),
         ("IntentionalTransformation", []),
+        ("BindingMirroredLocally", [.mirroredState, .manualTwoWaySync]),
+        ("BindingTransactionalDraft", []),
+        ("BindingIndependentLocalState", []),
+        ("BindingSelfCopy", []),
+        ("CommandBinding", [.commandShapedBinding, .broadObservableInput]),
+        ("BindingWithEffect", [.commandShapedBinding]),
+        ("BindingFactory", [.bindingFactory]),
+        ("ObservableModelTunnel", [.observableModelTunnel]),
+        ("BroadObservableInput", [.broadObservableInput]),
+        ("DirectCustomBinding", []),
+        ("TransformedBinding", []),
+        ("FocusedBindingChain", []),
+        ("LocalModelOwner", []),
+        ("FocusedActionInput", []),
     ]
 
     func testAcceptanceFixturesHaveExactMandatoryFindings() throws {
@@ -493,6 +507,47 @@ final class RuleAcceptanceTests: XCTestCase {
         XCTAssertTrue(identityCopies.isEmpty)
         XCTAssertTrue(report.findings.isEmpty)
         XCTAssertFalse(report.findings.flatMap(\.suggestedPatterns).contains("Binding"))
+    }
+
+    func testBoundaryRulesReportExactConfidenceDepthAndVersion() throws {
+        let command = try auditFixture("CommandBinding")
+        let commandFinding = try XCTUnwrap(command.findings.first { $0.rule == .commandShapedBinding })
+        XCTAssertEqual(command.toolVersion, ToolMetadata.version)
+        XCTAssertEqual(commandFinding.confidence, .strongInference)
+        XCTAssertEqual(commandFinding.severity, .medium)
+        XCTAssertTrue(commandFinding.suggestedPatterns.contains("action-closure"))
+
+        let factory = try XCTUnwrap(auditFixture("BindingFactory").findings.first)
+        XCTAssertEqual(factory.rule, .bindingFactory)
+        XCTAssertEqual(factory.confidence, .candidate)
+
+        let tunnel = try XCTUnwrap(auditFixture("ObservableModelTunnel").findings.first)
+        XCTAssertEqual(tunnel.rule, .observableModelTunnel)
+        XCTAssertEqual(tunnel.confidence, .strongInference)
+        XCTAssertEqual(tunnel.depth, 2)
+
+        let broad = try XCTUnwrap(auditFixture("BroadObservableInput").findings.first)
+        XCTAssertEqual(broad.rule, .broadObservableInput)
+        XCTAssertEqual(broad.confidence, .candidate)
+    }
+
+    func testLogicalSourceMetricsCountRootsInsteadOfBindingRepresentations() throws {
+        for fixture in ["FocusedBindingChain", "ObservableModelTunnel"] {
+            let graph = try graphFixture(fixture)
+            let report = AuditEngine().audit(graph: graph)
+            XCTAssertEqual(report.metrics.duplicatedSourcesOfTruth, 0, fixture)
+            XCTAssertTrue(
+                report.semanticValues.allSatisfy { LogicalSourceCounter.count(for: $0, in: graph) <= 1 },
+                fixture
+            )
+        }
+
+        let mirroredGraph = try graphFixture("BindingMirroredLocally")
+        let mirrored = AuditEngine().audit(graph: mirroredGraph)
+        XCTAssertEqual(mirrored.metrics.duplicatedSourcesOfTruth, 1)
+        XCTAssertTrue(mirrored.semanticValues.contains {
+            LogicalSourceCounter.count(for: $0, in: mirroredGraph) == 2
+        })
     }
 
     func testFindingsHaveValidGraphEndpointsAndRelativeEvidence() throws {

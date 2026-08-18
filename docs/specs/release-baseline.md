@@ -8,6 +8,8 @@ Contract epoch: `tz-v4`
 
 **BASE-REL-002 — Implementation revision.** P6 began on branch `master` at Git commit `f24751cd25781426ec2c1531243e498534165e60`. Accepted P1–P5 implementation changes, including indexed enrichment, are present in the working tree at that revision. Generated P6 baseline manifests therefore record that Git revision while representing the accepted working tree.
 
+**BASE-REL-003 — Boundary-analysis revision.** The `BOUNDARY-001` product implementation is commit `e81f10d4b06ae1c738b8302d579858854fc69a44`, present on `origin/master`. The regenerated RuleTests manifest records that exact product-source revision; the accompanying tests, baseline, documentation, and skill guidance are its acceptance evidence.
+
 ## Dependency and platform baseline
 
 **BASE-DEP-001.** Swift tools declaration: `6.2`; accepted build/test toolchain: Apple Swift `6.3.3`; package platform: macOS 13+.
@@ -37,30 +39,31 @@ Contract epoch: `tz-v4`
 | P6 | specialist skills, self-contained specs, baseline, dogfood, CI | accepted: three specialist skills; 64 tests; source scan 3,134 nodes/6,150 edges and audit 0 findings; RuleTests baseline 268 nodes/521 edges/14 findings |
 | P7 | requirement-by-requirement completion | accepted with compatible PoC residuals across all 54 source sections |
 | P8 | single skill entry point | accepted: `swiftui-semantic` routes to three accepted specialist workflows; four-skill validation, four fresh-context routing scenarios, and independent review pass |
+| P9 | boundary analysis and logical roots | accepted: tool 0.2.0/schema v1; ten rules; explicit custom Binding topology; 69 tests including fresh indexed enrichment; deterministic 353/664/20 RuleTests baseline; full CLI dogfood pass |
 
 ## Current contract surface
 
 **BASE-CAP-001.** Public commands are `scan`, `audit`, `snapshot`, `slice`, `diff`, `check`, and `doctor`, with syntax/index flags documented in [`cli.md`](cli.md).
 
-**BASE-CAP-002.** Graph/audit/snapshot/diff/check/slice schemas are version 1 and tool version `0.1.0`.
+**BASE-CAP-002.** Graph/audit/snapshot/diff/check/slice schemas are version 1 and tool version `0.2.0`.
 
 **BASE-CAP-003.** The canonical RuleTests dogfood baseline is syntax-only and contains exactly five files under `Tests/Baselines/RuleTests`.
 
 **BASE-CAP-004.** Repeated fresh generation at one revision is byte-identical across all five files. Cross-commit comparison to the committed baseline is byte-exact for the four semantic files; only manifest `repositoryRevision` is normalized, with every other manifest field exact and the fresh revision required to equal `HEAD`.
 
-**BASE-CAP-005.** Current syntax-only RuleTests metrics are 24 Binding edges, 8 manual-synchronization edges, 27 mutable semantic values, 24 state representations, 5 duplicated sources of truth, 5 ownership violations, 2 derived mutable values, and 1 callback tunnel. Canonical file SHA-256 values are:
+**BASE-CAP-005.** Current syntax-only RuleTests baseline contains 353 nodes, 664 edges, and 20 findings. Its metrics are 34 Binding edges, 8 manual-synchronization edges, 40 mutable semantic values, 27 state representations, 5 duplicated sources of truth, 5 ownership violations, 2 derived mutable values, and 1 callback tunnel. Canonical file SHA-256 values are:
 
 | File | SHA-256 |
 | --- | --- |
-| `nodes.jsonl` | `674c06120f63e80670e08e52ea773fb1beffbaed2a9bc5bc2c75f9c625ccacb4` |
-| `edges.jsonl` | `7faa95f50820dcc027ca901adf5c845601993ce4070190f632652c16a50956ca` |
-| `findings.jsonl` | `165a0fbd39039507f32f4fce62467abbaa10ff93caaad82df2bb54b6ef4cc4f3` |
-| `summary.json` | `9166050912784d9fadbd591807356477ec97f68c083d56d0148f57b5488ab137` |
-| `manifest.json` | `cbfb133ed92333249d5dbd70b018249e4f59ab606ab9859de7e7ee051417efcc` |
+| `nodes.jsonl` | `4a00a8e70eed5c0c6d2d9e72fc2283a1bf67e4b09e791ce3a6078bcc0b6d6570` |
+| `edges.jsonl` | `4dc721f7860d4e8d4f621bc2d488d6190dc087290797a4477265cdc7c6fe741d` |
+| `findings.jsonl` | `a93a58a986bd0ecd984f641f08eba17a3dc364cc41887b2c6578878c330aaca8` |
+| `summary.json` | `8316abe13cc935051b7c5242e420bd27aa52c90238926f3dfa97ae2ae6541ff4` |
+| `manifest.json` | `d6686f232cea63123ebe4f6bf2a23cf5dc686d5430fa2a8aefb3033fac0a273c` |
 
-**BASE-CAP-006.** The current P1 extraction fixture contains 42 nodes and 76 edges (SHA-256 `92935530c0ad54cbd9a17b955b852c97fbfcb9edbc9004a3d7b56f96e7b9c1ca`) after authorized additive closure-parameter facts. Accepted lexical behavior preserves identity for an unshadowed nested `onChange` parameter capture, treats a same-name nested parameter as a shadow barrier, and represents transformed captures only through derivation.
+**BASE-CAP-006.** The current P1 extraction fixture contains 42 nodes and 77 edges (SHA-256 `57abbd33524890eb9544b420d47dd06013527ce12b1c2ad7b538dc3a19aa68db`). The one `BOUNDARY-001` addition is an explicit observable-member call edge required by broad-input analysis. Accepted lexical behavior preserves identity for an unshadowed nested `onChange` parameter capture, treats a same-name nested parameter as a shadow barrier, and represents transformed captures only through derivation.
 
-**BASE-CAP-007.** Current syntax-only Sources dogfood produces 3,134 nodes and 6,150 edges (SHA-256 `ff269945a8ca7b31b4c1be6dc19c8ab9a1b8aea305ddc3a0cdef8d15d3e4b907`). Its audit has zero findings and SHA-256 `e03c13cc1f464e7cdf9836ebd08e96ce197975e4480852248fc9d7d8b4ac9704`.
+**BASE-CAP-007.** Current syntax-only Sources dogfood produces 3,357 nodes and 6,608 edges (SHA-256 `187ee36e268135d58d9b9e9b4bcaed2cba9023957def77db2b06cfe7b6449b4a`). Its audit has zero findings and SHA-256 `27ef8b8adcde059e2add19a1b48150800b787267bd2d6cabcfba5812fe9ccb33`.
 
 **BASE-CAP-008.** The accepted value-setter evidence repair leaves counts and metrics unchanged while retaining each matching event-trigger edge in its finding. `LabeledSetter` is `finding:871672afc5e64d2` with `edge:df78fa011860918b`; `ValueSetterPair` is `finding:c988942f3dcf8158` with `edge:fec6154e7fee5d1f`. This records current evidence completeness and does not add another rule.
 
@@ -82,7 +85,7 @@ Contract epoch: `tz-v4`
 
 **BASE-LIM-006 — Indexed mode.** Indexed enrichment is macOS-only, skips conservative same-line ambiguities, and auto-discovers only validated local `.build` stores. Explicit selection fails when coverage is absent; automatic mode falls back to syntax-only.
 
-**BASE-LIM-007 — Deferred rules/features.** Suspicious Binding setter and general ownership-mismatch concepts remain adjudication guidance rather than additional shipped PoC rules. Automatic rewriting, embedded LLM APIs, GUI/IDE/Xcode extensions, broad Swift framework analysis, and SIL remain out of scope.
+**BASE-LIM-007 — Deferred rules/features.** General typed component-role and ownership-mismatch inference remains adjudication guidance rather than a shipped rule; the new boundary candidates require explicit Binding/Observation topology. Automatic rewriting, embedded LLM APIs, GUI/IDE/Xcode extensions, broad Swift framework analysis, and SIL remain out of scope.
 
 ## Router acceptance evidence
 
@@ -92,4 +95,4 @@ Contract epoch: `tz-v4`
 
 **BASE-NEXT-003.** `INDEXED-SKILLS-001` acceptance requires zero frontend-only guidance under `skills/`, explicit index-store commands in every live-source specialist workflow, indexed-only handoffs and review snapshots, four-skill validation, YAML/link validation, and the CI regression guard.
 
-**BASE-NEXT-004.** `BOUNDARY-001` acceptance requires tool version `0.2.0`, schema version 1, ten exact rules, custom Binding construction topology, logical source-count fixtures, syntax-only and fresh explicit indexed evidence, a regenerated five-file RuleTests baseline, and updated agent adjudication guidance. Final counts and hashes replace this planning clause only after verification.
+**BASE-NEXT-004.** `BOUNDARY-001` is locally accepted with tool version `0.2.0`, schema version 1, ten exact rules, custom Binding construction topology, logical source-count fixtures, syntax-only and fresh explicit indexed evidence, a deterministic regenerated five-file RuleTests baseline, 69 passing tests, updated agent adjudication guidance, and passing audit/snapshot/diff/check/slice/doctor dogfood. The first hosted CI run containing this checkpoint remains a truthful external residual until GitHub Actions reports it.
