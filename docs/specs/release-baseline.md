@@ -29,7 +29,7 @@ Contract epoch: `tz-v5`
 
 ## Accepted milestone evidence
 
-**BASE-MILESTONE-001.** Accepted realization and current integration candidate:
+**BASE-MILESTONE-001.** Accepted realization:
 
 | Milestone | Capability | Accepted evidence before P6 |
 | --- | --- | --- |
@@ -42,7 +42,7 @@ Contract epoch: `tz-v5`
 | P7 | requirement-by-requirement completion | accepted with compatible PoC residuals across all 54 source sections |
 | P8 | single skill entry point | accepted: `swiftui-semantic` routes to three accepted specialist workflows; four-skill validation, four fresh-context routing scenarios, and independent review pass |
 | P9 | boundary analysis and logical roots | accepted: tool 0.2.0/schema v1; ten rules; explicit custom Binding topology; 69 tests including fresh indexed enrichment; deterministic 353/664/20 RuleTests baseline; full CLI dogfood pass |
-| P10 | architecture analysis | integration candidate: tool 0.3.0/schema v2; collision-safe identities; exact configuration; 29 rules; 77 tests; deterministic 353/713/20 RuleTests baseline; configured positive/negative and indexed evidence; full local CLI dogfood pass |
+| P10 | architecture analysis | accepted: tool 0.3.0/schema v2; collision-safe identities; exact configuration; 29 rules; 77 tests; deterministic 353/713/20 RuleTests baseline; configured positive/negative and indexed evidence; full local CLI dogfood; hosted CI pass |
 
 ## Current contract surface
 
@@ -102,4 +102,4 @@ Contract epoch: `tz-v5`
 
 **BASE-NEXT-004.** `BOUNDARY-001` is locally accepted with tool version `0.2.0`, schema version 1, ten exact rules, custom Binding construction topology, logical source-count fixtures, syntax-only and fresh explicit indexed evidence, a deterministic regenerated five-file RuleTests baseline, 69 passing tests, updated agent adjudication guidance, and passing audit/snapshot/diff/check/slice/doctor dogfood. Hosted CI on the integrated P9 checkpoint is required external release evidence and its terminal result is reported in the checkpoint handoff.
 
-**BASE-NEXT-005.** `ARCHITECTURE-001` local acceptance evidence includes 77 passing tests, locked build, fresh explicit IndexStoreDB identity/configuration coverage, byte-identical schema-v2 snapshots, empty same-input diff, passing high-severity check, bounded slice, healthy doctor, zero Sources findings, all nineteen configured positive rules, zero configured negative rules, and four validated skills. Hosted CI and upstream presence remain the terminal integration evidence.
+**BASE-NEXT-005.** `ARCHITECTURE-001` acceptance evidence includes 77 passing tests, locked build, fresh explicit IndexStoreDB identity/configuration coverage, byte-identical schema-v2 snapshots, empty same-input diff, passing high-severity check, bounded slice, healthy doctor, zero Sources findings, all nineteen configured positive rules, zero configured negative rules, and four validated skills. Integration checkpoint `1821b72de6d75a48a2a2b672a191e408c324bd02` is present on `origin/master`; hosted GitHub Actions run `32130756118` passed every CI step in 4m06s.
