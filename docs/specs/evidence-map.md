@@ -1,7 +1,7 @@
 # Specification coverage and evidence map
 
-Revision: `spec-2`
-Authority: ТЗ epoch `tz-v1` plus user-authorized `ROUTER-001`, combined epoch `tz-v2`
+Revision: `spec-3`
+Authority: ТЗ epoch `tz-v1` plus user-authorized `ROUTER-001` and `INDEXED-SKILLS-001`, combined epoch `tz-v3`
 Purpose: route every source section to stable local clauses and evidence owners
 
 This map proves coverage; it does not create new requirements. Source and tests establish realization only after the normative contract is fixed.
@@ -68,6 +68,7 @@ This map proves coverage; it does not create new requirements. Source and tests 
 | Addendum | Subject | Local contract | Realization/evidence owner |
 | --- | --- | --- | --- |
 | `ROUTER-001` | One concise skill link that selects audit, refactor, review, or the smallest valid sequence | `PC-OPS-006`, `ACC-SKILL-001..005` | `skills/swiftui-semantic`, CI validation, forward tests |
+| `INDEXED-SKILLS-001` | Agent workflows require explicit indexed resolution and reject lower-resolution fallback | `PC-OPS-005`, `PC-OPS-007`, `ACC-SKILL-004..006` | all four skills, skill references, CI validation |
 
 ## Evidence precedence by decision
 
@@ -81,7 +82,7 @@ This map proves coverage; it does not create new requirements. Source and tests 
 
 ## Ownership map
 
-- Product authority: user-approved base epoch `tz-v1` plus explicit `ROUTER-001`, combined as `tz-v2`; local documents remain bounded to those authorizations.
+- Product authority: user-approved base epoch `tz-v1` plus explicit `ROUTER-001` and `INDEXED-SKILLS-001`, combined as `tz-v3`; local documents remain bounded to those authorizations.
 - Semantic schema owner: `AuditCore` plus SnapshotStore transport.
 - Syntax fact owner: SwiftSyntaxFrontend and SwiftUISemantics vocabulary.
 - Compiler fact owner: SymbolResolution/IndexStoreDB on macOS.

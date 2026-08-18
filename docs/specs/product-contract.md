@@ -1,7 +1,7 @@
 # Product contract
 
-Revision: `spec-2`
-Authority: epoch `tz-v2`, pinned base digest and `ROUTER-001` in the [registry](README.md)
+Revision: `spec-3`
+Authority: epoch `tz-v3`, pinned base digest, `ROUTER-001`, and `INDEXED-SKILLS-001` in the [registry](README.md)
 Status: active, unreleased
 
 ## Goal and consumer
@@ -61,9 +61,11 @@ Swift source → SwiftSyntax facts → optional indexed facts → semantic graph
 
 **PC-OPS-004 — Environment diagnosis.** Provide a non-mutating `doctor` command for Swift, Xcode/toolchain, project type, SwiftSyntax compatibility, Index Store readiness, and Git.
 
-**PC-OPS-005 — Specialist agent workflows.** Supply reusable audit, refactor, and change-review skills that use JSON first, slice before source, preserve resolution, and enforce the LLM fact boundary.
+**PC-OPS-005 — Specialist agent workflows.** Supply reusable audit, refactor, and change-review skills that use JSON first, slice before source, preserve indexed resolution, and enforce the LLM fact boundary.
 
 **PC-OPS-006 — Single routing entry point.** Supply `swiftui-semantic` as the concise user-facing skill. It classifies the requested outcome, loads only the appropriate specialist workflow first, and sequences audit, refactor, and review only when the task crosses those phases. It must preserve deterministic facts, resolution, baseline identities, evidence, invariants, and failure state across handoffs rather than duplicating or weakening specialist gates.
+
+**PC-OPS-007 — Indexed agent boundary.** Agent-facing semantic audit, refactor, and review workflows require a fresh validated compiler Index Store, pass its path explicitly for live-source analysis, and accept only `resolution: "indexed"`. They must not recommend the build-free frontend mode, omit resolution flags in reliance on automatic discovery, or present a lower-resolution result as a semantic workflow result. Missing indexed coverage is a blocking evidence failure, not permission to weaken the workflow. The standalone CLI retains its build-free fallback for non-agent uses and deterministic test/dogfood coverage.
 
 ## Resolution and platform
 

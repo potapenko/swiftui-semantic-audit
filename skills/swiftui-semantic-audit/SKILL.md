@@ -5,22 +5,20 @@ description: Audit Swift and SwiftUI state/data-flow architecture with swiftui-a
 
 # SwiftUI Semantic Audit
 
-## Establish the command and resolution
+## Establish indexed analysis
 
 1. Use an installed `swiftui-audit` binary when available. In this repository, use `swift run --disable-automatic-resolution swiftui-audit`.
-2. Select one resolution for the whole investigation:
-   - Pass `--syntax-only` for deterministic syntax facts without an index.
-   - Pass `--index-store <path>` only for a validated compiler Index Store.
-   - Omit both only when conservative automatic discovery and syntax-only fallback are acceptable.
-3. Never compare or combine `indexed` and `syntax-only` evidence as if they had equal resolution.
-4. Treat the CLI as provider-independent. Do not assume or add an OpenAI, Anthropic, or other model API call.
+2. Build the project when needed to produce a fresh compiler Index Store that covers the requested source. Validate its readiness and exact path with project build output and `swiftui-audit doctor <source-path> --format json`.
+3. Pass `--index-store <path>` explicitly to every live-source audit or slice command. Do not omit it in reliance on automatic discovery.
+4. Parse the result and require `resolution: "indexed"`. Treat any other resolution as insufficient evidence and stop.
+5. Treat the CLI as provider-independent. Do not assume or add an OpenAI, Anthropic, or other model API call.
 
 ## Audit before source
 
 1. Run JSON audit before opening arbitrary Swift source:
 
    ```bash
-   swiftui-audit audit <source-path> --syntax-only --format json
+   swiftui-audit audit <source-path> --index-store <path> --format json
    ```
 
 2. Parse JSON from stdout. Keep stderr, exit status, and command metadata separate from semantic data.
@@ -28,7 +26,7 @@ description: Audit Swift and SwiftUI state/data-flow architecture with swiftui-a
 4. Select relevant findings. Slice each one before inspecting implementation source:
 
    ```bash
-   swiftui-audit slice <source-or-snapshot> --finding <finding-id> --syntax-only --format llm-json --token-budget 10000
+   swiftui-audit slice <source-path> --finding <finding-id> --index-store <path> --format llm-json --token-budget 10000
    ```
 
 5. Follow only `sourceEvidence` locations when implementation detail is required. Expand beyond them only when a named dependency cannot be resolved from the slice, and state why.
@@ -57,7 +55,8 @@ Stop and report the exact command, exit status, stderr, and unresolved evidence 
 - a command fails or stdout is not valid JSON for the requested format;
 - a finding or symbol is missing or ambiguous;
 - a slice cannot fit its mandatory envelope;
-- indexed enrichment was explicitly requested but is unavailable or lacks project coverage;
+- indexed enrichment is unavailable, stale, or lacks project coverage;
+- a command returns a resolution other than `indexed`;
 - graph/report or compared-input resolutions disagree;
 - evidence cannot establish ownership, lifetime, transformation, or transaction boundaries.
 
@@ -65,4 +64,4 @@ Do not replace missing deterministic facts with model guesses. Return `unknown` 
 
 ## Report
 
-Report semantic value, current owner and representations, read/write/synchronization paths, confidence and resolution, classification, evidence locations, risk, and a conditional remediation. Separate deterministic CLI facts from LLM adjudication.
+Report semantic value, current owner and representations, read/write/synchronization paths, confidence, indexed resolution, validated Index Store path, classification, evidence locations, risk, and a conditional remediation. Separate deterministic CLI facts from LLM adjudication.

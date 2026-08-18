@@ -22,7 +22,7 @@ Proceed only when the user requested implementation and the audit established th
 
 ### Refactor to review
 
-Carry forward the unchanged baseline, current snapshot, resolution, intended semantic delta, build/test evidence, and `check` result. Review semantic changes before the raw source diff.
+Carry forward the unchanged baseline, current snapshot, validated Index Store identity/path, indexed resolution, intended semantic delta, build/test evidence, and `check` result. Review semantic changes before the raw source diff.
 
 ### Review to refactor
 
@@ -30,4 +30,4 @@ Proceed only when remediation is authorized. Preserve the review's failing findi
 
 ## Stop conditions
 
-Stop the sequence when resolution differs, JSON is invalid, an explicit index is unavailable, a selector is ambiguous, ownership or lifetime remains unknown, behavior tests fail, or a new high-severity finding appears. Report the exact failed phase instead of silently choosing another workflow.
+Stop the sequence when any result is not indexed, resolutions differ, JSON is invalid, an explicit project-covering index is unavailable, a selector is ambiguous, ownership or lifetime remains unknown, behavior tests fail, or a new high-severity finding appears. Report the exact failed phase instead of silently choosing another workflow.

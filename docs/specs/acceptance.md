@@ -1,6 +1,6 @@
 # Acceptance and QA contract
 
-Revision: `spec-2`
+Revision: `spec-3`
 Status: active  
 Release state: unreleased
 
@@ -74,9 +74,11 @@ swift test --disable-automatic-resolution
 
 **ACC-SKILL-003.** Run the bundled `quick_validate.py` for all four; parse every YAML file; reject unfinished-marker placeholders and broken relative links.
 
-**ACC-SKILL-004.** Every skill preserves JSON stdout discipline, resolution consistency, exact failure policy, provider independence, topology-over-wrapper reasoning, and the deterministic/LLM fact boundary.
+**ACC-SKILL-004.** Every skill preserves JSON stdout discipline, indexed-resolution consistency, exact failure policy, provider independence, topology-over-wrapper reasoning, and the deterministic/LLM fact boundary.
 
 **ACC-SKILL-005.** `swiftui-semantic` routes investigation or ambiguity to audit, requested state/data-flow implementation to refactor, and pre-existing changes to review. Mixed tasks use the smallest valid sequence, read the selected specialist completely, preserve handoff state, and never replace specialist acceptance gates with a shortened combined workflow.
+
+**ACC-SKILL-006.** Every router, specialist skill, and skill reference requires explicit indexed analysis for agent workflows. Skill Markdown contains no `syntax-only` guidance or examples, does not rely on automatic resolution fallback, validates `resolution: "indexed"`, and stops when a fresh project-covering Index Store or compatible indexed snapshot is unavailable. Change review uses indexed snapshots rather than Git-revision operands that cannot preserve indexed resolution.
 
 ## CI
 
@@ -97,7 +99,7 @@ swift test --disable-automatic-resolution
 7. run `check --fail-on-new high`;
 8. slice an emitted real finding;
 9. run doctor JSON;
-10. validate all skills and their YAML metadata without repository or global-environment mutation;
+10. validate all skills and their YAML metadata without repository or global-environment mutation, and reject frontend-only resolution guidance anywhere under `skills/`;
 11. parse JSON/YAML and check placeholders/links.
 
 ## Definition of Done map

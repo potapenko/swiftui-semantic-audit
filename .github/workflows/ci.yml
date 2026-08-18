@@ -234,6 +234,10 @@ jobs:
           actual = Dir.children("skills").sort
           abort("unexpected skill set: #{actual.inspect}") unless actual == expected.sort
 
+          Pathname("skills").glob("**/*.md").each do |path|
+            abort("frontend-only resolution guidance in #{path}") if path.read.match?(/syntax-only/i)
+          end
+
           expected.each do |name|
             root = Pathname("skills") / name
             skill = root / "SKILL.md"

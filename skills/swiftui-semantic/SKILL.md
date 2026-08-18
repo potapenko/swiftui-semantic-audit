@@ -32,7 +32,7 @@ For a direct refactor request, select the refactor skill immediately because it 
 Keep these facts unchanged when moving between specialists:
 
 - source path and repository;
-- `syntax-only` or `indexed` resolution;
+- `indexed` resolution and the validated Index Store identity/path used for live-source analysis;
 - baseline and current snapshot identities;
 - finding, semantic-value, and symbol IDs;
 - deterministic nodes, edges, evidence, and source locations;
@@ -40,6 +40,8 @@ Keep these facts unchanged when moving between specialists:
 - command exit statuses and stderr separately from JSON stdout.
 
 Never reinterpret missing deterministic evidence during a handoff. Return `unknown` or request the smallest missing evidence.
+
+Require every specialist result to report `resolution: "indexed"`. Stop the workflow when a fresh project-covering Index Store or compatible indexed snapshot is unavailable; do not weaken the workflow through automatic resolution fallback.
 
 ## Keep the semantic boundary
 

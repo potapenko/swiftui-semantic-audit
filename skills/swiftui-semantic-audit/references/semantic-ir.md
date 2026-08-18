@@ -22,11 +22,11 @@ An LLM slice contains `finding`, `semanticValues`, `nodes`, `edges`, `sourceEvid
 
 ## Resolution and identity
 
-- `syntax-only` is always available and can have conservative or lower-confidence relations.
-- `indexed` adds compiler IndexStoreDB symbol/use facts on macOS.
-- Automatic discovery enriches only when exactly one validated local store covers the project; otherwise it conservatively returns syntax-only output.
+- Accept only `indexed` results in this agent workflow.
+- `indexed` adds compiler IndexStoreDB symbol/use facts on macOS and is required for cross-file ownership, propagation, callback, and computed-binding analysis.
+- Pass a fresh validated Index Store explicitly for live-source commands; automatic discovery or fallback is not sufficient evidence for this workflow.
 - Explicit index selection fails when the store, library, helper, or project coverage is invalid.
 - Stable node, edge, semantic-value, finding, and change IDs do not use line number as primary identity.
-- Compare snapshots only when graph and report resolution match on both sides.
+- Compare snapshots only when graph and report resolution match on both sides and both are indexed.
 
 Canonical snapshots contain exactly `manifest.json`, `nodes.jsonl`, `edges.jsonl`, `findings.jsonl`, and `summary.json`. They reject absolute evidence paths, dangling references, unsorted IDs, symlinks, unexpected files, unsafe outputs, and inconsistent schemas/resolutions.
