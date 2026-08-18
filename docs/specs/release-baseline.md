@@ -10,7 +10,7 @@ Contract epoch: `tz-v5`
 
 **BASE-REL-003 — Boundary-analysis revision.** The `BOUNDARY-001` product implementation is commit `e81f10d4b06ae1c738b8302d579858854fc69a44`, present on `origin/master`. The regenerated RuleTests manifest records that exact product-source revision; the accompanying tests, baseline, documentation, and skill guidance are its acceptance evidence.
 
-**BASE-REL-004 — Architecture-analysis revision.** The `ARCHITECTURE-001` implementation is product commit `2e9207fe1093995e7abd4880ca17745ee2b0b28b`, collision-scope restore commit `5d16cc3b9ef441be448b16554c9c4e662f573f4a`, and bounded large-project index timeout commit `f02927a3ecb38eeee89ab23fd77f58c50c6560b7`. The schema-v2 RuleTests manifest records the latter exact product-source revision; the subsequent baseline, CI, documentation, and skill checkpoint is its acceptance evidence.
+**BASE-REL-004 — Architecture-analysis revision.** The `ARCHITECTURE-001` implementation is product commit `2e9207fe1093995e7abd4880ca17745ee2b0b28b`, collision-scope restore commit `5d16cc3b9ef441be448b16554c9c4e662f573f4a`, bounded large-project index timeout commit `f02927a3ecb38eeee89ab23fd77f58c50c6560b7`, and indexed-enrichment topology optimization commit `91da0c92eb95812a642819634998772f66493a13`. The schema-v2 RuleTests manifest records the latter exact product-source revision; the subsequent baseline, CI, documentation, and skill checkpoint is its acceptance evidence.
 
 ## Dependency and platform baseline
 
@@ -62,11 +62,11 @@ Contract epoch: `tz-v5`
 | `edges.jsonl` | `e1ba91905742c9a088790b35e18a46ae5a566254af7728484738ed8ad13a6bf2` |
 | `findings.jsonl` | `9d9305389503bffcaa70651fa233ebb372ef0d4f7edd2bf1901c353a0391c7b3` |
 | `summary.json` | `b37146210fbf1a690985d89c2f617ef892727d8f4597087abaed1739dbc15177` |
-| `manifest.json` | `0813a3977fef62e4797ebacce10d3a9ec1d5ed08403fcb981a1115116d3eed76` |
+| `manifest.json` | `3a9a21e28c10f0681a9d9e72b673022919d2c7ceab51f2200f8192327d51b27f` |
 
 **BASE-CAP-006.** The current P1 extraction fixture contains 42 nodes and 83 edges (SHA-256 `ae2f86326085816ee62f9d3fcf8a1531f007df80d2f60a895d2a9f1ea7241ceb`). Schema v2 adds bounded typed/value-flow facts while preserving accepted lexical behavior: identity for an unshadowed nested `onChange` parameter capture, a same-name nested parameter as a shadow barrier, and derivation for transformed captures.
 
-**BASE-CAP-007.** Current syntax-only Sources dogfood produces 3,987 nodes and 10,276 edges (SHA-256 `702b574af9ab82cfc941219cf188c8078abb130a905e0be3e082a3fd634b0f7b`). Its audit has zero findings and SHA-256 `b1d2b61915ae31bed62d2449b6c42fb4d51de363906898593bc1560c5b5927c0`.
+**BASE-CAP-007.** Current syntax-only Sources dogfood produces 3,991 nodes and 10,288 edges (SHA-256 `9f94a74b41aa9093c114409a011d3245ad08dee53d5acfd180f2ce55b3d0ed21`). Its audit has zero findings and SHA-256 `0d97671de1eec7a47e6ac5c724eaea8b425dc5dc2b2e4e877ead24387cd1ef91`.
 
 **BASE-CAP-008.** The accepted value-setter evidence repair leaves counts and metrics unchanged while retaining each matching event-trigger edge in its finding. `LabeledSetter` is `finding:871672afc5e64d2` with `edge:df78fa011860918b`; `ValueSetterPair` is `finding:c988942f3dcf8158` with `edge:fec6154e7fee5d1f`. This records current evidence completeness and does not add another rule.
 

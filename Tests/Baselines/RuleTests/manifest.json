@@ -1,7 +1,7 @@
 {
   "configurationDigest" : "none",
   "generatedFrom" : "Tests/Fixtures/RuleTests",
-  "repositoryRevision" : "f02927a3ecb38eeee89ab23fd77f58c50c6560b7",
+  "repositoryRevision" : "91da0c92eb95812a642819634998772f66493a13",
   "schemaVersion" : 2,
   "swiftVersion" : "Apple Swift version 6.3.3 (swiftlang-6.3.3.1.3 clang-2100.1.1.101) Target: arm64-apple-macosx26.0",
   "toolVersion" : "0.3.0"

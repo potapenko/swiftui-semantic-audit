@@ -36,7 +36,7 @@ A local spec edit cannot authorize a semantic change. Any semantic delta require
 | [`cli.md`](cli.md) | Commands, flags, resolution, stdout/status, path/failure policy | Normative restatement plus authorized addenda | active / CLI 0.3.0 target | Running or documenting commands | seven public commands |
 | [`acceptance.md`](acceptance.md) | Fixtures, determinism, skills, CI, Definition of Done | Normative acceptance map for ТЗ §§44–51 plus authorized addenda through `ARCHITECTURE-001` | active | Implementing or verifying | 77-test implementation candidate plus four-skill validation |
 | [`evidence-map.md`](evidence-map.md) | Clause ownership and all-54-section plus authorized-addendum coverage | Governance map | active | Tracing authority to evidence | P1–P10 map |
-| [`release-baseline.md`](release-baseline.md) | Current realization, dependency pins, residuals | Descriptive evidence; never higher than normative contracts | active / volatile | Release/readiness/status work | unreleased product source at `f02927a…` plus P10 local acceptance candidate |
+| [`release-baseline.md`](release-baseline.md) | Current realization, dependency pins, residuals | Descriptive evidence; never higher than normative contracts | active / volatile | Release/readiness/status work | unreleased product source at `91da0c9…` plus P10 local acceptance candidate |
 
 ## Domain ownership
 
