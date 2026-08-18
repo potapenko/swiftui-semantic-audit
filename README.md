@@ -130,7 +130,7 @@ Start with the `swiftui-semantic` router. It loads the smallest specialist workf
 | Change state ownership or data flow while preserving behavior | [`swiftui-dataflow-refactor`](skills/swiftui-dataflow-refactor/SKILL.md) |
 | Review pre-existing SwiftUI changes | [`swiftui-change-review`](skills/swiftui-change-review/SKILL.md) |
 
-Agent workflows require a fresh, project-covering compiler Index Store and accept only `resolution: "indexed"`. This is stricter than the standalone CLI: the CLI also has a useful build-free syntax-only mode for deterministic exploration, fixtures, and CI.
+Agent workflows require a fresh, project-covering compiler Index Store and accept only `resolution: "indexed"`. The installed skills pass the Index Store explicitly and stop when compiler-backed evidence is unavailable.
 
 The workflow guides explain the full gates: [audit](docs/workflows/audit.md), [refactor](docs/workflows/refactor.md), and [change review](docs/workflows/change-review.md).
 
@@ -162,16 +162,18 @@ See the [rule reference](docs/reference/rules.md) for every identifier, confiden
 
 For exact syntax and failure behavior, use [`swiftui-audit <command> --help`](docs/reference/cli.md) and the [CLI reference](docs/reference/cli.md).
 
-## A standalone first pass
+## First indexed pass
 
-The build-free mode is useful when a human wants deterministic facts without running the agent workflow:
+Build the target, record its fresh project-covering Index Store, and start with an indexed report:
 
 ```bash
 swiftui-audit doctor . --format json
-swiftui-audit audit Sources --syntax-only --format json > audit.json
+swiftui-audit audit Sources \
+  --index-store /absolute/path/to/index/store \
+  --format json > audit.json
 ```
 
-For an agent-guided architectural conclusion, build the target, locate its fresh Index Store, and run the indexed workflow instead. The [first-audit guide](docs/getting-started/first-audit.md) keeps those two uses separate.
+Confirm `"resolution": "indexed"`, then continue through the [first-audit guide](docs/getting-started/first-audit.md).
 
 ## Outputs that survive a chat
 

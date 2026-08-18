@@ -67,9 +67,9 @@ This gives the agent a concrete starting point and reduces two common errors:
 
 The slice is not the end of investigation. It routes source reading to the evidence locations and directly required declarations.
 
-## Indexed and syntax-only evidence
+## Indexed evidence
 
-Syntax-only mode is deterministic and useful, but it lacks compiler symbol resolution. Indexed mode enriches the graph with project-covering compiler identity and use relations.
+Indexed mode enriches the graph with project-covering compiler identity and use relations. The bundled workflow treats that compiler-backed identity as a required part of semantic evidence.
 
 The bundled agent workflows therefore require:
 
@@ -78,7 +78,7 @@ The bundled agent workflows therefore require:
 - `resolution: "indexed"` in every live-source result;
 - compatible indexed snapshots for semantic review.
 
-The standalone CLI retains syntax-only operation. The two modes must not be compared or described as equivalent evidence.
+Results from a lower resolution must not be substituted for, compared with, or described as indexed workflow evidence.
 
 ## Provider independence
 

@@ -18,7 +18,7 @@ Semantic review requires two compatible indexed snapshots:
 - both record `resolution: "indexed"`;
 - both use the same schema and analysis-configuration digest.
 
-Git-revision operands are syntax-only and therefore do not satisfy this workflow. If a compatible indexed baseline snapshot does not exist, report semantic comparison as blocked rather than calling the change clean.
+Git-revision operands do not preserve compiler-index evidence and therefore do not satisfy this workflow. If a compatible indexed baseline snapshot does not exist, report semantic comparison as blocked rather than calling the change clean.
 
 ## 1. Compare semantic snapshots
 

@@ -33,16 +33,6 @@ If role-aware architecture rules are relevant, add a validated `.swiftui-audit.j
 
 Continue with [Run a first audit](first-audit.md).
 
-## Standalone CLI use
-
-The CLI can also extract useful syntax-only facts without building the target:
-
-```bash
-swiftui-audit audit Sources --syntax-only --format json
-```
-
-That mode is suitable for deterministic exploration, fixture work, and CI. It is deliberately not accepted as enough evidence by the bundled agent workflows.
-
 ## Next pages
 
 - [Installation](installation.md)

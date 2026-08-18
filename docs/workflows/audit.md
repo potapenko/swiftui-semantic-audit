@@ -19,7 +19,7 @@ Build the exact source state and record the compiler Index Store that covers it.
 swiftui-audit doctor . --format json
 ```
 
-Every live-source audit and slice command must receive the Index Store explicitly. Require `resolution: "indexed"`; do not rely on automatic discovery or silently accept syntax-only fallback.
+Every live-source audit and slice command must receive the Index Store explicitly. Require `resolution: "indexed"`; do not rely on automatic discovery or accept a lower-resolution result.
 
 ## 2. Establish project classification
 

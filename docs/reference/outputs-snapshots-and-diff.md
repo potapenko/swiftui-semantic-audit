@@ -94,7 +94,7 @@ The mandatory envelope keeps the selected finding, affected values, ownership, r
 
 ## Semantic diff
 
-`diff` compares compatible snapshots or syntax-only Git revisions. It can report:
+`diff` compares compatible snapshots or Git revisions. It can report:
 
 ```text
 NODE_ADDED
@@ -134,11 +134,11 @@ Policy failure exits `2`. A passing check means the selected new-finding policy 
 
 Never compare:
 
-- indexed evidence with syntax-only evidence;
+- inputs with different evidence resolution;
 - snapshots with different schema versions;
 - snapshots with different configuration digests;
 - failed or partial output as if it were an empty result.
 
-For agent change review, use compatible indexed snapshots. Git revision operands are intentionally syntax-only and therefore belong to standalone comparison, not the indexed agent-review workflow.
+For agent change review, use compatible indexed snapshots. Git revision operands do not retain compiler-index evidence and therefore do not belong to the agent-review workflow.
 
 Normative detail: [`docs/specs/semantic-ir.md`](../specs/semantic-ir.md).

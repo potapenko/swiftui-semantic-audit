@@ -107,7 +107,7 @@ skills/swiftui-dataflow-refactor
 skills/swiftui-change-review
 ```
 
-The router is the public entry point. Specialists retain their own evidence and acceptance gates. Agent-facing skill documentation must require explicit indexed analysis; syntax-only guidance belongs to standalone CLI documentation instead.
+The router is the public entry point. Specialists retain their own evidence and acceptance gates. Agent-facing and public documentation must require explicit indexed analysis; frontend-only flags belong only to internal development, tests, and CI.
 
 ## Continuous integration
 

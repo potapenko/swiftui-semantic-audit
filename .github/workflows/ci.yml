@@ -329,6 +329,16 @@ jobs:
           missing_pages = public_pages.reject(&:file?)
           abort("missing public documentation: #{missing_pages.join(', ')}") unless missing_pages.empty?
 
+          user_facing_pages = [Pathname("README.md")] + public_pages.reject do |path|
+            path.to_s.start_with?("docs/development/")
+          end
+          user_facing_pages.each do |path|
+            content = path.read(encoding: "UTF-8")
+            if content.match?(/syntax[- ]only|build-free/i)
+              abort("development-only resolution mode mentioned in user-facing documentation: #{path}")
+            end
+          end
+
           def anchors_for(file)
             counts = Hash.new(0)
             anchors = []

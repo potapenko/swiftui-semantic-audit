@@ -1,6 +1,6 @@
 # Run a first audit
 
-There are two legitimate first passes. Use indexed analysis for an agent-guided architecture conclusion. Use syntax-only analysis for standalone deterministic exploration when a build is unavailable.
+The first pass uses compiler-backed indexed analysis. Build the exact source state, pass its project-covering Index Store explicitly, and reject any lower-resolution result.
 
 ## 1. Check the environment
 
@@ -10,7 +10,7 @@ From the target repository:
 swiftui-audit doctor . --format json
 ```
 
-`doctor` is non-mutating. It reports Swift, Xcode, project type, SwiftSyntax compatibility, Index Store readiness, and Git state. Required Swift or Git failures produce an error. Optional Xcode or index readiness can be warnings because the standalone CLI still supports syntax-only analysis.
+`doctor` is non-mutating. It reports Swift, Xcode, project type, SwiftSyntax compatibility, Index Store readiness, and Git state. Required Swift or Git failures produce an error. Treat Xcode or index-readiness warnings as blockers for the agent workflow.
 
 ## 2. Build the exact source state
 
@@ -75,16 +75,6 @@ The router selects the audit specialist, checks indexed evidence, and separates 
 - indexed resolution and configuration digest;
 - classification, risk, and conditional remediation;
 - missing evidence when the answer remains `unknown`.
-
-## Build-free standalone pass
-
-When no compatible build is available, the standalone CLI can still extract its supported syntax topology:
-
-```bash
-swiftui-audit audit Sources --syntax-only --format json > audit.json
-```
-
-The report must say `"resolution": "syntax-only"`. Do not present it as an indexed agent-workflow result, and do not compare it with indexed snapshots.
 
 ## Common stopping conditions
 
