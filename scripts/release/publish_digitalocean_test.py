@@ -67,6 +67,12 @@ class PublishDigitalOceanTests(unittest.TestCase):
         with self.assertRaisesRegex(publish.PublishError, "has no ID"):
             publish.app_id_from_payload({"app": {}})
 
+    def test_parser_reserves_bounded_time_for_first_ingress_dns(self) -> None:
+        arguments = publish.parser().parse_args([])
+        self.assertEqual(arguments.http_attempts, 24)
+        self.assertEqual(arguments.retry_delay, 5.0)
+        self.assertEqual(arguments.timeout, 600.0)
+
     def test_reads_active_deployment_commit_and_technical_ingress(self) -> None:
         self.assertEqual(
             publish.deployment_details(APP_RESPONSE),

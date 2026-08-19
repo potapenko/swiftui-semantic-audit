@@ -2,7 +2,7 @@
 
 - Node type: root
 - Status: Active
-- Contract revision: `spec-11`
+- Contract revision: `spec-12`
 - Authority: epoch `tz-v10` and pinned digest declared below
 - Read when: starting any product, behavior, compatibility, QA, release, or specification task in this repository.
 - Do not read when: the task is proven behavior-neutral and outside the specification system.
@@ -10,7 +10,7 @@
 
 Status: active  
 Contract epoch: `tz-v10`
-Local specification revision: `spec-11`
+Local specification revision: `spec-12`
 Pinned authority digest: `sha256:68f8a43d924659024b7d29fabb9ad302817c271838a7919b24bd942626927cac`  
 Router addendum: user-authorized `ROUTER-001` on 2026-08-18
 Indexed-skills addendum: user-authorized `INDEXED-SKILLS-001` on 2026-08-18
@@ -23,6 +23,7 @@ Homebrew release addendum: user-authorized `HOMEBREW-RELEASE-001` on 2026-08-19;
 Website addendum: user-authorized `WEBSITE-001` on 2026-08-19; advances the combined contract to `tz-v9`
 Website publication addendum: user-authorized `WEBSITE-PUBLISH-001` on 2026-08-19; advances the combined contract to `tz-v10`
 Release baseline: `0.4.0 released`
+Website baseline: technical ingress released; canonical domain pending registration
 
 This directory is the self-contained active specification package for SwiftUI Semantic Audit. It faithfully restates the user-approved Russian ТЗ without expanding product semantics. Clause IDs are stable references for implementation, review, and QA.
 
@@ -50,8 +51,8 @@ A local spec edit cannot authorize a semantic change. Any semantic delta require
 | [`cli.md`](cli.md) | Commands, flags, resolution, stdout/status, path/failure policy | Normative restatement plus authorized addenda | active / CLI 0.4.0 released | Running or documenting commands | seven public commands plus global version output |
 | [`acceptance.md`](acceptance.md) | Fixtures, determinism, skills, CI, Definition of Done | Normative acceptance map for ТЗ §§44–51 plus authorized addenda through `HOMEBREW-RELEASE-001` | active | Implementing or verifying | 88 tests and hosted CI accepted; Homebrew receipt in release baseline |
 | [`evidence-map.md`](evidence-map.md) | Clause ownership and all-54-section plus authorized-addendum coverage | Governance map | active | Tracing authority to evidence | P1–P13 map |
-| [`release-baseline.md`](release-baseline.md) | Current realization, dependency pins, residuals | Descriptive evidence; never higher than normative contracts | active / released | Release/readiness/status work | 0.4.0 immutable tag, archive, and Homebrew tap |
-| [`website.md`](website.md) | English landing-page experience, claims, examples, build, deployment, and QA | `WEBSITE-001` plus `WEBSITE-PUBLISH-001` product-evolution contract | active / evolving | Designing, implementing, publishing, or reviewing the website | unreleased |
+| [`release-baseline.md`](release-baseline.md) | Current realization, dependency pins, residuals | Descriptive evidence; never higher than normative contracts | active / released | Release/readiness/status work | 0.4.0 tool release plus initial website deployment |
+| [`website.md`](website.md) | English landing-page experience, claims, examples, build, deployment, and QA | `WEBSITE-001` plus `WEBSITE-PUBLISH-001` product-evolution contract | active / accepted | Designing, implementing, publishing, or reviewing the website | technical ingress released; canonical domain pending |
 
 ## Domain ownership
 

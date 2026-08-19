@@ -357,8 +357,8 @@ def parser() -> argparse.ArgumentParser:
     )
     result.add_argument("--timeout", type=float, default=600.0)
     result.add_argument("--request-timeout", type=float, default=20.0)
-    result.add_argument("--http-attempts", type=int, default=8)
-    result.add_argument("--retry-delay", type=float, default=3.0)
+    result.add_argument("--http-attempts", type=int, default=24)
+    result.add_argument("--retry-delay", type=float, default=5.0)
     result.add_argument("--doctl", default="doctl")
     result.add_argument("--dry-run", action="store_true")
     return result

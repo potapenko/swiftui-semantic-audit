@@ -1,15 +1,16 @@
-# Release 0.4.0 baseline
+# Release and publication baseline
 
 - Node type: hybrid
 - Status: Active
-- Contract revision: `spec-9`
+- Contract revision: `spec-10`
 - Read when: checking the current 0.4.0 release, dependencies, milestones, capabilities, residuals, or acceptance evidence.
 - Do not read when: the task concerns intended behavior without realization or release evidence.
 - Maximum size: 100 physical lines.
 
-Revision: `spec-9`
-Baseline state: `0.4.0 released`
+Revision: `spec-10`
+Baseline state: `0.4.0 released; website technical ingress released`
 Contract epoch: `tz-v8`
+Website contract epoch: `tz-v10`
 
 **BASE-REL-001 — Publication state.** Tool `0.4.0` is the first public release. It is distributed from one immutable Git tag and GitHub Release through the tested upstream tap formula; the terminal receipt pins every external artifact.
 
@@ -28,6 +29,17 @@ Contract epoch: `tz-v8`
 **BASE-REL-008 — Homebrew release authorization.** User-authorized `HOMEBREW-RELEASE-001` on 2026-08-19 advances the combined contract to `tz-v8`. The release owns version output, immutable tag/archive publication, the external upstream tap formula, direct install verification, and truthful release documentation; it does not change graph schema v2, cache schema v1, twenty-nine rules, command semantics, or agent-skill installation. The post-publication checkpoint records exact tag, archive, tap, and clean-install evidence without changing release semantics.
 
 **BASE-REL-009 — 0.4.0 publication receipt.** Immutable tag `0.4.0` targets commit `189dc44c928f7f61b393f6e4ca7d8f6f5d183a48`; upstream CI run [`32260347511`](https://github.com/potapenko/swiftui-semantic-audit/actions/runs/32260347511) passed on that commit. The public [GitHub Release](https://github.com/potapenko/swiftui-semantic-audit/releases/tag/0.4.0) asset `swiftui-semantic-audit-0.4.0.tar.gz` has SHA-256 `e314379b9cf67f1d5d6ccf3e8b9dce9b10d4a619c6af9eff4d39af0f4a8f08d3`. Tap formula commit `73895365dbd6bea905fc11a6fda2496f3126c620` and bounded-automation head `7979f7f7a1e4c71a2acf92d984926ec63e64c5c5` are public in [`potapenko/homebrew-tap`](https://github.com/potapenko/homebrew-tap). Clean [`macos-26` arm64 run `32261229672`](https://github.com/potapenko/homebrew-tap/actions/runs/32261229672) built from source, passed the functional `brew test`, and verified version `0.4.0`; macOS and Linux tap-syntax jobs also passed. The direct command is `brew install potapenko/tap/swiftui-semantic-audit`. No bottles are claimed for 0.4.0: installation builds the locked package from source and requires Xcode 26.6.
+
+**BASE-WEB-001 — Initial website deployment receipt.** On 2026-08-19,
+DigitalOcean app `ed5742fe-8bca-444f-a55b-abb8d005ff55` reached ACTIVE deployment
+`df56a626-d87a-4be5-804f-2e93419c975a` from source commit
+`a47364f868ac047dfb4eabb1898960bf3eb3a7df`. Its technical ingress is
+`https://swiftui-semantic-audit-nuhky.ondigitalocean.app/`; the active spec pins
+one `master` static site with `deploy_on_push: true`. Public A/AAAA records,
+managed TLS, root marker and English document, canonical/Open Graph metadata,
+`robots.txt`, `sitemap.xml`, and the expected 404 response passed. The canonical
+`swiftui-audit.dev` cutover remains pending because authoritative registration
+and delegation do not yet exist; no domain-ready claim is accepted.
 
 ## Choose the baseline child
 

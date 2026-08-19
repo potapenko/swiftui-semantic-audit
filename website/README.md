@@ -87,6 +87,11 @@ deployment intentionally uses the technical `ondigitalocean.app` hostname. The
 canonical apex and `www` redirect are added only after that hostname passes and
 `swiftui-audit.dev` has authoritative registry and DNS delegation.
 
+The accepted technical ingress is
+<https://swiftui-semantic-audit-nuhky.ondigitalocean.app/>. It is diagnostic and
+noncanonical after the final domain cutover; until then its generated metadata
+uses the same technical base URL so every published absolute URL remains valid.
+
 ## Content evidence
 
 The large duplicate-owner example and protected transaction come from accepted
