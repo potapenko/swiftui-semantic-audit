@@ -2,8 +2,8 @@
 
 - Node type: hybrid
 - Status: Active
-- Contract revision: `spec-4`
-- Authority: user-authorized `WEBSITE-001`, `WEBSITE-PUBLISH-001`, and `WEBSITE-AUTHOR-001` on 2026-08-19
+- Contract revision: `spec-5`
+- Authority: user-authorized `WEBSITE-001`, `WEBSITE-PUBLISH-001`, `WEBSITE-AUTHOR-001`, and `WEBSITE-SKILL-STORY-001` on 2026-08-19
 - Stability: released at the canonical domain
 - Read when: designing, implementing, publishing, or verifying the product website.
 - Do not read when: work is limited to the Swift package, CLI, rules, or agent skills.
@@ -35,6 +35,12 @@ cannot create a false public-domain or TLS claim.
 header link to `https://x.com/potapenko`, adapting HoldType's icon-only desktop
 and labelled mobile behavior. The target site's visual system, navigation order,
 accessibility, and local Tabler asset boundary remain authoritative.
+
+**WEB-DELTA-005 — Skill-first product interface.** `WEBSITE-SKILL-STORY-001`
+makes `swiftui-semantic` in Codex or Claude Code the landing page's primary
+product interface. Use cases are normal SwiftUI tasks asked through that one
+skill. The CLI, router, and specialist workflows are subordinate implementation
+details; product and installation semantics do not change.
 
 ## Choose the governing child
 

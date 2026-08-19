@@ -2,15 +2,15 @@
 
 - Node type: hybrid
 - Status: Active
-- Contract revision: `spec-12`
+- Contract revision: `spec-13`
 - Read when: checking the current 0.4.0 release, dependencies, milestones, capabilities, residuals, or acceptance evidence.
 - Do not read when: the task concerns intended behavior without realization or release evidence.
 - Maximum size: 100 physical lines.
 
-Revision: `spec-12`
+Revision: `spec-13`
 Baseline state: `0.4.0 released; website canonical domain released`
 Contract epoch: `tz-v8`
-Website contract epoch: `tz-v11`
+Website contract epoch: `tz-v12`
 
 **BASE-REL-001 — Publication state.** Tool `0.4.0` is the first public release. It is distributed from one immutable Git tag and GitHub Release through the tested upstream tap formula; the terminal receipt pins every external artifact.
 

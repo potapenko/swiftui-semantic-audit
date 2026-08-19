@@ -3,16 +3,16 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>SwiftUI Semantic Audit — Architecture evidence for coding agents</title>
-  <meta name="description" content="Deterministic architecture evidence for safer agent-authored SwiftUI changes.">
+  <title>SwiftUI Semantic Audit — A SwiftUI skill for Codex and Claude</title>
+  <meta name="description" content="One agent skill for explaining, changing, and reviewing SwiftUI state and data flow with deterministic architecture evidence.">
   <meta name="robots" content="index,follow">
   <meta name="theme-color" content="#08121F">
   <link rel="canonical" href="{{SITE_URL}}">
   <link rel="icon" href="assets/site-icon.svg" type="image/svg+xml">
   <meta property="og:type" content="website">
   <meta property="og:site_name" content="SwiftUI Semantic Audit">
-  <meta property="og:title" content="Give coding agents a map of SwiftUI state before they edit it.">
-  <meta property="og:description" content="Deterministic architecture evidence for safer agent-authored SwiftUI changes.">
+  <meta property="og:title" content="Give Codex or Claude a SwiftUI architecture skill.">
+  <meta property="og:description" content="One agent skill for explaining, changing, and reviewing SwiftUI state and data flow with deterministic architecture evidence.">
   <meta property="og:url" content="{{SITE_URL}}">
   <meta property="og:image" content="{{SITE_URL}}assets/social-preview.png">
   <meta property="og:image:type" content="image/png">
@@ -20,8 +20,8 @@
   <meta property="og:image:height" content="630">
   <meta property="og:image:alt" content="SwiftUI code, semantic evidence, and a focused direct Binding arranged as an annotated architecture review.">
   <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:title" content="SwiftUI Semantic Audit">
-  <meta name="twitter:description" content="Deterministic architecture evidence for safer agent-authored SwiftUI changes.">
+  <meta name="twitter:title" content="A SwiftUI architecture skill for Codex and Claude">
+  <meta name="twitter:description" content="One agent skill for explaining, changing, and reviewing SwiftUI state and data flow with deterministic architecture evidence.">
   <meta name="twitter:image" content="{{SITE_URL}}assets/social-preview.png">
   <meta name="twitter:image:alt" content="SwiftUI code, semantic evidence, and a focused direct Binding arranged as an annotated architecture review.">
   <link rel="stylesheet" href="styles.css">
@@ -31,7 +31,7 @@
       "@context": "https://schema.org",
       "@type": "SoftwareApplication",
       "name": "SwiftUI Semantic Audit",
-      "description": "Deterministic architecture evidence for safer agent-authored SwiftUI changes.",
+      "description": "One agent skill for explaining, changing, and reviewing SwiftUI state and data flow with deterministic architecture evidence.",
       "applicationCategory": "DeveloperApplication",
       "operatingSystem": "macOS 13 or later",
       "softwareVersion": "0.4.0",
@@ -59,7 +59,7 @@
       </button>
 
       <nav id="site-navigation" class="site-nav" aria-label="Main navigation">
-        <a href="#workflow">How it works</a>
+        <a href="#workflow">Use cases</a>
         <a href="#rules">Rules</a>
         <a href="#examples">Examples</a>
         <a href="https://github.com/potapenko/swiftui-semantic-audit/tree/0.4.0/docs">Docs</a>
@@ -79,17 +79,17 @@
     <section id="top" class="hero section-paper" aria-labelledby="hero-title">
       <div class="shell hero-grid">
         <div class="hero-copy">
-          <p class="eyebrow">Architecture evidence for agent-authored SwiftUI</p>
-          <h1 id="hero-title">Give coding agents a map of SwiftUI state before they edit it.</h1>
-          <p class="hero-lede">SwiftUI Semantic Audit turns ownership, writes, Bindings, synchronization, effects, and component boundaries into deterministic evidence. A semantic diff records what changed after the edit.</p>
+          <p class="eyebrow">A SwiftUI skill for Codex and Claude</p>
+          <h1 id="hero-title">Give Codex or Claude a SwiftUI architecture skill.</h1>
+          <p class="hero-lede">Add <code>$swiftui-semantic</code>, then ask for normal SwiftUI work: explain a data flow, fix duplicated state, or review a change. The skill gathers indexed evidence and follows the task through verification.</p>
 
           <div class="hero-actions">
             <a class="button button-primary" href="#install">
               <img src="assets/icons/terminal-2.svg" alt="" aria-hidden="true">
-              Install the CLI
+              Add the skill
             </a>
-            <a class="button button-secondary" href="#examples">
-              See the examples
+            <a class="button button-secondary" href="#workflow">
+              See the use cases
               <img src="assets/icons/arrow-right.svg" alt="" aria-hidden="true">
             </a>
           </div>
@@ -101,7 +101,7 @@
             </li>
             <li>
               <img src="assets/icons/book-2.svg" alt="" aria-hidden="true">
-              <span><strong>Seven CLI commands</strong>Scan through doctor</span>
+              <span><strong>One skill to invoke</strong>Codex or Claude Code</span>
             </li>
             <li>
               <img src="assets/icons/cube.svg" alt="" aria-hidden="true">
@@ -112,16 +112,16 @@
 
         <aside class="hero-brief" aria-label="Product boundary">
           <div>
-            <h2>What it is</h2>
-            <p>A cross-file analysis that builds deterministic evidence about SwiftUI state and data flow.</p>
+            <h2>Main interface</h2>
+            <p><code>$swiftui-semantic</code> in Codex or <code>/swiftui-semantic</code> in Claude Code.</p>
           </div>
           <div>
-            <h2>What it is not</h2>
-            <p>It does not decide architecture or rewrite source. The agent classifies intent and proposes the change.</p>
+            <h2>What to ask</h2>
+            <p>Explain a data flow, change state ownership, or review an agent-authored diff.</p>
           </div>
           <div>
-            <h2>Release boundary</h2>
-            <p>Standalone macOS CLI. Agent skills are installed separately.</p>
+            <h2>Under the hood</h2>
+            <p><code>swiftui-audit</code> supplies deterministic facts. The agent decides what to change.</p>
           </div>
         </aside>
       </div>
@@ -130,9 +130,9 @@
     <section id="xray" class="xray" aria-labelledby="xray-title">
       <div class="shell">
         <div class="section-heading section-heading-inverse">
-          <p class="eyebrow">Semantic X-ray</p>
-          <h2 id="xray-title">Evidence for the same UI behavior</h2>
-          <p>This editorial view summarizes accepted fixture evidence. It is not a product GUI.</p>
+          <p class="eyebrow">Inside a skill run</p>
+          <h2 id="xray-title">The skill maps state before the agent edits it.</h2>
+          <p>This editorial view summarizes accepted fixture evidence passed into the agent workflow. It is not a product GUI.</p>
         </div>
 
         <div class="xray-grid">
@@ -225,8 +225,8 @@
     <section id="examples" class="examples section-paper" aria-labelledby="examples-title">
       <div class="shell">
         <div class="section-heading">
-          <p class="eyebrow">Fixture-backed patterns</p>
-          <h2 id="examples-title">Three patterns worth seeing</h2>
+          <p class="eyebrow">Use cases in code</p>
+          <h2 id="examples-title">Three SwiftUI patterns the skill can inspect</h2>
           <p>The finding identifies topology. The safer shape depends on the value's owner and lifetime. Behavior tests still decide whether the change is safe.</p>
         </div>
 
@@ -372,7 +372,7 @@ selection: <span class="syntax-type">Binding</span>(
         <div class="protected-intro">
           <img src="assets/icons/shield-check.svg" alt="" aria-hidden="true">
           <p class="eyebrow">Protected case</p>
-          <h2 id="protected-title">It knows when not to change code.</h2>
+          <h2 id="protected-title">A real local draft is not a fix target.</h2>
           <p>A local draft is valid when the UI has real commit and discard behavior. The distinction comes from action and copy topology, not button names.</p>
         </div>
 
@@ -418,33 +418,33 @@ selection: <span class="syntax-type">Binding</span>(
       <div class="shell">
         <div class="section-heading split-heading">
           <div>
-            <p class="eyebrow">Agent workflow</p>
-            <h2 id="workflow-title">A workflow built for review</h2>
+            <p class="eyebrow">Use cases</p>
+            <h2 id="workflow-title">Ask for the SwiftUI work you already need.</h2>
           </div>
-          <p>One router selects the smallest specialist workflow. Each phase keeps deterministic facts separate from agent judgment.</p>
+          <p>Invoke <code>$swiftui-semantic</code> in Codex or <code>/swiftui-semantic</code> in Claude Code, then describe the outcome. The skill selects the workflow internally.</p>
         </div>
 
         <ol class="workflow-list">
           <li>
             <div class="workflow-icon"><img src="assets/icons/user.svg" alt="" aria-hidden="true"></div>
             <span class="step-number">1</span>
-            <h3>Audit</h3>
-            <p>Build the exact source, validate a fresh compiler Index Store, and map the target cluster before broad source reading.</p>
-            <code>$swiftui-semantic-audit</code>
+            <h3>Understand unfamiliar state flow</h3>
+            <p>Ask who owns a value, why it is synchronized, or where a model crosses component boundaries.</p>
+            <code>Explain who owns this state and why it is synchronized.</code>
           </li>
           <li>
             <div class="workflow-icon"><img src="assets/icons/pencil.svg" alt="" aria-hidden="true"></div>
             <span class="step-number">2</span>
-            <h3>Refactor</h3>
-            <p>Change one established ownership or data-flow cluster without altering its behavior or transaction boundary.</p>
-            <code>$swiftui-dataflow-refactor</code>
+            <h3>Fix a data-flow problem</h3>
+            <p>Ask to remove duplicated state, callback plumbing, or a suspicious Binding without changing behavior.</p>
+            <code>Remove this duplicated state without changing behavior.</code>
           </li>
           <li>
             <div class="workflow-icon"><img src="assets/icons/shield-check.svg" alt="" aria-hidden="true"></div>
             <span class="step-number">3</span>
-            <h3>Review</h3>
-            <p>Read the compatible semantic diff before the raw Git diff, then verify the implementation with builds and tests.</p>
-            <code>$swiftui-change-review</code>
+            <h3>Review an agent-authored change</h3>
+            <p>Ask whether an existing diff changed ownership, write paths, dependencies, or transaction semantics.</p>
+            <code>Review these SwiftUI changes for ownership regressions.</code>
           </li>
         </ol>
       </div>
@@ -597,9 +597,9 @@ selection: <span class="syntax-type">Binding</span>(
         <div class="section-heading split-heading">
           <div>
             <p class="eyebrow">Trust and limits</p>
-            <h2 id="trust-title">Know what the tool owns</h2>
+            <h2 id="trust-title">Know what the skill owns</h2>
           </div>
-          <p>The boundary is deliberate: deterministic extraction in the CLI, contextual decisions in the surrounding agent workflow.</p>
+          <p>The skill routes the work. The CLI extracts deterministic facts; Codex or Claude makes contextual decisions.</p>
         </div>
 
         <div class="trust-grid">
@@ -633,16 +633,16 @@ selection: <span class="syntax-type">Binding</span>(
         <div class="section-heading split-heading">
           <div>
             <p class="eyebrow">Installation</p>
-            <h2 id="install-title">Install in two separate steps</h2>
+            <h2 id="install-title">Add the skill to Codex or Claude Code</h2>
           </div>
-          <p>Homebrew owns the executable. The agent host owns the optional router and specialist skills.</p>
+          <p>The skill is the interface. It uses a local evidence engine installed through Homebrew.</p>
         </div>
 
         <div class="install-grid">
           <article class="install-step">
             <header>
               <span class="step-number">1</span>
-              <div><h3>Install the CLI</h3><p>macOS 13 or later, Homebrew, and Xcode 26.6.</p></div>
+              <div><h3>Install the local evidence engine</h3><p>macOS 13 or later, Homebrew, and Xcode 26.6.</p></div>
             </header>
             <div class="copy-block">
               <button class="copy-button" type="button" data-copy-target="install-cli-command" aria-describedby="install-cli-status">
@@ -659,14 +659,15 @@ swiftui-audit --version</code></pre>
           <article class="install-step">
             <header>
               <span class="step-number">2</span>
-              <div><h3>Add the agent skills</h3><p>Paste this bounded setup request into Codex or Claude Code.</p></div>
+              <div><h3>Add <code>swiftui-semantic</code> to the agent</h3><p>Paste this bounded setup request into Codex or Claude Code.</p></div>
             </header>
             <div class="copy-block copy-block-prompt">
               <button class="copy-button" type="button" data-copy-target="agent-setup-prompt" aria-describedby="agent-setup-status">
                 <img src="assets/icons/copy.svg" alt="" aria-hidden="true">
                 <span>Copy prompt</span>
               </button>
-              <pre id="agent-setup-prompt" tabindex="0"><code>Install exactly the four SwiftUI Semantic Audit agent skills for release 0.4.0.
+              <pre id="agent-setup-prompt" tabindex="0"><code>Install the SwiftUI Semantic workflow for release 0.4.0: the user-facing
+swiftui-semantic skill and its three internal specialists.
 The CLI is already managed by Homebrew; verify `swiftui-audit --version` first.
 Read and follow the tagged installation guide:
 https://github.com/potapenko/swiftui-semantic-audit/blob/0.4.0/docs/getting-started/installation.md
@@ -674,20 +675,21 @@ Clone only tag 0.4.0 from
 https://github.com/potapenko/swiftui-semantic-audit.git into a stable user-owned path.
 Before linking anything, verify the origin, tag, and exact commit
 189dc44c928f7f61b393f6e4ca7d8f6f5d183a48.
-Detect this agent host and link all four sibling skill directories into its
-documented personal skill directory. Do not overwrite, delete, move, or repoint
+Detect this agent host and link the router and its three sibling specialist skill
+directories into its documented personal skill directory. Do not overwrite,
+delete, move, or repoint
 an existing path. Finish with the tag, commit, CLI version, installed paths,
 host, and verification receipt.</code></pre>
             </div>
             <p id="agent-setup-status" class="copy-status" aria-live="polite"></p>
-            <p class="install-note">The workflow stops on version, source, or destination conflicts.</p>
+            <p class="install-note">You invoke one skill. Setup keeps its internal workflows available and stops on version, source, or destination conflicts.</p>
           </article>
         </div>
 
         <div class="install-next">
           <div>
             <img src="assets/icons/terminal-2.svg" alt="" aria-hidden="true">
-            <p><strong>Then ask normally.</strong> Use <code>$swiftui-semantic</code> in Codex or <code>/swiftui-semantic</code> in Claude Code.</p>
+            <p><strong>Then ask normally.</strong> Start an explanation, refactor, or review with <code>$swiftui-semantic</code> in Codex or <code>/swiftui-semantic</code> in Claude Code. The skill handles the workflow.</p>
           </div>
           <a class="button button-secondary" href="https://github.com/potapenko/swiftui-semantic-audit/blob/0.4.0/docs/getting-started/first-audit.md">
             Run the first audit
@@ -701,7 +703,7 @@ host, and verification receipt.</code></pre>
       <div class="shell faq-grid">
         <div class="faq-heading">
           <p class="eyebrow">FAQ</p>
-          <h2 id="faq-title">Product boundaries</h2>
+          <h2 id="faq-title">Using the skill safely</h2>
           <a class="text-link" href="https://github.com/potapenko/swiftui-semantic-audit/tree/0.4.0/docs">
             Read the documentation
             <img src="assets/icons/external-link.svg" alt="" aria-hidden="true">
@@ -709,6 +711,10 @@ host, and verification receipt.</code></pre>
         </div>
 
         <div class="faq-list">
+          <details>
+            <summary>Which skill should I use?</summary>
+            <p>Use <code>swiftui-semantic</code>. Describe the SwiftUI outcome you need in Codex or Claude Code; the skill selects the internal workflow and carries its evidence forward.</p>
+          </details>
           <details>
             <summary>Is this a linter?</summary>
             <p>No. The CLI compiles supported source facts into a semantic graph and evidence-backed findings for agent reasoning. It does not score style or prescribe a wrapper.</p>
@@ -742,7 +748,7 @@ host, and verification receipt.</code></pre>
     <div class="shell footer-grid">
       <div>
         <strong>SwiftUI Semantic Audit</strong>
-        <p>Deterministic architecture evidence for agent-authored SwiftUI changes.</p>
+        <p>A SwiftUI architecture skill for Codex and Claude Code.</p>
       </div>
       <nav aria-label="Product links">
         <span>Product</span>

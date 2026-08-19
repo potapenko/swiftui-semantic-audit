@@ -2,7 +2,7 @@
 
 - Node type: leaf
 - Status: Active
-- Contract revision: `spec-2`
+- Contract revision: `spec-3`
 - Authority: [Website contract](../website.md)
 - Maximum size: 100 physical lines.
 
@@ -36,6 +36,12 @@ repository/lifecycle composition in linked documentation for the first release.
 **WEB-STORY-004.** The protected case shows a real local transactional draft
 with explicit Apply and Discard. It must state that no finding is expected and
 must not expose a fake fix control.
+
+**WEB-SKILL-001.** Present `swiftui-semantic` in Codex or Claude Code from hero
+through installation as the product's primary interface. Show concrete SwiftUI
+requests a visitor can give that one skill; do not present the CLI, router, or
+specialist workflows as co-equal user choices. Tagged setup may disclose its
+dependencies, but no automatic-understanding claim is allowed.
 
 ## Visual and interaction contract
 
