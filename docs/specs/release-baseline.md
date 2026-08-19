@@ -2,13 +2,13 @@
 
 - Node type: hybrid
 - Status: Active
-- Contract revision: `spec-10`
+- Contract revision: `spec-11`
 - Read when: checking the current 0.4.0 release, dependencies, milestones, capabilities, residuals, or acceptance evidence.
 - Do not read when: the task concerns intended behavior without realization or release evidence.
 - Maximum size: 100 physical lines.
 
-Revision: `spec-10`
-Baseline state: `0.4.0 released; website technical ingress released`
+Revision: `spec-11`
+Baseline state: `0.4.0 released; website canonical domain released`
 Contract epoch: `tz-v8`
 Website contract epoch: `tz-v10`
 
@@ -38,8 +38,22 @@ DigitalOcean app `ed5742fe-8bca-444f-a55b-abb8d005ff55` reached ACTIVE deploymen
 one `master` static site with `deploy_on_push: true`. Public A/AAAA records,
 managed TLS, root marker and English document, canonical/Open Graph metadata,
 `robots.txt`, `sitemap.xml`, and the expected 404 response passed. The canonical
-`swiftui-audit.dev` cutover remains pending because authoritative registration
-and delegation do not yet exist; no domain-ready claim is accepted.
+At that checkpoint, the `swiftui-audit.dev` cutover remained pending because
+authoritative registration and delegation did not yet exist; no domain-ready
+claim was accepted.
+
+**BASE-WEB-002 — Canonical domain publication receipt.** On 2026-08-19,
+deployment `dfcf358f-551b-453d-808b-aad44ab9281f` reached ACTIVE from source
+commit `93f6e1a0c68df37f373b4150e2639075d7e4a699`. App Platform reports both
+`swiftui-audit.dev` PRIMARY and `www.swiftui-audit.dev` ALIAS as ACTIVE, with
+managed certificates expiring on 2026-11-17. The authoritative OnlyDomains zone
+publishes apex A records `162.159.140.98` and `172.66.0.96`, while `www` is a
+CNAME to the technical ingress. Fresh public resolvers returned the new zone;
+resolvers that had already cached the registrar parking address may retain it
+for the original 86400-second TTL during normal propagation. Direct SNI/TLS
+acceptance passed for apex content and the `www` certificate: root 200, exact
+commit marker, canonical/Open Graph metadata, `robots.txt`, `sitemap.xml`, 404,
+and a path-preserving permanent `www`-to-apex redirect.
 
 ## Choose the baseline child
 

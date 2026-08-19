@@ -89,8 +89,10 @@ committed App Spec now attaches `swiftui-audit.dev` as PRIMARY and
 
 The accepted technical ingress is
 <https://swiftui-semantic-audit-nuhky.ondigitalocean.app/>. It is diagnostic and
-noncanonical after the final domain cutover; until then its generated metadata
-uses the same technical base URL so every published absolute URL remains valid.
+noncanonical after the final domain cutover. The released canonical site is
+<https://swiftui-audit.dev/>; generated canonical, Open Graph, robots, sitemap,
+and JSON-LD URLs use that apex. `www` permanently redirects to the same path on
+the apex.
 
 ## Content evidence
 

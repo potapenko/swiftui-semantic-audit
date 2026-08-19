@@ -2,9 +2,9 @@
 
 - Node type: hybrid
 - Status: Active
-- Contract revision: `spec-2`
+- Contract revision: `spec-3`
 - Authority: user-authorized `WEBSITE-001` and `WEBSITE-PUBLISH-001` on 2026-08-19
-- Stability: accepted, technical ingress released; canonical domain pending
+- Stability: released at the canonical domain
 - Read when: designing, implementing, publishing, or verifying the product website.
 - Do not read when: work is limited to the Swift package, CLI, rules, or agent skills.
 - Maximum size: 100 physical lines.
