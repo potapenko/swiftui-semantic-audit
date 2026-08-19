@@ -9,6 +9,6 @@ Use these pages after the conceptual and workflow guides have established what y
 - [Rules](rules.md) — all 29 rule identifiers, severities, confidence, and exclusions.
 - [Outputs, snapshots, and semantic diff](outputs-snapshots-and-diff.md) — graph/report contracts, the five-file sidecar, slices, diff, and check.
 
-The exact normative contracts remain in [`docs/specs`](../specs/README.md). The public reference summarizes the current 0.4.0 release candidate and links back to those contracts where a complete schema or proof obligation matters.
+The exact normative contracts remain in [`docs/specs`](../specs/README.md). The public reference summarizes the current 0.4.0 release and links back to those contracts where a complete schema or proof obligation matters.
 
 [Back to documentation](../README.md)

@@ -10,7 +10,7 @@
 Revision: `spec-6`
 Executable: `swiftui-audit`  
 Tool version in schema: `0.4.0`
-Status: active, release candidate 0.4.0
+Status: active, released 0.4.0
 
 All syntax below was verified against the accepted P1–P5 executable help.
 

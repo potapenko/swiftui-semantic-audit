@@ -46,13 +46,13 @@
 
 **BASE-CAP-014.** Live-source commands accept positive `--jobs`; omission uses active processors and `1` is serial. Eligible declaration phases and all contextual rules use bounded workers over immutable inputs; all built-in rules share one graph index. On the accepted host, uncached Release Sources audit improved from 1.43s before this audit to 0.57s, with serial/12-job graph and report bytes exact. Indexed whole-result miss with an existing database improved from a 4.24s cold initialization to 2.22s; the following whole-result hit was 0.77s. Reused-database and uncached indexed reports matched at SHA-256 `1380ea9cca5deb609dd520056d5347834c4166e532941b2966223c2d976c9594`.
 
-**BASE-CAP-015.** The release candidate exposes `swiftui-audit --version` from the same `ToolMetadata.version` used by reports and snapshots. The authorized Homebrew package name is `swiftui-semantic-audit`; it installs the unchanged executable name `swiftui-audit` and leaves all agent-skill locations operator-owned.
+**BASE-CAP-015.** Release 0.4.0 exposes `swiftui-audit --version` from the same `ToolMetadata.version` used by reports and snapshots. The Homebrew package name is `swiftui-semantic-audit`; it installs the unchanged executable name `swiftui-audit` and leaves all agent-skill locations operator-owned.
 
 ## Accepted residuals and limits
 
 **BASE-LIM-001 — PoC extraction.** Syntax-only extraction remains intentionally bounded to the PoC vocabulary. A nested closure passed through an unregistered call can attach to an outer registered call, and receiver identity for same-named member calls is conservative. The frontend is not a full type checker, SIL pipeline, or full interprocedural/alias/control-flow analyzer.
 
-**BASE-LIM-002 — Conservative invalidation.** Live analysis still reads source bytes to establish content identity, and declaration-bearing edits may conservatively reparse unchanged lexical dependents. Normalization and all rules intentionally rerun over the complete current graph. The cache has no automatic garbage-collection policy in this unreleased PoC.
+**BASE-LIM-002 — Conservative invalidation.** Live analysis still reads source bytes to establish content identity, and declaration-bearing edits may conservatively reparse unchanged lexical dependents. Normalization and all rules intentionally rerun over the complete current graph. The cache has no automatic garbage-collection policy in this PoC.
 
 **BASE-LIM-003 — Slice.** Token estimation is byte-based and graph depth is bounded.
 

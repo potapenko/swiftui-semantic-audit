@@ -6,7 +6,7 @@
 
 This is not a style linter, source-rewriting bot, or model-backed reviewer. SwiftSyntax and optional compiler-index enrichment establish facts. Rules select evidence-backed candidates. The coding agent judges intent without changing those facts.
 
-> **Project status:** 0.4.0 release candidate. The immutable tag and upstream Homebrew formula are the remaining publication gates.
+> **Project status:** 0.4.0 is the current stable release.
 
 [Install the CLI](#install-the-cli) · [Install agent skills](#install-agent-skills) · [Run a first audit](docs/getting-started/first-audit.md) · [Browse all documentation](docs/README.md)
 
@@ -27,7 +27,7 @@ SwiftUI Semantic Audit extracts that topology before an agent reads broad source
 
 ## Install the CLI
 
-After the 0.4.0 publication gate completes, install the CLI directly from the upstream Homebrew tap:
+Install the CLI directly from the upstream Homebrew tap:
 
 ```bash
 brew install potapenko/tap/swiftui-semantic-audit

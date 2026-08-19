@@ -57,7 +57,7 @@ The repository separates material by purpose:
 2. **Normative specifications** define the accepted product contract, invariants, schemas, rules, and proof obligations. Start at [`specs/README.md`](specs/README.md).
 3. **Coordination records** preserve implementation checkpoints and contract deltas. They are useful to maintainers, but they are not the shortest path for a user.
 
-When a public guide and a specification appear to disagree, the active specification registry controls. Release-candidate claims are tied to the checked-out commit; published claims additionally require the immutable tag, release archive, and Homebrew formula receipt recorded by the release baseline.
+When a public guide and a specification appear to disagree, the active specification registry controls. Published release claims require the immutable tag, release archive, and Homebrew formula receipt recorded by the release baseline.
 
 ## Product boundary
 

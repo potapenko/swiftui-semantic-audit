@@ -9,7 +9,7 @@
 
 Revision: `spec-9`
 Status: active  
-Release state: 0.4.0 release candidate
+Release state: 0.4.0 released
 
 ## Choose the governing child
 

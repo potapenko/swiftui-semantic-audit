@@ -9,7 +9,7 @@
 
 Revision: `spec-8`
 Authority: epoch `tz-v8`, pinned base digest and authorized addenda through `HOMEBREW-RELEASE-001` in the [registry](README.md)
-Status: active, release candidate 0.4.0
+Status: active, released 0.4.0
 
 ## Choose the governing child
 

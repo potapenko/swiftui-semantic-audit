@@ -12,7 +12,7 @@
 
 **BASE-NEXT-001.** `ROUTER-001` acceptance evidence includes official validation of all four skills, an exact four-skill CI inventory, and fresh-context routing tests that select audit, refactor, review, and the mixed sequence correctly.
 
-**BASE-NEXT-002.** Independent `ROUTER-R1` review accepted the concise routing, intact specialist gates, contract links, exact four-skill CI requirement, and unchanged Swift product and baseline semantics. The only accepted residual is the first hosted GitHub Actions run, pending because commit/push was not authorized.
+**BASE-NEXT-002.** Independent `ROUTER-R1` review accepted the concise routing, intact specialist gates, contract links, exact four-skill CI requirement, and unchanged Swift product and baseline semantics. Subsequent hosted GitHub Actions runs accepted the same four-skill inventory and links.
 
 **BASE-NEXT-003.** `INDEXED-SKILLS-001` acceptance requires zero frontend-only guidance under `skills/`, explicit index-store commands in every live-source specialist workflow, indexed-only handoffs and review snapshots, four-skill validation, YAML/link validation, and the CI regression guard.
 
@@ -24,4 +24,4 @@
 
 **BASE-NEXT-007.** `INCREMENTAL-CACHE-001` acceptance includes a locked build, 86 passing tests, exact cold/warm/uncached report bytes with SHA-256 `70b306ee81aa68eed0f03cc43dcf50179059d02521a95aef565f8d5828cdde9a`, zero Sources findings, two byte-identical five-file snapshots, empty semantic diff, passing check, valid bounded slice, healthy doctor, canonical RuleTests semantic-file equality, four valid skills, YAML/link validation, and clean diff checks. Hosted GitHub Actions run `32239872792` passed every CI step in 3m49s.
 
-**BASE-NEXT-008.** `PARALLEL-EXECUTION-001` local acceptance includes 88 passing tests, positive/negative CLI job validation, byte-identical one/four-worker fixture reports, byte-identical one/twelve-worker Sources graph and report output, focused Thread Sanitizer passes for frontend and rules, zero Sources findings, exact reused-DB/uncached indexed report bytes, and two successful concurrent indexed cache misses sharing one locked database identity. Release timings on the accepted host are recorded in `BASE-CAP-014`; hosted CI remains pending.
+**BASE-NEXT-008.** `PARALLEL-EXECUTION-001` acceptance includes 88 passing tests, positive/negative CLI job validation, byte-identical one/four-worker fixture reports, byte-identical one/twelve-worker Sources graph and report output, focused Thread Sanitizer passes for frontend and rules, zero Sources findings, exact reused-DB/uncached indexed report bytes, two successful concurrent indexed cache misses sharing one locked database identity, and passing hosted CI run `32259485471`. Release timings on the accepted host are recorded in `BASE-CAP-014`.

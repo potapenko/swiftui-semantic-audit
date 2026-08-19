@@ -20,7 +20,7 @@ Realistic-fixtures acceptance addendum: user-authorized `REALISTIC-FIXTURES-001`
 Incremental-cache addendum: user-authorized `INCREMENTAL-CACHE-001` on 2026-08-19; advances the combined contract to `tz-v6`
 Parallel-execution addendum: user-authorized `PARALLEL-EXECUTION-001` on 2026-08-19; advances the combined contract to `tz-v7`
 Homebrew release addendum: user-authorized `HOMEBREW-RELEASE-001` on 2026-08-19; advances the combined contract to `tz-v8`
-Release baseline: `0.4.0 release candidate`
+Release baseline: `0.4.0 released`
 
 This directory is the self-contained active specification package for SwiftUI Semantic Audit. It faithfully restates the user-approved Russian ТЗ without expanding product semantics. Clause IDs are stable references for implementation, review, and QA.
 
@@ -41,14 +41,14 @@ A local spec edit cannot authorize a semantic change. Any semantic delta require
 
 | Contract | Domain | Authority | Status/stability | Read when | Baseline |
 | --- | --- | --- | --- | --- | --- |
-| [`product-contract.md`](product-contract.md) | Goal, scope, invariants, LLM boundary, operations, safety, non-goals, workflow routing | Normative restatement of ТЗ plus authorized addenda through `HOMEBREW-RELEASE-001` | active / evolving `tz-v8` | Any product decision or behavior claim | 0.4.0 release candidate |
+| [`product-contract.md`](product-contract.md) | Goal, scope, invariants, LLM boundary, operations, safety, non-goals, workflow routing | Normative restatement of ТЗ plus authorized addenda through `HOMEBREW-RELEASE-001` | active / released `tz-v8` | Any product decision or behavior claim | 0.4.0 |
 | [`analysis-config.md`](analysis-config.md) | Explicit role, feature, composition-root, and environment classification | `ARCHITECTURE-001` configuration contract | active / config schema 1 | Role-aware project analysis | unreleased |
 | [`semantic-ir.md`](semantic-ir.md) | Graph, evidence, confidence, semantic values, snapshots, diff | Normative restatement of ТЗ plus `BOUNDARY-001` and `ARCHITECTURE-001` | active / schema v2 | Reading/writing graph or snapshot contracts | unreleased schema v2 |
 | [`rules.md`](rules.md) | Twenty-nine rules, severities, exclusions, adjudication | Normative restatement of ТЗ plus `BOUNDARY-001` and `ARCHITECTURE-001` | active / evolving rule set | Auditing, classifying, refactoring | twenty-nine-rule target |
-| [`cli.md`](cli.md) | Commands, flags, resolution, stdout/status, path/failure policy | Normative restatement plus authorized addenda | active / CLI 0.4.0 release candidate | Running or documenting commands | seven public commands plus global version output |
-| [`acceptance.md`](acceptance.md) | Fixtures, determinism, skills, CI, Definition of Done | Normative acceptance map for ТЗ §§44–51 plus authorized addenda through `HOMEBREW-RELEASE-001` | active | Implementing or verifying | 88 tests locally accepted; release and hosted CI gates pending |
+| [`cli.md`](cli.md) | Commands, flags, resolution, stdout/status, path/failure policy | Normative restatement plus authorized addenda | active / CLI 0.4.0 released | Running or documenting commands | seven public commands plus global version output |
+| [`acceptance.md`](acceptance.md) | Fixtures, determinism, skills, CI, Definition of Done | Normative acceptance map for ТЗ §§44–51 plus authorized addenda through `HOMEBREW-RELEASE-001` | active | Implementing or verifying | 88 tests and hosted CI accepted; Homebrew receipt in release baseline |
 | [`evidence-map.md`](evidence-map.md) | Clause ownership and all-54-section plus authorized-addendum coverage | Governance map | active | Tracing authority to evidence | P1–P13 map |
-| [`release-baseline.md`](release-baseline.md) | Current realization, dependency pins, residuals | Descriptive evidence; never higher than normative contracts | active / volatile | Release/readiness/status work | 0.4.0 release candidate; tag/formula publication pending |
+| [`release-baseline.md`](release-baseline.md) | Current realization, dependency pins, residuals | Descriptive evidence; never higher than normative contracts | active / released | Release/readiness/status work | 0.4.0 immutable tag, archive, and Homebrew tap |
 
 ## Domain ownership
 
