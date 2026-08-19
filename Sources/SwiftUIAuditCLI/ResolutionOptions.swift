@@ -24,7 +24,11 @@ struct ResolutionOptions: ParsableArguments {
     @Flag(name: .long, help: "Disable persistent frontend and indexed analysis caching.")
     var noCache = false
 
+    @Option(name: .long, help: "Maximum parallel frontend and audit jobs (default: active processors).")
+    var jobs: Int?
+
     func selection() throws -> IndexSelection {
+        _ = try maximumParallelism()
         if syntaxOnly && indexStore != nil {
             throw ValidationError("--syntax-only and --index-store cannot be used together")
         }
@@ -36,6 +40,14 @@ struct ResolutionOptions: ParsableArguments {
             return .explicit(URL(fileURLWithPath: indexStore, isDirectory: true))
         }
         return .automatic
+    }
+
+    func maximumParallelism() throws -> Int {
+        if let jobs {
+            guard jobs > 0 else { throw ValidationError("--jobs must be positive") }
+            return jobs
+        }
+        return ProcessInfo.processInfo.activeProcessorCount
     }
 
     func configurationURL() -> URL? {
@@ -55,7 +67,8 @@ func loadResolvedGraph(path: String, options: ResolutionOptions) throws -> Seman
     let source = URL(fileURLWithPath: path).standardizedFileURL.resolvingSymlinksInPath()
     _ = try options.selection()
     let cache = options.cacheStore(sourceURL: source)
-    let scan = try GraphScanner().scan(path: source.path, previousState: cache?.loadFrontendState())
+    let scan = try GraphScanner(maximumParallelism: options.maximumParallelism())
+        .scan(path: source.path, previousState: cache?.loadFrontendState())
     try? cache?.saveFrontendState(scan.state)
     let configuration = try AnalysisConfiguration.load(
         explicitURL: options.configurationURL(),

@@ -1,12 +1,17 @@
 import AuditCore
 import SemanticNormalization
 
-public struct CommandShapedBindingRule: AuditRule {
+public struct CommandShapedBindingRule: ContextualAuditRule {
     public let identifier: RuleID = .commandShapedBinding
     public init() {}
 
     public func evaluate(graph: SemanticGraph, normalization: NormalizationResult) -> [AuditFinding] {
-        let index = GraphIndex(graph)
+        evaluate(context: AuditRuleContext(graph: graph, normalization: normalization))
+    }
+
+    public func evaluate(context: AuditRuleContext) -> [AuditFinding] {
+        let graph = context.graph
+        let index = context.index
         return graph.nodes.filter {
             $0.kind == .binding && $0.evidence.contains { $0.kind == "binding-construction" }
         }.compactMap { binding in
@@ -36,12 +41,17 @@ public struct CommandShapedBindingRule: AuditRule {
     }
 }
 
-public struct BindingFactoryRule: AuditRule {
+public struct BindingFactoryRule: ContextualAuditRule {
     public let identifier: RuleID = .bindingFactory
     public init() {}
 
     public func evaluate(graph: SemanticGraph, normalization: NormalizationResult) -> [AuditFinding] {
-        let index = GraphIndex(graph)
+        evaluate(context: AuditRuleContext(graph: graph, normalization: normalization))
+    }
+
+    public func evaluate(context: AuditRuleContext) -> [AuditFinding] {
+        let graph = context.graph
+        let index = context.index
         return graph.nodes.filter {
             $0.kind == .binding && $0.evidence.contains { $0.kind == "binding-factory" }
         }.map { binding in
@@ -63,12 +73,18 @@ public struct BindingFactoryRule: AuditRule {
     }
 }
 
-public struct ObservableModelTunnelRule: AuditRule {
+public struct ObservableModelTunnelRule: ContextualAuditRule {
     public let identifier: RuleID = .observableModelTunnel
     public init() {}
 
     public func evaluate(graph: SemanticGraph, normalization: NormalizationResult) -> [AuditFinding] {
-        let index = GraphIndex(graph)
+        evaluate(context: AuditRuleContext(graph: graph, normalization: normalization))
+    }
+
+    public func evaluate(context: AuditRuleContext) -> [AuditFinding] {
+        let graph = context.graph
+        let normalization = context.normalization
+        let index = context.index
         var passesByValueID: [String: [SemanticEdge]] = [:]
         for edge in graph.edges where edge.kind == .passes {
             guard let sourceValue = normalization.valueByRepresentation[edge.from],
@@ -127,12 +143,17 @@ public struct ObservableModelTunnelRule: AuditRule {
     }
 }
 
-public struct BroadObservableInputRule: AuditRule {
+public struct BroadObservableInputRule: ContextualAuditRule {
     public let identifier: RuleID = .broadObservableInput
     public init() {}
 
     public func evaluate(graph: SemanticGraph, normalization: NormalizationResult) -> [AuditFinding] {
-        let index = GraphIndex(graph)
+        evaluate(context: AuditRuleContext(graph: graph, normalization: normalization))
+    }
+
+    public func evaluate(context: AuditRuleContext) -> [AuditFinding] {
+        let graph = context.graph
+        let index = context.index
         let mirroredObservableMembers = Set(index.identityPairs().flatMap(\.nodes).filter(index.isObservableMember))
         var findings: [AuditFinding] = []
         for view in graph.nodes.filter({ $0.kind == .view }).sorted(by: { $0.id < $1.id }) {

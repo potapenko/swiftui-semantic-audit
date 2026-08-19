@@ -1,4 +1,6 @@
 import AuditCore
+import Dispatch
+import Foundation
 import SemanticNormalization
 
 public protocol AuditRule: Sendable {
@@ -6,8 +8,25 @@ public protocol AuditRule: Sendable {
     func evaluate(graph: SemanticGraph, normalization: NormalizationResult) -> [AuditFinding]
 }
 
+public protocol ContextualAuditRule: AuditRule {
+    func evaluate(context: AuditRuleContext) -> [AuditFinding]
+}
+
+public struct AuditRuleContext: Sendable {
+    public let graph: SemanticGraph
+    public let normalization: NormalizationResult
+    let index: GraphIndex
+
+    public init(graph: SemanticGraph, normalization: NormalizationResult) {
+        self.graph = graph
+        self.normalization = normalization
+        self.index = GraphIndex(graph)
+    }
+}
+
 public struct AuditEngine: Sendable {
     private let rules: [any AuditRule]
+    private let maximumParallelism: Int
 
     public init(rules: [any AuditRule] = [
         MirroredStateRule(),
@@ -39,14 +58,29 @@ public struct AuditEngine: Sendable {
         ArchitectureRule(.imperativePlatformViewUpdate),
         ArchitectureRule(.directGlobalPlatformCommand),
         ArchitectureRule(.previewRequiresAppComposition),
-    ]) {
+    ], maximumParallelism: Int = ProcessInfo.processInfo.activeProcessorCount) {
         self.rules = rules
+        self.maximumParallelism = max(1, maximumParallelism)
     }
 
     public func audit(graph: SemanticGraph) -> AuditReport {
         let normalization = SemanticNormalizer().normalize(graph)
+        let context = AuditRuleContext(graph: graph, normalization: normalization)
+        let results = RuleResultCollector(count: rules.count)
+        let workerCount = min(maximumParallelism, rules.count)
+        if workerCount > 1 {
+            DispatchQueue.concurrentPerform(iterations: workerCount) { workerIndex in
+                for index in stride(from: workerIndex, to: rules.count, by: workerCount) {
+                    results.store(evaluate(rules[index], context: context), at: index)
+                }
+            }
+        } else {
+            for (index, rule) in rules.enumerated() {
+                results.store(evaluate(rule, context: context), at: index)
+            }
+        }
         var findingsByID: [String: AuditFinding] = [:]
-        for finding in rules.flatMap({ $0.evaluate(graph: graph, normalization: normalization) }) {
+        for finding in results.flattened() {
             findingsByID[finding.id] = finding
         }
         let findings = applyFindingDominance(Array(findingsByID.values)).sorted {
@@ -86,9 +120,37 @@ public struct AuditEngine: Sendable {
             findings: findings
         )
     }
+
+    private func evaluate(_ rule: any AuditRule, context: AuditRuleContext) -> [AuditFinding] {
+        if let contextual = rule as? any ContextualAuditRule {
+            return contextual.evaluate(context: context)
+        }
+        return rule.evaluate(graph: context.graph, normalization: context.normalization)
+    }
 }
 
-struct GraphIndex {
+private final class RuleResultCollector: @unchecked Sendable {
+    private let lock = NSLock()
+    private var values: [[AuditFinding]?]
+
+    init(count: Int) {
+        values = Array(repeating: nil, count: count)
+    }
+
+    func store(_ findings: [AuditFinding], at index: Int) {
+        lock.lock()
+        values[index] = findings
+        lock.unlock()
+    }
+
+    func flattened() -> [AuditFinding] {
+        lock.lock()
+        defer { lock.unlock() }
+        return values.compactMap { $0 }.flatMap { $0 }
+    }
+}
+
+struct GraphIndex: Sendable {
     let graph: SemanticGraph
     let nodes: [String: SemanticNode]
     let edges: [String: SemanticEdge]

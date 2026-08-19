@@ -143,7 +143,9 @@ public struct GraphScanner: Sendable {
             let converter = SourceLocationConverter(fileName: item.relativePath, tree: item.tree)
             DeclarationVisitor(builder: builder, file: item.relativePath, converter: converter).walk(item.tree)
         }
-        parallelForEach(parsed, maximumParallelism: maximumParallelism) { item in
+        // Relationship resolution observes generated nodes from earlier files. Preserve
+        // sorted file order until extraction is split into immutable facts and a merge pass.
+        for item in parsed {
             let converter = SourceLocationConverter(fileName: item.relativePath, tree: item.tree)
             RelationshipVisitor(builder: builder, file: item.relativePath, converter: converter).walk(item.tree)
         }

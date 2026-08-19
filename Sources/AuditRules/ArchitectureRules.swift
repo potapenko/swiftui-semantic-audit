@@ -1,7 +1,7 @@
 import AuditCore
 import SemanticNormalization
 
-public struct ArchitectureRule: AuditRule {
+public struct ArchitectureRule: ContextualAuditRule {
     public let identifier: RuleID
 
     public init(_ identifier: RuleID) {
@@ -9,7 +9,11 @@ public struct ArchitectureRule: AuditRule {
     }
 
     public func evaluate(graph: SemanticGraph, normalization: NormalizationResult) -> [AuditFinding] {
-        let facts = ArchitectureFacts(graph: graph, normalization: normalization)
+        evaluate(context: AuditRuleContext(graph: graph, normalization: normalization))
+    }
+
+    public func evaluate(context: AuditRuleContext) -> [AuditFinding] {
+        let facts = ArchitectureFacts(context: context)
         switch identifier {
         case .modelAwareDescendant: return facts.modelAwareDescendants()
         case .multiOwnerComponent: return facts.multiOwnerComponents()
@@ -73,10 +77,10 @@ private struct ArchitectureFacts {
     let normalization: NormalizationResult
     let index: GraphIndex
 
-    init(graph: SemanticGraph, normalization: NormalizationResult) {
-        self.graph = graph
-        self.normalization = normalization
-        self.index = GraphIndex(graph)
+    init(context: AuditRuleContext) {
+        self.graph = context.graph
+        self.normalization = context.normalization
+        self.index = context.index
     }
 
     func modelAwareDescendants() -> [AuditFinding] {

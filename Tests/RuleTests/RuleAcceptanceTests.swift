@@ -41,6 +41,17 @@ final class RuleAcceptanceTests: XCTestCase {
         }
     }
 
+    func testParallelAuditMatchesSerialBytes() throws {
+        for expectation in expectations {
+            let graph = try graphFixture(expectation.fixture)
+            let serial = try AuditEngine(maximumParallelism: 1).audit(graph: graph).jsonData()
+            for _ in 0..<3 {
+                let parallel = try AuditEngine(maximumParallelism: 4).audit(graph: graph).jsonData()
+                XCTAssertEqual(parallel, serial, "parallel audit changed \(expectation.fixture)")
+            }
+        }
+    }
+
     func testTransactionalDraftIsClassifiedWithoutBindingFinding() throws {
         let report = try auditFixture("TransactionalDraft")
         let transactionalValues = report.semanticValues.filter { $0.classification == .transactionalDraft }

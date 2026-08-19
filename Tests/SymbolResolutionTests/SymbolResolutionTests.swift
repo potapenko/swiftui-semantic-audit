@@ -487,8 +487,8 @@ final class SymbolResolutionTests: XCTestCase {
             )
         }
         for arguments in [
-            ["scan", fixture.source.path, "--index-store", fixture.store.path, "--format", "json"],
-            ["scan", fixture.source.path, "--format", "json"],
+            ["scan", fixture.source.path, "--index-store", fixture.store.path, "--jobs", "2", "--format", "json"],
+            ["scan", fixture.source.path, "--jobs", "1", "--format", "json"],
         ] {
             let result = try pathInvocation(arguments)
             XCTAssertEqual(result.status, 0, result.errorString)
@@ -500,6 +500,9 @@ final class SymbolResolutionTests: XCTestCase {
         let help = try pathInvocation(["--help"], timeout: 10)
         XCTAssertEqual(help.status, 0)
         XCTAssertFalse(help.outputString.contains("_index-enrich"))
+        let invalidJobs = try pathInvocation(["scan", fixture.source.path, "--syntax-only", "--jobs", "0"])
+        XCTAssertNotEqual(invalidJobs.status, 0)
+        XCTAssertTrue(invalidJobs.errorString.contains("--jobs must be positive"))
     }
 
     private func makeIndexedFixture(prefix: String = "", includeSameLineAmbiguity: Bool = false) throws -> Fixture {

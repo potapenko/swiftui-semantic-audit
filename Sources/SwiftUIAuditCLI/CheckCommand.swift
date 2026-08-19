@@ -55,7 +55,8 @@ struct Check: ParsableCommand {
             requestedSelection: try resolution.selection(),
             configurationURL: resolution.configurationURL(),
             helperExecutable: try currentExecutableURL(),
-            cache: resolution.cacheStore(sourceURL: URL(fileURLWithPath: path))
+            cache: resolution.cacheStore(sourceURL: URL(fileURLWithPath: path)),
+            maximumParallelism: try resolution.maximumParallelism()
         )
         let diff = SemanticDiffEngine().compare(
             base: baselineInput.snapshot,

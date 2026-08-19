@@ -1,12 +1,17 @@
 import AuditCore
 import SemanticNormalization
 
-public struct MirroredStateRule: AuditRule {
+public struct MirroredStateRule: ContextualAuditRule {
     public let identifier: RuleID = .mirroredState
     public init() {}
 
     public func evaluate(graph: SemanticGraph, normalization: NormalizationResult) -> [AuditFinding] {
-        let index = GraphIndex(graph)
+        evaluate(context: AuditRuleContext(graph: graph, normalization: normalization))
+    }
+
+    public func evaluate(context: AuditRuleContext) -> [AuditFinding] {
+        let normalization = context.normalization
+        let index = context.index
         return index.identityPairs().compactMap { pair in
             let stateIDs = pair.nodes.filter { index.nodes[$0]?.kind == .state }
             guard stateIDs.count == 1,
@@ -26,12 +31,17 @@ public struct MirroredStateRule: AuditRule {
     }
 }
 
-public struct ManualTwoWaySyncRule: AuditRule {
+public struct ManualTwoWaySyncRule: ContextualAuditRule {
     public let identifier: RuleID = .manualTwoWaySync
     public init() {}
 
     public func evaluate(graph: SemanticGraph, normalization: NormalizationResult) -> [AuditFinding] {
-        let index = GraphIndex(graph)
+        evaluate(context: AuditRuleContext(graph: graph, normalization: normalization))
+    }
+
+    public func evaluate(context: AuditRuleContext) -> [AuditFinding] {
+        let normalization = context.normalization
+        let index = context.index
         return index.identityPairs().compactMap { pair in
             guard pair.nodes.allSatisfy(index.isMutableRepresentation),
                   !pair.nodes.contains(where: index.isObservableMember),
@@ -50,12 +60,17 @@ public struct ManualTwoWaySyncRule: AuditRule {
     }
 }
 
-public struct ObservableStateMirrorRule: AuditRule {
+public struct ObservableStateMirrorRule: ContextualAuditRule {
     public let identifier: RuleID = .observableStateMirror
     public init() {}
 
     public func evaluate(graph: SemanticGraph, normalization: NormalizationResult) -> [AuditFinding] {
-        let index = GraphIndex(graph)
+        evaluate(context: AuditRuleContext(graph: graph, normalization: normalization))
+    }
+
+    public func evaluate(context: AuditRuleContext) -> [AuditFinding] {
+        let normalization = context.normalization
+        let index = context.index
         return index.identityPairs().compactMap { pair in
             let stateIDs = pair.nodes.filter { index.nodes[$0]?.kind == .state }
             let observableIDs = pair.nodes.filter(index.isObservableMember)
@@ -77,12 +92,17 @@ public struct ObservableStateMirrorRule: AuditRule {
     }
 }
 
-public struct StoredDerivedStateRule: AuditRule {
+public struct StoredDerivedStateRule: ContextualAuditRule {
     public let identifier: RuleID = .storedDerivedState
     public init() {}
 
     public func evaluate(graph: SemanticGraph, normalization: NormalizationResult) -> [AuditFinding] {
-        let index = GraphIndex(graph)
+        evaluate(context: AuditRuleContext(graph: graph, normalization: normalization))
+    }
+
+    public func evaluate(context: AuditRuleContext) -> [AuditFinding] {
+        let graph = context.graph
+        let index = context.index
         return graph.nodes.filter { $0.kind == .state }.compactMap { state in
             let derivations = index.edges(from: state.id, kind: .derivesFrom)
             let inputs = Set(derivations.map(\.to))
@@ -104,12 +124,18 @@ public struct StoredDerivedStateRule: AuditRule {
     }
 }
 
-public struct ValueSetterPairRule: AuditRule {
+public struct ValueSetterPairRule: ContextualAuditRule {
     public let identifier: RuleID = .valueSetterPair
     public init() {}
 
     public func evaluate(graph: SemanticGraph, normalization: NormalizationResult) -> [AuditFinding] {
-        let index = GraphIndex(graph)
+        evaluate(context: AuditRuleContext(graph: graph, normalization: normalization))
+    }
+
+    public func evaluate(context: AuditRuleContext) -> [AuditFinding] {
+        let graph = context.graph
+        let normalization = context.normalization
+        let index = context.index
         var findings: [AuditFinding] = []
         for view in graph.nodes.filter({ $0.kind == .view }).sorted(by: { $0.id < $1.id }) {
             let callbacks = index.ownedNodes(of: view.id, kind: .callback)
@@ -178,12 +204,18 @@ public struct ValueSetterPairRule: AuditRule {
     }
 }
 
-public struct CallbackBindingTunnelRule: AuditRule {
+public struct CallbackBindingTunnelRule: ContextualAuditRule {
     public let identifier: RuleID = .callbackBindingTunnel
     public init() {}
 
     public func evaluate(graph: SemanticGraph, normalization: NormalizationResult) -> [AuditFinding] {
-        let index = GraphIndex(graph)
+        evaluate(context: AuditRuleContext(graph: graph, normalization: normalization))
+    }
+
+    public func evaluate(context: AuditRuleContext) -> [AuditFinding] {
+        let graph = context.graph
+        let normalization = context.normalization
+        let index = context.index
         var findings: [AuditFinding] = []
         let starts = graph.edges.filter {
             $0.kind == .passes && index.nodes[$0.from]?.kind == .closure && index.nodes[$0.to]?.kind == .callback

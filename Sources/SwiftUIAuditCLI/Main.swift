@@ -52,7 +52,7 @@ struct Snapshot: ParsableCommand {
             }
         }
         let graph = try loadResolvedGraph(path: locations.source.path, options: resolution)
-        let report = AuditEngine().audit(graph: graph)
+        let report = AuditEngine(maximumParallelism: try resolution.maximumParallelism()).audit(graph: graph)
         let manifest = SnapshotManifestFactory.make(
             sourcePath: locations.source.path,
             toolVersion: report.toolVersion,
@@ -119,15 +119,16 @@ struct Slice: ParsableCommand {
         let report: AuditReport
         switch resolved {
         case .snapshot(let url):
-            if resolution.indexStore != nil || resolution.config != nil || resolution.cacheDirectory != nil || resolution.noCache {
-                throw ValidationError("index, config, and cache options apply only when slicing live source")
+            if resolution.indexStore != nil || resolution.config != nil || resolution.cacheDirectory != nil ||
+                resolution.noCache || resolution.jobs != nil {
+                throw ValidationError("index, config, cache, and jobs options apply only when slicing live source")
             }
             let snapshot = try SnapshotReader().read(from: url)
             graph = snapshot.graph
             report = snapshot.report
         case .source(let url):
             graph = try loadResolvedGraph(path: url.path, options: resolution)
-            report = AuditEngine().audit(graph: graph)
+            report = AuditEngine(maximumParallelism: try resolution.maximumParallelism()).audit(graph: graph)
         }
 
         let slicer = ContextSlicer()
@@ -174,7 +175,7 @@ struct Audit: ParsableCommand {
 
     mutating func run() throws {
         let graph = try loadResolvedGraph(path: path, options: resolution)
-        let report = AuditEngine().audit(graph: graph)
+        let report = AuditEngine(maximumParallelism: try resolution.maximumParallelism()).audit(graph: graph)
         if format == .json {
             FileHandle.standardOutput.write(try report.jsonData())
         } else {

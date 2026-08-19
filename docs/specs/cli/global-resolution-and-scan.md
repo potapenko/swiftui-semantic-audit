@@ -2,7 +2,7 @@
 
 - Node type: leaf
 - Status: Active
-- Contract revision: `spec-4`
+- Contract revision: `spec-5`
 - Authority: [CLI contract](../cli.md)
 - Read when: selecting command syntax, flags, output, status, resolution, cache, failure, or timeout behavior.
 - Do not read when: the task does not invoke, document, or integrate the CLI.
@@ -37,6 +37,10 @@
 
 **CLI-CACHE-002.** The default cache root is the user cache directory under a project-identity hash. Cache diagnostics stay off the default product stream. Invalid, incompatible, or incomplete entries are rebuilt without weakening resolution or changing requested JSON stdout.
 
+## Execution options
+
+**CLI-EXEC-001.** Live-source `scan`, `audit`, `snapshot`, `slice`, and `check` accept `--jobs <count>`. The count must be positive; `1` selects serial frontend and rule evaluation, and omission uses the host's active processor count. The option does not apply to an already-persisted snapshot or Git-revision operand and must not change canonical output, status, resolution, cache behavior, or failure policy.
+
 ## `scan`
 
 **CLI-SCAN-001.** Syntax:
@@ -44,6 +48,7 @@
 ```text
 swiftui-audit scan <path> [--format json] [--output <file>]
                      [--index-store <path> | --syntax-only] [--config <path>]
+                     [--jobs <count>]
 ```
 
 Build a semantic graph for one Swift file or directory. JSON is the only and default format. `--output` writes atomically to the explicit file instead of stdout.

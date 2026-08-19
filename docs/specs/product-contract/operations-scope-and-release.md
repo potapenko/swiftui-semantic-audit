@@ -2,7 +2,7 @@
 
 - Node type: leaf
 - Status: Active
-- Contract revision: `spec-6`
+- Contract revision: `spec-7`
 - Authority: [Product contract](../product-contract.md)
 - Read when: selecting the product goal, invariants, supported operations, scope, or release boundary.
 - Do not read when: a narrower linked domain contract fully governs the task.
@@ -66,6 +66,8 @@
 **PC-SCOPE-004 — Source-count semantics.** Count logical ownership roots, not wrapper instances. A focused `State → Binding → Binding` chain has one source; an external borrowed Binding or observable root plus a distinct local State has two. Binding projections and `@Bindable` receivers are representations, not independent owners.
 
 **PC-SCOPE-005 — Fresh global result.** Incrementality may reuse deterministic extraction facts, but every invocation assembles a complete canonical graph and evaluates normalization and all rules against the current project state. Cache behavior must not alter graph, report, snapshot, diff, check, slice, resolution, or configuration semantics.
+
+**PC-SCOPE-006 — Deterministic parallel execution.** Eligible independent per-file frontend phases and independent audit rules may execute concurrently over immutable inputs. Order-dependent relationship resolution remains serial until it has an immutable fact/merge architecture. The public execution width is positive and bounded by the requested job count; its default follows the host's active processor count and `1` forces serial execution. Parallel and serial runs must produce byte-identical canonical graph and report output. IndexStoreDB access remains isolated behind the bounded helper and is not treated as a generally thread-safe shared database.
 
 ## Non-goals
 
