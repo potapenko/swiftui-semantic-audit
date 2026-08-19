@@ -2,14 +2,14 @@
 
 - Node type: branch
 - Status: Active
-- Contract revision: `spec-8`
+- Contract revision: `spec-9`
 - Read when: selecting fixture, build, determinism, safety, dogfood, skill, CI, or completion obligations.
 - Do not read when: the task does not implement or verify accepted behavior.
 - Maximum size: 100 physical lines.
 
-Revision: `spec-8`
+Revision: `spec-9`
 Status: active  
-Release state: unreleased
+Release state: 0.4.0 release candidate
 
 ## Choose the governing child
 

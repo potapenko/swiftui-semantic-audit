@@ -1,6 +1,6 @@
 # Development
 
-SwiftUI Semantic Audit is a Swift Package with reusable libraries and one executable product. The accepted implementation is unreleased, so development evidence is tied to commits and the active specification rather than a published artifact.
+SwiftUI Semantic Audit is a Swift Package with reusable libraries and one executable product. Release-candidate evidence remains tied to commits and the active specification; published releases additionally pin the immutable tag, archive checksum, and tap formula revision.
 
 ## Toolchain
 
@@ -25,6 +25,7 @@ Do not run `swift package update` as a routine verification step.
 
 ```bash
 swift run --disable-automatic-resolution swiftui-audit --help
+swift run --disable-automatic-resolution swiftui-audit --version
 swift run --disable-automatic-resolution swiftui-audit doctor . --format json
 ```
 
@@ -145,7 +146,7 @@ Before committing documentation:
 
 - check every relative file and anchor link;
 - compare command examples with executable help;
-- ensure the root README still describes the unreleased state;
+- ensure the root README truthfully distinguishes a release candidate from a published release;
 - run the prose lint as a heuristic, not an authority;
 - run `git diff --check` and the relevant build/tests.
 

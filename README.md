@@ -6,9 +6,9 @@
 
 This is not a style linter, source-rewriting bot, or model-backed reviewer. SwiftSyntax and optional compiler-index enrichment establish facts. Rules select evidence-backed candidates. The coding agent judges intent without changing those facts.
 
-> **Project status:** unreleased. There is no tagged binary, package-manager formula, or plugin release yet. Install from the current repository revision and record the commit you use.
+> **Project status:** 0.4.0 release candidate. The immutable tag and upstream Homebrew formula are the remaining publication gates.
 
-[Install with an agent](#install-with-your-coding-agent) · [Run a first audit](docs/getting-started/first-audit.md) · [Understand the model](docs/concepts/why-semantic-audit.md) · [Browse all documentation](docs/README.md)
+[Install the CLI](#install-the-cli) · [Install agent skills](#install-agent-skills) · [Run a first audit](docs/getting-started/first-audit.md) · [Browse all documentation](docs/README.md)
 
 ## The problem it addresses
 
@@ -25,9 +25,20 @@ These patterns are hard to review from a text diff alone. The important question
 
 SwiftUI Semantic Audit extracts that topology before an agent reads broad source. It gives the agent a bounded evidence set and makes architectural change measurable across snapshots.
 
-## Install with your coding agent
+## Install the CLI
 
-Copy the prompt below into a **local** Codex or Claude Code session with terminal access. It installs the release CLI from source and links all four skills into the current host's personal skill directory. The repository remains the single source of truth, so updating it later does not create four drifting copies.
+After the 0.4.0 publication gate completes, install the CLI directly from the upstream Homebrew tap:
+
+```bash
+brew install potapenko/tap/swiftui-semantic-audit
+swiftui-audit --version
+```
+
+The formula installs `swiftui-audit` only. It does not edit shell startup files, agent configuration, or project source. The [installation guide](docs/getting-started/installation.md) retains a locked source-build fallback.
+
+## Install agent skills
+
+The Homebrew formula deliberately does not write agent-host directories. Copy the prompt below into a **local** Codex or Claude Code session with terminal access to install the four skills from the same immutable 0.4.0 tag.
 
 ```text
 Install SwiftUI Semantic Audit from the public repository
@@ -38,48 +49,38 @@ do not overwrite an existing file, directory, symlink, binary, or shell setting,
 and do not delete or replace an earlier installation. If a destination already
 exists, stop and report the exact conflict plus the safest next action.
 
-1. Confirm that the operating system is macOS, Git is available, and a working
-   Swift/Xcode toolchain is installed. Run `swift --version`, `xcode-select -p`,
-   and `git --version`. Stop with a concrete prerequisite report if the package
-   cannot be built.
-2. Clone the repository's default branch into the stable user-owned directory
-   `$HOME/.local/share/swiftui-semantic-audit`. The project is unreleased, so do
-   not invent a version tag. Record the exact commit with `git rev-parse HEAD`
-   and confirm that `origin` is the repository URL above.
-3. From that clone, build the executable with the committed dependency lock:
-   `swift build -c release --disable-automatic-resolution`. Do not update
-   Package.resolved.
-4. Install `.build/release/swiftui-audit` as `swiftui-audit` in a writable,
-   user-owned bin directory already on PATH. Prefer `$HOME/.local/bin` when it
-   is already on PATH; otherwise select another user-owned writable PATH entry.
-   If no such directory exists, create `$HOME/.local/bin`, install the binary
-   there, add it to PATH only for the current process, and report the exact
-   shell configuration line the user may add later. Do not edit shell startup
-   files without permission.
-5. Detect the current agent host. For Codex, use `$HOME/.agents/skills`. For
+1. Confirm that Git is available and `swiftui-audit --version` reports `0.4.0`.
+   If the CLI is absent, stop and recommend
+   `brew install potapenko/tap/swiftui-semantic-audit`; do not install it by a
+   different mechanism without permission.
+2. Clone tag `0.4.0` from the repository into the empty stable user-owned
+   directory `$HOME/.local/share/swiftui-semantic-audit`. Record the exact
+   commit with `git rev-parse HEAD`, verify the tag with
+   `git describe --tags --exact-match`, and confirm the origin URL above.
+3. Detect the current agent host. For Codex, use `$HOME/.agents/skills`. For
    Claude Code, use `$HOME/.claude/skills`. For another compatible local host,
    use only its documented personal skill directory; do not guess. Create the
    parent directory if needed.
-6. Link these four sibling directories from the clone's `skills/` directory
+4. Link these four sibling directories from the clone's `skills/` directory
    into the selected personal skill directory, preserving each directory name:
    `swiftui-semantic`, `swiftui-semantic-audit`,
    `swiftui-dataflow-refactor`, and `swiftui-change-review`.
    Use symlinks so their relative references to sibling skills continue to work.
    Install all four, but treat `swiftui-semantic` as the only normal user-facing
    entry point.
-7. Verify that every symlink resolves to a directory containing `SKILL.md`, that
+5. Verify that every symlink resolves to a directory containing `SKILL.md`, that
    the four frontmatter names match their directory names, and that the router's
    links to all three specialist skills resolve.
-8. Verify the CLI with `swiftui-audit --help` and
+6. Verify the CLI with `swiftui-audit --help` and
    `swiftui-audit doctor . --format json`. Keep JSON stdout separate from stderr
    and report warnings instead of hiding them.
-9. Finish with a concise receipt containing: the exact repository commit, clone
-   path, installed binary path, all four skill paths, host detected, verification
-   results, and any PATH action still needed. State the invocation explicitly:
+7. Finish with a concise receipt containing: tag and exact repository commit,
+   clone path, installed CLI version, all four skill paths, host detected, and
+   verification results. State the invocation explicitly:
    Codex uses `$swiftui-semantic`; Claude Code uses `/swiftui-semantic`.
 ```
 
-The prompt intentionally refuses to overwrite an existing installation. For a manual setup or an update, see [Installation](docs/getting-started/installation.md).
+The prompt intentionally refuses to overwrite an existing installation. For source installation, updates, or removal, see [Installation](docs/getting-started/installation.md).
 
 ## Functional SwiftUI without dogma
 

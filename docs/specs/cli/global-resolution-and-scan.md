@@ -2,7 +2,7 @@
 
 - Node type: leaf
 - Status: Active
-- Contract revision: `spec-5`
+- Contract revision: `spec-6`
 - Authority: [CLI contract](../cli.md)
 - Read when: selecting command syntax, flags, output, status, resolution, cache, failure, or timeout behavior.
 - Do not read when: the task does not invoke, document, or integrate the CLI.
@@ -18,6 +18,8 @@
 **CLI-GEN-003 — Failures.** Invalid arguments, malformed inputs, unsafe paths, invalid revisions, missing/ambiguous selectors, explicit index failure, resolution mismatch, and doctor errors exit nonzero. `check` exits `2` when policy fails.
 
 **CLI-GEN-004 — Locked development path.** In this repository, run `swift run --disable-automatic-resolution swiftui-audit …` after dependency resolution.
+
+**CLI-GEN-005 — Version.** `swiftui-audit --version` writes the exact `ToolMetadata.version` followed by a newline and exits successfully without reading a project or invoking an external tool.
 
 ## Resolution options
 

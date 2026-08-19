@@ -51,6 +51,12 @@ jobs:
           set -euo pipefail
           perl -e 'alarm shift; exec @ARGV' 600 swift build --disable-automatic-resolution
           perl -e 'alarm shift; exec @ARGV' 900 swift test --disable-automatic-resolution
+          version="$(perl -e 'alarm shift; exec @ARGV' 60 \
+            swift run --disable-automatic-resolution swiftui-audit --version)"
+          test "$version" = "0.4.0" || {
+            echo "Expected swiftui-audit 0.4.0, received: $version" >&2
+            exit 1
+          }
 
       - name: Prove indexed fixture enrichment
         run: |

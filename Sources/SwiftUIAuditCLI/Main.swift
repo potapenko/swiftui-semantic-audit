@@ -13,6 +13,7 @@ struct SwiftUIAudit: ParsableCommand {
     static let configuration = CommandConfiguration(
         commandName: "swiftui-audit",
         abstract: "Build a deterministic semantic graph from Swift/SwiftUI source.",
+        version: ToolMetadata.version,
         subcommands: [Scan.self, Audit.self, Snapshot.self, Slice.self, Diff.self, Check.self, Doctor.self, IndexEnrichHelper.self]
     )
 }

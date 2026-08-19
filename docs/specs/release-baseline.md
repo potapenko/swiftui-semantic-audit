@@ -1,17 +1,17 @@
-# Unreleased implementation baseline
+# Release 0.4.0 baseline
 
 - Node type: hybrid
 - Status: Active
-- Contract revision: `spec-8`
-- Read when: checking current unreleased realization, dependencies, milestones, capabilities, residuals, or acceptance evidence.
+- Contract revision: `spec-9`
+- Read when: checking the current 0.4.0 release candidate, dependencies, milestones, capabilities, residuals, or acceptance evidence.
 - Do not read when: the task concerns intended behavior without realization or release evidence.
 - Maximum size: 100 physical lines.
 
-Revision: `spec-8`
-Baseline state: `unreleased`  
-Contract epoch: `tz-v7`
+Revision: `spec-9`
+Baseline state: `0.4.0 release candidate`
+Contract epoch: `tz-v8`
 
-**BASE-REL-001 — No public release claim.** This repository has an accepted PoC implementation and release-path workflows, but this document does not claim a tag, package distribution, website, Homebrew formula, plugin, or other public release.
+**BASE-REL-001 — Publication gate.** Tool `0.4.0` is authorized for the first public release. Until the immutable tag, GitHub Release, and tested tap formula are all public, describe this checkout as the `0.4.0 release candidate`; only the terminal publication receipt advances this baseline to released.
 
 **BASE-REL-002 — Implementation revision.** P6 began on branch `master` at Git commit `f24751cd25781426ec2c1531243e498534165e60`. Accepted P1–P5 implementation changes, including indexed enrichment, are present in the working tree at that revision. Generated P6 baseline manifests therefore record that Git revision while representing the accepted working tree.
 
@@ -24,6 +24,8 @@ Contract epoch: `tz-v7`
 **BASE-REL-006 — Incremental-cache revision.** `INCREMENTAL-CACHE-001` product commit `38146ff9736ef942ed066bab46337cfa880c2626` implements tool `0.4.0` with cache schema v1 while preserving graph schema v2. The canonical RuleTests manifest records that product-source revision. Acceptance checkpoint `84e6fb7859d62cd1a468b3f8c8560544f9d458a8` is present on `origin/master`, and hosted CI run `32239872792` passed.
 
 **BASE-REL-007 — Parallel-execution revision.** The performance implementation chain is observable-tunnel optimization `fe6fd699e8f56ae11a48a71dd4ac540e4936d29b`, frontend concurrency checkpoint `360077ff0d7e1dd62351c09bd5e55d1cfb8d883e`, deterministic job-control/shared-rule-context checkpoint `1a1459a2623f88865694dbd858612f8972734bb1`, and persistent locked IndexStoreDB reuse checkpoint `06ede8eb503709e13d3c2738e7b68eab9a9d1bc1`. All are present on `origin/master`; local acceptance is terminal and hosted CI for this addendum remains pending.
+
+**BASE-REL-008 — Homebrew release authorization.** User-authorized `HOMEBREW-RELEASE-001` on 2026-08-19 advances the combined contract to `tz-v8`. The release owns version output, immutable tag/archive publication, the external upstream tap formula, direct install verification, and truthful release documentation; it does not change graph schema v2, cache schema v1, twenty-nine rules, command semantics, or agent-skill installation.
 
 ## Choose the baseline child
 

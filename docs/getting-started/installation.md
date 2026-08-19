@@ -1,11 +1,12 @@
 # Installation
 
-SwiftUI Semantic Audit currently ships from source. A complete installation places one CLI binary on `PATH` and exposes four sibling skill directories to the local coding-agent host.
+SwiftUI Semantic Audit 0.4.0 installs the CLI through the upstream Homebrew tap. Agent skills are optional, remain a separate operator-owned step, and are pinned to the same immutable release tag.
 
 ## Requirements
 
 - macOS 13 or later;
-- a Swift 6.3-compatible toolchain;
+- Homebrew for the packaged CLI path;
+- a Swift 6.3-compatible toolchain for source builds and indexed analysis;
 - Xcode command-line tools for indexed analysis;
 - Git;
 - a local Codex or Claude Code session for the bundled agent workflow.
@@ -19,21 +20,39 @@ xcode-select -p
 git --version
 ```
 
-## Agent-assisted installation
+## Homebrew CLI installation
 
-The recommended installer is the copy-paste prompt in the [root README](../../README.md#install-with-your-coding-agent). It tells the current agent to:
+Install directly from the upstream tap without a separate `brew tap` command:
 
-- clone the public repository into a stable user-owned location;
-- record the exact commit because there is no release tag;
-- build with the committed `Package.resolved` file;
-- install the CLI without `sudo`;
+```bash
+brew install potapenko/tap/swiftui-semantic-audit
+swiftui-audit --version
+swiftui-audit doctor . --format json
+```
+
+The formula owns only the CLI under Homebrew's prefix. It does not install the four agent skills or edit user configuration.
+
+Update or remove the CLI through the same fully qualified formula:
+
+```bash
+brew upgrade potapenko/tap/swiftui-semantic-audit
+brew uninstall potapenko/tap/swiftui-semantic-audit
+```
+
+## Agent-assisted skill installation
+
+The recommended skill installer is the copy-paste prompt in the [root README](../../README.md#install-agent-skills). It tells the current agent to:
+
+- clone the immutable `0.4.0` tag into a stable user-owned location;
+- verify the exact tag and commit;
+- verify the Homebrew-installed CLI version;
 - detect Codex or Claude Code and use its documented personal skill directory;
 - symlink all four skills without overwriting anything;
 - verify the binary, router links, and `doctor` output.
 
 The prompt stops on conflicts. This protects an existing install from being silently replaced.
 
-## Manual CLI installation
+## Locked source fallback
 
 Choose an empty stable source directory and a user-owned bin directory. This block runs in a subshell and exits before cloning or installing when either destination already exists:
 
@@ -46,7 +65,8 @@ Choose an empty stable source directory and a user-owned bin directory. This blo
   test ! -e "$install_root" && test ! -L "$install_root"
   test ! -e "$bin_dir/swiftui-audit" && test ! -L "$bin_dir/swiftui-audit"
 
-  git clone https://github.com/potapenko/swiftui-semantic-audit.git "$install_root"
+  git clone --branch 0.4.0 --depth 1 \
+    https://github.com/potapenko/swiftui-semantic-audit.git "$install_root"
   cd "$install_root"
   git rev-parse HEAD
   git remote get-url origin
@@ -133,14 +153,12 @@ Use the router for normal work:
 
 The specialists remain directly invocable for advanced use, but installing only the router is incomplete.
 
-## Updating an unreleased install
+## Updating skills
 
-Treat the recorded Git commit as the installed version. Before updating, inspect local changes and existing destinations. Do not pull over a modified clone or overwrite a binary blindly. A safe update should select a new commit explicitly, rebuild with locked dependencies, verify it, and replace the old installation only as an intentional operator action.
-
-Until tagged artifacts exist, installation receipts are the reliable way to reproduce or roll back an environment.
+Do not pull a skill clone across release tags or replace existing symlinks blindly. Inspect the current clone and destinations, clone the new immutable tag into a new stable path, validate it, then intentionally repoint all four sibling links as one operator action.
 
 ## Uninstalling
 
-Removal is intentionally not automated by this project. The source clone, binary, and four host links are separate paths; inspect each one before deleting it. This avoids removing a shared clone or a path that another tool now owns.
+Homebrew owns CLI removal. The optional source clone and four host links remain separate operator-owned paths; inspect each before deleting it so a shared clone or repurposed path is not removed accidentally.
 
 Next: [Run a first audit](first-audit.md).

@@ -2,7 +2,7 @@
 
 - Node type: leaf
 - Status: Active
-- Contract revision: `spec-8`
+- Contract revision: `spec-9`
 - Authority: [Acceptance and QA contract](../acceptance.md)
 - Read when: selecting fixture, build, determinism, safety, dogfood, skill, CI, or completion obligations.
 - Do not read when: the task does not implement or verify accepted behavior.
@@ -32,3 +32,5 @@
 **ACC-DOD-010.** Tool version `0.4.0` ships cache schema v1. All live-source commands reuse unchanged deterministic facts, conservatively invalidate dependencies, and remain byte-equivalent to an uncached rebuild without changing graph schema v2 or the agent-adjudication boundary.
 
 **ACC-DOD-011.** `PARALLEL-EXECUTION-001` supplies positive `--jobs` control to every live-source command, uses one immutable audit context, preserves serial/parallel graph and report bytes, keeps order-dependent relationship resolution serial, and reuses one locked persistent IndexStoreDB database per cache/store/library identity without sharing a Swift database object concurrently.
+
+**ACC-DOD-012.** `HOMEBREW-RELEASE-001` publishes stable tool `0.4.0` from one immutable Git tag and release archive, exposes `swiftui-audit --version`, and supplies a tested upstream Homebrew formula whose direct install preserves the standalone CLI contract without installing agent skills or mutating user configuration.

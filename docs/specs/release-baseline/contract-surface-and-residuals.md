@@ -2,7 +2,7 @@
 
 - Node type: leaf
 - Status: Active
-- Contract revision: `spec-8`
+- Contract revision: `spec-9`
 - Authority: [Unreleased implementation baseline](../release-baseline.md)
 - Read when: checking realized behavior, canonical evidence hashes, or accepted product limits.
 - Do not read when: only dependency history, milestones, or addendum acceptance evidence is needed.
@@ -45,6 +45,8 @@
 **BASE-CAP-013.** Live-source commands persist integrity-checked frontend state and content-addressed indexed facts outside semantic snapshots. An exact warm frontend pass reparses zero files; add/delete/rename and declaration-bearing edits conservatively invalidate affected lexical dependents. Indexed facts include relative source path, source content, graph/tool/cache versions, compiler-unit digests, and the selected index-library identity. Every invocation still normalizes the complete current graph and evaluates all twenty-nine rules.
 
 **BASE-CAP-014.** Live-source commands accept positive `--jobs`; omission uses active processors and `1` is serial. Eligible declaration phases and all contextual rules use bounded workers over immutable inputs; all built-in rules share one graph index. On the accepted host, uncached Release Sources audit improved from 1.43s before this audit to 0.57s, with serial/12-job graph and report bytes exact. Indexed whole-result miss with an existing database improved from a 4.24s cold initialization to 2.22s; the following whole-result hit was 0.77s. Reused-database and uncached indexed reports matched at SHA-256 `1380ea9cca5deb609dd520056d5347834c4166e532941b2966223c2d976c9594`.
+
+**BASE-CAP-015.** The release candidate exposes `swiftui-audit --version` from the same `ToolMetadata.version` used by reports and snapshots. The authorized Homebrew package name is `swiftui-semantic-audit`; it installs the unchanged executable name `swiftui-audit` and leaves all agent-skill locations operator-owned.
 
 ## Accepted residuals and limits
 

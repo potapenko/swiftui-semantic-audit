@@ -6,8 +6,11 @@ Run the executable help for the checked-out build:
 
 ```bash
 swiftui-audit --help
+swiftui-audit --version
 swiftui-audit <command> --help
 ```
+
+`--version` prints the same `0.4.0` value embedded in reports and snapshots and does not inspect the current project.
 
 When developing inside this repository, replace `swiftui-audit` with:
 

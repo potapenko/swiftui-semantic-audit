@@ -2,14 +2,14 @@
 
 - Node type: branch
 - Status: Active
-- Contract revision: `spec-7`
+- Contract revision: `spec-8`
 - Read when: selecting the product goal, invariants, supported operations, scope, or release boundary.
 - Do not read when: a narrower linked domain contract fully governs the task.
 - Maximum size: 100 physical lines.
 
-Revision: `spec-7`
-Authority: epoch `tz-v7`, pinned base digest and authorized addenda through `PARALLEL-EXECUTION-001` in the [registry](README.md)
-Status: active, unreleased
+Revision: `spec-8`
+Authority: epoch `tz-v8`, pinned base digest and authorized addenda through `HOMEBREW-RELEASE-001` in the [registry](README.md)
+Status: active, release candidate 0.4.0
 
 ## Choose the governing child
 

@@ -2,7 +2,7 @@
 
 - Node type: leaf
 - Status: Active
-- Contract revision: `spec-7`
+- Contract revision: `spec-8`
 - Authority: [Product contract](../product-contract.md)
 - Read when: selecting the product goal, invariants, supported operations, scope, or release boundary.
 - Do not read when: a narrower linked domain contract fully governs the task.
@@ -86,3 +86,7 @@
 **PC-DOG-002 — Regression policy.** Prevent new high-severity findings relative to the committed compatible-resolution baseline; legacy findings need not all be zero.
 
 **PC-REL-001 — Release truth.** Until a public release is intentionally published, describe the product as `unreleased` and tie evidence to the current implementation revision and working tree.
+
+**PC-REL-002 — Homebrew release.** Publish tool version `0.4.0` from an immutable Git tag and GitHub Release, then distribute the open-source CLI through the upstream `potapenko/homebrew-tap` formula `swiftui-semantic-audit`. The direct installation command is `brew install potapenko/tap/swiftui-semantic-audit`; the installed executable remains `swiftui-audit`.
+
+**PC-REL-003 — Distribution boundary.** The formula builds the locked Swift package from tagged source, installs only the CLI into Homebrew's prefix, and functionally tests syntax-only analysis. It must not write agent-host skill directories, shell startup files, project source, or user configuration. Agent skills retain their separate documented installation flow.
