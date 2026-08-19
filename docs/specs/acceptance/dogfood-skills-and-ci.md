@@ -1,0 +1,69 @@
+# CLI Dogfood, Skills, and CI Acceptance
+
+- Node type: leaf
+- Status: Active
+- Contract revision: `spec-7`
+- Authority: [Acceptance and QA contract](../acceptance.md)
+- Read when: selecting fixture, build, determinism, safety, dogfood, skill, CI, or completion obligations.
+- Do not read when: the task does not implement or verify accepted behavior.
+- Maximum size: 100 physical lines.
+
+
+## CLI dogfood
+
+**ACC-DOG-001.** Run and parse:
+
+- `audit Tests/Fixtures/RuleTests --syntax-only --format json`;
+- `snapshot Tests/Fixtures/RuleTests … --syntax-only --format json`;
+- `diff <baseline> <regenerated> --format json`;
+- `check --baseline Tests/Baselines/RuleTests Tests/Fixtures/RuleTests --fail-on-new high --syntax-only --format json`;
+- `slice` on an emitted fixture finding with `--format llm-json`;
+- `doctor . --format json`;
+- `audit Sources --syntax-only --format json`.
+
+**ACC-DOG-002.** Require valid schema v2 JSON, expected resolution, a passing baseline check, an empty same-input semantic diff, a nonempty bounded slice for a real finding, and no command timeout.
+
+**ACC-DOG-003.** Dogfood does not require zero legacy findings. CI policy is no new high-severity finding relative to the compatible baseline.
+
+## Skills
+
+**ACC-SKILL-001.** Create exactly one user-facing router and three specialist workflows:
+
+- `swiftui-semantic`;
+- `swiftui-semantic-audit`;
+- `swiftui-dataflow-refactor`;
+- `swiftui-change-review`.
+
+**ACC-SKILL-002.** Each skill has frontmatter containing only `name` and trigger-complete `description`, an imperative body under 500 lines, one-level linked references, and generated `agents/openai.yaml` with quoted strings, a 25–64 character short description, and a one-sentence default prompt naming `$skill-name`.
+
+**ACC-SKILL-003.** Run the bundled `quick_validate.py` for all four; parse every YAML file; reject unfinished-marker placeholders and broken relative links.
+
+**ACC-SKILL-004.** Every skill preserves JSON stdout discipline, indexed-resolution consistency, exact failure policy, provider independence, topology-over-wrapper reasoning, and the deterministic/LLM fact boundary.
+
+**ACC-SKILL-005.** `swiftui-semantic` routes investigation or ambiguity to audit, requested state/data-flow implementation to refactor, and pre-existing changes to review. Mixed tasks use the smallest valid sequence, read the selected specialist completely, preserve handoff state, and never replace specialist acceptance gates with a shortened combined workflow.
+
+**ACC-SKILL-006.** Every router, specialist skill, and skill reference requires explicit indexed analysis for agent workflows. Skill Markdown contains no `syntax-only` guidance or examples, does not rely on automatic resolution fallback, validates `resolution: "indexed"`, and stops when a fresh project-covering Index Store or compatible indexed snapshot is unavailable. Change review uses indexed snapshots rather than Git-revision operands that cannot preserve indexed resolution.
+
+## CI
+
+**ACC-CI-001.** Run on official `macos-26`. The official runner catalog identifies it as the macOS 26 arm64 label, and its image inventory lists Xcode 26.6 at `/Applications/Xcode_26.6.app`. Select that toolchain explicitly and fail early unless it reports Swift >= 6.3.
+
+**ACC-CI-002.** Use only official GitHub actions for repository operations and run shell/Swift/Python tools directly. Pin action major versions intentionally.
+
+**ACC-CI-003.** Apply explicit job/step timeouts. Network use is limited to actions and Swift dependency resolution/cache availability.
+
+**ACC-CI-004.** CI must:
+
+1. checkout;
+2. verify Swift >= 6.3 and print Xcode version;
+3. resolve, build, and test;
+4. audit legacy rule fixtures, configured architecture fixtures, negative architecture fixtures, and `Sources` in syntax-only JSON mode;
+5. compile and audit `RealProjectPatterns` through a fresh explicit Index Store and audit the same corpus in syntax-only mode, requiring 34 findings, no good-file evidence, and an identical per-rule/per-file matrix;
+6. snapshot fixtures twice and compare all five files byte for byte;
+7. prove cold-cache, warm-cache, and `--no-cache` report bytes are identical;
+8. compare the generated snapshot with the committed baseline using exact semantic-file bytes and the revision-only manifest normalization in `ACC-DET-003`;
+9. run `check --fail-on-new high`;
+10. slice an emitted real finding;
+11. run doctor JSON;
+12. validate all skills and their YAML metadata without repository or global-environment mutation, and reject frontend-only resolution guidance anywhere under `skills/`;
+13. parse JSON/YAML and check placeholders/links.

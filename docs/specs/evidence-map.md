@@ -1,5 +1,12 @@
 # Specification coverage and evidence map
 
+- Node type: hybrid
+- Status: Active
+- Contract revision: `spec-7`
+- Read when: tracing original sections or authorized addenda to stable clauses and evidence ownership.
+- Do not read when: the governing contract is already selected and traceability is not in question.
+- Maximum size: 100 physical lines.
+
 Revision: `spec-7`
 Authority: ТЗ epoch `tz-v1` plus user-authorized addenda through `INCREMENTAL-CACHE-001`, combined epoch `tz-v6`
 Purpose: route every source section to stable local clauses and evidence owners
@@ -63,36 +70,7 @@ This map proves coverage; it does not create new requirements. Source and tests 
 | 53 | Long-term direction | `PC-NONGOAL-003` | non-binding roadmap context |
 | 54 | Final product definition | `PC-GOAL-001..003` | README/product contract |
 
-## Authorized addendum coverage
+## Choose the supporting map
 
-| Addendum | Subject | Local contract | Realization/evidence owner |
-| --- | --- | --- | --- |
-| `ROUTER-001` | One concise skill link that selects audit, refactor, review, or the smallest valid sequence | `PC-OPS-006`, `ACC-SKILL-001..005` | `skills/swiftui-semantic`, CI validation, forward tests |
-| `INDEXED-SKILLS-001` | Agent workflows require explicit indexed resolution and reject lower-resolution fallback | `PC-OPS-005`, `PC-OPS-007`, `ACC-SKILL-004..006` | all four skills, skill references, CI validation |
-| `BOUNDARY-001` | Custom Binding, Binding factory, observable tunnel/input rules, and logical source counting | `PC-OPS-008`, `PC-SCOPE-002/004`, `RULE-COMMAND/FACTORY/MODEL-TUNNEL/BROAD-INPUT`, `IR-GRAPH-007`, `IR-AUDIT-005`, `ACC-FIX-007..010` | frontend, AuditCore/AuditRules, diff, fixtures, indexed tests |
-| `ARCHITECTURE-001` | Collision-safe identity, exact project configuration, typed/feature topology, and nineteen architecture rules | `PC-OPS-009`, `PC-SAFE-002`, `IR-GRAPH-008/009`, `CFG-*`, architecture/layout/platform `RULE-*`, `ACC-FIX-011..015` | AuditCore configuration, frontend, SymbolResolution, AuditRules, architecture fixtures and indexed tests |
-| `REALISTIC-FIXTURES-001` | Compilable multi-file good/bad corpus, mixed-directory invariance, and syntax/indexed matrix parity | existing `RULE-*`, `ACC-FIX-016..017`, `ACC-TEST-008`, `ACC-DOD-009` | `RealProjectPatterns`, focused rule/indexed tests, CLI CI dogfood |
-| `INCREMENTAL-CACHE-001` | Persistent content-addressed frontend/indexed fact reuse with uncached byte equivalence | `PC-SCOPE-003/005`, `IR-CACHE-*`, `CLI-CACHE-*`, `ACC-CACHE-*`, `ACC-DOD-010` | AnalysisCache, GraphScanner, SymbolResolution, CLI, cache tests, CI |
-
-## Evidence precedence by decision
-
-| Decision | Expected contract | Protected behavior | Required evidence |
-| --- | --- | --- | --- |
-| Finding correctness | `rules.md`, `semantic-ir.md` | exceptions and fact boundary | graph/report JSON, fixture tests, slice |
-| CLI behavior | `cli.md` | flags, status, path/resolution safety | command help, end-to-end invocation |
-| Snapshot/diff | `semantic-ir.md` | determinism/integrity/mixed-mode guard | five-file byte compare, reader/diff tests |
-| Refactor acceptance | `product-contract.md`, skills | behavior, ownership, lifetime, transaction | build/tests + audit/diff/check |
-| Release readiness | `acceptance.md`, `release-baseline.md` | truthful unreleased status | full tests, dogfood, CI, independent review |
-
-## Ownership map
-
-- Product authority: user-approved base epoch `tz-v1` plus explicit semantic addenda through `INCREMENTAL-CACHE-001`, combined as `tz-v6`; `REALISTIC-FIXTURES-001` adds acceptance evidence and a restore of existing indexed semantics without advancing the product epoch.
-- Semantic schema owner: `AuditCore` plus SnapshotStore transport.
-- Syntax fact owner: SwiftSyntaxFrontend and SwiftUISemantics vocabulary.
-- Compiler fact owner: SymbolResolution/IndexStoreDB on macOS.
-- Incremental fact-cache owner: AnalysisCache, with frontend dependency metadata and compiler-unit fingerprints supplied by their fact owners.
-- Finding owner: AuditRules over normalized graph.
-- Persistence/slice owner: SnapshotStore and ContextSlicer.
-- Comparison/policy/doctor owner: SemanticDiff and CLI commands.
-- Agent judgment owner: surrounding agent skills, limited by the immutable fact boundary.
-- Acceptance owner: fixtures/tests, canonical baseline, dogfood commands, and CI.
+- [Authorized addenda and evidence precedence](evidence-map/addenda-and-precedence.md) — addendum coverage and decision-specific evidence requirements.
+- [Ownership map](evidence-map/ownership.md) — responsibility owners across facts, findings, persistence, comparison, judgment, and acceptance.

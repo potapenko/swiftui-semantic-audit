@@ -1,5 +1,13 @@
 # Specification registry
 
+- Node type: root
+- Status: Active
+- Contract revision: `spec-7`
+- Authority: epoch `tz-v6` and pinned digest declared below
+- Read when: starting any product, behavior, compatibility, QA, release, or specification task in this repository.
+- Do not read when: the task is proven behavior-neutral and outside the specification system.
+- Maximum size: 100 physical lines.
+
 Status: active  
 Contract epoch: `tz-v6`
 Local specification revision: `spec-7`
@@ -62,3 +70,7 @@ A local spec edit cannot authorize a semantic change. Any semantic delta require
 The pinned base plus authorized addenda through `INCREMENTAL-CACHE-001` authorizes a Swift package and `swiftui-audit` CLI with deterministic syntax extraction, optional indexed enrichment, content-addressed incremental analysis caching, twenty-nine bounded rules, snapshot/slice/diff/check/doctor, explicit project-role configuration, agent skills, documentation, fixtures, dogfood, and CI. Architecture analysis covers collision-safe pre-index identities, type/feature/composition-root classification, component boundaries, lifecycle/focus/selection flow, geometry-driven product behavior, SwiftUI control semantics, narrow representable update analysis, and preview composition pressure. `REALISTIC-FIXTURES-001` strengthens acceptance with a compilable multi-file good/bad corpus, mixed-corpus invariance, and syntax/indexed finding parity without adding a thirtieth rule or extending bounded control-flow semantics. `INCREMENTAL-CACHE-001` changes only how deterministic facts are reused: cached and uncached semantic outputs remain identical, and the agent remains the adjudicator. Agent workflows remain explicitly indexed. The standalone CLI retains build-free fallback. The contract does not authorize automatic rewriting, provider-specific LLM calls, SIL/full type checking, name-based application-role classification, generic AppKit/UIKit linting, or general non-SwiftUI analysis outside the bounded adapter/global-command rules.
 
 Advance the epoch before accepting a material semantic change. Editorial clarification may advance only the local specification revision and must preserve every protected behavior and exception.
+
+## Migration state
+
+- [Full-library Markdown migration](migration/README.md) — completed structural reconciliation of the nine-document legacy package.

@@ -1,5 +1,13 @@
 # Analysis configuration contract
 
+- Node type: leaf
+- Status: Active
+- Contract revision: `spec-1`
+- Authority: `ARCHITECTURE-001`, epoch `tz-v5`
+- Read when: role-aware project analysis needs configuration schema, matching, discovery, optionality, digest, or passive-environment rules.
+- Do not read when: the task uses topology-only analysis without role, feature, composition-root, or passive-environment authority.
+- Maximum size: 100 physical lines.
+
 Revision: `spec-1`
 Configuration schema: `1`
 Authority: `ARCHITECTURE-001`, epoch `tz-v5`
