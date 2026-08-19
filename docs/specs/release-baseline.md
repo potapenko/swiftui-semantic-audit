@@ -2,12 +2,12 @@
 
 - Node type: hybrid
 - Status: Active
-- Contract revision: `spec-13`
+- Contract revision: `spec-14`
 - Read when: checking the current 0.4.0 release, dependencies, milestones, capabilities, residuals, or acceptance evidence.
 - Do not read when: the task concerns intended behavior without realization or release evidence.
 - Maximum size: 100 physical lines.
 
-Revision: `spec-13`
+Revision: `spec-14`
 Baseline state: `0.4.0 released; website canonical domain released`
 Contract epoch: `tz-v8`
 Website contract epoch: `tz-v12`
@@ -61,6 +61,19 @@ commit `7e391609733fa8df318844020435d49bb6efec80`. The canonical root returned t
 exact build marker and the accessible `https://x.com/potapenko` header link;
 its local Twitter icon, apex HTTPS, `robots.txt`, `sitemap.xml`, and the
 path-preserving permanent `www` redirect passed public verification.
+
+**BASE-WEB-004 — Skill-first publication receipt.** On 2026-08-19,
+push-triggered deployment `dc309e5d-9565-4daa-ace5-d5455b222bfa` reached ACTIVE
+from source commit `2ef5912be193de08a1782582e4d5a711407fa0b3`. The current canonical edge
+returned that exact build marker, the Codex/Claude skill-first hero, one-skill
+fact, three task-shaped use cases, installation path, and single-skill FAQ; no
+public specialist-skill invocation remained. Managed TLS, `robots.txt`,
+`sitemap.xml`, the expected 404, and the path-preserving permanent `www`
+redirect passed against the authoritative current edge. Authoritative DNS and
+Cloudflare `1.1.1.1` returned the new edge, while this machine's resolver and
+Google `8.8.8.8` still returned the former `198.50.252.64` parking address at
+receipt time; visitors behind stale recursive caches may time out until the
+prior TTL expires.
 
 ## Choose the baseline child
 
