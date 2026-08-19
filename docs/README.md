@@ -9,6 +9,7 @@ SwiftUI Semantic Audit gives a coding agent a deterministic view of SwiftUI stat
 | If you want to… | Read… |
 | --- | --- |
 | Install the CLI and skills | [Getting started](getting-started/README.md) |
+| Give an agent an installation, audit, refactor, review, or migration task | [Agent prompt library](getting-started/agent-prompts.md) |
 | Understand why source or Git diff is not enough | [Why semantic audit](concepts/why-semantic-audit.md) |
 | Define “functional SwiftUI” in practical terms | [Functional SwiftUI](concepts/functional-swiftui.md) |
 | Investigate an application | [Audit workflow](workflows/audit.md) |
@@ -22,10 +23,11 @@ SwiftUI Semantic Audit gives a coding agent a deterministic view of SwiftUI stat
 
 ```text
 docs/
-├── README.md                         # this public landing page
+├── README.md                         # documentation hub
 ├── getting-started/
 │   ├── README.md                     # shortest route to a working audit
 │   ├── installation.md               # agent and manual installation
+│   ├── agent-prompts.md              # copy-paste tasks for coding agents
 │   └── first-audit.md                # indexed and standalone first passes
 ├── concepts/
 │   ├── README.md

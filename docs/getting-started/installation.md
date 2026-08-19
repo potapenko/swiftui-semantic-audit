@@ -41,7 +41,7 @@ brew uninstall potapenko/tap/swiftui-semantic-audit
 
 ## Agent-assisted skill installation
 
-The recommended skill installer is the copy-paste prompt in the [root README](../../README.md#install-agent-skills). It tells the current agent to:
+The recommended skill installer is the [copy-paste recipe in the agent prompt library](agent-prompts.md#install-the-agent-skills). It tells the current agent to:
 
 - clone the immutable `0.4.0` tag into a stable user-owned location;
 - verify the exact tag and commit;
@@ -152,6 +152,8 @@ Use the router for normal work:
 - Claude Code: `/swiftui-semantic`
 
 The specialists remain directly invocable for advanced use, but installing only the router is incomplete.
+
+For project instructions, audits, focused refactors, change reviews, and staged migrations, continue with the [agent prompt library](agent-prompts.md).
 
 ## Updating skills
 

@@ -398,6 +398,7 @@ jobs:
             docs/README.md
             docs/getting-started/README.md
             docs/getting-started/installation.md
+            docs/getting-started/agent-prompts.md
             docs/getting-started/first-audit.md
             docs/concepts/README.md
             docs/concepts/why-semantic-audit.md
