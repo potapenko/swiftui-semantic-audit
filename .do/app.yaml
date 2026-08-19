@@ -4,6 +4,31 @@ alerts:
   - rule: DEPLOYMENT_FAILED
   - rule: DOMAIN_FAILED
 
+domains:
+  - domain: swiftui-audit.dev
+    type: PRIMARY
+    minimum_tls_version: "1.2"
+  - domain: www.swiftui-audit.dev
+    type: ALIAS
+    minimum_tls_version: "1.2"
+
+ingress:
+  rules:
+    - match:
+        authority:
+          exact: www.swiftui-audit.dev
+        path:
+          prefix: /
+      redirect:
+        authority: swiftui-audit.dev
+        scheme: https
+        redirect_code: 301
+    - match:
+        path:
+          prefix: /
+      component:
+        name: landing
+
 static_sites:
   - name: landing
     environment_slug: html

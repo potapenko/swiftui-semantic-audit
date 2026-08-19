@@ -83,9 +83,9 @@ repository.
 
 App Platform watches `master` directly through `deploy_on_push: true`; GitHub
 Actions remains build/test CI and does not need a DigitalOcean token. The first
-deployment intentionally uses the technical `ondigitalocean.app` hostname. The
-canonical apex and `www` redirect are added only after that hostname passes and
-`swiftui-audit.dev` has authoritative registry and DNS delegation.
+deployment intentionally used the technical `ondigitalocean.app` hostname. The
+committed App Spec now attaches `swiftui-audit.dev` as PRIMARY and
+`www.swiftui-audit.dev` as ALIAS, with a permanent `www`-to-apex redirect.
 
 The accepted technical ingress is
 <https://swiftui-semantic-audit-nuhky.ondigitalocean.app/>. It is diagnostic and

@@ -283,13 +283,23 @@ class PublishDigitalOceanTests(unittest.TestCase):
         self.assertNotIn(token, str(raised.exception))
         self.assertIn("<redacted-token>", str(raised.exception))
 
-    def test_app_spec_is_a_single_domain_free_static_component(self) -> None:
+    def test_app_spec_is_a_single_canonical_static_component(self) -> None:
         text = publish.DEFAULT_APP_SPEC.read_text(encoding="utf-8")
         self.assertEqual(text.count("static_sites:"), 1)
         for fragment in (
             "name: swiftui-semantic-audit",
             "rule: DEPLOYMENT_FAILED",
             "rule: DOMAIN_FAILED",
+            "domains:",
+            "domain: swiftui-audit.dev",
+            "type: PRIMARY",
+            "domain: www.swiftui-audit.dev",
+            "type: ALIAS",
+            'minimum_tls_version: "1.2"',
+            "ingress:",
+            "exact: www.swiftui-audit.dev",
+            "authority: swiftui-audit.dev",
+            "redirect_code: 301",
             "name: landing",
             "environment_slug: html",
             "repo: potapenko/swiftui-semantic-audit",
@@ -303,8 +313,6 @@ class PublishDigitalOceanTests(unittest.TestCase):
         ):
             self.assertIn(fragment, text)
         for forbidden in (
-            "domains:",
-            "ingress:",
             "routes:",
             "cors:",
             "catchall_document:",
