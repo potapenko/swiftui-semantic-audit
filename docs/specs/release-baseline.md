@@ -2,12 +2,12 @@
 
 - Node type: hybrid
 - Status: Active
-- Contract revision: `spec-11`
+- Contract revision: `spec-12`
 - Read when: checking the current 0.4.0 release, dependencies, milestones, capabilities, residuals, or acceptance evidence.
 - Do not read when: the task concerns intended behavior without realization or release evidence.
 - Maximum size: 100 physical lines.
 
-Revision: `spec-11`
+Revision: `spec-12`
 Baseline state: `0.4.0 released; website canonical domain released`
 Contract epoch: `tz-v8`
 Website contract epoch: `tz-v11`
@@ -54,6 +54,13 @@ for the original 86400-second TTL during normal propagation. Direct SNI/TLS
 acceptance passed for apex content and the `www` certificate: root 200, exact
 commit marker, canonical/Open Graph metadata, `robots.txt`, `sitemap.xml`, 404,
 and a path-preserving permanent `www`-to-apex redirect.
+
+**BASE-WEB-003 — Author-link publication receipt.** On 2026-08-19, push-triggered
+deployment `1e83c8f4-dd3e-4490-9c70-6cf6036d91f2` reached ACTIVE from source
+commit `7e391609733fa8df318844020435d49bb6efec80`. The canonical root returned that
+exact build marker and the accessible `https://x.com/potapenko` header link;
+its local Twitter icon, apex HTTPS, `robots.txt`, `sitemap.xml`, and the
+path-preserving permanent `www` redirect passed public verification.
 
 ## Choose the baseline child
 
