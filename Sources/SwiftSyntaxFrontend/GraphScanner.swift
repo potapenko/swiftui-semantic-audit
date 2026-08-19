@@ -1,5 +1,6 @@
 import AuditCore
 import CryptoKit
+import Dispatch
 import Foundation
 import SwiftParser
 import SwiftSyntax
@@ -23,7 +24,11 @@ public enum GraphScannerError: Error, CustomStringConvertible {
 }
 
 public struct GraphScanner: Sendable {
-    public init() {}
+    private let maximumParallelism: Int
+
+    public init(maximumParallelism: Int = ProcessInfo.processInfo.activeProcessorCount) {
+        self.maximumParallelism = max(1, maximumParallelism)
+    }
 
     public func scan(path: String) throws -> SemanticGraph {
         try scan(path: path, previousState: nil).graph
@@ -122,10 +127,10 @@ public struct GraphScanner: Sendable {
         }
 
         let parsed = dirtyPaths.sorted().compactMap { path in
-            parsedByPath[path].map { (tree: $0, relativePath: path) }
+            parsedByPath[path].map { ParsedSource(tree: $0, relativePath: path) }
         }
 
-        for item in parsed {
+        parallelForEach(parsed, maximumParallelism: maximumParallelism) { item in
             let converter = SourceLocationConverter(fileName: item.relativePath, tree: item.tree)
             DeclarationVisitor(
                 builder: builder,
@@ -134,11 +139,11 @@ public struct GraphScanner: Sendable {
                 predeclareOnly: true
             ).walk(item.tree)
         }
-        for item in parsed {
+        parallelForEach(parsed, maximumParallelism: maximumParallelism) { item in
             let converter = SourceLocationConverter(fileName: item.relativePath, tree: item.tree)
             DeclarationVisitor(builder: builder, file: item.relativePath, converter: converter).walk(item.tree)
         }
-        for item in parsed {
+        parallelForEach(parsed, maximumParallelism: maximumParallelism) { item in
             let converter = SourceLocationConverter(fileName: item.relativePath, tree: item.tree)
             RelationshipVisitor(builder: builder, file: item.relativePath, converter: converter).walk(item.tree)
         }
@@ -204,6 +209,28 @@ public struct GraphScanner: Sendable {
             declarationNames: collector.names.sorted(),
             lexicalIdentifiers: identifiers.sorted()
         )
+    }
+}
+
+private struct ParsedSource: Sendable {
+    let tree: SourceFileSyntax
+    let relativePath: String
+}
+
+private func parallelForEach<Item: Sendable>(
+    _ items: [Item],
+    maximumParallelism: Int,
+    operation: @escaping @Sendable (Item) -> Void
+) {
+    let workerCount = min(maximumParallelism, items.count)
+    guard workerCount > 1 else {
+        items.forEach(operation)
+        return
+    }
+    DispatchQueue.concurrentPerform(iterations: workerCount) { workerIndex in
+        for index in stride(from: workerIndex, to: items.count, by: workerCount) {
+            operation(items[index])
+        }
     }
 }
 
@@ -309,8 +336,9 @@ private extension SemanticGraph {
     }
 }
 
-private final class GraphBuilder {
+private final class GraphBuilder: @unchecked Sendable {
     let moduleName: String
+    private let lock = NSRecursiveLock()
     private var nodes: [String: SemanticNode] = [:]
     private var edges: [String: SemanticEdge] = [:]
     private var qualifiedIndex: [String: [String]] = [:]
@@ -338,39 +366,41 @@ private final class GraphBuilder {
         evidence: Evidence,
         mergeEvidence: Bool = false
     ) -> String {
-        let stableDiscriminator = identityFile.map { "file:\($0)|\(discriminator)" } ?? discriminator
-        let id = StableID.node(
-            module: moduleName,
-            qualifiedName: qualifiedName,
-            kind: kind,
-            discriminator: stableDiscriminator
-        )
-        let identity = [kind.rawValue, name, qualifiedName, stableDiscriminator].joined(separator: "|")
-        if let existing = nodes[id] {
-            if nodeIdentityByID[id] == nil { nodeIdentityByID[id] = identity }
-            let extensionPlaceholder = existing.evidence.allSatisfy { $0.kind == "extension-declaration" }
-            let canonicalDeclaration = evidence.kind == "type-declaration" || evidence.kind == "swiftui-view"
-            if nodeIdentityByID[id] != identity || (!mergeEvidence && !(extensionPlaceholder && canonicalDeclaration)) {
-                identityCollisions.insert(identity)
+        synchronized {
+            let stableDiscriminator = identityFile.map { "file:\($0)|\(discriminator)" } ?? discriminator
+            let id = StableID.node(
+                module: moduleName,
+                qualifiedName: qualifiedName,
+                kind: kind,
+                discriminator: stableDiscriminator
+            )
+            let identity = [kind.rawValue, name, qualifiedName, stableDiscriminator].joined(separator: "|")
+            if let existing = nodes[id] {
+                if nodeIdentityByID[id] == nil { nodeIdentityByID[id] = identity }
+                let extensionPlaceholder = existing.evidence.allSatisfy { $0.kind == "extension-declaration" }
+                let canonicalDeclaration = evidence.kind == "type-declaration" || evidence.kind == "swiftui-view"
+                if nodeIdentityByID[id] != identity || (!mergeEvidence && !(extensionPlaceholder && canonicalDeclaration)) {
+                    identityCollisions.insert(identity)
+                } else {
+                    nodes[id] = SemanticNode(
+                        id: id,
+                        kind: existing.kind,
+                        name: existing.name,
+                        qualifiedName: existing.qualifiedName,
+                        evidence: canonicalEvidence(existing.evidence + [evidence]),
+                        confidence: existing.confidence,
+                        roles: existing.roles,
+                        feature: existing.feature
+                    )
+                }
             } else {
-                nodes[id] = SemanticNode(
-                    id: id,
-                    kind: existing.kind,
-                    name: existing.name,
-                    qualifiedName: existing.qualifiedName,
-                    evidence: canonicalEvidence(existing.evidence + [evidence]),
-                    confidence: existing.confidence,
-                    roles: existing.roles,
-                    feature: existing.feature
-                )
+                nodes[id] = SemanticNode(id: id, kind: kind, name: name, qualifiedName: qualifiedName, evidence: [evidence])
+                nodeIdentityByID[id] = identity
+                qualifiedIndex[qualifiedName, default: []].append(id)
+                qualifiedIndex[qualifiedName]?.sort()
             }
-        } else {
-            nodes[id] = SemanticNode(id: id, kind: kind, name: name, qualifiedName: qualifiedName, evidence: [evidence])
-            nodeIdentityByID[id] = identity
-            qualifiedIndex[qualifiedName, default: []].append(id)
-            qualifiedIndex[qualifiedName]?.sort()
+            return id
         }
-        return id
     }
 
     func addEdge(
@@ -380,69 +410,85 @@ private final class GraphBuilder {
         evidence: Evidence,
         confidence: Confidence = .deterministic
     ) {
-        guard nodes[from] != nil, nodes[to] != nil else { return }
-        let discriminator = evidence.kind
-        let id = StableID.edge(kind: kind, from: from, to: to, discriminator: discriminator)
-        if let existing = edges[id] {
-            edges[id] = SemanticEdge(
-                id: id,
-                kind: existing.kind,
-                from: existing.from,
-                to: existing.to,
-                evidence: canonicalEvidence(existing.evidence + [evidence]),
-                confidence: existing.confidence
-            )
-        } else {
-            edges[id] = SemanticEdge(id: id, kind: kind, from: from, to: to, evidence: [evidence], confidence: confidence)
+        synchronized {
+            guard nodes[from] != nil, nodes[to] != nil else { return }
+            let discriminator = evidence.kind
+            let id = StableID.edge(kind: kind, from: from, to: to, discriminator: discriminator)
+            if let existing = edges[id] {
+                edges[id] = SemanticEdge(
+                    id: id,
+                    kind: existing.kind,
+                    from: existing.from,
+                    to: existing.to,
+                    evidence: canonicalEvidence(existing.evidence + [evidence]),
+                    confidence: existing.confidence
+                )
+            } else {
+                edges[id] = SemanticEdge(id: id, kind: kind, from: from, to: to, evidence: [evidence], confidence: confidence)
+            }
         }
     }
 
     func nodeID(qualifiedName: String, file: String? = nil) -> String? {
-        unique(preferred(qualifiedIndex[qualifiedName], file: file))
+        synchronized { unique(preferred(qualifiedIndex[qualifiedName], file: file)) }
     }
 
     func node(id: String) -> SemanticNode? {
-        nodes[id]
+        synchronized { nodes[id] }
     }
 
     func mergeEvidence(into id: String, evidence: Evidence) {
-        guard let existing = nodes[id] else { return }
-        nodes[id] = SemanticNode(
-            id: existing.id,
-            kind: existing.kind,
-            name: existing.name,
-            qualifiedName: existing.qualifiedName,
-            evidence: canonicalEvidence(existing.evidence + [evidence]),
-            confidence: existing.confidence,
-            roles: existing.roles,
-            feature: existing.feature
-        )
+        synchronized {
+            guard let existing = nodes[id] else { return }
+            nodes[id] = SemanticNode(
+                id: existing.id,
+                kind: existing.kind,
+                name: existing.name,
+                qualifiedName: existing.qualifiedName,
+                evidence: canonicalEvidence(existing.evidence + [evidence]),
+                confidence: existing.confidence,
+                roles: existing.roles,
+                feature: existing.feature
+            )
+        }
     }
 
     func resolve(name rawName: String, scopes: [String], file: String? = nil) -> String? {
-        let name = normalizedReference(rawName)
-        guard !name.isEmpty else { return nil }
-        for scope in scopes.reversed() {
-            if let matches = qualifiedIndex["\(scope).\(name)"],
-               let resolved = unique(preferred(matches, file: file)) {
-                return resolved
+        synchronized {
+            let name = normalizedReference(rawName)
+            guard !name.isEmpty else { return nil }
+            for scope in scopes.reversed() {
+                if let matches = qualifiedIndex["\(scope).\(name)"],
+                   let resolved = unique(preferred(matches, file: file)) {
+                    return resolved
+                }
             }
+            return unique(preferred(qualifiedIndex[name], file: file))
         }
-        return unique(preferred(qualifiedIndex[name], file: file))
     }
 
     func ownedNodes(of ownerID: String, kind: NodeKind) -> [SemanticNode] {
-        let childIDs = Set(edges.values.filter { $0.kind == .owns && $0.from == ownerID }.map(\.to))
-        return childIDs.compactMap { nodes[$0] }.filter { $0.kind == kind }.sorted {
-            ($0.qualifiedName, $0.id) < ($1.qualifiedName, $1.id)
+        synchronized {
+            let childIDs = Set(edges.values.filter { $0.kind == .owns && $0.from == ownerID }.map(\.to))
+            return childIDs.compactMap { nodes[$0] }.filter { $0.kind == kind }.sorted {
+                ($0.qualifiedName, $0.id) < ($1.qualifiedName, $1.id)
+            }
         }
     }
 
     func graph() throws -> SemanticGraph {
-        guard identityCollisions.isEmpty else {
-            throw GraphScannerError.stableIdentityCollision(Array(identityCollisions))
+        try synchronized {
+            guard identityCollisions.isEmpty else {
+                throw GraphScannerError.stableIdentityCollision(Array(identityCollisions))
+            }
+            return SemanticGraph(nodes: Array(nodes.values), edges: Array(edges.values))
         }
-        return SemanticGraph(nodes: Array(nodes.values), edges: Array(edges.values))
+    }
+
+    private func synchronized<Value>(_ operation: () throws -> Value) rethrows -> Value {
+        lock.lock()
+        defer { lock.unlock() }
+        return try operation()
     }
 
     private func unique(_ ids: [String]?) -> String? {

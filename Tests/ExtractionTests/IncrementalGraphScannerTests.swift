@@ -4,6 +4,32 @@ import SwiftSyntaxFrontend
 import XCTest
 
 final class IncrementalGraphScannerTests: XCTestCase {
+    func testParallelFrontendMatchesSerialBytes() throws {
+        let fixture = try makeFixture()
+        defer { try? FileManager.default.removeItem(at: fixture) }
+        for index in 0..<12 {
+            try write(
+                """
+                import SwiftUI
+                struct Feature\(index): View {
+                    @State private var count = \(index)
+                    var body: some View {
+                        Button("Count \\(count)") { count += 1 }
+                            .onChange(of: count) { _, value in count = value }
+                    }
+                }
+                """,
+                to: fixture.appendingPathComponent("Feature\(index).swift")
+            )
+        }
+
+        let serial = try GraphScanner(maximumParallelism: 1).scan(path: fixture.path).jsonData()
+        for _ in 0..<4 {
+            let parallel = try GraphScanner(maximumParallelism: 4).scan(path: fixture.path).jsonData()
+            XCTAssertEqual(parallel, serial)
+        }
+    }
+
     func testWarmCacheReusesEveryFileAndMatchesFullRebuild() throws {
         let fixture = try makeFixture()
         defer { try? FileManager.default.removeItem(at: fixture) }
