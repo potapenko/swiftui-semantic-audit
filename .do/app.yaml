@@ -1,0 +1,31 @@
+name: swiftui-semantic-audit
+
+alerts:
+  - rule: DEPLOYMENT_FAILED
+  - rule: DOMAIN_FAILED
+
+static_sites:
+  - name: landing
+    environment_slug: html
+    github:
+      repo: potapenko/swiftui-semantic-audit
+      branch: master
+      deploy_on_push: true
+    source_dir: /website
+    build_command: |
+      set -eu
+      python3 build_site.py \
+        --output-dir public \
+        --site-url "$SITE_URL" \
+        --build-marker "$BUILD_MARKER"
+    output_dir: public
+    index_document: index.html
+    envs:
+      - key: SITE_URL
+        scope: BUILD_TIME
+        type: GENERAL
+        value: "${APP_URL}"
+      - key: BUILD_MARKER
+        scope: BUILD_TIME
+        type: GENERAL
+        value: "${_self.COMMIT_HASH}"

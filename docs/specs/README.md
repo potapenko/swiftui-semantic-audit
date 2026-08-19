@@ -2,15 +2,15 @@
 
 - Node type: root
 - Status: Active
-- Contract revision: `spec-9`
-- Authority: epoch `tz-v8` and pinned digest declared below
+- Contract revision: `spec-10`
+- Authority: epoch `tz-v9` and pinned digest declared below
 - Read when: starting any product, behavior, compatibility, QA, release, or specification task in this repository.
 - Do not read when: the task is proven behavior-neutral and outside the specification system.
 - Maximum size: 100 physical lines.
 
 Status: active  
-Contract epoch: `tz-v8`
-Local specification revision: `spec-9`
+Contract epoch: `tz-v9`
+Local specification revision: `spec-10`
 Pinned authority digest: `sha256:68f8a43d924659024b7d29fabb9ad302817c271838a7919b24bd942626927cac`  
 Router addendum: user-authorized `ROUTER-001` on 2026-08-18
 Indexed-skills addendum: user-authorized `INDEXED-SKILLS-001` on 2026-08-18
@@ -20,6 +20,7 @@ Realistic-fixtures acceptance addendum: user-authorized `REALISTIC-FIXTURES-001`
 Incremental-cache addendum: user-authorized `INCREMENTAL-CACHE-001` on 2026-08-19; advances the combined contract to `tz-v6`
 Parallel-execution addendum: user-authorized `PARALLEL-EXECUTION-001` on 2026-08-19; advances the combined contract to `tz-v7`
 Homebrew release addendum: user-authorized `HOMEBREW-RELEASE-001` on 2026-08-19; advances the combined contract to `tz-v8`
+Website addendum: user-authorized `WEBSITE-001` on 2026-08-19; advances the combined contract to `tz-v9`
 Release baseline: `0.4.0 released`
 
 This directory is the self-contained active specification package for SwiftUI Semantic Audit. It faithfully restates the user-approved Russian ТЗ without expanding product semantics. Clause IDs are stable references for implementation, review, and QA.
@@ -28,7 +29,7 @@ This directory is the self-contained active specification package for SwiftUI Se
 
 When documents appear to disagree, apply this order:
 
-1. the user-approved ТЗ at epoch `tz-v1`, its pinned digest, the explicit `ROUTER-001`, `INDEXED-SKILLS-001`, `BOUNDARY-001`, `ARCHITECTURE-001`, `INCREMENTAL-CACHE-001`, `PARALLEL-EXECUTION-001`, and `HOMEBREW-RELEASE-001` requests that advance the combined contract to `tz-v8`, and the behavior-preserving `REALISTIC-FIXTURES-001` acceptance addendum;
+1. the user-approved ТЗ at epoch `tz-v1`, its pinned digest, the explicit `ROUTER-001`, `INDEXED-SKILLS-001`, `BOUNDARY-001`, `ARCHITECTURE-001`, `INCREMENTAL-CACHE-001`, `PARALLEL-EXECUTION-001`, `HOMEBREW-RELEASE-001`, and `WEBSITE-001` requests that advance the combined contract to `tz-v9`, and the behavior-preserving `REALISTIC-FIXTURES-001` acceptance addendum;
 2. [`product-contract.md`](product-contract.md) for product boundaries and invariants;
 3. domain contracts (`semantic-ir.md`, `rules.md`, `cli.md`);
 4. [`acceptance.md`](acceptance.md) for proof obligations;
@@ -49,6 +50,7 @@ A local spec edit cannot authorize a semantic change. Any semantic delta require
 | [`acceptance.md`](acceptance.md) | Fixtures, determinism, skills, CI, Definition of Done | Normative acceptance map for ТЗ §§44–51 plus authorized addenda through `HOMEBREW-RELEASE-001` | active | Implementing or verifying | 88 tests and hosted CI accepted; Homebrew receipt in release baseline |
 | [`evidence-map.md`](evidence-map.md) | Clause ownership and all-54-section plus authorized-addendum coverage | Governance map | active | Tracing authority to evidence | P1–P13 map |
 | [`release-baseline.md`](release-baseline.md) | Current realization, dependency pins, residuals | Descriptive evidence; never higher than normative contracts | active / released | Release/readiness/status work | 0.4.0 immutable tag, archive, and Homebrew tap |
+| [`website.md`](website.md) | English landing-page experience, claims, examples, build, deployment, and QA | `WEBSITE-001` product-evolution contract | active / evolving | Designing, implementing, publishing, or reviewing the website | unreleased |
 
 ## Domain ownership
 
@@ -58,6 +60,7 @@ A local spec edit cannot authorize a semantic change. Any semantic delta require
 - `CLI-*`: command, resolution, output, failure, and path behavior.
 - `ACC-*`: fixtures, quality gates, CI, and completion proof.
 - `BASE-*`: current release realization, publication evidence, and accepted limitations.
+- `WEB-*`: website narrative, visual structure, accessibility, delivery, and publication behavior.
 
 ## Reading routes
 
@@ -65,11 +68,14 @@ A local spec edit cannot authorize a semantic change. Any semantic delta require
 - CLI/API integration: product contract → CLI → semantic IR → acceptance.
 - Snapshot/diff work: semantic IR → CLI → acceptance → release baseline.
 - Release/CI review: acceptance → release baseline → evidence map.
+- Website work: website → product contract → rules → release baseline.
 - Contract audit: product contract → every domain contract → evidence map.
 
 ## Change control
 
 The pinned base plus authorized addenda through `HOMEBREW-RELEASE-001` authorizes a Swift package and `swiftui-audit` CLI with deterministic syntax extraction, optional indexed enrichment, content-addressed incremental analysis caching, CPU-scaled frontend/rule execution with positive job control, twenty-nine bounded rules, snapshot/slice/diff/check/doctor, explicit project-role configuration, agent skills, documentation, fixtures, dogfood, CI, version output, and an immutable 0.4.0 GitHub/Homebrew release path. Architecture analysis covers collision-safe pre-index identities, type/feature/composition-root classification, component boundaries, lifecycle/focus/selection flow, geometry-driven product behavior, SwiftUI control semantics, narrow representable update analysis, and preview composition pressure. `REALISTIC-FIXTURES-001` strengthens acceptance with a compilable multi-file good/bad corpus, mixed-corpus invariance, and syntax/indexed finding parity without adding a thirtieth rule or extending bounded control-flow semantics. `INCREMENTAL-CACHE-001` changes only how deterministic facts are reused: cached and uncached semantic outputs remain identical, and the agent remains the adjudicator. `PARALLEL-EXECUTION-001` changes execution scheduling only: serial and parallel canonical results remain identical, and IndexStoreDB stays behind its isolated helper boundary. `HOMEBREW-RELEASE-001` changes release state and packaging only: the formula installs the standalone CLI and never owns agent-skill or user configuration paths. The contract does not authorize automatic rewriting, provider-specific LLM calls, SIL/full type checking, name-based application-role classification, generic AppKit/UIKit linting, or general non-SwiftUI analysis outside the bounded adapter/global-command rules.
+
+`WEBSITE-001` adds one English static landing page without changing CLI, graph, rule, skill, release, or installation semantics. It authorizes an original visual system, selected fixture-backed examples, truthful 0.4.0 claims, and HoldType-derived static deployment mechanics. It does not authorize automatic-fix claims, a theme switcher, localization, analytics, a backend, or a new product GUI.
 
 Advance the epoch before accepting a material semantic change. Editorial clarification may advance only the local specification revision and must preserve every protected behavior and exception.
 

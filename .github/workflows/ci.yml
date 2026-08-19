@@ -466,3 +466,31 @@ jobs:
           abort("rules missing from public reference: #{missing_rules.join(', ')}") unless missing_rules.empty?
           RUBY
           git diff --check
+
+  website:
+    name: Build and test website artifact
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Test static build and deployment tooling
+        run: |
+          set -euo pipefail
+          python3 -m unittest \
+            website/build_site_test.py \
+            scripts/release/publish_digitalocean_test.py
+
+      - name: Build the production allowlist
+        run: |
+          set -euo pipefail
+          python3 website/build_site.py \
+            --output-dir "$RUNNER_TEMP/website-public" \
+            --site-url "https://ci.example/" \
+            --build-marker "$GITHUB_SHA"
+          test -f "$RUNNER_TEMP/website-public/index.html"
+          test -f "$RUNNER_TEMP/website-public/robots.txt"
+          test -f "$RUNNER_TEMP/website-public/sitemap.xml"
+          scripts/release/publish_digitalocean.py --dry-run --doctl true
+          git diff --check

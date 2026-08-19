@@ -1,0 +1,764 @@
+<!doctype html>
+<html lang="en" data-site="swiftui-semantic-audit" data-site-build="{{BUILD_MARKER}}">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>SwiftUI Semantic Audit — Architecture evidence for coding agents</title>
+  <meta name="description" content="Deterministic architecture evidence for safer agent-authored SwiftUI changes.">
+  <meta name="robots" content="index,follow">
+  <meta name="theme-color" content="#08121F">
+  <link rel="canonical" href="{{SITE_URL}}">
+  <link rel="icon" href="assets/site-icon.svg" type="image/svg+xml">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="SwiftUI Semantic Audit">
+  <meta property="og:title" content="Give coding agents a map of SwiftUI state before they edit it.">
+  <meta property="og:description" content="Deterministic architecture evidence for safer agent-authored SwiftUI changes.">
+  <meta property="og:url" content="{{SITE_URL}}">
+  <meta property="og:image" content="{{SITE_URL}}assets/social-preview.png">
+  <meta property="og:image:type" content="image/png">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:image:alt" content="SwiftUI code, semantic evidence, and a focused direct Binding arranged as an annotated architecture review.">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="SwiftUI Semantic Audit">
+  <meta name="twitter:description" content="Deterministic architecture evidence for safer agent-authored SwiftUI changes.">
+  <meta name="twitter:image" content="{{SITE_URL}}assets/social-preview.png">
+  <meta name="twitter:image:alt" content="SwiftUI code, semantic evidence, and a focused direct Binding arranged as an annotated architecture review.">
+  <link rel="stylesheet" href="styles.css">
+  <script src="script.js" defer></script>
+  <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "SoftwareApplication",
+      "name": "SwiftUI Semantic Audit",
+      "description": "Deterministic architecture evidence for safer agent-authored SwiftUI changes.",
+      "applicationCategory": "DeveloperApplication",
+      "operatingSystem": "macOS 13 or later",
+      "softwareVersion": "0.4.0",
+      "url": "{{SITE_URL}}",
+      "downloadUrl": "https://github.com/potapenko/swiftui-semantic-audit/releases/tag/0.4.0",
+      "license": "https://opensource.org/license/mit",
+      "codeRepository": "https://github.com/potapenko/swiftui-semantic-audit"
+    }
+  </script>
+</head>
+<body>
+  <a class="skip-link" href="#main-content">Skip to content</a>
+
+  <header class="site-header">
+    <div class="shell header-inner">
+      <a class="wordmark" href="#top" aria-label="SwiftUI Semantic Audit home">
+        <span>SwiftUI Semantic Audit</span>
+        <span class="version-chip">v0.4.0</span>
+      </a>
+
+      <button class="menu-toggle" type="button" aria-expanded="false" aria-controls="site-navigation">
+        <img class="menu-open-icon" src="assets/icons/menu-2.svg" alt="" aria-hidden="true">
+        <img class="menu-close-icon" src="assets/icons/x.svg" alt="" aria-hidden="true">
+        <span class="sr-only">Toggle navigation</span>
+      </button>
+
+      <nav id="site-navigation" class="site-nav" aria-label="Main navigation">
+        <a href="#workflow">How it works</a>
+        <a href="#rules">Rules</a>
+        <a href="#examples">Examples</a>
+        <a href="https://github.com/potapenko/swiftui-semantic-audit/tree/0.4.0/docs">Docs</a>
+        <a class="github-link" href="https://github.com/potapenko/swiftui-semantic-audit">
+          <img src="assets/icons/brand-github.svg" alt="" aria-hidden="true">
+          GitHub
+        </a>
+      </nav>
+    </div>
+  </header>
+
+  <main id="main-content">
+    <section id="top" class="hero section-paper" aria-labelledby="hero-title">
+      <div class="shell hero-grid">
+        <div class="hero-copy">
+          <p class="eyebrow">Architecture evidence for agent-authored SwiftUI</p>
+          <h1 id="hero-title">Give coding agents a map of SwiftUI state before they edit it.</h1>
+          <p class="hero-lede">SwiftUI Semantic Audit turns ownership, writes, Bindings, synchronization, effects, and component boundaries into deterministic evidence. A semantic diff records what changed after the edit.</p>
+
+          <div class="hero-actions">
+            <a class="button button-primary" href="#install">
+              <img src="assets/icons/terminal-2.svg" alt="" aria-hidden="true">
+              Install the CLI
+            </a>
+            <a class="button button-secondary" href="#examples">
+              See the examples
+              <img src="assets/icons/arrow-right.svg" alt="" aria-hidden="true">
+            </a>
+          </div>
+
+          <ul class="fact-strip" aria-label="Product facts">
+            <li>
+              <img src="assets/icons/shield-check.svg" alt="" aria-hidden="true">
+              <span><strong>Open source</strong>MIT License</span>
+            </li>
+            <li>
+              <img src="assets/icons/book-2.svg" alt="" aria-hidden="true">
+              <span><strong>Seven CLI commands</strong>Scan through doctor</span>
+            </li>
+            <li>
+              <img src="assets/icons/cube.svg" alt="" aria-hidden="true">
+              <span><strong>Provider independent</strong>No embedded model API</span>
+            </li>
+          </ul>
+        </div>
+
+        <aside class="hero-brief" aria-label="Product boundary">
+          <div>
+            <h2>What it is</h2>
+            <p>A cross-file analysis that builds deterministic evidence about SwiftUI state and data flow.</p>
+          </div>
+          <div>
+            <h2>What it is not</h2>
+            <p>It does not decide architecture or rewrite source. The agent classifies intent and proposes the change.</p>
+          </div>
+          <div>
+            <h2>Release boundary</h2>
+            <p>Standalone macOS CLI. Agent skills are installed separately.</p>
+          </div>
+        </aside>
+      </div>
+    </section>
+
+    <section id="xray" class="xray" aria-labelledby="xray-title">
+      <div class="shell">
+        <div class="section-heading section-heading-inverse">
+          <p class="eyebrow">Semantic X-ray</p>
+          <h2 id="xray-title">Evidence for the same UI behavior</h2>
+          <p>This editorial view summarizes accepted fixture evidence. It is not a product GUI.</p>
+        </div>
+
+        <div class="xray-grid">
+          <article class="xray-column">
+            <p class="code-kicker">Manual synchronization</p>
+            <div class="code-panel code-panel-tall">
+              <div class="code-panel-heading">
+                <span>BindingMirroredLocally</span>
+                <span class="status status-risk">two owners</span>
+              </div>
+              <pre tabindex="0" aria-label="SwiftUI code with a Binding mirrored into local State"><code><span class="syntax-keyword">struct</span> BindingMirrorEditor: <span class="syntax-type">View</span> {
+    <span class="syntax-attribute">@Binding</span> <span class="syntax-keyword">var</span> profileName: <span class="syntax-type">String</span>
+    <span class="syntax-attribute">@State</span> <span class="syntax-keyword">private var</span> editableName = <span class="syntax-string">""</span>
+
+    <span class="syntax-keyword">var</span> body: <span class="syntax-keyword">some</span> <span class="syntax-type">View</span> {
+        <span class="syntax-call">TextField</span>(<span class="syntax-string">"Name"</span>, text: $editableName)
+            .onAppear { editableName = profileName }
+            .onChange(of: profileName) {
+                editableName = profileName
+            }
+            .onChange(of: editableName) {
+                profileName = editableName
+            }
+    }
+}</code></pre>
+            </div>
+          </article>
+
+          <article class="xray-column xray-evidence" aria-label="Semantic evidence">
+            <p class="code-kicker">Reading the graph</p>
+            <div class="evidence-panel">
+              <div class="evidence-alert">
+                <img src="assets/icons/alert-triangle.svg" alt="" aria-hidden="true">
+                <span>One value has two mutable representations and reciprocal copy paths.</span>
+              </div>
+              <ol class="evidence-list">
+                <li>
+                  <img src="assets/icons/user.svg" alt="" aria-hidden="true">
+                  <span><strong>Owner</strong><code>profileName</code> is borrowed from the parent.</span>
+                </li>
+                <li>
+                  <img src="assets/icons/user.svg" alt="" aria-hidden="true">
+                  <span><strong>Owner</strong><code>editableName</code> is local State.</span>
+                </li>
+                <li>
+                  <img src="assets/icons/pencil.svg" alt="" aria-hidden="true">
+                  <span><strong>Copy</strong><code>onAppear</code> seeds the local value.</span>
+                </li>
+                <li>
+                  <img src="assets/icons/link.svg" alt="" aria-hidden="true">
+                  <span><strong>Bind</strong><code>TextField</code> writes to the local value.</span>
+                </li>
+                <li>
+                  <img src="assets/icons/arrows-exchange.svg" alt="" aria-hidden="true">
+                  <span><strong>Sync</strong>Each representation copies into the other.</span>
+                </li>
+              </ol>
+              <div class="finding-block">
+                <span class="finding-label">Findings</span>
+                <code>mirrored-state</code>
+                <code>manual-two-way-sync</code>
+              </div>
+            </div>
+          </article>
+
+          <article class="xray-column">
+            <p class="code-kicker">Direct Binding</p>
+            <div class="code-panel code-panel-tall">
+              <div class="code-panel-heading">
+                <span>GoodDirectBinding</span>
+                <span class="status status-clean">one owner</span>
+              </div>
+              <pre tabindex="0" aria-label="SwiftUI code with a direct Binding"><code><span class="syntax-keyword">struct</span> DirectBindingField: <span class="syntax-type">View</span> {
+    <span class="syntax-attribute">@Binding</span> <span class="syntax-keyword">var</span> name: <span class="syntax-type">String</span>
+
+    <span class="syntax-keyword">var</span> body: <span class="syntax-keyword">some</span> <span class="syntax-type">View</span> {
+        <span class="syntax-call">TextField</span>(<span class="syntax-string">"Name"</span>, text: $name)
+    }
+}</code></pre>
+              <div class="code-note code-note-clean">
+                <img src="assets/icons/check.svg" alt="" aria-hidden="true">
+                <span>No mirror finding is expected. The parent remains the owner and the field receives direct write authority.</span>
+              </div>
+            </div>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section id="examples" class="examples section-paper" aria-labelledby="examples-title">
+      <div class="shell">
+        <div class="section-heading">
+          <p class="eyebrow">Fixture-backed patterns</p>
+          <h2 id="examples-title">Three patterns worth seeing</h2>
+          <p>The finding identifies topology. The safer shape depends on the value's owner and lifetime. Behavior tests still decide whether the change is safe.</p>
+        </div>
+
+        <div class="example-grid">
+          <article class="example-card">
+            <header class="example-card-header">
+              <span class="step-number">1</span>
+              <div>
+                <h3>Keep commands visible</h3>
+                <p>A custom setter can hide a method call behind value-shaped syntax.</p>
+              </div>
+            </header>
+
+            <div class="mini-example">
+              <div class="mini-example-heading">
+                <span>Accepted fixture excerpt</span>
+                <code>command-shaped-binding</code>
+              </div>
+              <pre tabindex="0"><code><span class="syntax-attribute">@Bindable</span> <span class="syntax-keyword">var</span> model: <span class="syntax-type">CommandPagerModel</span>
+
+selection: <span class="syntax-type">Binding</span>(
+    get: { model.page },
+    set: { model.selectPage($0) }
+)</code></pre>
+            </div>
+
+            <div class="example-shift">
+              <img src="assets/icons/arrow-right.svg" alt="" aria-hidden="true">
+              <span>When the method only performs an identity write, expose that write directly.</span>
+            </div>
+
+            <div class="mini-example mini-example-safer">
+              <div class="mini-example-heading">
+                <span>Accepted clean fixture</span>
+                <span class="plain-status">no finding</span>
+              </div>
+              <pre tabindex="0"><code><span class="syntax-attribute">@Binding</span> <span class="syntax-keyword">var</span> value: <span class="syntax-type">Int</span>
+
+selection: <span class="syntax-type">Binding</span>(
+    get: { value },
+    set: { next <span class="syntax-keyword">in</span> value = next }
+)</code></pre>
+            </div>
+            <p class="example-caveat">A method with validation or side effects needs an explicit action boundary, not deletion.</p>
+          </article>
+
+          <article class="example-card">
+            <header class="example-card-header">
+              <span class="step-number">2</span>
+              <div>
+                <h3>Narrow the component boundary</h3>
+                <p>Passing one model through extracted views keeps every layer coupled to the owner.</p>
+              </div>
+            </header>
+
+            <div class="mini-example">
+              <div class="mini-example-heading">
+                <span>Representative accepted topology</span>
+                <code>depth 2</code>
+              </div>
+              <pre tabindex="0"><code><span class="syntax-keyword">struct</span> Middle: <span class="syntax-type">View</span> {
+    <span class="syntax-attribute">@Bindable</span> <span class="syntax-keyword">var</span> model: <span class="syntax-type">FeatureModel</span>
+    <span class="syntax-keyword">var</span> body: <span class="syntax-keyword">some</span> <span class="syntax-type">View</span> {
+        Leaf(model: model)
+    }
+}
+
+<span class="syntax-keyword">struct</span> Leaf: <span class="syntax-type">View</span> {
+    <span class="syntax-attribute">@Bindable</span> <span class="syntax-keyword">var</span> model: <span class="syntax-type">FeatureModel</span>
+}</code></pre>
+            </div>
+
+            <div class="example-shift">
+              <img src="assets/icons/arrow-right.svg" alt="" aria-hidden="true">
+              <span>Give a reusable leaf the value and action it actually consumes.</span>
+            </div>
+
+            <div class="mini-example mini-example-safer">
+              <div class="mini-example-heading">
+                <span>Accepted clean boundary</span>
+                <span class="plain-status">focused input</span>
+              </div>
+              <pre tabindex="0"><code><span class="syntax-keyword">struct</span> GoodFocusedLeaf: <span class="syntax-type">View</span> {
+    <span class="syntax-keyword">let</span> title: <span class="syntax-type">String</span>
+    <span class="syntax-keyword">let</span> reload: () -&gt; <span class="syntax-type">Void</span>
+
+    <span class="syntax-keyword">var</span> body: <span class="syntax-keyword">some</span> <span class="syntax-type">View</span> {
+        <span class="syntax-call">Button</span>(<span class="syntax-string">"Reload"</span>, action: reload)
+    }
+}</code></pre>
+            </div>
+            <p class="example-caveat">A screen or composition root may legitimately receive a broad model. The agent must establish that role.</p>
+          </article>
+
+          <article class="example-card">
+            <header class="example-card-header">
+              <span class="step-number">3</span>
+              <div>
+                <h3>Keep derived state derived</h3>
+                <p>A stored flag creates write paths when its value is already determined by inputs.</p>
+              </div>
+            </header>
+
+            <div class="mini-example">
+              <div class="mini-example-heading">
+                <span>Accepted fixture excerpt</span>
+                <code>stored-derived-state</code>
+              </div>
+              <pre tabindex="0"><code><span class="syntax-attribute">@State</span> <span class="syntax-keyword">private var</span> username = <span class="syntax-string">""</span>
+<span class="syntax-attribute">@State</span> <span class="syntax-keyword">private var</span> password = <span class="syntax-string">""</span>
+<span class="syntax-attribute">@State</span> <span class="syntax-keyword">private var</span> canSubmit = <span class="syntax-keyword">false</span>
+
+.onChange(of: username) { _, _ <span class="syntax-keyword">in</span>
+    canSubmit = !username.isEmpty &amp;&amp; !password.isEmpty
+}</code></pre>
+            </div>
+
+            <div class="example-shift">
+              <img src="assets/icons/arrow-right.svg" alt="" aria-hidden="true">
+              <span>When the value has no independent lifetime, compute it from its sources.</span>
+            </div>
+
+            <div class="mini-example mini-example-safer">
+              <div class="mini-example-heading">
+                <span>Safer shape, pending behavior tests</span>
+                <span class="plain-status">computed</span>
+              </div>
+              <pre tabindex="0"><code><span class="syntax-attribute">@State</span> <span class="syntax-keyword">private var</span> username = <span class="syntax-string">""</span>
+<span class="syntax-attribute">@State</span> <span class="syntax-keyword">private var</span> password = <span class="syntax-string">""</span>
+
+<span class="syntax-keyword">private var</span> canSubmit: <span class="syntax-type">Bool</span> {
+    !username.isEmpty &amp;&amp; !password.isEmpty
+}</code></pre>
+            </div>
+            <p class="example-caveat">Debouncing, server validation, or a separate lifetime may justify stored state.</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="protected-case section-paper" aria-labelledby="protected-title">
+      <div class="shell protected-panel">
+        <div class="protected-intro">
+          <img src="assets/icons/shield-check.svg" alt="" aria-hidden="true">
+          <p class="eyebrow">Protected case</p>
+          <h2 id="protected-title">It knows when not to change code.</h2>
+          <p>A local draft is valid when the UI has real commit and discard behavior. The distinction comes from action and copy topology, not button names.</p>
+        </div>
+
+        <div class="code-panel protected-code">
+          <div class="code-panel-heading">
+            <span>Representative protected transaction</span>
+            <span class="status status-clean">no finding expected</span>
+          </div>
+          <pre tabindex="0"><code><span class="syntax-attribute">@Binding</span> <span class="syntax-keyword">var</span> name: <span class="syntax-type">String</span>
+<span class="syntax-attribute">@State</span> <span class="syntax-keyword">private var</span> draft = <span class="syntax-string">""</span>
+
+<span class="syntax-keyword">func</span> applyEdits() { name = draft }
+<span class="syntax-keyword">func</span> abandonEdits() { draft = name }
+
+<span class="syntax-call">TextField</span>(<span class="syntax-string">"Name"</span>, text: $draft)
+<span class="syntax-call">Button</span>(<span class="syntax-string">"Apply"</span>) { applyEdits() }
+<span class="syntax-call">Button</span>(<span class="syntax-string">"Discard"</span>) { abandonEdits() }
+.onAppear { draft = name }</code></pre>
+        </div>
+
+        <ul class="protected-evidence">
+          <li>
+            <img src="assets/icons/check.svg" alt="" aria-hidden="true">
+            <span><strong>Separate lifetime</strong>The draft remains local until commit.</span>
+          </li>
+          <li>
+            <img src="assets/icons/pencil.svg" alt="" aria-hidden="true">
+            <span><strong>Explicit commit</strong>Apply writes the draft to the external owner.</span>
+          </li>
+          <li>
+            <img src="assets/icons/arrows-exchange.svg" alt="" aria-hidden="true">
+            <span><strong>Explicit rollback</strong>Discard restores the owned value.</span>
+          </li>
+          <li>
+            <img src="assets/icons/shield-check.svg" alt="" aria-hidden="true">
+            <span><strong>No mechanical fix</strong>The valid transaction stays intact.</span>
+          </li>
+        </ul>
+      </div>
+    </section>
+
+    <section id="workflow" class="workflow section-paper" aria-labelledby="workflow-title">
+      <div class="shell">
+        <div class="section-heading split-heading">
+          <div>
+            <p class="eyebrow">Agent workflow</p>
+            <h2 id="workflow-title">A workflow built for review</h2>
+          </div>
+          <p>One router selects the smallest specialist workflow. Each phase keeps deterministic facts separate from agent judgment.</p>
+        </div>
+
+        <ol class="workflow-list">
+          <li>
+            <div class="workflow-icon"><img src="assets/icons/user.svg" alt="" aria-hidden="true"></div>
+            <span class="step-number">1</span>
+            <h3>Audit</h3>
+            <p>Build the exact source, validate a fresh compiler Index Store, and map the target cluster before broad source reading.</p>
+            <code>$swiftui-semantic-audit</code>
+          </li>
+          <li>
+            <div class="workflow-icon"><img src="assets/icons/pencil.svg" alt="" aria-hidden="true"></div>
+            <span class="step-number">2</span>
+            <h3>Refactor</h3>
+            <p>Change one established ownership or data-flow cluster without altering its behavior or transaction boundary.</p>
+            <code>$swiftui-dataflow-refactor</code>
+          </li>
+          <li>
+            <div class="workflow-icon"><img src="assets/icons/shield-check.svg" alt="" aria-hidden="true"></div>
+            <span class="step-number">3</span>
+            <h3>Review</h3>
+            <p>Read the compatible semantic diff before the raw Git diff, then verify the implementation with builds and tests.</p>
+            <code>$swiftui-change-review</code>
+          </li>
+        </ol>
+      </div>
+    </section>
+
+    <section class="diff-ledger" aria-labelledby="diff-title">
+      <div class="shell diff-grid">
+        <div class="diff-heading">
+          <p class="eyebrow">Semantic diff</p>
+          <h2 id="diff-title">Record the architecture change.</h2>
+          <p>A compatible snapshot diff records changes to representations, relationships, metrics, and findings. This ledger summarizes the fixture refactor shown above.</p>
+        </div>
+
+        <div class="table-wrap" tabindex="0" role="region" aria-label="Semantic change ledger">
+          <table>
+            <thead>
+              <tr>
+                <th scope="col">Architecture fact</th>
+                <th scope="col">Baseline</th>
+                <th scope="col">Current</th>
+                <th scope="col">Review evidence</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <th scope="row">Canonical owner</th>
+                <td>Parent Binding</td>
+                <td>Parent Binding</td>
+                <td><span class="ledger-status ledger-stable">Preserved</span></td>
+              </tr>
+              <tr>
+                <th scope="row">Local mirror</th>
+                <td>State representation</td>
+                <td>Absent</td>
+                <td><span class="ledger-status ledger-resolved">Removed</span></td>
+              </tr>
+              <tr>
+                <th scope="row">Synchronization</th>
+                <td>Reciprocal copy path</td>
+                <td>Absent</td>
+                <td><span class="ledger-status ledger-resolved">Removed</span></td>
+              </tr>
+              <tr>
+                <th scope="row">Field write</th>
+                <td>Through local draft</td>
+                <td>Direct Binding</td>
+                <td><span class="ledger-status ledger-stable">Explicit</span></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <aside class="diff-boundary" aria-label="Review boundary">
+          <div>
+            <img src="assets/icons/scale.svg" alt="" aria-hidden="true">
+            <p><strong>Facts stay deterministic.</strong> Intent and remediation stay with the agent and reviewer.</p>
+          </div>
+          <div>
+            <img src="assets/icons/shield-check.svg" alt="" aria-hidden="true">
+            <p><strong>Behavior needs separate proof.</strong> Builds, tests, and source review remain required.</p>
+          </div>
+        </aside>
+      </div>
+    </section>
+
+    <section id="rules" class="rules section-paper" aria-labelledby="rules-title">
+      <div class="shell rules-layout">
+        <div class="rules-heading">
+          <p class="eyebrow">Semantic surface</p>
+          <h2 id="rules-title">29 bounded rules</h2>
+          <p>Each rule evaluates supported ownership and data-flow topology. A finding is evidence for review, not a command to edit.</p>
+          <a class="text-link" href="https://github.com/potapenko/swiftui-semantic-audit/blob/0.4.0/docs/reference/rules.md">
+            Read the rule reference
+            <img src="assets/icons/external-link.svg" alt="" aria-hidden="true">
+          </a>
+        </div>
+
+        <div class="rule-groups">
+          <article>
+            <img src="assets/icons/user.svg" alt="" aria-hidden="true">
+            <h3>Ownership</h3>
+            <ul>
+              <li><code>mirrored-state</code></li>
+              <li><code>observable-state-mirror</code></li>
+              <li><code>stored-derived-state</code></li>
+              <li><code>model-aware-descendant</code></li>
+              <li><code>multi-owner-component</code></li>
+              <li><code>cross-feature-owner-dependency</code></li>
+            </ul>
+          </article>
+          <article>
+            <img src="assets/icons/pencil.svg" alt="" aria-hidden="true">
+            <h3>Writes and effects</h3>
+            <ul>
+              <li><code>value-setter-pair</code></li>
+              <li><code>command-shaped-binding</code></li>
+              <li><code>manual-owner-synchronization</code></li>
+              <li><code>hidden-command-in-lifecycle</code></li>
+              <li><code>view-owned-external-effect</code></li>
+            </ul>
+          </article>
+          <article>
+            <img src="assets/icons/link.svg" alt="" aria-hidden="true">
+            <h3>Bindings and sync</h3>
+            <ul>
+              <li><code>manual-two-way-sync</code></li>
+              <li><code>callback-binding-tunnel</code></li>
+              <li><code>binding-factory</code></li>
+              <li><code>multi-source-binding</code></li>
+            </ul>
+          </article>
+          <article>
+            <img src="assets/icons/hierarchy-2.svg" alt="" aria-hidden="true">
+            <h3>Components</h3>
+            <ul>
+              <li><code>observable-model-tunnel</code></li>
+              <li><code>broad-observable-input</code></li>
+              <li><code>service-or-repository-in-view</code></li>
+              <li><code>preview-requires-app-composition</code></li>
+            </ul>
+          </article>
+          <article>
+            <img src="assets/icons/arrows-exchange.svg" alt="" aria-hidden="true">
+            <h3>Interaction and layout</h3>
+            <ul>
+              <li><code>imperative-focus-lifecycle</code></li>
+              <li><code>selection-corrective-loop</code></li>
+              <li><code>geometry-driven-product-layout</code></li>
+              <li><code>geometry-escapes-layout-boundary</code></li>
+              <li><code>geometry-triggered-model-effect</code></li>
+              <li><code>manual-positioning-as-layout</code></li>
+              <li><code>gesture-button-emulation</code></li>
+            </ul>
+          </article>
+          <article>
+            <img src="assets/icons/leaf.svg" alt="" aria-hidden="true">
+            <h3>Platform and environment</h3>
+            <ul>
+              <li><code>environment-command-router</code></li>
+              <li><code>imperative-platform-view-update</code></li>
+              <li><code>direct-global-platform-command</code></li>
+            </ul>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="trust section-paper" aria-labelledby="trust-title">
+      <div class="shell">
+        <div class="section-heading split-heading">
+          <div>
+            <p class="eyebrow">Trust and limits</p>
+            <h2 id="trust-title">Know what the tool owns</h2>
+          </div>
+          <p>The boundary is deliberate: deterministic extraction in the CLI, contextual decisions in the surrounding agent workflow.</p>
+        </div>
+
+        <div class="trust-grid">
+          <article>
+            <img src="assets/icons/shield-check.svg" alt="" aria-hidden="true">
+            <div><h3>Released and inspectable</h3><p>Source, immutable tag, archive, and MIT license are public.</p></div>
+          </article>
+          <article>
+            <img src="assets/icons/lock.svg" alt="" aria-hidden="true">
+            <div><h3>No automatic source rewriting</h3><p>The CLI reports evidence. It never edits project source.</p></div>
+          </article>
+          <article>
+            <img src="assets/icons/scale.svg" alt="" aria-hidden="true">
+            <div><h3>Deterministic, not prescriptive</h3><p>Facts are canonical. Architectural judgment remains separate.</p></div>
+          </article>
+          <article>
+            <img src="assets/icons/cube.svg" alt="" aria-hidden="true">
+            <div><h3>No embedded model API</h3><p>The CLI stays provider independent; the agent host controls its own data handling.</p></div>
+          </article>
+        </div>
+
+        <div class="limit-note">
+          <img src="assets/icons/info-circle.svg" alt="" aria-hidden="true">
+          <p>The bounded analysis is not a full type checker, control-flow engine, security audit, or performance profiler. A clean report or semantic diff does not prove runtime behavior.</p>
+        </div>
+      </div>
+    </section>
+
+    <section id="install" class="install section-paper" aria-labelledby="install-title">
+      <div class="shell">
+        <div class="section-heading split-heading">
+          <div>
+            <p class="eyebrow">Installation</p>
+            <h2 id="install-title">Install in two separate steps</h2>
+          </div>
+          <p>Homebrew owns the executable. The agent host owns the optional router and specialist skills.</p>
+        </div>
+
+        <div class="install-grid">
+          <article class="install-step">
+            <header>
+              <span class="step-number">1</span>
+              <div><h3>Install the CLI</h3><p>macOS 13 or later, Homebrew, and Xcode 26.6.</p></div>
+            </header>
+            <div class="copy-block">
+              <button class="copy-button" type="button" data-copy-target="install-cli-command" aria-describedby="install-cli-status">
+                <img src="assets/icons/copy.svg" alt="" aria-hidden="true">
+                <span>Copy</span>
+              </button>
+              <pre id="install-cli-command" tabindex="0"><code>brew install potapenko/tap/swiftui-semantic-audit
+swiftui-audit --version</code></pre>
+            </div>
+            <p id="install-cli-status" class="copy-status" aria-live="polite"></p>
+            <p class="install-note">The formula builds the tagged package from source and installs only <code>swiftui-audit</code>.</p>
+          </article>
+
+          <article class="install-step">
+            <header>
+              <span class="step-number">2</span>
+              <div><h3>Add the agent skills</h3><p>Paste this bounded setup request into Codex or Claude Code.</p></div>
+            </header>
+            <div class="copy-block copy-block-prompt">
+              <button class="copy-button" type="button" data-copy-target="agent-setup-prompt" aria-describedby="agent-setup-status">
+                <img src="assets/icons/copy.svg" alt="" aria-hidden="true">
+                <span>Copy prompt</span>
+              </button>
+              <pre id="agent-setup-prompt" tabindex="0"><code>Install exactly the four SwiftUI Semantic Audit agent skills for release 0.4.0.
+The CLI is already managed by Homebrew; verify `swiftui-audit --version` first.
+Read and follow the tagged installation guide:
+https://github.com/potapenko/swiftui-semantic-audit/blob/0.4.0/docs/getting-started/installation.md
+Clone only tag 0.4.0 from
+https://github.com/potapenko/swiftui-semantic-audit.git into a stable user-owned path.
+Before linking anything, verify the origin, tag, and exact commit
+189dc44c928f7f61b393f6e4ca7d8f6f5d183a48.
+Detect this agent host and link all four sibling skill directories into its
+documented personal skill directory. Do not overwrite, delete, move, or repoint
+an existing path. Finish with the tag, commit, CLI version, installed paths,
+host, and verification receipt.</code></pre>
+            </div>
+            <p id="agent-setup-status" class="copy-status" aria-live="polite"></p>
+            <p class="install-note">The workflow stops on version, source, or destination conflicts.</p>
+          </article>
+        </div>
+
+        <div class="install-next">
+          <div>
+            <img src="assets/icons/terminal-2.svg" alt="" aria-hidden="true">
+            <p><strong>Then ask normally.</strong> Use <code>$swiftui-semantic</code> in Codex or <code>/swiftui-semantic</code> in Claude Code.</p>
+          </div>
+          <a class="button button-secondary" href="https://github.com/potapenko/swiftui-semantic-audit/blob/0.4.0/docs/getting-started/first-audit.md">
+            Run the first audit
+            <img src="assets/icons/external-link.svg" alt="" aria-hidden="true">
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <section class="faq section-paper" aria-labelledby="faq-title">
+      <div class="shell faq-grid">
+        <div class="faq-heading">
+          <p class="eyebrow">FAQ</p>
+          <h2 id="faq-title">Product boundaries</h2>
+          <a class="text-link" href="https://github.com/potapenko/swiftui-semantic-audit/tree/0.4.0/docs">
+            Read the documentation
+            <img src="assets/icons/external-link.svg" alt="" aria-hidden="true">
+          </a>
+        </div>
+
+        <div class="faq-list">
+          <details>
+            <summary>Is this a linter?</summary>
+            <p>No. The CLI compiles supported source facts into a semantic graph and evidence-backed findings for agent reasoning. It does not score style or prescribe a wrapper.</p>
+          </details>
+          <details>
+            <summary>Does it change project source?</summary>
+            <p>No. The CLI is non-mutating. A coding agent may propose a focused refactor after establishing ownership and behavior, but the tool itself never rewrites code.</p>
+          </details>
+          <details>
+            <summary>Why does the agent workflow require a fresh Index Store?</summary>
+            <p>Compiler-backed symbol identity and cross-file relations provide the evidence level required by the bundled workflows. They stop rather than present weaker evidence as a semantic result.</p>
+          </details>
+          <details>
+            <summary>Are local drafts reported as duplicate state?</summary>
+            <p>Not when the graph proves a real transaction with commit and discard behavior. Missing or fake discard topology does not receive that protection.</p>
+          </details>
+          <details>
+            <summary>Does a clean semantic diff prove the refactor is correct?</summary>
+            <p>No. The diff verifies supported architecture facts. Relevant builds, behavior tests, product invariants, and source review remain required.</p>
+          </details>
+          <details>
+            <summary>Does the CLI send source to a model provider?</summary>
+            <p>No. The CLI has no embedded model API. A surrounding agent host may read source under its own product and data policies.</p>
+          </details>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="shell footer-grid">
+      <div>
+        <strong>SwiftUI Semantic Audit</strong>
+        <p>Deterministic architecture evidence for agent-authored SwiftUI changes.</p>
+      </div>
+      <nav aria-label="Product links">
+        <span>Product</span>
+        <a href="#examples">Examples</a>
+        <a href="#rules">Rules</a>
+        <a href="#install">Install</a>
+      </nav>
+      <nav aria-label="Resource links">
+        <span>Resources</span>
+        <a href="https://github.com/potapenko/swiftui-semantic-audit/tree/0.4.0/docs">Documentation</a>
+        <a href="https://github.com/potapenko/swiftui-semantic-audit/releases/tag/0.4.0">Release</a>
+        <a href="https://github.com/potapenko/swiftui-semantic-audit/blob/0.4.0/LICENSE">MIT License</a>
+      </nav>
+      <div class="footer-meta">
+        <p>Built for SwiftUI projects.<br>Static site. No analytics.</p>
+        <a class="footer-github" href="https://github.com/potapenko/swiftui-semantic-audit" aria-label="SwiftUI Semantic Audit on GitHub">
+          <img src="assets/icons/brand-github.svg" alt="" aria-hidden="true">
+        </a>
+      </div>
+    </div>
+  </footer>
+</body>
+</html>
