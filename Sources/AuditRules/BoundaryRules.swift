@@ -69,17 +69,27 @@ public struct ObservableModelTunnelRule: AuditRule {
 
     public func evaluate(graph: SemanticGraph, normalization: NormalizationResult) -> [AuditFinding] {
         let index = GraphIndex(graph)
+        var passesByValueID: [String: [SemanticEdge]] = [:]
+        for edge in graph.edges where edge.kind == .passes {
+            guard let sourceValue = normalization.valueByRepresentation[edge.from],
+                  let targetValue = normalization.valueByRepresentation[edge.to],
+                  sourceValue.id == targetValue.id,
+                  index.nodes[edge.to]?.kind == .observableState,
+                  index.owner(of: edge.to)?.kind == .view
+            else { continue }
+            passesByValueID[sourceValue.id, default: []].append(edge)
+        }
+
         var findings: [AuditFinding] = []
         for value in normalization.semanticValues {
-            let representations = Set(value.representations)
-            let passes = graph.edges.filter { edge in
-                edge.kind == .passes && representations.contains(edge.from) && representations.contains(edge.to) &&
-                    index.nodes[edge.to]?.kind == .observableState && index.owner(of: edge.to)?.kind == .view
+            let passes = (passesByValueID[value.id] ?? []).sorted { $0.id < $1.id }
+            let outgoing = Dictionary(grouping: passes, by: \.from).mapValues {
+                $0.sorted { $0.id < $1.id }
             }
             let incomingTargets = Set(passes.map(\.to))
             let starts = passes.filter { !incomingTargets.contains($0.from) }.sorted { $0.id < $1.id }
             for start in starts {
-                for path in passPaths(from: start, passes: passes, visited: [start.from, start.to])
+                for path in passPaths(from: start, outgoing: outgoing, visited: [start.from, start.to])
                     where path.count >= 2 {
                     let terminal = path.last!.to
                     guard !passes.contains(where: { $0.from == terminal }) else { continue }
@@ -104,15 +114,15 @@ public struct ObservableModelTunnelRule: AuditRule {
 
     private func passPaths(
         from edge: SemanticEdge,
-        passes: [SemanticEdge],
+        outgoing: [String: [SemanticEdge]],
         visited: Set<String>
     ) -> [[SemanticEdge]] {
-        let next = passes.filter { $0.from == edge.to && !visited.contains($0.to) }.sorted { $0.id < $1.id }
+        let next = (outgoing[edge.to] ?? []).filter { !visited.contains($0.to) }
         if next.isEmpty { return [[edge]] }
         return next.flatMap { successor in
             var nextVisited = visited
             nextVisited.insert(successor.to)
-            return passPaths(from: successor, passes: passes, visited: nextVisited).map { [edge] + $0 }
+            return passPaths(from: successor, outgoing: outgoing, visited: nextVisited).map { [edge] + $0 }
         }
     }
 }
