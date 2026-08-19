@@ -56,6 +56,17 @@ class PublishDigitalOceanTests(unittest.TestCase):
                 "swiftui-semantic-audit",
             )
 
+    def test_optional_selection_allows_first_deploy(self) -> None:
+        self.assertIsNone(
+            publish.find_optional_app_id([], "swiftui-semantic-audit")
+        )
+        self.assertEqual(
+            publish.app_id_from_payload({"app": {"id": "created-app"}}),
+            "created-app",
+        )
+        with self.assertRaisesRegex(publish.PublishError, "has no ID"):
+            publish.app_id_from_payload({"app": {}})
+
     def test_reads_active_deployment_commit_and_technical_ingress(self) -> None:
         self.assertEqual(
             publish.deployment_details(APP_RESPONSE),
@@ -142,6 +153,52 @@ class PublishDigitalOceanTests(unittest.TestCase):
         doctl.assert_not_called()
         self.assertIn("apps spec validate", output.getvalue())
         self.assertIn("--update-sources --wait", output.getvalue())
+
+    def test_main_creates_missing_app_and_verifies_technical_url(self) -> None:
+        doctl_calls: list[list[str]] = []
+        verified: list[str] = []
+
+        def fake_doctl(_binary: str, arguments: list[str], *, timeout: float):
+            del timeout
+            doctl_calls.append(arguments)
+            if arguments == ["apps", "list"]:
+                return []
+            if arguments[:2] == ["apps", "create"]:
+                return {"app": {"id": "created-app"}}
+            if arguments == ["apps", "get", "created-app"]:
+                return APP_RESPONSE
+            raise AssertionError(arguments)
+
+        def fake_verify(url: str, **_kwargs: object) -> None:
+            verified.append(url)
+
+        with (
+            mock.patch.object(publish.shutil, "which", return_value="/usr/local/bin/doctl"),
+            mock.patch.object(publish, "validate_app_spec") as validate,
+            mock.patch.object(publish, "run_doctl_json", side_effect=fake_doctl),
+            mock.patch.object(publish, "verify_public_site", side_effect=fake_verify),
+            contextlib.redirect_stdout(io.StringIO()),
+        ):
+            result = publish.main(["--spec", str(publish.DEFAULT_APP_SPEC)])
+
+        self.assertEqual(result, 0)
+        validate.assert_called_once()
+        self.assertEqual(doctl_calls[0], ["apps", "list"])
+        self.assertEqual(
+            doctl_calls[1],
+            [
+                "apps",
+                "create",
+                "--spec",
+                str(publish.DEFAULT_APP_SPEC.absolute()),
+                "--wait",
+            ],
+        )
+        self.assertEqual(doctl_calls[2], ["apps", "get", "created-app"])
+        self.assertEqual(
+            verified,
+            ["https://swiftui-semantic-audit-abc.ondigitalocean.app/"],
+        )
 
     def test_main_validates_applies_and_verifies_technical_url_first(self) -> None:
         doctl_calls: list[list[str]] = []

@@ -78,7 +78,7 @@ def app_object(payload: Any) -> dict[str, Any]:
     return app
 
 
-def find_app_id(payload: Any, app_name: str) -> str:
+def find_optional_app_id(payload: Any, app_name: str) -> str | None:
     matches: list[str] = []
     for app in objects(payload):
         spec = app.get("spec")
@@ -86,11 +86,24 @@ def find_app_id(payload: Any, app_name: str) -> str:
         app_id = app.get("id")
         if name == app_name and isinstance(app_id, str) and app_id:
             matches.append(app_id)
-    if not matches:
-        raise PublishError(f"DigitalOcean app {app_name!r} was not found")
     if len(matches) > 1:
         raise PublishError(f"DigitalOcean app name {app_name!r} is not unique")
-    return matches[0]
+    return matches[0] if matches else None
+
+
+def find_app_id(payload: Any, app_name: str) -> str:
+    app_id = find_optional_app_id(payload, app_name)
+    if app_id is None:
+        raise PublishError(f"DigitalOcean app {app_name!r} was not found")
+    return app_id
+
+
+def app_id_from_payload(payload: Any) -> str:
+    app = app_object(payload)
+    app_id = app.get("id")
+    if not isinstance(app_id, str) or not app_id:
+        raise PublishError("DigitalOcean app response has no ID")
+    return app_id
 
 
 def deployment_details(
@@ -371,17 +384,34 @@ def main(argv: Sequence[str] | None = None) -> int:
         raise PublishError(f"{arguments.doctl!r} is not installed")
 
     if arguments.dry_run:
-        app_id = arguments.app_id or f"<unique app named {arguments.app_name}>"
         print("DRY RUN:", doctl, "apps spec validate", app_spec)
-        print(
-            "DRY RUN:",
-            doctl,
-            "apps update",
-            app_id,
-            "--spec",
-            app_spec,
-            "--update-sources --wait --output json",
-        )
+        if arguments.app_id:
+            print(
+                "DRY RUN:",
+                doctl,
+                "apps update",
+                arguments.app_id,
+                "--spec",
+                app_spec,
+                "--update-sources --wait --output json",
+            )
+        else:
+            print("DRY RUN:", doctl, "apps list --output json")
+            print(
+                "DRY RUN: if absent:",
+                doctl,
+                "apps create --spec",
+                app_spec,
+                "--wait --output json",
+            )
+            print(
+                "DRY RUN: if uniquely present:",
+                doctl,
+                "apps update <app-id> --spec",
+                app_spec,
+                "--update-sources --wait --output json",
+            )
+            print("DRY RUN: duplicate app names fail")
         print("DRY RUN: verify technical ingress /, /robots.txt, /sitemap.xml, and 404")
         if arguments.url:
             print("DRY RUN: then verify public URL", arguments.url)
@@ -396,22 +426,31 @@ def main(argv: Sequence[str] | None = None) -> int:
         apps = run_doctl_json(
             doctl, ["apps", "list"], timeout=remaining(deadline)
         )
-        app_id = find_app_id(apps, arguments.app_name)
+        app_id = find_optional_app_id(apps, arguments.app_name)
 
-    print(f"Applying spec and latest source to DigitalOcean app {app_id}")
-    run_doctl_json(
-        doctl,
-        [
-            "apps",
-            "update",
-            app_id,
-            "--spec",
-            str(app_spec),
-            "--update-sources",
-            "--wait",
-        ],
-        timeout=remaining(deadline),
-    )
+    if app_id is None:
+        print(f"Creating DigitalOcean app {arguments.app_name!r} from {app_spec}")
+        created = run_doctl_json(
+            doctl,
+            ["apps", "create", "--spec", str(app_spec), "--wait"],
+            timeout=remaining(deadline),
+        )
+        app_id = app_id_from_payload(created)
+    else:
+        print(f"Applying spec and latest source to DigitalOcean app {app_id}")
+        run_doctl_json(
+            doctl,
+            [
+                "apps",
+                "update",
+                app_id,
+                "--spec",
+                str(app_spec),
+                "--update-sources",
+                "--wait",
+            ],
+            timeout=remaining(deadline),
+        )
     app = run_doctl_json(
         doctl, ["apps", "get", app_id], timeout=remaining(deadline)
     )

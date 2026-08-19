@@ -74,10 +74,18 @@ A live deployment is an operator-approved action:
 scripts/release/publish_digitalocean.py [--url https://authorized-domain/]
 ```
 
-The publisher synchronizes the committed App Platform spec, waits within a
+The publisher validates the committed App Platform spec, creates the uniquely
+named app on its first run or updates the one existing match, waits within a
 bounded deadline, and verifies the technical DigitalOcean ingress before an
-optional public URL. Authentication comes from the operator's local `doctl`
-session; no DigitalOcean token belongs in the repository.
+optional public URL. Duplicate app names fail closed. Authentication comes from
+the operator's local `doctl` session; no DigitalOcean token belongs in the
+repository.
+
+App Platform watches `master` directly through `deploy_on_push: true`; GitHub
+Actions remains build/test CI and does not need a DigitalOcean token. The first
+deployment intentionally uses the technical `ondigitalocean.app` hostname. The
+canonical apex and `www` redirect are added only after that hostname passes and
+`swiftui-audit.dev` has authoritative registry and DNS delegation.
 
 ## Content evidence
 

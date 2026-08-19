@@ -2,8 +2,8 @@
 
 - Node type: hybrid
 - Status: Active
-- Contract revision: `spec-1`
-- Authority: user-authorized `WEBSITE-001` on 2026-08-19
+- Contract revision: `spec-2`
+- Authority: user-authorized `WEBSITE-001` and `WEBSITE-PUBLISH-001` on 2026-08-19
 - Stability: evolving, unreleased
 - Read when: designing, implementing, publishing, or verifying the product website.
 - Do not read when: work is limited to the Swift package, CLI, rules, or agent skills.
@@ -23,6 +23,13 @@ implementation inputs.
 static-build, App Platform, publisher, metadata, accessibility, and QA mechanics.
 Its visual design, localization system, product content, analytics, assets, and
 release coupling are excluded.
+
+**WEB-DELTA-003 — Publication and canonical host.** `WEBSITE-PUBLISH-001`
+authorizes `https://swiftui-audit.dev/` as the eventual canonical public root,
+`www` as a permanent redirect, and App Platform auto-deployment from `master`.
+Bootstrap remains domain-free until the technical ingress passes. Domain
+attachment waits for authoritative registration and DNS, so a pending purchase
+cannot create a false public-domain or TLS claim.
 
 ## Choose the governing child
 

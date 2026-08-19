@@ -2,7 +2,7 @@
 
 - Node type: leaf
 - Status: Active
-- Contract revision: `spec-1`
+- Contract revision: `spec-2`
 - Authority: [Website contract](../website.md)
 - Maximum size: 100 physical lines.
 
@@ -30,23 +30,27 @@ the page remains complete and navigable when scripts fail or are disabled.
 
 **WEB-META-001.** Emit one canonical URL, English language metadata, title and
 description, Open Graph/X metadata, social preview dimensions, JSON-LD software
-application data, theme color, robots, and sitemap. Until a public domain is
-authorized, builds use a validated explicit base URL and deployment may use the
-technical App Platform hostname.
+application data, theme color, robots, and sitemap. Technical bootstrap uses
+the validated App Platform base URL. After the authorized primary domain is
+active, builds use `https://swiftui-audit.dev/` for canonical and public metadata.
 
 ## DigitalOcean delivery
 
 **WEB-DO-001.** Deploy one App Platform static-site component from repository
 branch `master`, source `website`, and generated output `public`, with deployment
-and domain failure alerts. Do not use deprecated component routes/CORS or a SPA
-catchall. Domains and canonical redirects remain absent until the user supplies
-and authorizes the final hostname.
+and domain failure alerts. Bootstrap without domains and verify the technical
+ingress first. Once authoritative registration exists, attach
+`swiftui-audit.dev` as PRIMARY, attach `www.swiftui-audit.dev` as ALIAS, and use
+top-level ingress for a permanent `www`-to-apex redirect plus component routing.
+Do not use deprecated component routes/CORS or a SPA catchall.
 
-**WEB-DO-002.** A bounded publisher applies the committed App Spec with the
-authenticated local `doctl` context, waits for terminal deployment, verifies
-the technical hostname first, optionally verifies a public URL, cache-busts by
-deployment ID, and applies one overall deadline plus bounded HTTP attempts. It
-must not contain or print a token.
+**WEB-DO-002.** A bounded publisher validates the committed App Spec with the
+authenticated local `doctl` context. It creates the uniquely named app when
+absent, updates the one existing match with the latest source, and rejects
+duplicate names. It waits for terminal deployment, verifies the technical
+hostname first, optionally verifies a public URL, cache-busts by deployment ID,
+and applies one overall deadline plus bounded HTTP attempts. It must not contain
+or print a token.
 
 ## Acceptance
 
@@ -64,8 +68,11 @@ wrapping. The root `design-qa.md` must end in `final result: passed`.
 **WEB-QA-003.** Deployment acceptance verifies the technical root,
 `/robots.txt`, and `/sitemap.xml`, confirms the deployment marker, tests the
 expected unknown-path response, and records the deployed commit. Domain/DNS
-acceptance is a separate operator-authorized step.
+acceptance separately requires authoritative registration, only the intended
+apex/`www` record changes, managed HTTPS, apex content and metadata, and a
+permanent `www` redirect.
 
 **WEB-REL-001.** The website remains unreleased until a DigitalOcean deployment
 receipt exists. A checkpoint commit, local preview, or Active contract does not
-authorize a public-domain claim.
+authorize a public-domain claim. Public-domain readiness requires its separate
+DNS/TLS verification receipt.
