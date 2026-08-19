@@ -1,7 +1,7 @@
 # Specification coverage and evidence map
 
-Revision: `spec-6`
-Authority: ТЗ epoch `tz-v1` plus user-authorized addenda through `ARCHITECTURE-001`, combined epoch `tz-v5`
+Revision: `spec-7`
+Authority: ТЗ epoch `tz-v1` plus user-authorized addenda through `INCREMENTAL-CACHE-001`, combined epoch `tz-v6`
 Purpose: route every source section to stable local clauses and evidence owners
 
 This map proves coverage; it does not create new requirements. Source and tests establish realization only after the normative contract is fixed.
@@ -50,7 +50,7 @@ This map proves coverage; it does not create new requirements. Source and tests 
 | 40 | Deferred features | `PC-NONGOAL-*` | release baseline limitations |
 | 41 | Syntax-only mode | `PC-RES-001`, `IR-RES-001`, `CLI-RES-*` | all live-source commands |
 | 42 | Semantic/indexed mode | `PC-RES-002..004`, `CLI-RES-*` | SymbolResolution/tests |
-| 43 | Incremental direction | `PC-SCOPE-003` | accepted full-rebuild residual |
+| 43 | Incremental analysis | `PC-SCOPE-003/005`, `IR-CACHE-*`, `CLI-CACHE-*` | AnalysisCache, frontend/symbol resolution, focused cache tests |
 | 44 | Fixture strategy | `ACC-FIX-*` | `Tests/Fixtures`, test targets |
 | 45 | Mandatory fixtures | `ACC-FIX-001..004` | RuleTests acceptance matrix |
 | 46 | Dogfooding | `PC-DOG-001`, `ACC-DOG-*` | CI/local receipts |
@@ -72,6 +72,7 @@ This map proves coverage; it does not create new requirements. Source and tests 
 | `BOUNDARY-001` | Custom Binding, Binding factory, observable tunnel/input rules, and logical source counting | `PC-OPS-008`, `PC-SCOPE-002/004`, `RULE-COMMAND/FACTORY/MODEL-TUNNEL/BROAD-INPUT`, `IR-GRAPH-007`, `IR-AUDIT-005`, `ACC-FIX-007..010` | frontend, AuditCore/AuditRules, diff, fixtures, indexed tests |
 | `ARCHITECTURE-001` | Collision-safe identity, exact project configuration, typed/feature topology, and nineteen architecture rules | `PC-OPS-009`, `PC-SAFE-002`, `IR-GRAPH-008/009`, `CFG-*`, architecture/layout/platform `RULE-*`, `ACC-FIX-011..015` | AuditCore configuration, frontend, SymbolResolution, AuditRules, architecture fixtures and indexed tests |
 | `REALISTIC-FIXTURES-001` | Compilable multi-file good/bad corpus, mixed-directory invariance, and syntax/indexed matrix parity | existing `RULE-*`, `ACC-FIX-016..017`, `ACC-TEST-008`, `ACC-DOD-009` | `RealProjectPatterns`, focused rule/indexed tests, CLI CI dogfood |
+| `INCREMENTAL-CACHE-001` | Persistent content-addressed frontend/indexed fact reuse with uncached byte equivalence | `PC-SCOPE-003/005`, `IR-CACHE-*`, `CLI-CACHE-*`, `ACC-CACHE-*`, `ACC-DOD-010` | AnalysisCache, GraphScanner, SymbolResolution, CLI, cache tests, CI |
 
 ## Evidence precedence by decision
 
@@ -85,10 +86,11 @@ This map proves coverage; it does not create new requirements. Source and tests 
 
 ## Ownership map
 
-- Product authority: user-approved base epoch `tz-v1` plus explicit semantic addenda through `ARCHITECTURE-001`, combined as `tz-v5`; `REALISTIC-FIXTURES-001` adds acceptance evidence and a restore of existing indexed semantics without advancing the product epoch.
+- Product authority: user-approved base epoch `tz-v1` plus explicit semantic addenda through `INCREMENTAL-CACHE-001`, combined as `tz-v6`; `REALISTIC-FIXTURES-001` adds acceptance evidence and a restore of existing indexed semantics without advancing the product epoch.
 - Semantic schema owner: `AuditCore` plus SnapshotStore transport.
 - Syntax fact owner: SwiftSyntaxFrontend and SwiftUISemantics vocabulary.
 - Compiler fact owner: SymbolResolution/IndexStoreDB on macOS.
+- Incremental fact-cache owner: AnalysisCache, with frontend dependency metadata and compiler-unit fingerprints supplied by their fact owners.
 - Finding owner: AuditRules over normalized graph.
 - Persistence/slice owner: SnapshotStore and ContextSlicer.
 - Comparison/policy/doctor owner: SemanticDiff and CLI commands.

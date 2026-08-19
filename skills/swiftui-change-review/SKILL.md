@@ -10,6 +10,9 @@ description: Review AI-generated or human SwiftUI changes through semantic diff 
 1. Use an installed `swiftui-audit`, or use `swift run --disable-automatic-resolution swiftui-audit` in this repository.
 2. Require compatible indexed snapshots for both sides. Each snapshot must have been created from a fresh validated compiler Index Store while that exact source state was built. Do not use Git-revision operands for semantic review because they cannot preserve indexed resolution.
 3. Require matching configuration digests. For role-aware review, confirm both snapshots used the same authoritative `.swiftui-audit.json`; never infer roles from names or compare differently classified graphs.
+
+Snapshot creation may reuse the CLI's content-addressed cache, but cache state is never review evidence. Use one explicit `--cache-directory <path>` when the default user cache is not persistent. If cache correctness is in doubt, regenerate the affected snapshot with `--no-cache` and require byte-equivalent semantic files.
+
 4. Obtain a semantic diff before reading the raw Git diff:
    - For two indexed snapshots:
 

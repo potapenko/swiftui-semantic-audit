@@ -1,3 +1,4 @@
+import AnalysisCache
 import ArgumentParser
 import AuditCore
 import Foundation
@@ -17,9 +18,18 @@ struct ResolutionOptions: ParsableArguments {
     @Option(name: .long, help: "Explicit .swiftui-audit.json analysis configuration path.")
     var config: String?
 
+    @Option(name: .long, help: "Explicit persistent analysis cache root.")
+    var cacheDirectory: String?
+
+    @Flag(name: .long, help: "Disable persistent frontend and indexed analysis caching.")
+    var noCache = false
+
     func selection() throws -> IndexSelection {
         if syntaxOnly && indexStore != nil {
             throw ValidationError("--syntax-only and --index-store cannot be used together")
+        }
+        if noCache && cacheDirectory != nil {
+            throw ValidationError("--no-cache and --cache-directory cannot be used together")
         }
         if syntaxOnly { return .syntaxOnly }
         if let indexStore {
@@ -31,20 +41,32 @@ struct ResolutionOptions: ParsableArguments {
     func configurationURL() -> URL? {
         config.map { URL(fileURLWithPath: $0) }
     }
+
+    func cacheStore(sourceURL: URL) -> AnalysisCacheStore? {
+        guard !noCache else { return nil }
+        return AnalysisCacheStore(
+            rootDirectory: cacheDirectory.map { URL(fileURLWithPath: $0, isDirectory: true) },
+            sourceRoot: sourceURL
+        )
+    }
 }
 
 func loadResolvedGraph(path: String, options: ResolutionOptions) throws -> SemanticGraph {
     let source = URL(fileURLWithPath: path).standardizedFileURL.resolvingSymlinksInPath()
-    let syntaxGraph = try GraphScanner().scan(path: source.path)
+    _ = try options.selection()
+    let cache = options.cacheStore(sourceURL: source)
+    let scan = try GraphScanner().scan(path: source.path, previousState: cache?.loadFrontendState())
+    try? cache?.saveFrontendState(scan.state)
     let configuration = try AnalysisConfiguration.load(
         explicitURL: options.configurationURL(),
         sourceURL: source
     )
-    let graph = configuration?.applying(to: syntaxGraph) ?? syntaxGraph
+    let graph = configuration?.applying(to: scan.graph) ?? scan.graph
     return try IndexEnrichmentCoordinator(helperExecutable: currentExecutableURL()).enrich(
         graph: graph,
         sourceRoot: source,
-        selection: options.selection()
+        selection: options.selection(),
+        cache: cache
     )
 }
 

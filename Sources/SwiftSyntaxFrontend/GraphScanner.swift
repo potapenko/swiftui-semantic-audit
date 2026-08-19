@@ -1,4 +1,5 @@
 import AuditCore
+import CryptoKit
 import Foundation
 import SwiftParser
 import SwiftSyntax
@@ -25,6 +26,10 @@ public struct GraphScanner: Sendable {
     public init() {}
 
     public func scan(path: String) throws -> SemanticGraph {
+        try scan(path: path, previousState: nil).graph
+    }
+
+    public func scan(path: String, previousState: FrontendCacheState?) throws -> FrontendScanResult {
         let fileManager = FileManager.default
         let requestedURL = URL(fileURLWithPath: path)
         let rootURL = requestedURL.standardizedFileURL.resolvingSymlinksInPath()
@@ -40,19 +45,84 @@ public struct GraphScanner: Sendable {
         let moduleName = isDirectory.boolValue
             ? rootURL.lastPathComponent
             : rootURL.deletingPathExtension().lastPathComponent
-        let builder = GraphBuilder(moduleName: moduleName)
-        let moduleEvidence = Evidence(file: ".", startLine: 1, endLine: 1, kind: "module-root")
-        builder.addNode(kind: .module, name: moduleName, qualifiedName: moduleName, evidence: moduleEvidence)
 
-        var parsed: [(tree: SourceFileSyntax, relativePath: String)] = []
+        var sources: [String: String] = [:]
+        var hashes: [String: String] = [:]
         for sourceURL in sourceURLs {
             let relativePath = relativePath(for: sourceURL, root: rootURL, rootIsDirectory: isDirectory.boolValue)
             do {
                 let source = try String(contentsOf: sourceURL, encoding: .utf8)
-                parsed.append((Parser.parse(source: source), relativePath))
+                sources[relativePath] = source
+                hashes[relativePath] = Self.sha256(source)
             } catch {
                 throw GraphScannerError.unreadableFile(relativePath, error)
             }
+        }
+
+        let cacheCompatible = previousState.map {
+            $0.cacheSchemaVersion == FrontendCacheState.currentSchemaVersion &&
+                $0.toolVersion == ToolMetadata.version &&
+                $0.graphSchemaVersion == ToolMetadata.schemaVersion &&
+                $0.moduleName == moduleName
+        } == true
+        let previousFiles = cacheCompatible ? previousState!.files : [:]
+        let currentPaths = Set(sources.keys)
+        let previousPaths = Set(previousFiles.keys)
+        let contentChanged = currentPaths.filter { previousFiles[$0]?.contentHash != hashes[$0] }
+        let removed = previousPaths.subtracting(currentPaths)
+
+        if cacheCompatible, contentChanged.isEmpty, removed.isEmpty, let previousState {
+            return FrontendScanResult(
+                graph: previousState.graph,
+                state: previousState,
+                statistics: FrontendScanStatistics(
+                    parsedFiles: [],
+                    reusedFiles: currentPaths.sorted(),
+                    invalidatedDependents: []
+                )
+            )
+        }
+
+        var parsedByPath: [String: SourceFileSyntax] = [:]
+        var metadataByPath: [String: FrontendFileRecord] = [:]
+        for path in contentChanged.sorted() {
+            guard let source = sources[path], let hash = hashes[path] else { continue }
+            let tree = Parser.parse(source: source)
+            parsedByPath[path] = tree
+            metadataByPath[path] = Self.fileRecord(tree: tree, contentHash: hash)
+        }
+
+        let oldDeclarationNames = Set((Set(contentChanged).union(removed)).flatMap {
+            previousFiles[$0]?.declarationNames ?? []
+        })
+        let newDeclarationNames = Set(contentChanged.flatMap {
+            metadataByPath[$0]?.declarationNames ?? []
+        })
+        let affectedNames = oldDeclarationNames.union(newDeclarationNames)
+        let dependentPaths = cacheCompatible ? currentPaths.filter { path in
+            !contentChanged.contains(path) &&
+                !affectedNames.isDisjoint(with: Set(previousFiles[path]?.lexicalIdentifiers ?? []))
+        } : currentPaths
+        let dirtyPaths = Set(contentChanged).union(dependentPaths)
+
+        for path in dirtyPaths.sorted() where parsedByPath[path] == nil {
+            guard let source = sources[path], let hash = hashes[path] else { continue }
+            let tree = Parser.parse(source: source)
+            parsedByPath[path] = tree
+            metadataByPath[path] = Self.fileRecord(tree: tree, contentHash: hash)
+        }
+
+        let retainedGraph = cacheCompatible
+            ? previousState!.graph.removingEvidence(in: dirtyPaths.union(removed))
+            : nil
+        let builder = GraphBuilder(moduleName: moduleName, seed: retainedGraph)
+        if retainedGraph == nil {
+            let moduleEvidence = Evidence(file: ".", startLine: 1, endLine: 1, kind: "module-root")
+            builder.addNode(kind: .module, name: moduleName, qualifiedName: moduleName, evidence: moduleEvidence)
+        }
+
+        let parsed = dirtyPaths.sorted().compactMap { path in
+            parsedByPath[path].map { (tree: $0, relativePath: path) }
         }
 
         for item in parsed {
@@ -73,7 +143,21 @@ public struct GraphScanner: Sendable {
             RelationshipVisitor(builder: builder, file: item.relativePath, converter: converter).walk(item.tree)
         }
 
-        return try builder.graph()
+        let graph = try builder.graph()
+        var records = cacheCompatible ? previousFiles.filter { currentPaths.contains($0.key) } : [:]
+        for path in dirtyPaths {
+            if let record = metadataByPath[path] { records[path] = record }
+        }
+        let state = FrontendCacheState(moduleName: moduleName, files: records, graph: graph)
+        return FrontendScanResult(
+            graph: graph,
+            state: state,
+            statistics: FrontendScanStatistics(
+                parsedFiles: dirtyPaths.sorted(),
+                reusedFiles: currentPaths.subtracting(dirtyPaths).sorted(),
+                invalidatedDependents: Set(dependentPaths).subtracting(contentChanged).sorted()
+            )
+        )
     }
 
     private func swiftFiles(at root: URL, isDirectory: Bool) throws -> [URL] {
@@ -103,6 +187,126 @@ public struct GraphScanner: Sendable {
         let relative = file.path.hasPrefix(prefix) ? String(file.path.dropFirst(prefix.count)) : file.lastPathComponent
         return relative.replacingOccurrences(of: "\\", with: "/")
     }
+
+    private static func sha256(_ source: String) -> String {
+        SHA256.hash(data: Data(source.utf8)).map { String(format: "%02x", $0) }.joined()
+    }
+
+    private static func fileRecord(tree: SourceFileSyntax, contentHash: String) -> FrontendFileRecord {
+        let collector = DeclarationNameCollector()
+        collector.walk(tree)
+        let identifiers = Set(tree.tokens(viewMode: .sourceAccurate).compactMap { token -> String? in
+            guard case .identifier(let value) = token.tokenKind else { return nil }
+            return value
+        })
+        return FrontendFileRecord(
+            contentHash: contentHash,
+            declarationNames: collector.names.sorted(),
+            lexicalIdentifiers: identifiers.sorted()
+        )
+    }
+}
+
+public struct FrontendFileRecord: Codable, Equatable, Sendable {
+    public let contentHash: String
+    public let declarationNames: [String]
+    public let lexicalIdentifiers: [String]
+
+    public init(contentHash: String, declarationNames: [String], lexicalIdentifiers: [String]) {
+        self.contentHash = contentHash
+        self.declarationNames = declarationNames.sorted()
+        self.lexicalIdentifiers = lexicalIdentifiers.sorted()
+    }
+}
+
+public struct FrontendCacheState: Codable, Equatable, Sendable {
+    public static let currentSchemaVersion = 1
+    public let cacheSchemaVersion: Int
+    public let toolVersion: String
+    public let graphSchemaVersion: Int
+    public let moduleName: String
+    public let files: [String: FrontendFileRecord]
+    public let graph: SemanticGraph
+
+    public init(moduleName: String, files: [String: FrontendFileRecord], graph: SemanticGraph) {
+        self.cacheSchemaVersion = Self.currentSchemaVersion
+        self.toolVersion = ToolMetadata.version
+        self.graphSchemaVersion = ToolMetadata.schemaVersion
+        self.moduleName = moduleName
+        self.files = files
+        self.graph = graph
+    }
+}
+
+public struct FrontendScanStatistics: Equatable, Sendable {
+    public let parsedFiles: [String]
+    public let reusedFiles: [String]
+    public let invalidatedDependents: [String]
+
+    public init(parsedFiles: [String], reusedFiles: [String], invalidatedDependents: [String]) {
+        self.parsedFiles = parsedFiles
+        self.reusedFiles = reusedFiles
+        self.invalidatedDependents = invalidatedDependents
+    }
+}
+
+public struct FrontendScanResult: Sendable {
+    public let graph: SemanticGraph
+    public let state: FrontendCacheState
+    public let statistics: FrontendScanStatistics
+}
+
+private final class DeclarationNameCollector: SyntaxVisitor {
+    var names: Set<String> = []
+
+    init() { super.init(viewMode: .sourceAccurate) }
+
+    override func visit(_ node: StructDeclSyntax) -> SyntaxVisitorContinueKind { names.insert(node.name.text); return .visitChildren }
+    override func visit(_ node: ClassDeclSyntax) -> SyntaxVisitorContinueKind { names.insert(node.name.text); return .visitChildren }
+    override func visit(_ node: EnumDeclSyntax) -> SyntaxVisitorContinueKind { names.insert(node.name.text); return .visitChildren }
+    override func visit(_ node: ActorDeclSyntax) -> SyntaxVisitorContinueKind { names.insert(node.name.text); return .visitChildren }
+    override func visit(_ node: FunctionDeclSyntax) -> SyntaxVisitorContinueKind { names.insert(node.name.text); return .visitChildren }
+    override func visit(_ node: VariableDeclSyntax) -> SyntaxVisitorContinueKind {
+        for binding in node.bindings {
+            if let identifier = binding.pattern.as(IdentifierPatternSyntax.self)?.identifier.text {
+                names.insert(identifier)
+            }
+        }
+        return .visitChildren
+    }
+}
+
+private extension SemanticGraph {
+    func removingEvidence(in files: Set<String>) -> SemanticGraph {
+        let retainedNodes = nodes.compactMap { node -> SemanticNode? in
+            let evidence = node.evidence.filter { !files.contains($0.file) }
+            guard !evidence.isEmpty else { return nil }
+            return SemanticNode(
+                id: node.id,
+                kind: node.kind,
+                name: node.name,
+                qualifiedName: node.qualifiedName,
+                evidence: evidence,
+                confidence: node.confidence,
+                roles: node.roles,
+                feature: node.feature
+            )
+        }
+        let retainedIDs = Set(retainedNodes.map(\.id))
+        let retainedEdges = edges.compactMap { edge -> SemanticEdge? in
+            let evidence = edge.evidence.filter { !files.contains($0.file) }
+            guard !evidence.isEmpty, retainedIDs.contains(edge.from), retainedIDs.contains(edge.to) else { return nil }
+            return SemanticEdge(
+                id: edge.id,
+                kind: edge.kind,
+                from: edge.from,
+                to: edge.to,
+                evidence: evidence,
+                confidence: edge.confidence
+            )
+        }
+        return SemanticGraph(nodes: retainedNodes, edges: retainedEdges)
+    }
 }
 
 private final class GraphBuilder {
@@ -113,8 +317,15 @@ private final class GraphBuilder {
     private var nodeIdentityByID: [String: String] = [:]
     private var identityCollisions: Set<String> = []
 
-    init(moduleName: String) {
+    init(moduleName: String, seed: SemanticGraph? = nil) {
         self.moduleName = moduleName
+        guard let seed else { return }
+        nodes = Dictionary(uniqueKeysWithValues: seed.nodes.map { ($0.id, $0) })
+        edges = Dictionary(uniqueKeysWithValues: seed.edges.map { ($0.id, $0) })
+        for node in seed.nodes {
+            qualifiedIndex[node.qualifiedName, default: []].append(node.id)
+        }
+        for key in qualifiedIndex.keys { qualifiedIndex[key]?.sort() }
     }
 
     @discardableResult
@@ -136,6 +347,7 @@ private final class GraphBuilder {
         )
         let identity = [kind.rawValue, name, qualifiedName, stableDiscriminator].joined(separator: "|")
         if let existing = nodes[id] {
+            if nodeIdentityByID[id] == nil { nodeIdentityByID[id] = identity }
             let extensionPlaceholder = existing.evidence.allSatisfy { $0.kind == "extension-declaration" }
             let canonicalDeclaration = evidence.kind == "type-declaration" || evidence.kind == "swiftui-view"
             if nodeIdentityByID[id] != identity || (!mergeEvidence && !(extensionPlaceholder && canonicalDeclaration)) {

@@ -13,7 +13,7 @@
 - Allowed specification delta: Editorial project documentation and stable clause/acceptance mappings that faithfully restate the user-supplied contract.
 - Forbidden specification delta: New product behavior, provider-specific LLM integration, SIL/full type-checker foundation, automatic rewriting, GUI/IDE/Xcode extension, or weakening transactional/transform exceptions.
 - Material decisions requiring the user: Only a proven contract conflict, protected-domain expansion, destructive/external authority requirement, or materially different product fork.
-- Current contract revision or epoch: `tz-v5` (`tz-v1` base plus authorized addenda through `ARCHITECTURE-001`).
+- Current contract revision or epoch: `tz-v6` (`tz-v1` base plus authorized addenda through `INCREMENTAL-CACHE-001`).
 - Pinned contract digest: `sha256:68f8a43d924659024b7d29fabb9ad302817c271838a7919b24bd942626927cac`.
 - Required review and QA: Independent review of each integration wave, SwiftPM build/test, CLI fixture validation, deterministic byte comparison, semantic diff/check policy verification, and final completion audit.
 
@@ -70,3 +70,14 @@
 - Forbidden expansion: A thirtieth rule, general control-flow/value-freshness inference, role inference from names, behavior claims for stale mounted values or collection-window progression, or changes to Playphrase source.
 - Specification delta: `ACC-FIX-016..017`, `ACC-TEST-008`, `ACC-CI-004`, `ACC-DOD-009`, local revision `spec-6`; product epoch remains `tz-v5`.
 - QA: locked build and 81 tests; exact syntax/indexed 34-finding matrix; byte-stable repeated indexed output; forty-file distractor test; old architecture positive/negative checks; Sources dogfood; canonical baseline comparison; CI YAML parse; scoped commits and pushes.
+
+## Contract Delta — INCREMENTAL-CACHE-001
+
+- Change mode: `evolve`.
+- Authorized by: User approval on 2026-08-19 of the incremental-cache implementation plan.
+- Previous behavior: Every live-source command reparsed every Swift file and repeated compiler-index occurrence extraction; snapshots and semantic diff persisted results but did not accelerate reconstruction.
+- New behavior: Tool `0.4.0` / graph schema v2 / cache schema v1 reuses integrity-checked frontend facts per unchanged file, conservatively reparses lexical dependents after declaration-surface changes, reuses compiler-index facts by source and compiler-unit identity, and supports `--cache-directory` plus `--no-cache` on live-source commands.
+- Protected behavior: Seven commands, graph schema v2, twenty-nine rules, indexed-only agent workflows, snapshot five-file boundary, relative provenance, deterministic/LLM boundary, provider independence, and byte-identical cached/uncached semantic output.
+- Forbidden expansion: Cached agent conclusions, stale-index acceptance, source text in cache artifacts, automatic rewriting, incremental rule shortcuts that skip the complete current graph, or cache files inside semantic snapshots.
+- Specification delta: `PC-SCOPE-003/005`, `IR-CACHE-001..003`, `CLI-CACHE-001..002`, `ACC-CACHE-001..003`, `ACC-DOD-010`, epoch `tz-v6`.
+- QA: cold/warm/uncached byte equality, exact parse and indexed file hit counts, add/delete/rename/dependency invalidation, corrupt and concurrent cache writes, full tests, CLI dogfood, snapshot determinism, skill validation, scoped commits and pushes.

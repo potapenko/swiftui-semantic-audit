@@ -1,6 +1,6 @@
 # Acceptance and QA contract
 
-Revision: `spec-6`
+Revision: `spec-7`
 Status: active  
 Release state: unreleased
 
@@ -63,7 +63,15 @@ swift test --disable-automatic-resolution
 
 **ACC-TEST-008.** `REALISTIC-FIXTURES-001` advances the accepted suite to 81 passing tests: three deterministic realistic-corpus rule tests and one fresh explicit indexed parity test. The restore sub-slice deduplicates multiple frontend/compiler ownership edges for one typed View boundary and associates a compiler-shared method call only with receiver evidence from the same source range.
 
+**ACC-TEST-009.** `INCREMENTAL-CACHE-001` advances the local suite to 86 passing tests. Four frontend tests prove warm reuse, one-file reparsing, lexical dependency invalidation, add/delete/rename equivalence, integrity failure, persistent round-trip, and concurrent writers. One indexed test proves exact per-file hit/miss counts, whole-result reuse without a repeated helper, and cached/uncached byte equivalence.
+
 ## Determinism and safety
+
+**ACC-CACHE-001.** A cold cached run, a warm cached run, and `--no-cache` produce byte-identical graphs and reports. A warm run performs zero frontend parses for unchanged files; a one-file body edit reparses that file only.
+
+**ACC-CACHE-002.** Add, delete, rename, declaration-surface change, dependency change, configuration change, tool/schema mismatch, compiler/index-unit change, corrupt entry, and concurrent writers cannot produce stale or malformed facts. Indexed warm runs retain `resolution: "indexed"` and remain byte-identical to uncached indexed enrichment.
+
+**ACC-CACHE-003.** CI proves operation-count hits/misses rather than a wall-clock ratio, preserves the exact five-file snapshot boundary, and runs the existing realistic syntax/indexed parity and full dogfood gates with cache enabled and disabled.
 
 **ACC-DET-001.** Generate the canonical RuleTests snapshot twice from unchanged fixtures and prove all five files are byte-identical.
 
@@ -126,12 +134,13 @@ swift test --disable-automatic-resolution
 4. audit legacy rule fixtures, configured architecture fixtures, negative architecture fixtures, and `Sources` in syntax-only JSON mode;
 5. compile and audit `RealProjectPatterns` through a fresh explicit Index Store and audit the same corpus in syntax-only mode, requiring 34 findings, no good-file evidence, and an identical per-rule/per-file matrix;
 6. snapshot fixtures twice and compare all five files byte for byte;
-7. compare the generated snapshot with the committed baseline using exact semantic-file bytes and the revision-only manifest normalization in `ACC-DET-003`;
-8. run `check --fail-on-new high`;
-9. slice an emitted real finding;
-10. run doctor JSON;
-11. validate all skills and their YAML metadata without repository or global-environment mutation, and reject frontend-only resolution guidance anywhere under `skills/`;
-12. parse JSON/YAML and check placeholders/links.
+7. prove cold-cache, warm-cache, and `--no-cache` report bytes are identical;
+8. compare the generated snapshot with the committed baseline using exact semantic-file bytes and the revision-only manifest normalization in `ACC-DET-003`;
+9. run `check --fail-on-new high`;
+10. slice an emitted real finding;
+11. run doctor JSON;
+12. validate all skills and their YAML metadata without repository or global-environment mutation, and reject frontend-only resolution guidance anywhere under `skills/`;
+13. parse JSON/YAML and check placeholders/links.
 
 ## Definition of Done map
 
@@ -152,3 +161,5 @@ swift test --disable-automatic-resolution
 **ACC-DOD-008.** Tool version `0.3.0` ships schema v2, collision-safe indexed extraction, explicit configuration, twenty-nine rules, dominance, complete negative fixtures, updated skills, deterministic baselines, and hosted CI while remaining unreleased.
 
 **ACC-DOD-009.** A compilable multi-file realistic corpus proves 34 exact findings across 24 rules, clean paired alternatives, forty-file distractor invariance, and syntax/indexed matrix parity without changing the twenty-nine-rule product contract.
+
+**ACC-DOD-010.** Tool version `0.4.0` ships cache schema v1. All live-source commands reuse unchanged deterministic facts, conservatively invalidate dependencies, and remain byte-equivalent to an uncached rebuild without changing graph schema v2 or the agent-adjudication boundary.

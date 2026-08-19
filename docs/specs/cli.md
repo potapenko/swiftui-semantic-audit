@@ -1,8 +1,8 @@
 # CLI contract
 
-Revision: `spec-3`
+Revision: `spec-4`
 Executable: `swiftui-audit`  
-Tool version in schema: `0.3.0`
+Tool version in schema: `0.4.0`
 Status: active, unreleased
 
 All syntax below was verified against the accepted P1–P5 executable help.
@@ -30,6 +30,10 @@ All syntax below was verified against the accepted P1–P5 executable help.
 **CLI-CFG-001.** Live-source `scan`, `audit`, `snapshot`, `slice`, and `check` accept `--config <path>`. Without it they apply the bounded discovery rule in `CFG-005`. Explicit invalid configuration fails; absence means topology-only analysis.
 
 **CLI-CFG-002.** JSON reports and snapshot manifests expose the canonical configuration digest. Diff/check reject different digests. Git-revision operands use only a `.swiftui-audit.json` blob at the revision root.
+
+**CLI-CACHE-001.** Live-source `scan`, `audit`, `snapshot`, `slice`, and `check` use the persistent incremental cache by default. `--cache-directory <path>` selects an explicit cache root and `--no-cache` forces a full uncached rebuild. The options are mutually exclusive and never apply to an already-persisted snapshot or a Git-revision operand.
+
+**CLI-CACHE-002.** The default cache root is the user cache directory under a project-identity hash. Cache diagnostics stay off the default product stream. Invalid, incompatible, or incomplete entries are rebuilt without weakening resolution or changing requested JSON stdout.
 
 ## `scan`
 

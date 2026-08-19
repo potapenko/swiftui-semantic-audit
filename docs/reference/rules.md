@@ -1,6 +1,6 @@
 # Rule reference
 
-Version 0.3.0 evaluates 29 rules over the canonical semantic graph. A rule uses ownership, identity, read/write/call, binding, observation, configuration, and event topology. No rule is allowed to conclude from a property-wrapper or type name alone.
+Version 0.4.0 evaluates the unchanged 29 rules over the canonical semantic graph. A rule uses ownership, identity, read/write/call, binding, observation, configuration, and event topology. No rule is allowed to conclude from a property-wrapper or type name alone.
 
 Severity describes the architectural risk selected by the contract. Confidence describes the evidence basis:
 

@@ -14,6 +14,8 @@ description: Audit Swift and SwiftUI state/data-flow architecture with swiftui-a
 5. Treat the CLI as provider-independent. Do not assume or add an OpenAI, Anthropic, or other model API call.
 6. For role-, feature-, or composition-root-aware analysis, locate and validate the exact project `.swiftui-audit.json`, pass it with `--config <path>`, and retain its digest. If authoritative classification is absent, report that role-aware conclusions are unavailable; never infer roles from names.
 
+The CLI reuses content-addressed frontend and indexed facts automatically. Treat the cache only as an execution optimization: it never supplies intent or changes deterministic facts. Use one explicit `--cache-directory <path>` when the environment does not preserve the default user cache. If cache correctness is in doubt, repeat the same command with `--no-cache` and require byte-equivalent JSON before continuing.
+
 ## Audit before source
 
 1. Run JSON audit before opening arbitrary Swift source:

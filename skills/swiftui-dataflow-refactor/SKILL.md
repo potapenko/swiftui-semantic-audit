@@ -10,6 +10,9 @@ description: Refactor SwiftUI state ownership and data flow with snapshot, audit
 1. Use an installed `swiftui-audit`, or use `swift run --disable-automatic-resolution swiftui-audit` in this repository.
 2. Build the project to produce a fresh compiler Index Store, validate that it covers the requested source, and record its exact path. Pass `--index-store <path>` explicitly to every live-source command; never rely on automatic discovery. Require `resolution: "indexed"` throughout baseline, current snapshot, audit, slice, diff, and check.
 3. When the cluster depends on product roles, features, or composition roots, validate the exact `.swiftui-audit.json`, pass `--config <path>` to every live-source command, and preserve its digest across both snapshots. Never infer missing roles from names.
+
+Reuse the CLI's content-addressed cache across repeated live-source commands. Treat it only as an execution optimization. When the default user cache is not persistent, pass one stable `--cache-directory <path>` throughout the workflow. If cache correctness is in doubt, rerun the same command with `--no-cache` and require byte-equivalent JSON.
+
 4. Capture a canonical baseline before editing:
 
    ```bash

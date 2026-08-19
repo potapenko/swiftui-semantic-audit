@@ -2,7 +2,7 @@
 
 **Make SwiftUI data flow inspectable before a coding agent edits it.**
 
-`swiftui-audit` 0.3.0 turns Swift and SwiftUI source into a deterministic graph of state ownership, reads, writes, bindings, effects, derivations, and component boundaries. Its four agent skills use that graph to investigate architecture, guide a focused refactor, or review an existing change.
+`swiftui-audit` 0.4.0 turns Swift and SwiftUI source into a deterministic graph of state ownership, reads, writes, bindings, effects, derivations, and component boundaries. Its four agent skills use that graph to investigate architecture, guide a focused refactor, or review an existing change.
 
 This is not a style linter, source-rewriting bot, or model-backed reviewer. SwiftSyntax and optional compiler-index enrichment establish facts. Rules select evidence-backed candidates. The coding agent judges intent without changing those facts.
 
@@ -162,6 +162,8 @@ See the [rule reference](docs/reference/rules.md) for every identifier, confiden
 
 For exact syntax and failure behavior, use [`swiftui-audit <command> --help`](docs/reference/cli.md) and the [CLI reference](docs/reference/cli.md).
 
+Live-source commands reuse content-addressed frontend and compiler-index facts automatically. Use `--cache-directory <path>` for an explicit persistent location or `--no-cache` to prove equivalence with a full rebuild. Cache state is never semantic evidence and never changes JSON output.
+
 ## First indexed pass
 
 Build the target, record its fresh project-covering Index Store, and start with an indexed report:
@@ -196,7 +198,7 @@ See [Outputs, snapshots, and semantic diff](docs/reference/outputs-snapshots-and
 - The frontend is not a full Swift type checker, SIL pipeline, or general interprocedural/control-flow analyzer.
 - Indexed enrichment is macOS-only and requires a compatible compiler Index Store.
 - Architecture rules are bounded to their documented SwiftUI topology and exact configuration.
-- Full graph rebuild is allowed; incremental caching is not guaranteed.
+- Live-source analysis incrementally reuses unchanged frontend and indexed facts; malformed or incompatible cache entries rebuild safely.
 - Snapshot replacement supports one writer but has no concurrent-writer lock.
 - Slice traversal is bounded and token estimation is byte-based.
 - True renames may appear as removal plus addition.

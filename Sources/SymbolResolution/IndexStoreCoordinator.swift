@@ -1,3 +1,4 @@
+import AnalysisCache
 import AuditCore
 import Foundation
 
@@ -102,7 +103,8 @@ public struct IndexEnrichmentCoordinator: Sendable {
     public func enrich(
         graph: SemanticGraph,
         sourceRoot: URL,
-        selection: IndexSelection
+        selection: IndexSelection,
+        cache: AnalysisCacheStore? = nil
     ) throws -> SemanticGraph {
         guard selection != .syntaxOnly else { return graph }
         let locator = IndexStoreLocator()
@@ -123,11 +125,44 @@ public struct IndexEnrichmentCoordinator: Sendable {
 
         do {
             let library = try indexStoreLibraryPath()
-            return try invokeHelper(graph: graph, sourceRoot: sourceRoot, store: store, library: library)
+            let cacheKey = try cache.map { _ in try indexedCacheKey(graph: graph, store: store, library: library) }
+            if let cache, let cacheKey, let cached = cache.loadIndexedGraph(key: cacheKey),
+               cached.resolution == "indexed",
+               cached.configurationDigest == graph.configurationDigest {
+                return cached
+            }
+            let enriched = try invokeHelper(
+                graph: graph, sourceRoot: sourceRoot, store: store, library: library, cache: cache
+            )
+            if let cache, let cacheKey { try? cache.saveIndexedGraph(enriched, key: cacheKey) }
+            return enriched
         } catch {
             if explicit { throw error }
             return graph
         }
+    }
+
+    private func indexedCacheKey(graph: SemanticGraph, store: URL, library: URL) throws -> String {
+        var data = try graph.jsonData()
+        data.append(Data("|cache:\(AnalysisCacheStore.schemaVersion)|tool:\(ToolMetadata.version)|".utf8))
+        let fileManager = FileManager.default
+        let unitURLs = (fileManager.enumerator(
+            at: store,
+            includingPropertiesForKeys: [.isRegularFileKey],
+            options: [.skipsHiddenFiles]
+        )?.compactMap { $0 as? URL }.filter {
+            $0.path.contains("/units/") &&
+                (try? $0.resourceValues(forKeys: [.isRegularFileKey]).isRegularFile) == true
+        } ?? []).sorted { $0.path < $1.path }
+        let prefix = store.path.hasSuffix("/") ? store.path : store.path + "/"
+        for unit in unitURLs {
+            let relative = unit.path.hasPrefix(prefix) ? String(unit.path.dropFirst(prefix.count)) : unit.lastPathComponent
+            data.append(Data(relative.utf8))
+            data.append(try Data(contentsOf: unit))
+        }
+        let libraryValues = try library.resourceValues(forKeys: [.fileSizeKey, .contentModificationDateKey])
+        data.append(Data("|library:\(library.path)|\(libraryValues.fileSize ?? 0)|\(libraryValues.contentModificationDate?.timeIntervalSince1970 ?? 0)".utf8))
+        return AnalysisCacheStore.digest(data)
     }
 
     private func indexStoreLibraryPath() throws -> URL {
@@ -150,7 +185,8 @@ public struct IndexEnrichmentCoordinator: Sendable {
         graph: SemanticGraph,
         sourceRoot: URL,
         store: URL,
-        library: URL
+        library: URL,
+        cache: AnalysisCacheStore?
     ) throws -> SemanticGraph {
         let fileManager = FileManager.default
         let helper = helperExecutable.standardizedFileURL.resolvingSymlinksInPath()
@@ -171,6 +207,7 @@ public struct IndexEnrichmentCoordinator: Sendable {
             indexStorePath: store.path,
             databasePath: databaseURL.path,
             indexStoreLibraryPath: library.path,
+            cacheDirectory: cache?.projectDirectoryURL.path,
             graph: graph
         )
         let encoder = JSONEncoder()

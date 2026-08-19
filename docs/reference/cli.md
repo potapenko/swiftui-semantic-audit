@@ -1,6 +1,6 @@
 # CLI reference
 
-`swiftui-audit` 0.3.0 exposes seven public subcommands. JSON written to stdout is the machine contract. Diagnostics belong on stderr, and callers must always inspect process status.
+`swiftui-audit` 0.4.0 exposes seven public subcommands. JSON written to stdout is the machine contract. Diagnostics belong on stderr, and callers must always inspect process status.
 
 Run the executable help for the checked-out build:
 
@@ -14,6 +14,8 @@ When developing inside this repository, replace `swiftui-audit` with:
 ```bash
 swift run --disable-automatic-resolution swiftui-audit
 ```
+
+Every live-source command accepts `--cache-directory <path>` or `--no-cache`. The first selects an explicit persistent cache root; the second forces a full rebuild. They are mutually exclusive. Snapshot and Git-revision inputs are already materialized and do not accept live-source cache options.
 
 ## Commands
 
@@ -118,6 +120,14 @@ The live-source commands accept `--config <path>`. Without it, discovery is deli
 - there is no ancestor walk or home-directory default.
 
 See [Configuration](configuration.md).
+
+## Incremental cache
+
+`scan`, `audit`, `snapshot`, live-source `slice`, and the current side of `check` cache deterministic frontend facts by relative path and source content. Indexed facts additionally depend on compiler-unit identity. Changed declaration names conservatively invalidate files whose lexical identifiers may depend on them.
+
+The default location is the user cache directory under a hash of the canonical source root. Cache files live outside the five-file snapshot, contain no source text, and are integrity-checked before reuse. Invalid, incompatible, incomplete, tool/schema-mismatched, or compiler-unit-mismatched entries are cache misses. Every invocation still assembles a complete graph and reevaluates normalization and all 29 rules.
+
+For a cache-equivalence check, repeat the same command with `--no-cache` and compare JSON bytes. Resolution, configuration digest, graph/report schemas, findings, and exit policy must remain identical.
 
 ## Machine-output discipline
 

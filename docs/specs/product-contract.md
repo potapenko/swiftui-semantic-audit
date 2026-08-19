@@ -1,7 +1,7 @@
 # Product contract
 
-Revision: `spec-5`
-Authority: epoch `tz-v5`, pinned base digest and authorized addenda through `ARCHITECTURE-001` in the [registry](README.md)
+Revision: `spec-6`
+Authority: epoch `tz-v6`, pinned base digest and authorized addenda through `INCREMENTAL-CACHE-001` in the [registry](README.md)
 Status: active, unreleased
 
 ## Goal and consumer
@@ -103,9 +103,11 @@ Swift source → SwiftSyntax facts → optional indexed facts → semantic graph
 
 **PC-SCOPE-002 — Required rules.** Ship the twenty-nine rules enumerated in [`rules.md`](rules.md), preserving deterministic topology and explicit role authority.
 
-**PC-SCOPE-003 — Full rebuild.** A full graph rebuild is acceptable in the PoC. Incremental caching by content/tool/schema hash is a future direction, not a current guarantee.
+**PC-SCOPE-003 — Incremental analysis.** Live-source commands reuse persistent content-addressed frontend and indexed facts for unchanged files. Cache keys cover relative path, source content, tool/cache/graph schema, module identity, compiler/index identity where applicable, and every semantic input needed by that layer. Changed declarations invalidate dependent files conservatively. Cached and uncached results must be byte-equivalent; malformed or incompatible cache entries are misses, never semantic evidence.
 
 **PC-SCOPE-004 — Source-count semantics.** Count logical ownership roots, not wrapper instances. A focused `State → Binding → Binding` chain has one source; an external borrowed Binding or observable root plus a distinct local State has two. Binding projections and `@Bindable` receivers are representations, not independent owners.
+
+**PC-SCOPE-005 — Fresh global result.** Incrementality may reuse deterministic extraction facts, but every invocation assembles a complete canonical graph and evaluates normalization and all rules against the current project state. Cache behavior must not alter graph, report, snapshot, diff, check, slice, resolution, or configuration semantics.
 
 ## Non-goals
 

@@ -42,6 +42,15 @@ struct Snapshot: ParsableCommand {
             sourceURL: URL(fileURLWithPath: path),
             outputURL: URL(fileURLWithPath: output)
         )
+        if let cacheDirectory = resolution.cacheDirectory {
+            let cache = URL(fileURLWithPath: cacheDirectory, isDirectory: true)
+                .standardizedFileURL.resolvingSymlinksInPath()
+            let outputPrefix = locations.output.path.hasSuffix("/")
+                ? locations.output.path : locations.output.path + "/"
+            if cache == locations.output || cache.path.hasPrefix(outputPrefix) {
+                throw ValidationError("--cache-directory must be outside the five-file snapshot output")
+            }
+        }
         let graph = try loadResolvedGraph(path: locations.source.path, options: resolution)
         let report = AuditEngine().audit(graph: graph)
         let manifest = SnapshotManifestFactory.make(
@@ -110,8 +119,8 @@ struct Slice: ParsableCommand {
         let report: AuditReport
         switch resolved {
         case .snapshot(let url):
-            if resolution.indexStore != nil || resolution.config != nil {
-                throw ValidationError("--index-store and --config apply only when slicing live source")
+            if resolution.indexStore != nil || resolution.config != nil || resolution.cacheDirectory != nil || resolution.noCache {
+                throw ValidationError("index, config, and cache options apply only when slicing live source")
             }
             let snapshot = try SnapshotReader().read(from: url)
             graph = snapshot.graph

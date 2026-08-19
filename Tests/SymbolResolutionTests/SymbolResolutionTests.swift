@@ -1,3 +1,4 @@
+import AnalysisCache
 import AuditCore
 import AuditRules
 import ContextSlicer
@@ -231,6 +232,68 @@ final class SymbolResolutionTests: XCTestCase {
             graph: syntax, sourceRoot: fixture.source, selection: .explicit(fixture.store)
         )) { guard case IndexResolutionError.helperFailed(9, _) = $0 else { return XCTFail("unexpected error: \($0)") } }
         XCTAssertEqual(try FileManager.default.contentsOfDirectory(atPath: helperRoot.path), [])
+    }
+
+    func testIndexedGraphCacheAvoidsRepeatedHelperAndMatchesUncachedResult() throws {
+        let fixture = try makeIndexedFixture()
+        defer { try? FileManager.default.removeItem(at: fixture.container) }
+        let syntax = try GraphScanner().scan(path: fixture.source.path)
+        let executable = projectRoot.appendingPathComponent(".build/debug/swiftui-audit")
+        let factCache = AnalysisCacheStore(
+            rootDirectory: fixture.container.appendingPathComponent("fact-cache", isDirectory: true),
+            sourceRoot: fixture.source
+        )
+        let firstFacts = try IndexStoreDBResolver().enrich(IndexEnrichmentRequest(
+            sourceRoot: fixture.source.path,
+            indexStorePath: fixture.store.path,
+            databasePath: fixture.container.appendingPathComponent("fact-db-a").path,
+            indexStoreLibraryPath: indexStoreLibrary.path,
+            cacheDirectory: factCache.projectDirectoryURL.path,
+            graph: syntax
+        ))
+        let warmFacts = try IndexStoreDBResolver().enrich(IndexEnrichmentRequest(
+            sourceRoot: fixture.source.path,
+            indexStorePath: fixture.store.path,
+            databasePath: fixture.container.appendingPathComponent("fact-db-b").path,
+            indexStoreLibraryPath: indexStoreLibrary.path,
+            cacheDirectory: factCache.projectDirectoryURL.path,
+            graph: syntax
+        ))
+        XCTAssertGreaterThan(firstFacts.analyzedFiles, 0)
+        XCTAssertEqual(firstFacts.cachedFiles, 0)
+        XCTAssertEqual(warmFacts.cachedFiles, firstFacts.analyzedFiles)
+        XCTAssertEqual(warmFacts.analyzedFiles, 0)
+        XCTAssertEqual(try firstFacts.graph.jsonData(), try warmFacts.graph.jsonData())
+
+        let cache = AnalysisCacheStore(
+            rootDirectory: fixture.container.appendingPathComponent("cache", isDirectory: true),
+            sourceRoot: fixture.source
+        )
+        let cold = try IndexEnrichmentCoordinator(helperExecutable: executable, timeout: 30).enrich(
+            graph: syntax,
+            sourceRoot: fixture.source,
+            selection: .explicit(fixture.store),
+            cache: cache
+        )
+        let warm = try IndexEnrichmentCoordinator(
+            helperExecutable: executable,
+            runner: CrashAfterToolchainRunner(),
+            timeout: 30
+        ).enrich(
+            graph: syntax,
+            sourceRoot: fixture.source,
+            selection: .explicit(fixture.store),
+            cache: cache
+        )
+        let uncached = try IndexEnrichmentCoordinator(helperExecutable: executable, timeout: 30).enrich(
+            graph: syntax,
+            sourceRoot: fixture.source,
+            selection: .explicit(fixture.store)
+        )
+
+        XCTAssertEqual(warm.resolution, "indexed")
+        XCTAssertEqual(try cold.jsonData(), try warm.jsonData())
+        XCTAssertEqual(try warm.jsonData(), try uncached.jsonData())
     }
 
     func testInvalidNoCoverageAndPackageLockTruth() throws {

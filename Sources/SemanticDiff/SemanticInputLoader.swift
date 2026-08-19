@@ -1,3 +1,4 @@
+import AnalysisCache
 import AuditCore
 import AuditRules
 import Foundation
@@ -118,12 +119,14 @@ public struct SemanticInputLoader: Sendable {
         indexSelection: IndexSelection = .syntaxOnly,
         configurationURL: URL? = nil,
         helperExecutable: URL? = nil,
-        indexTimeout: TimeInterval = 30
+        indexTimeout: TimeInterval = 30,
+        cache: AnalysisCacheStore? = nil
     ) throws -> LoadedSemanticInput {
         let source = sourceURL.standardizedFileURL.resolvingSymlinksInPath()
-        let unconfiguredGraph = try GraphScanner().scan(path: source.path)
+        let scan = try GraphScanner().scan(path: source.path, previousState: cache?.loadFrontendState())
+        try? cache?.saveFrontendState(scan.state)
         let configuration = try AnalysisConfiguration.load(explicitURL: configurationURL, sourceURL: source)
-        let syntaxGraph = configuration?.applying(to: unconfiguredGraph) ?? unconfiguredGraph
+        let syntaxGraph = configuration?.applying(to: scan.graph) ?? scan.graph
         let graph: SemanticGraph
         if indexSelection == .syntaxOnly {
             graph = syntaxGraph
@@ -135,7 +138,7 @@ public struct SemanticInputLoader: Sendable {
                 helperExecutable: helperExecutable,
                 runner: runner,
                 timeout: indexTimeout
-            ).enrich(graph: syntaxGraph, sourceRoot: source, selection: indexSelection)
+            ).enrich(graph: syntaxGraph, sourceRoot: source, selection: indexSelection, cache: cache)
         }
         let report = AuditEngine().audit(graph: graph)
         let revision = (try? repositoryRevision(for: source)) ?? "unavailable"
@@ -158,7 +161,8 @@ public struct SemanticInputLoader: Sendable {
         requestedSelection: IndexSelection,
         configurationURL: URL? = nil,
         helperExecutable: URL? = nil,
-        indexTimeout: TimeInterval = 30
+        indexTimeout: TimeInterval = 30,
+        cache: AnalysisCacheStore? = nil
     ) throws -> LoadedSemanticInput {
         let baselineResolution = baseline.snapshot.graph.resolution
         guard baseline.snapshot.report.resolution == baselineResolution else {
@@ -185,7 +189,8 @@ public struct SemanticInputLoader: Sendable {
             indexSelection: selection,
             configurationURL: configurationURL,
             helperExecutable: helperExecutable,
-            indexTimeout: indexTimeout
+            indexTimeout: indexTimeout,
+            cache: cache
         )
         try validateMatchingResolution(base: baseline, current: current)
         return current

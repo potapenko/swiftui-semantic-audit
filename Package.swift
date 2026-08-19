@@ -15,6 +15,7 @@ let package = Package(
         .library(name: "ContextSlicer", targets: ["ContextSlicer"]),
         .library(name: "SemanticDiff", targets: ["SemanticDiff"]),
         .library(name: "SymbolResolution", targets: ["SymbolResolution"]),
+        .library(name: "AnalysisCache", targets: ["AnalysisCache"]),
         .executable(name: "swiftui-audit", targets: ["SwiftUIAuditCLI"]),
     ],
     dependencies: [
@@ -57,9 +58,14 @@ let package = Package(
             dependencies: ["AuditCore", "SnapshotStore"]
         ),
         .target(
+            name: "AnalysisCache",
+            dependencies: ["AuditCore", "SwiftSyntaxFrontend"]
+        ),
+        .target(
             name: "SemanticDiff",
             dependencies: [
                 "AuditCore",
+                "AnalysisCache",
                 "AuditRules",
                 "SnapshotStore",
                 "SymbolResolution",
@@ -70,6 +76,7 @@ let package = Package(
             name: "SymbolResolution",
             dependencies: [
                 "AuditCore",
+                "AnalysisCache",
                 .product(
                     name: "IndexStoreDB",
                     package: "indexstore-db",
@@ -81,6 +88,7 @@ let package = Package(
             name: "SwiftUIAuditCLI",
             dependencies: [
                 "AuditCore",
+                "AnalysisCache",
                 "AuditRules",
                 "ContextSlicer",
                 "SemanticDiff",
@@ -92,7 +100,7 @@ let package = Package(
         ),
         .testTarget(
             name: "ExtractionTests",
-            dependencies: ["AuditCore", "SwiftSyntaxFrontend"]
+            dependencies: ["AuditCore", "AnalysisCache", "SwiftSyntaxFrontend"]
         ),
         .testTarget(
             name: "RuleTests",
@@ -121,6 +129,7 @@ let package = Package(
         .testTarget(
             name: "SymbolResolutionTests",
             dependencies: [
+                "AnalysisCache",
                 "AuditCore",
                 "AuditRules",
                 "ContextSlicer",

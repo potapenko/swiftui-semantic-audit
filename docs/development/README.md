@@ -46,6 +46,7 @@ swift build -c release --disable-automatic-resolution
 | `AuditRules` | The 29 deterministic/candidate rules and dominance |
 | `SnapshotStore` | Canonical five-file persistence and integrity |
 | `ContextSlicer` | Bounded finding/symbol context |
+| `AnalysisCache` | Integrity-checked persistent frontend and indexed fact reuse |
 | `SemanticDiff` | Snapshot/revision comparison, check policy, and doctor support |
 | `SymbolResolution` | Optional macOS IndexStoreDB enrichment |
 | `SwiftUIAuditCLI` | ArgumentParser commands and process/output policy |
@@ -74,7 +75,7 @@ swift build --disable-automatic-resolution
 swift test --disable-automatic-resolution
 ```
 
-Tests cover extraction, normalization, rules, configuration, snapshot integrity and determinism, slicing, diff, check, doctor, syntax identity, and indexed enrichment.
+Tests cover extraction, incremental frontend/indexed cache hits and invalidation, normalization, rules, configuration, snapshot integrity and determinism, slicing, diff, check, doctor, syntax identity, and indexed enrichment.
 
 ### Standalone dogfood
 
@@ -116,7 +117,7 @@ The GitHub Actions workflow:
 1. selects the accepted Xcode/Swift toolchain;
 2. resolves, builds, and tests with timeouts;
 3. proves real indexed fixture enrichment;
-4. audits rule, architecture-positive, architecture-negative, and project source fixtures;
+4. audits rule, architecture-positive, architecture-negative, and project source fixtures and proves cached/uncached byte equivalence;
 5. regenerates two snapshots and checks byte identity;
 6. compares semantic files with the committed baseline;
 7. runs diff, check, slice, and doctor;

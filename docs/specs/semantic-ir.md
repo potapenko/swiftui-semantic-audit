@@ -1,6 +1,6 @@
 # Semantic IR contract
 
-Revision: `spec-3`
+Revision: `spec-4`
 Schema: `2`
 Status: active
 
@@ -94,6 +94,14 @@ summary.json
 **IR-SNAP-005 — Replacement.** Writers stage then atomically replace only an empty directory or a valid existing snapshot. They restore the prior valid snapshot if replacement fails.
 
 **IR-SNAP-006 — Determinism.** Repeated generation over unchanged source, toolchain, revision, and resolution must be byte-equivalent across all five files. A committed baseline compared from a later commit must match `nodes.jsonl`, `edges.jsonl`, `findings.jsonl`, and `summary.json` byte for byte. Normalize only `manifest.json.repositoryRevision` for that cross-commit comparison; require schema, tool version, Swift version, relative `generatedFrom`, and all semantic counts/resolution to remain exact, and require the fresh manifest revision to equal the current `HEAD`.
+
+## Incremental cache
+
+**IR-CACHE-001 — Non-authoritative facts.** The cache stores deterministic intermediate frontend or compiler-index facts, never agent conclusions. A cache entry is usable only when its complete layer-specific identity matches; otherwise the analyzer rebuilds that entry.
+
+**IR-CACHE-002 — File identity and invalidation.** Frontend entries are identified by normalized relative path, source SHA-256, module identity, tool version, graph schema, and cache schema. Declaration-surface changes conservatively invalidate files whose recorded lexical identifiers may depend on the changed names. Add, delete, rename, configuration, compiler, and index-unit changes must not leave stale nodes, edges, evidence, roles, features, or resolution.
+
+**IR-CACHE-003 — Equivalence and isolation.** Warm-cache and uncached graph/report bytes are identical. Cache artifacts live outside the five-file snapshot, store no source text, use relative source provenance, and use immutable or atomic writes safe against partial concurrent writers.
 
 ## Context slice
 

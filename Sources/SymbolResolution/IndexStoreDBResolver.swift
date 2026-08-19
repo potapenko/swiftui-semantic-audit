@@ -1,3 +1,4 @@
+import AnalysisCache
 import AuditCore
 import Foundation
 
@@ -24,7 +25,10 @@ public struct IndexStoreDBResolver: SymbolResolver, Sendable {
             library: library,
             waitUntilDoneInitializing: true
         )
-        let coveredFiles = files.filter { !database.unitNamesContainingFile(path: $0.path).isEmpty }
+        let unitNamesByPath = Dictionary(uniqueKeysWithValues: files.map {
+            ($0.path, database.unitNamesContainingFile(path: $0.path).sorted())
+        })
+        let coveredFiles = files.filter { !(unitNamesByPath[$0.path] ?? []).isEmpty }
         guard !coveredFiles.isEmpty else {
             throw IndexResolutionError.noProjectCoverage(request.indexStorePath)
         }
@@ -35,13 +39,109 @@ public struct IndexStoreDBResolver: SymbolResolver, Sendable {
             )
         }
         let sourceLines = sourceLinesByRelativePath(knownPaths: knownPaths)
-        let occurrences = coveredFiles.flatMap { database.symbolOccurrences(inFilePath: $0.path) }
-            .compactMap { IndexedOccurrence($0, knownPaths: knownPaths) }
-            .sorted(by: IndexedOccurrence.canonicalOrder)
+        let cache = request.cacheDirectory.map {
+            AnalysisCacheStore(projectDirectoryURL: URL(fileURLWithPath: $0, isDirectory: true))
+        }
+        let unitDigests = indexUnitDigests(store: URL(fileURLWithPath: request.indexStorePath, isDirectory: true))
+        let resolverIdentity = try indexResolverIdentity(libraryPath: request.indexStoreLibraryPath)
+        var cachedFiles = 0
+        var analyzedFiles = 0
+        let occurrences = try coveredFiles.flatMap { file in
+            let canonicalPath = file.standardizedFileURL.resolvingSymlinksInPath().path
+            let result = try indexedOccurrences(
+                file: file,
+                relativePath: knownPaths[canonicalPath] ?? file.lastPathComponent,
+                unitNames: unitNamesByPath[file.path] ?? [],
+                database: database,
+                knownPaths: knownPaths,
+                unitDigests: unitDigests,
+                resolverIdentity: resolverIdentity,
+                cache: cache
+            )
+            if result.cacheHit { cachedFiles += 1 } else { analyzedFiles += 1 }
+            return result.occurrences
+        }.sorted(by: IndexedOccurrence.canonicalOrder)
         guard !occurrences.isEmpty else {
             throw IndexResolutionError.noProjectCoverage(request.indexStorePath)
         }
-        return enrich(graph: request.graph, occurrences: occurrences, sourceLines: sourceLines)
+        let response = enrich(graph: request.graph, occurrences: occurrences, sourceLines: sourceLines)
+        return IndexEnrichmentResponse(
+            graph: response.graph,
+            mappedSymbols: response.mappedSymbols,
+            indexedFacts: response.indexedFacts,
+            cachedFiles: cachedFiles,
+            analyzedFiles: analyzedFiles
+        )
+    }
+
+    private func indexedOccurrences(
+        file: URL,
+        relativePath: String,
+        unitNames: [String],
+        database: IndexStoreDB,
+        knownPaths: [String: String],
+        unitDigests: [String: String],
+        resolverIdentity: String,
+        cache: AnalysisCacheStore?
+    ) throws -> (occurrences: [IndexedOccurrence], cacheHit: Bool) {
+        let key = try indexedFileKey(
+            file: file,
+            relativePath: relativePath,
+            unitNames: unitNames,
+            unitDigests: unitDigests,
+            resolverIdentity: resolverIdentity
+        )
+        if let cached: [IndexedOccurrence] = cache?.loadArtifact(
+            [IndexedOccurrence].self, namespace: "indexed_files", key: key
+        ) {
+            return (cached, true)
+        }
+        let occurrences = database.symbolOccurrences(inFilePath: file.path)
+            .compactMap { IndexedOccurrence($0, knownPaths: knownPaths) }
+            .sorted(by: IndexedOccurrence.canonicalOrder)
+        try? cache?.saveArtifact(occurrences, namespace: "indexed_files", key: key)
+        return (occurrences, false)
+    }
+
+    private func indexedFileKey(
+        file: URL,
+        relativePath: String,
+        unitNames: [String],
+        unitDigests: [String: String],
+        resolverIdentity: String
+    ) throws -> String {
+        var data = try Data(contentsOf: file)
+        data.append(Data((
+            "|path:\(relativePath)|tool:\(ToolMetadata.version)|graph:\(ToolMetadata.schemaVersion)" +
+                "|cache:\(AnalysisCacheStore.schemaVersion)|resolver:\(resolverIdentity)|"
+        ).utf8))
+        for unitName in unitNames.sorted() {
+            data.append(Data(unitName.utf8))
+            if let digest = unitDigests[unitName] { data.append(Data(digest.utf8)) }
+        }
+        return AnalysisCacheStore.digest(data)
+    }
+
+    private func indexResolverIdentity(libraryPath: String) throws -> String {
+        let library = URL(fileURLWithPath: libraryPath).standardizedFileURL.resolvingSymlinksInPath()
+        return AnalysisCacheStore.digest(try Data(contentsOf: library))
+    }
+
+    private func indexUnitDigests(store: URL) -> [String: String] {
+        let values = FileManager.default.enumerator(
+            at: store,
+            includingPropertiesForKeys: [.isRegularFileKey],
+            options: [.skipsHiddenFiles]
+        )?.compactMap { $0 as? URL }.filter {
+            $0.path.contains("/units/") &&
+                (try? $0.resourceValues(forKeys: [.isRegularFileKey]).isRegularFile) == true
+        } ?? []
+        var result: [String: String] = [:]
+        for value in values.sorted(by: { $0.path < $1.path }) {
+            guard let data = try? Data(contentsOf: value) else { continue }
+            result[value.lastPathComponent] = AnalysisCacheStore.digest(data)
+        }
+        return result
     }
 
     private func enrich(
@@ -378,7 +478,7 @@ public struct IndexStoreDBResolver: SymbolResolver, Sendable {
     }
 }
 
-private struct IndexedOccurrence: Hashable {
+private struct IndexedOccurrence: Hashable, Codable {
     let usr: String
     let name: String
     let kind: IndexSymbolKind
@@ -405,6 +505,36 @@ private struct IndexedOccurrence: Hashable {
         }
     }
 
+    private enum CodingKeys: String, CodingKey {
+        case usr, name, kind, file, line, column, moduleName, roles, relations
+    }
+
+    init(from decoder: Decoder) throws {
+        let values = try decoder.container(keyedBy: CodingKeys.self)
+        usr = try values.decode(String.self, forKey: .usr)
+        name = try values.decode(String.self, forKey: .name)
+        kind = try decodedIndexSymbolKind(values.decode(String.self, forKey: .kind))
+        file = try values.decode(String.self, forKey: .file)
+        line = try values.decode(Int.self, forKey: .line)
+        column = try values.decode(Int.self, forKey: .column)
+        moduleName = try values.decode(String.self, forKey: .moduleName)
+        roles = SymbolRole(rawValue: try values.decode(UInt64.self, forKey: .roles))
+        relations = try values.decode([IndexedRelation].self, forKey: .relations)
+    }
+
+    func encode(to encoder: Encoder) throws {
+        var values = encoder.container(keyedBy: CodingKeys.self)
+        try values.encode(usr, forKey: .usr)
+        try values.encode(name, forKey: .name)
+        try values.encode(String(describing: kind), forKey: .kind)
+        try values.encode(file, forKey: .file)
+        try values.encode(line, forKey: .line)
+        try values.encode(column, forKey: .column)
+        try values.encode(moduleName, forKey: .moduleName)
+        try values.encode(roles.rawValue, forKey: .roles)
+        try values.encode(relations, forKey: .relations)
+    }
+
     var evidence: Evidence { Evidence(file: file, startLine: line, endLine: line, kind: "indexed-occurrence") }
     var symbol: IndexedSymbol {
         IndexedSymbol(usr: usr, name: name, kind: kind, moduleName: moduleName, evidence: [evidence])
@@ -416,7 +546,7 @@ private struct IndexedOccurrence: Hashable {
     }
 }
 
-private struct IndexedRelation: Hashable {
+private struct IndexedRelation: Hashable, Codable {
     let usr: String
     let name: String
     let kind: IndexSymbolKind
@@ -427,6 +557,24 @@ private struct IndexedRelation: Hashable {
         self.name = relation.symbol.name
         self.kind = relation.symbol.kind
         self.roles = relation.roles
+    }
+
+    private enum CodingKeys: String, CodingKey { case usr, name, kind, roles }
+
+    init(from decoder: Decoder) throws {
+        let values = try decoder.container(keyedBy: CodingKeys.self)
+        usr = try values.decode(String.self, forKey: .usr)
+        name = try values.decode(String.self, forKey: .name)
+        kind = try decodedIndexSymbolKind(values.decode(String.self, forKey: .kind))
+        roles = SymbolRole(rawValue: try values.decode(UInt64.self, forKey: .roles))
+    }
+
+    func encode(to encoder: Encoder) throws {
+        var values = encoder.container(keyedBy: CodingKeys.self)
+        try values.encode(usr, forKey: .usr)
+        try values.encode(name, forKey: .name)
+        try values.encode(String(describing: kind), forKey: .kind)
+        try values.encode(roles.rawValue, forKey: .roles)
     }
 
     func symbol(evidence: Evidence) -> IndexedSymbol {
@@ -440,6 +588,42 @@ private struct IndexedSymbol {
     let kind: IndexSymbolKind
     let moduleName: String
     let evidence: [Evidence]
+}
+
+private func decodedIndexSymbolKind(_ value: String) throws -> IndexSymbolKind {
+    switch value {
+    case "unknown": .unknown
+    case "module": .module
+    case "namespace": .namespace
+    case "namespaceAlias": .namespaceAlias
+    case "macro": .macro
+    case "enum": .enum
+    case "struct": .struct
+    case "class": .class
+    case "protocol": .protocol
+    case "extension": .extension
+    case "union": .union
+    case "typealias": .typealias
+    case "function": .function
+    case "variable": .variable
+    case "field": .field
+    case "enumConstant": .enumConstant
+    case "instanceMethod": .instanceMethod
+    case "classMethod": .classMethod
+    case "staticMethod": .staticMethod
+    case "instanceProperty": .instanceProperty
+    case "classProperty": .classProperty
+    case "staticProperty": .staticProperty
+    case "constructor": .constructor
+    case "destructor": .destructor
+    case "conversionFunction": .conversionFunction
+    case "parameter": .parameter
+    case "using": .using
+    case "concept": .concept
+    case "commentTag": .commentTag
+    default:
+        throw DecodingError.dataCorrupted(.init(codingPath: [], debugDescription: "unknown index symbol kind \(value)"))
+    }
 }
 
 private extension Evidence {

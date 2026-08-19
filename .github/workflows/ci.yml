@@ -187,6 +187,31 @@ jobs:
           (root / "finding-id.txt").write_text(fixtures["findings"][0]["id"])
           PY
 
+      - name: Prove incremental cache equivalence
+        run: |
+          set -euo pipefail
+          cache_root="$RUNNER_TEMP/incremental-cache"
+          perl -e 'alarm shift; exec @ARGV' 180 \
+            swift run --disable-automatic-resolution swiftui-audit audit \
+              Tests/Fixtures/RealProjectPatterns \
+              --config Tests/Fixtures/RealProjectPatterns/.swiftui-audit.json \
+              --cache-directory "$cache_root" --syntax-only --format json \
+              > "$RUNNER_TEMP/cache-cold.json"
+          perl -e 'alarm shift; exec @ARGV' 180 \
+            swift run --disable-automatic-resolution swiftui-audit audit \
+              Tests/Fixtures/RealProjectPatterns \
+              --config Tests/Fixtures/RealProjectPatterns/.swiftui-audit.json \
+              --cache-directory "$cache_root" --syntax-only --format json \
+              > "$RUNNER_TEMP/cache-warm.json"
+          perl -e 'alarm shift; exec @ARGV' 180 \
+            swift run --disable-automatic-resolution swiftui-audit audit \
+              Tests/Fixtures/RealProjectPatterns \
+              --config Tests/Fixtures/RealProjectPatterns/.swiftui-audit.json \
+              --no-cache --syntax-only --format json \
+              > "$RUNNER_TEMP/cache-uncached.json"
+          cmp "$RUNNER_TEMP/cache-cold.json" "$RUNNER_TEMP/cache-warm.json"
+          cmp "$RUNNER_TEMP/cache-warm.json" "$RUNNER_TEMP/cache-uncached.json"
+
       - name: Prove snapshot determinism and baseline policy
         run: |
           set -euo pipefail

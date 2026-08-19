@@ -29,6 +29,10 @@ A semantic value groups representations of one logical value when topology suppo
 
 Raw metrics include mutable semantic values, state representations, Binding edges, manual synchronization edges, callback tunnels, derived mutable values, duplicated sources of truth, and ownership violations. Keep the raw numbers; an aggregate improvement never replaces behavior and invariant checks.
 
+## Incremental fact reuse
+
+Live-source analysis stores integrity-checked frontend and indexed fact artifacts outside the semantic snapshot. Unchanged files reuse those facts; declaration-surface changes conservatively invalidate recorded lexical dependents. The cache stores no source text and is not part of the semantic model. Warm-cache and `--no-cache` graph/report bytes must be identical, after which normalization and all rules still run over the complete current graph.
+
 ## Snapshot layout
 
 `snapshot` persists exactly:
