@@ -46,8 +46,8 @@ A local spec edit cannot authorize a semantic change. Any semantic delta require
 | [`rules.md`](rules.md) | Twenty-nine rules, severities, exclusions, adjudication | Normative restatement of ТЗ plus `BOUNDARY-001` and `ARCHITECTURE-001` | active / evolving rule set | Auditing, classifying, refactoring | twenty-nine-rule target |
 | [`cli.md`](cli.md) | Commands, flags, resolution, stdout/status, path/failure policy | Normative restatement plus authorized addenda | active / CLI 0.4.0 target | Running or documenting commands | seven public commands |
 | [`acceptance.md`](acceptance.md) | Fixtures, determinism, skills, CI, Definition of Done | Normative acceptance map for ТЗ §§44–51 plus authorized addenda through `PARALLEL-EXECUTION-001` | active | Implementing or verifying | 88 tests locally accepted; new hosted CI pending |
-| [`evidence-map.md`](evidence-map.md) | Clause ownership and all-54-section plus authorized-addendum coverage | Governance map | active | Tracing authority to evidence | P1–P12 map |
-| [`release-baseline.md`](release-baseline.md) | Current realization, dependency pins, residuals | Descriptive evidence; never higher than normative contracts | active / volatile | Release/readiness/status work | unreleased cache product `38146ff…`; acceptance `84e6fb7…` and CI run `32239872792` |
+| [`evidence-map.md`](evidence-map.md) | Clause ownership and all-54-section plus authorized-addendum coverage | Governance map | active | Tracing authority to evidence | P1–P13 map |
+| [`release-baseline.md`](release-baseline.md) | Current realization, dependency pins, residuals | Descriptive evidence; never higher than normative contracts | active / volatile | Release/readiness/status work | unreleased parallel/index reuse implementation `06ede8e…`; hosted CI pending |
 
 ## Domain ownership
 

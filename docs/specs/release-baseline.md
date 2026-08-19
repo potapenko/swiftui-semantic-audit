@@ -2,14 +2,14 @@
 
 - Node type: hybrid
 - Status: Active
-- Contract revision: `spec-7`
+- Contract revision: `spec-8`
 - Read when: checking current unreleased realization, dependencies, milestones, capabilities, residuals, or acceptance evidence.
 - Do not read when: the task concerns intended behavior without realization or release evidence.
 - Maximum size: 100 physical lines.
 
-Revision: `spec-7`
+Revision: `spec-8`
 Baseline state: `unreleased`  
-Contract epoch: `tz-v6`
+Contract epoch: `tz-v7`
 
 **BASE-REL-001 — No public release claim.** This repository has an accepted PoC implementation and release-path workflows, but this document does not claim a tag, package distribution, website, Homebrew formula, plugin, or other public release.
 
@@ -23,8 +23,10 @@ Contract epoch: `tz-v6`
 
 **BASE-REL-006 — Incremental-cache revision.** `INCREMENTAL-CACHE-001` product commit `38146ff9736ef942ed066bab46337cfa880c2626` implements tool `0.4.0` with cache schema v1 while preserving graph schema v2. The canonical RuleTests manifest records that product-source revision. Acceptance checkpoint `84e6fb7859d62cd1a468b3f8c8560544f9d458a8` is present on `origin/master`, and hosted CI run `32239872792` passed.
 
+**BASE-REL-007 — Parallel-execution revision.** The performance implementation chain is observable-tunnel optimization `fe6fd699e8f56ae11a48a71dd4ac540e4936d29b`, frontend concurrency checkpoint `360077ff0d7e1dd62351c09bd5e55d1cfb8d883e`, deterministic job-control/shared-rule-context checkpoint `1a1459a2623f88865694dbd858612f8972734bb1`, and persistent locked IndexStoreDB reuse checkpoint `06ede8eb503709e13d3c2738e7b68eab9a9d1bc1`. All are present on `origin/master`; local acceptance is terminal and hosted CI for this addendum remains pending.
+
 ## Choose the baseline child
 
-- [Platform, Dependencies, and Milestones](release-baseline/platform-and-milestones.md) — toolchain/dependency pins and accepted P1–P12 capability evidence.
+- [Platform, Dependencies, and Milestones](release-baseline/platform-and-milestones.md) — toolchain/dependency pins and accepted P1–P13 capability evidence.
 - [Current Contract Surface and Residuals](release-baseline/contract-surface-and-residuals.md) — current commands, schemas, hashes, capabilities, and accepted limitations.
-- [Addendum Acceptance Evidence](release-baseline/router-evidence.md) — terminal evidence for router, indexed skills, boundary, architecture, realistic fixtures, and cache addenda.
+- [Addendum Acceptance Evidence](release-baseline/router-evidence.md) — terminal evidence for router, indexed skills, boundary, architecture, realistic fixtures, cache, and parallel-execution addenda.

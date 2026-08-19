@@ -2,7 +2,7 @@
 
 - Node type: leaf
 - Status: Active
-- Contract revision: `spec-7`
+- Contract revision: `spec-8`
 - Authority: [Acceptance and QA contract](../acceptance.md)
 - Read when: selecting fixture, build, determinism, safety, dogfood, skill, CI, or completion obligations.
 - Do not read when: the task does not implement or verify accepted behavior.
@@ -30,3 +30,5 @@
 **ACC-DOD-009.** A compilable multi-file realistic corpus proves 34 exact findings across 24 rules, clean paired alternatives, forty-file distractor invariance, and syntax/indexed matrix parity without changing the twenty-nine-rule product contract.
 
 **ACC-DOD-010.** Tool version `0.4.0` ships cache schema v1. All live-source commands reuse unchanged deterministic facts, conservatively invalidate dependencies, and remain byte-equivalent to an uncached rebuild without changing graph schema v2 or the agent-adjudication boundary.
+
+**ACC-DOD-011.** `PARALLEL-EXECUTION-001` supplies positive `--jobs` control to every live-source command, uses one immutable audit context, preserves serial/parallel graph and report bytes, keeps order-dependent relationship resolution serial, and reuses one locked persistent IndexStoreDB database per cache/store/library identity without sharing a Swift database object concurrently.

@@ -2,7 +2,7 @@
 
 - Node type: leaf
 - Status: Active
-- Contract revision: `spec-7`
+- Contract revision: `spec-8`
 - Authority: [Unreleased implementation baseline](../release-baseline.md)
 - Read when: checking realized behavior, canonical evidence hashes, or accepted product limits.
 - Do not read when: only dependency history, milestones, or addendum acceptance evidence is needed.
@@ -30,7 +30,7 @@
 
 **BASE-CAP-006.** The current P1 extraction fixture contains 42 nodes and 83 edges (SHA-256 `ae2f86326085816ee62f9d3fcf8a1531f007df80d2f60a895d2a9f1ea7241ceb`). Schema v2 adds bounded typed/value-flow facts while preserving accepted lexical behavior: identity for an unshadowed nested `onChange` parameter capture, a same-name nested parameter as a shadow barrier, and derivation for transformed captures.
 
-**BASE-CAP-007.** Current syntax-only Sources dogfood produces 4,329 nodes and 11,328 edges (SHA-256 `b864c296473960f734c313606aafc38ce4b3cc7752d60bfa002fef6f9391d81c`). Its audit has zero findings and SHA-256 `d7b81b69835f7eb6c823c5c6789564b3d4957e14675ec348244bc2f3974191aa`.
+**BASE-CAP-007.** Current syntax-only Sources dogfood produces 4,470 nodes and 11,674 edges (SHA-256 `4f6ebc0ec9e18a5f102bde459bf02a7b5cf7691f45c12b8811f485ccda22c03e`). Its audit has zero findings and SHA-256 `2a43115910dfa518a16d8f28eedd0d098c416fdc4669eaca50fe499ccce36300`.
 
 **BASE-CAP-008.** The accepted value-setter evidence repair leaves counts and metrics unchanged while retaining each matching event-trigger edge in its finding. `LabeledSetter` is `finding:871672afc5e64d2` with `edge:df78fa011860918b`; `ValueSetterPair` is `finding:c988942f3dcf8158` with `edge:fec6154e7fee5d1f`. This records current evidence completeness and does not add another rule.
 
@@ -43,6 +43,8 @@
 **BASE-CAP-012.** `Tests/Fixtures/RealProjectPatterns` is a compilable configured SwiftUI corpus with bad/good pairs in twelve source files. Syntax-only and explicit indexed audits each emit the same 34-entry per-rule/per-file matrix spanning 24 rules, and no finding evidence points into `Good/`. The accepted repeated indexed audit SHA-256 is `bb03a5d3418a244fe66d8d7a3304a9e82b95dbd71daaf44e8c119466c123a96a`.
 
 **BASE-CAP-013.** Live-source commands persist integrity-checked frontend state and content-addressed indexed facts outside semantic snapshots. An exact warm frontend pass reparses zero files; add/delete/rename and declaration-bearing edits conservatively invalidate affected lexical dependents. Indexed facts include relative source path, source content, graph/tool/cache versions, compiler-unit digests, and the selected index-library identity. Every invocation still normalizes the complete current graph and evaluates all twenty-nine rules.
+
+**BASE-CAP-014.** Live-source commands accept positive `--jobs`; omission uses active processors and `1` is serial. Eligible declaration phases and all contextual rules use bounded workers over immutable inputs; all built-in rules share one graph index. On the accepted host, uncached Release Sources audit improved from 1.43s before this audit to 0.57s, with serial/12-job graph and report bytes exact. Indexed whole-result miss with an existing database improved from a 4.24s cold initialization to 2.22s; the following whole-result hit was 0.77s. Reused-database and uncached indexed reports matched at SHA-256 `1380ea9cca5deb609dd520056d5347834c4166e532941b2966223c2d976c9594`.
 
 ## Accepted residuals and limits
 
@@ -61,3 +63,5 @@
 **BASE-LIM-007 — Bounded architecture analysis.** Role- and feature-aware conclusions require exact validated configuration and remain silent without it. Syntax extraction is not a full type checker or general control-flow/effect engine; architecture rules cover only their documented SwiftUI, lifecycle, geometry, representable, and platform-command topology. Automatic rewriting, embedded LLM APIs, GUI/IDE/Xcode extensions, broad Swift framework analysis, and SIL remain out of scope.
 
 **BASE-LIM-008 — Behavioral value freshness.** Collection-window exhaustion, stale captured values in already mounted Views, pagination progression, and similar runtime/control-flow defects are not inferred by the current twenty-nine rules. They require behavior tests or a separately authorized rule/IR evolution and must not be reported as architecture findings without deterministic topology.
+
+**BASE-LIM-009 — Parallelism ceiling.** Relationship extraction remains serial because it observes generated nodes in sorted file order; a lock-only parallel pass changed graph bytes and was rejected. Full scaling requires a two-phase immutable fact/merge frontend. IndexStoreDB's Swift object is not shared concurrently, and upstream unit import remains library-serialized; the tool instead reuses one persistent database behind a bounded interprocess lock. Therefore `--jobs` improves eligible work but does not promise linear all-core utilization for every project or stage.

@@ -2,7 +2,7 @@
 
 - Node type: leaf
 - Status: Active
-- Contract revision: `spec-7`
+- Contract revision: `spec-8`
 - Authority: [Unreleased implementation baseline](../release-baseline.md)
 - Read when: checking acceptance evidence for an authorized addendum.
 - Do not read when: only platform, milestone, current-surface, or residual information is needed.
@@ -23,3 +23,5 @@
 **BASE-NEXT-006.** `REALISTIC-FIXTURES-001` acceptance evidence includes locked build, 81 passing tests, a 34-finding syntax audit, two byte-identical 34-finding indexed audits, exact syntax/indexed rule-file parity, forty clean distractors with unchanged findings, 25/0 legacy architecture positive/negative findings, zero Sources findings, exact canonical RuleTests semantic files, revision-only manifest normalization, valid CI YAML, and clean diff checks. Acceptance commit `ec369e8e93989d0c8fb71370c592e9b1e07c6035` is present on `origin/master`; hosted GitHub Actions run `32138078906` passed every CI step in 6m36s.
 
 **BASE-NEXT-007.** `INCREMENTAL-CACHE-001` acceptance includes a locked build, 86 passing tests, exact cold/warm/uncached report bytes with SHA-256 `70b306ee81aa68eed0f03cc43dcf50179059d02521a95aef565f8d5828cdde9a`, zero Sources findings, two byte-identical five-file snapshots, empty semantic diff, passing check, valid bounded slice, healthy doctor, canonical RuleTests semantic-file equality, four valid skills, YAML/link validation, and clean diff checks. Hosted GitHub Actions run `32239872792` passed every CI step in 3m49s.
+
+**BASE-NEXT-008.** `PARALLEL-EXECUTION-001` local acceptance includes 88 passing tests, positive/negative CLI job validation, byte-identical one/four-worker fixture reports, byte-identical one/twelve-worker Sources graph and report output, focused Thread Sanitizer passes for frontend and rules, zero Sources findings, exact reused-DB/uncached indexed report bytes, and two successful concurrent indexed cache misses sharing one locked database identity. Release timings on the accepted host are recorded in `BASE-CAP-014`; hosted CI remains pending.

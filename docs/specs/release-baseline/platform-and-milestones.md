@@ -2,7 +2,7 @@
 
 - Node type: leaf
 - Status: Active
-- Contract revision: `spec-7`
+- Contract revision: `spec-8`
 - Authority: [Unreleased implementation baseline](../release-baseline.md)
 - Read when: checking platform/dependency compatibility or accepted milestone history.
 - Do not read when: only current capabilities, residuals, or addendum acceptance evidence is needed.
@@ -41,3 +41,4 @@
 | P10 | architecture analysis | accepted: tool 0.3.0/schema v2; collision-safe identities; exact configuration; 29 rules; 77 tests; deterministic 353/713/20 RuleTests baseline; configured positive/negative and indexed evidence; full local CLI dogfood; hosted CI pass |
 | P11 | realistic architecture regression corpus | accepted: 81 tests; 34 exact findings across 24 rules; paired clean alternatives; forty-file distractor invariance; two fresh byte-identical indexed enrichments; syntax/indexed rule-file parity; CLI/CI coverage |
 | P12 | incremental deterministic fact cache | locally accepted: tool 0.4.0/cache schema v1; 86 tests; exact frontend and indexed hit/invalidation coverage; cached/uncached byte equality; complete CLI dogfood; canonical RuleTests semantic files unchanged |
+| P13 | deterministic parallel execution and indexed DB reuse | locally accepted: 88 tests; positive `--jobs`; serial/parallel byte equality; focused frontend/rule TSan; locked persistent IndexStoreDB reuse; Release syntax audit 1.43s → 0.57s from the pre-audit baseline; hosted CI pending |
