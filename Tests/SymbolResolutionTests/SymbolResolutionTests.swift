@@ -285,6 +285,29 @@ final class SymbolResolutionTests: XCTestCase {
             selection: .explicit(fixture.store),
             cache: cache
         )
+        let databaseRoot = cache.projectDirectoryURL.appendingPathComponent("indexstoredb", isDirectory: true)
+        let firstDatabaseEntries = try FileManager.default.contentsOfDirectory(
+            at: databaseRoot, includingPropertiesForKeys: [.isDirectoryKey]
+        ).filter { $0.pathExtension != "lock" }
+        XCTAssertEqual(firstDatabaseEntries.count, 1)
+        let changedGraph = SemanticGraph(
+            resolution: syntax.resolution,
+            configurationDigest: "parallel-index-cache-test",
+            nodes: syntax.nodes,
+            edges: syntax.edges
+        )
+        let changed = try IndexEnrichmentCoordinator(helperExecutable: executable, timeout: 30).enrich(
+            graph: changedGraph,
+            sourceRoot: fixture.source,
+            selection: .explicit(fixture.store),
+            cache: cache
+        )
+        XCTAssertEqual(changed.resolution, "indexed")
+        XCTAssertEqual(changed.configurationDigest, "parallel-index-cache-test")
+        let reusedDatabaseEntries = try FileManager.default.contentsOfDirectory(
+            at: databaseRoot, includingPropertiesForKeys: [.isDirectoryKey]
+        ).filter { $0.pathExtension != "lock" }
+        XCTAssertEqual(reusedDatabaseEntries.map(\.lastPathComponent), firstDatabaseEntries.map(\.lastPathComponent))
         let uncached = try IndexEnrichmentCoordinator(helperExecutable: executable, timeout: 30).enrich(
             graph: syntax,
             sourceRoot: fixture.source,

@@ -1,5 +1,6 @@
 import AnalysisCache
 import AuditCore
+import Darwin
 import Foundation
 
 public enum IndexResolutionError: Error, Equatable, LocalizedError {
@@ -199,7 +200,9 @@ public struct IndexEnrichmentCoordinator: Sendable {
         )
         let requestURL = container.appendingPathComponent("request.json")
         let responseURL = container.appendingPathComponent("response.json")
-        let databaseURL = container.appendingPathComponent("database", isDirectory: true)
+        let databaseURL = try cache.map {
+            try persistentDatabaseURL(cache: $0, store: store, library: library)
+        } ?? container.appendingPathComponent("database", isDirectory: true)
         try fileManager.createDirectory(at: container, withIntermediateDirectories: true)
         defer { try? fileManager.removeItem(at: container) }
         let request = IndexEnrichmentRequest(
@@ -213,12 +216,26 @@ public struct IndexEnrichmentCoordinator: Sendable {
         let encoder = JSONEncoder()
         encoder.outputFormatting = [.sortedKeys, .withoutEscapingSlashes]
         try encoder.encode(request).write(to: requestURL, options: .atomic)
-        let result = try runner.run(
-            helper.path,
-            arguments: ["_index-enrich", "--request", requestURL.path, "--response", responseURL.path],
-            currentDirectory: nil,
-            timeout: timeout
-        )
+        let runHelper = {
+            try runner.run(
+                helper.path,
+                arguments: ["_index-enrich", "--request", requestURL.path, "--response", responseURL.path],
+                currentDirectory: nil,
+                timeout: timeout
+            )
+        }
+        let result: BoundedProcessResult
+        if cache != nil {
+            try fileManager.createDirectory(
+                at: databaseURL.deletingLastPathComponent(), withIntermediateDirectories: true
+            )
+            result = try withDatabaseLock(
+                at: databaseURL.appendingPathExtension("lock"),
+                operation: runHelper
+            )
+        } else {
+            result = try runHelper()
+        }
         guard result.status == 0 else {
             throw IndexResolutionError.helperFailed(
                 result.status,
@@ -238,5 +255,42 @@ public struct IndexEnrichmentCoordinator: Sendable {
               response.graph.resolution == "indexed"
         else { throw IndexResolutionError.noProjectCoverage(store.path) }
         return response.graph
+    }
+
+    private func persistentDatabaseURL(cache: AnalysisCacheStore, store: URL, library: URL) throws -> URL {
+        let libraryValues = try library.resourceValues(forKeys: [.fileSizeKey, .contentModificationDateKey])
+        let identity = [
+            "cache:\(AnalysisCacheStore.schemaVersion)",
+            "store:\(store.standardizedFileURL.resolvingSymlinksInPath().path)",
+            "library:\(library.standardizedFileURL.resolvingSymlinksInPath().path)",
+            "size:\(libraryValues.fileSize ?? 0)",
+            "modified:\(libraryValues.contentModificationDate?.timeIntervalSince1970 ?? 0)",
+        ].joined(separator: "|")
+        return cache.projectDirectoryURL
+            .appendingPathComponent("indexstoredb", isDirectory: true)
+            .appendingPathComponent(AnalysisCacheStore.digest(Data(identity.utf8)), isDirectory: true)
+    }
+
+    private func withDatabaseLock<Value>(
+        at lockURL: URL,
+        operation: () throws -> Value
+    ) throws -> Value {
+        let descriptor = open(lockURL.path, O_CREAT | O_RDWR, S_IRUSR | S_IWUSR)
+        guard descriptor >= 0 else {
+            throw BoundedProcessError.launch("IndexStoreDB cache lock", String(cString: strerror(errno)))
+        }
+        defer { close(descriptor) }
+        let deadline = Date().addingTimeInterval(timeout)
+        while flock(descriptor, LOCK_EX | LOCK_NB) != 0 {
+            guard errno == EWOULDBLOCK else {
+                throw BoundedProcessError.launch("IndexStoreDB cache lock", String(cString: strerror(errno)))
+            }
+            guard Date() < deadline else {
+                throw BoundedProcessError.timeout("IndexStoreDB cache lock", timeout)
+            }
+            usleep(50_000)
+        }
+        defer { flock(descriptor, LOCK_UN) }
+        return try operation()
     }
 }
