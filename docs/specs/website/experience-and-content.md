@@ -2,7 +2,7 @@
 
 - Node type: leaf
 - Status: Active
-- Contract revision: `spec-1`
+- Contract revision: `spec-2`
 - Authority: [Website contract](../website.md)
 - Maximum size: 100 physical lines.
 
@@ -51,6 +51,11 @@ cyberpunk glow, generic SaaS gradients, stock imagery, mascots, or a fake GUI.
 **WEB-VIS-003.** Desktop examples may use Before/Evidence/After columns. Mobile
 preserves the same reading order as a vertical sequence with usable code
 overflow and no information available only on hover.
+
+**WEB-AUTHOR-001.** The header links to `https://x.com/potapenko`. Desktop uses
+the local Tabler Twitter mark with an accessible name; the responsive navigation
+reveals `Follow @potapenko on Twitter` as visible text. The link does not add
+tracking, a new route, or a second author surface elsewhere on the page.
 
 ## Copy, claims, and accessibility
 

@@ -2,8 +2,8 @@
 
 - Node type: hybrid
 - Status: Active
-- Contract revision: `spec-3`
-- Authority: user-authorized `WEBSITE-001` and `WEBSITE-PUBLISH-001` on 2026-08-19
+- Contract revision: `spec-4`
+- Authority: user-authorized `WEBSITE-001`, `WEBSITE-PUBLISH-001`, and `WEBSITE-AUTHOR-001` on 2026-08-19
 - Stability: released at the canonical domain
 - Read when: designing, implementing, publishing, or verifying the product website.
 - Do not read when: work is limited to the Swift package, CLI, rules, or agent skills.
@@ -30,6 +30,11 @@ authorizes `https://swiftui-audit.dev/` as the eventual canonical public root,
 Bootstrap remains domain-free until the technical ingress passes. Domain
 attachment waits for authoritative registration and DNS, so a pending purchase
 cannot create a false public-domain or TLS claim.
+
+**WEB-DELTA-004 — Personal author link.** `WEBSITE-AUTHOR-001` adds one external
+header link to `https://x.com/potapenko`, adapting HoldType's icon-only desktop
+and labelled mobile behavior. The target site's visual system, navigation order,
+accessibility, and local Tabler asset boundary remain authoritative.
 
 ## Choose the governing child
 

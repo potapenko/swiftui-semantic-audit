@@ -2,15 +2,15 @@
 
 - Node type: root
 - Status: Active
-- Contract revision: `spec-13`
-- Authority: epoch `tz-v10` and pinned digest declared below
+- Contract revision: `spec-14`
+- Authority: epoch `tz-v11` and pinned digest declared below
 - Read when: starting any product, behavior, compatibility, QA, release, or specification task in this repository.
 - Do not read when: the task is proven behavior-neutral and outside the specification system.
 - Maximum size: 100 physical lines.
 
 Status: active  
-Contract epoch: `tz-v10`
-Local specification revision: `spec-13`
+Contract epoch: `tz-v11`
+Local specification revision: `spec-14`
 Pinned authority digest: `sha256:68f8a43d924659024b7d29fabb9ad302817c271838a7919b24bd942626927cac`  
 Router addendum: user-authorized `ROUTER-001` on 2026-08-18
 Indexed-skills addendum: user-authorized `INDEXED-SKILLS-001` on 2026-08-18
@@ -22,6 +22,7 @@ Parallel-execution addendum: user-authorized `PARALLEL-EXECUTION-001` on 2026-08
 Homebrew release addendum: user-authorized `HOMEBREW-RELEASE-001` on 2026-08-19; advances the combined contract to `tz-v8`
 Website addendum: user-authorized `WEBSITE-001` on 2026-08-19; advances the combined contract to `tz-v9`
 Website publication addendum: user-authorized `WEBSITE-PUBLISH-001` on 2026-08-19; advances the combined contract to `tz-v10`
+Website author-link addendum: user-authorized `WEBSITE-AUTHOR-001` on 2026-08-19; advances the combined contract to `tz-v11`
 Release baseline: `0.4.0 released`
 Website baseline: canonical domain released
 
@@ -31,7 +32,7 @@ This directory is the self-contained active specification package for SwiftUI Se
 
 When documents appear to disagree, apply this order:
 
-1. the user-approved ТЗ at epoch `tz-v1`, its pinned digest, the explicit `ROUTER-001`, `INDEXED-SKILLS-001`, `BOUNDARY-001`, `ARCHITECTURE-001`, `INCREMENTAL-CACHE-001`, `PARALLEL-EXECUTION-001`, `HOMEBREW-RELEASE-001`, `WEBSITE-001`, and `WEBSITE-PUBLISH-001` requests that advance the combined contract to `tz-v10`, and the behavior-preserving `REALISTIC-FIXTURES-001` acceptance addendum;
+1. the user-approved ТЗ at epoch `tz-v1`, its pinned digest, the explicit `ROUTER-001`, `INDEXED-SKILLS-001`, `BOUNDARY-001`, `ARCHITECTURE-001`, `INCREMENTAL-CACHE-001`, `PARALLEL-EXECUTION-001`, `HOMEBREW-RELEASE-001`, `WEBSITE-001`, `WEBSITE-PUBLISH-001`, and `WEBSITE-AUTHOR-001` requests that advance the combined contract to `tz-v11`, and the behavior-preserving `REALISTIC-FIXTURES-001` acceptance addendum;
 2. [`product-contract.md`](product-contract.md) for product boundaries and invariants;
 3. domain contracts (`semantic-ir.md`, `rules.md`, `cli.md`);
 4. [`acceptance.md`](acceptance.md) for proof obligations;
@@ -52,7 +53,7 @@ A local spec edit cannot authorize a semantic change. Any semantic delta require
 | [`acceptance.md`](acceptance.md) | Fixtures, determinism, skills, CI, Definition of Done | Normative acceptance map for ТЗ §§44–51 plus authorized addenda through `HOMEBREW-RELEASE-001` | active | Implementing or verifying | 88 tests and hosted CI accepted; Homebrew receipt in release baseline |
 | [`evidence-map.md`](evidence-map.md) | Clause ownership and all-54-section plus authorized-addendum coverage | Governance map | active | Tracing authority to evidence | P1–P13 map |
 | [`release-baseline.md`](release-baseline.md) | Current realization, dependency pins, residuals | Descriptive evidence; never higher than normative contracts | active / released | Release/readiness/status work | 0.4.0 tool release plus initial website deployment |
-| [`website.md`](website.md) | English landing-page experience, claims, examples, build, deployment, and QA | `WEBSITE-001` plus `WEBSITE-PUBLISH-001` product-evolution contract | active / released | Designing, implementing, publishing, or reviewing the website | canonical domain released |
+| [`website.md`](website.md) | English landing-page experience, claims, examples, build, deployment, and QA | `WEBSITE-001`, `WEBSITE-PUBLISH-001`, and `WEBSITE-AUTHOR-001` product-evolution contract | active / released | Designing, implementing, publishing, or reviewing the website | canonical domain released |
 
 ## Domain ownership
 
@@ -84,6 +85,11 @@ push-triggered publication from `master`, and the staged canonical-domain cutove
 to `swiftui-audit.dev` with `www` redirecting to the apex. The technical ingress
 must pass before domain attachment, and the domain is not claimed ready until
 registry delegation, managed TLS, and public verification pass.
+
+`WEBSITE-AUTHOR-001` adds one HoldType-shaped personal Twitter link to the site
+header. It authorizes `https://x.com/potapenko`, an accessible English label,
+and the existing local Tabler icon system; it does not open adjacent navigation,
+content, analytics, localization, or footer scope.
 
 Advance the epoch before accepting a material semantic change. Editorial clarification may advance only the local specification revision and must preserve every protected behavior and exception.
 

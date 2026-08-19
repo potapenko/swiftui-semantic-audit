@@ -27,6 +27,7 @@ ICON_FILES = (
     "arrows-exchange.svg",
     "book-2.svg",
     "brand-github.svg",
+    "brand-twitter.svg",
     "check.svg",
     "copy.svg",
     "cube.svg",

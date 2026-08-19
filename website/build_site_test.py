@@ -245,6 +245,9 @@ class ProductionPageContractTests(unittest.TestCase):
         self.assertIn('<section id="install"', source)
         self.assertIn("brew install potapenko/tap/swiftui-semantic-audit", source)
         self.assertIn("Install exactly the four SwiftUI Semantic Audit agent skills", source)
+        self.assertIn('href="https://x.com/potapenko"', source)
+        self.assertIn('aria-label="Follow @potapenko on Twitter"', source)
+        self.assertIn('src="assets/icons/brand-twitter.svg"', source)
 
         rules = source.split('<section id="rules"', 1)[1].split("</section>", 1)[0]
         self.assertEqual(rules.count("<li><code>"), 29)

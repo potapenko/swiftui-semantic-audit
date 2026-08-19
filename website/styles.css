@@ -235,6 +235,31 @@ code {
   text-decoration-color: currentColor;
 }
 
+.site-nav .twitter-link {
+  width: 2.25rem;
+  height: 2.25rem;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex: 0 0 auto;
+  border-radius: 999px;
+  text-decoration: none;
+}
+
+.site-nav .twitter-link:hover {
+  background: var(--surface);
+  text-decoration: none;
+}
+
+.twitter-link img {
+  width: 1.2rem;
+  height: 1.2rem;
+}
+
+.twitter-link-text {
+  display: none;
+}
+
 .site-nav .github-link {
   display: inline-flex;
   align-items: center;
@@ -1542,6 +1567,18 @@ tbody td {
 
   .js .site-nav.is-open {
     display: flex;
+  }
+
+  .site-nav .twitter-link {
+    width: 100%;
+    height: auto;
+    justify-content: flex-start;
+    gap: 0.45rem;
+    border-radius: 0;
+  }
+
+  .twitter-link-text {
+    display: inline;
   }
 
   .hero-grid,

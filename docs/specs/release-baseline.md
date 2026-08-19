@@ -10,7 +10,7 @@
 Revision: `spec-11`
 Baseline state: `0.4.0 released; website canonical domain released`
 Contract epoch: `tz-v8`
-Website contract epoch: `tz-v10`
+Website contract epoch: `tz-v11`
 
 **BASE-REL-001 — Publication state.** Tool `0.4.0` is the first public release. It is distributed from one immutable Git tag and GitHub Release through the tested upstream tap formula; the terminal receipt pins every external artifact.
 
