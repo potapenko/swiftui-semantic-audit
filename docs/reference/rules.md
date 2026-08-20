@@ -1,6 +1,6 @@
 # Rule reference
 
-Version 0.4.0 evaluates the unchanged 29 rules over the canonical semantic graph. A rule uses ownership, identity, read/write/call, binding, observation, configuration, and event topology. No rule is allowed to conclude from a property-wrapper or type name alone.
+Release 0.4.0 evaluates 29 rules over the canonical semantic graph. Development version 0.5.0 adds the exact-config `reusable-component-owner-dependency` candidate as the thirtieth rule. A rule uses ownership, identity, read/write/call, binding, observation, configuration, and event topology. No rule is allowed to conclude from a property-wrapper or type name alone.
 
 Severity describes the architectural risk selected by the contract. Confidence describes the evidence basis:
 
@@ -40,6 +40,7 @@ These rules use exact configuration when product roles, features, or composition
 | `cross-feature-owner-dependency` | high | strong-inference | A View in one configured feature depending on an owner from another feature. |
 | `service-or-repository-in-view` | high | strong-inference | A non-root View accepting a configured repository, service, player, dependency bundle, or effect sink. |
 | `environment-command-router` | medium | candidate | An injected environment value exposing commands or callbacks used by the View. |
+| `reusable-component-owner-dependency` | medium | candidate | An exact configured reusable component accepting an app/feature owner, or receiving a component model through Environment. |
 | `multi-source-binding` | medium | strong-inference | A custom Binding whose getter/setter touches multiple independent values or reconstructs an aggregate from new and current state. |
 | `manual-owner-synchronization` | high | strong-inference | A local mutable representation copied from an external owner in multiple lifecycle-triggered paths. |
 | `hidden-command-in-lifecycle` | medium | candidate | Model commands, dispatch, normalization, or awaited work initiated by `onAppear`, `onChange`, or `task`. |
@@ -47,7 +48,7 @@ These rules use exact configuration when product roles, features, or composition
 | `imperative-focus-lifecycle` | medium | strong-inference | `FocusState` writes from lifecycle, delayed task/dispatch, or restoration callbacks. |
 | `selection-corrective-loop` | high | strong-inference | Multiple focus/selection restoration states in corrective event-driven copy/write cycles. |
 
-Configuration does not guess. If a required type or feature role is absent, the role-aware conclusion is not emitted.
+Configuration does not guess. If a required type, feature, or View role is absent, the role-aware conclusion is not emitted. Reusable-owner findings require instance-count and lifetime review; explicit per-instance component models, local component ownership, focused values/bindings/actions, passive environment values, and screen/container ownership remain protected.
 
 ## Layout and platform boundaries
 
@@ -70,6 +71,7 @@ One evidence path should not produce redundant generic and specific findings. Th
 
 - `model-aware-descendant` suppresses `broad-observable-input` for the same boundary;
 - `multi-owner-component` suppresses per-owner model-aware findings;
+- `reusable-component-owner-dependency` suppresses generic model-aware and broad-observable findings for the same exact reusable boundary;
 - `hidden-command-in-lifecycle` suppresses `view-owned-external-effect` for the same call;
 - geometry effect, escape, or manual positioning suppresses generic geometry-layout output for the same chain;
 - mirror rules take precedence over broad observable input.
@@ -88,6 +90,7 @@ The rules deliberately preserve:
 8. **Local presentation state:** animation or transition state written only by its local presentation lifecycle.
 9. **Native layout and drawing:** Shape and Canvas-local coordinates plus narrow immutable platform adapters.
 10. **Exact authority:** roles, features, roots, and custom passive environment values come from validated configuration, not regexes.
+11. **Reusable component lifetime:** an explicit per-instance component model may be the correct domain boundary; the rule does not prescribe blanket model removal, Binding everywhere, or one ViewModel per View.
 
 ## Reading a finding
 
