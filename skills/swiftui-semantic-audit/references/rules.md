@@ -19,6 +19,7 @@ Read this reference when classifying findings, checking an exception, or proposi
 | `cross-feature-owner-dependency` | A View and accepted owner belong to different configured features | high | Verify the declared feature boundary before remediation |
 | `service-or-repository-in-view` | A non-root View accepts a configured external-effect owner | high | Prefer an explicit focused value/action boundary |
 | `environment-command-router` | An injected value exposes callable command topology | medium | Passive environment values remain clean unless callable facts exist |
+| `reusable-component-owner-dependency` | An exact configured reusable component accepts an app/feature owner, or injects a component model through Environment | medium | Candidate instance/lifetime boundary; explicit per-item component models may be correct |
 | `multi-source-binding` | One explicit Binding reads/writes multiple independent semantic values | medium | Preserve aggregate/transform semantics while making ownership explicit |
 | `manual-owner-synchronization` | External owner data is copied to local state from multiple lifecycle paths | high | Check transaction semantics before replacing synchronization |
 | `hidden-command-in-lifecycle` | A non-root lifecycle closure starts configured work | medium | Make the event/effect boundary explicit |
@@ -34,7 +35,7 @@ Read this reference when classifying findings, checking an exception, or proposi
 | `direct-global-platform-command` | A non-root View calls a bounded global AppKit/UIKit command | high | Move platform effects behind an explicit boundary |
 | `preview-requires-app-composition` | A reusable View preview constructs configured app/service ownership | medium | Prefer focused preview inputs |
 
-The topology-backed rules use `strong-inference`; `binding-factory` and `broad-observable-input` remain `candidate`. Evidence edges and locations are deterministic source facts. A suggested pattern is not an automatic edit.
+The topology-backed rules use `strong-inference`; `binding-factory`, `broad-observable-input`, and `reusable-component-owner-dependency` remain `candidate`. Evidence edges and locations are deterministic source facts. A suggested pattern is not an automatic edit.
 
 ## Required exception checks
 
@@ -47,6 +48,8 @@ The topology-backed rules use `strong-inference`; `binding-factory` and `broad-o
 - Keep View-owned local models and focused value/action inputs clean. A screen/container may legitimately own or receive a broad model.
 - Require validated exact configuration for role-, feature-, and composition-root conclusions; never infer them from a type or property name.
 - Keep passive environment values, local animation state, Canvas/Shape coordinates, `Button`, empty representable updates, and focused previews clean.
+- Keep exact screens/containers, explicit or locally owned per-instance component models, focused values/bindings/actions, and unclassified Views clean for the reusable-owner rule.
+- Do not convert the reusable-owner candidate into blanket model removal, Binding-everywhere, or a ViewModel-per-View requirement.
 - Do not merge values from name similarity, matching type, or nearby UI alone.
 
 ## Adjudication questions
@@ -60,3 +63,5 @@ The topology-backed rules use `strong-inference`; `binding-factory` and `broad-o
 7. Would the proposed representation remove manual synchronization without hiding effects or changing behavior?
 8. Is the receiving View a screen/container owner or a reusable leaf component?
 9. Which focused values, bindings, and actions express its minimum dependency surface?
+10. Can multiple component instances coexist, and is the dependency shared or distinct per instance?
+11. Is the dependency an app/feature owner or the component's own domain model with an independent lifetime?

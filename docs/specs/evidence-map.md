@@ -2,13 +2,13 @@
 
 - Node type: hybrid
 - Status: Active
-- Contract revision: `spec-9`
+- Contract revision: `spec-10`
 - Read when: tracing original sections or authorized addenda to stable clauses and evidence ownership.
 - Do not read when: the governing contract is already selected and traceability is not in question.
 - Maximum size: 100 physical lines.
 
-Revision: `spec-9`
-Authority: ТЗ epoch `tz-v1` plus user-authorized addenda through `HOMEBREW-RELEASE-001`, combined epoch `tz-v8`
+Revision: `spec-10`
+Authority: ТЗ epoch `tz-v1` plus user-authorized addenda through `COMPONENT-SURFACE-001`, combined epoch `tz-v13`
 Purpose: route every source section to stable local clauses and evidence owners
 
 This map proves coverage; it does not create new requirements. Source and tests establish realization only after the normative contract is fixed.
@@ -69,6 +69,8 @@ This map proves coverage; it does not create new requirements. Source and tests 
 | 52 | Provider-independent boundary | `PC-ARCH-005`, `PC-LLM-004` | package/skills |
 | 53 | Long-term direction | `PC-NONGOAL-003` | non-binding roadmap context |
 | 54 | Final product definition | `PC-GOAL-001..003` | README/product contract |
+
+`COMPONENT-SURFACE-001` maps to `PC-OPS-010`, `CFG-003/004/009`, `IR-GRAPH-010`, `RULE-REUSABLE-OWNER-001`, `RULE-DOM-001`, `RULE-EXC-011`, and `ACC-COMP-001..007`; realization owners are AuditCore configuration, AuditRules, ContextSlicer, configured fixtures, skills, CI, and the unreleased 0.5.0 receipt.
 
 ## Choose the supporting map
 

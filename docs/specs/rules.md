@@ -2,13 +2,13 @@
 
 - Node type: hybrid
 - Status: Active
-- Contract revision: `spec-3`
-- Read when: selecting any of the twenty-nine findings, exclusions, dominance, adjudication, or fixture expectations.
+- Contract revision: `spec-4`
+- Read when: selecting any of the thirty findings, exclusions, dominance, adjudication, or fixture expectations.
 - Do not read when: the task does not evaluate, interpret, or verify findings.
 - Maximum size: 100 physical lines.
 
-Revision: `spec-3`
-Rule set: twenty-nine required rules
+Revision: `spec-4`
+Rule set: thirty required rules
 Status: active
 
 ## Choose the governing child

@@ -20,6 +20,7 @@ public struct ArchitectureRule: ContextualAuditRule {
         case .crossFeatureOwnerDependency: return facts.crossFeatureDependencies()
         case .serviceOrRepositoryInView: return facts.serviceInputs()
         case .environmentCommandRouter: return facts.environmentCommandRouters()
+        case .reusableComponentOwnerDependency: return facts.reusableComponentOwnerDependencies()
         case .multiSourceBinding: return facts.multiSourceBindings()
         case .manualOwnerSynchronization: return facts.manualOwnerSynchronizations()
         case .hiddenCommandInLifecycle: return facts.lifecycleCommands()
@@ -168,6 +169,26 @@ private struct ArchitectureFacts {
                     boundary.nodes + calls.flatMap { [$0.from, $0.to] },
                     boundary.edges + memberLinks + calls,
                     ["action-closure", "focused-input"]
+                )
+            }
+        }
+    }
+
+    func reusableComponentOwnerDependencies() -> [AuditFinding] {
+        views.flatMap { view -> [AuditFinding] in
+            guard view.roles.contains("reusable-component") else { return [] }
+            return typedBoundaries(of: view).filter { boundary in
+                guard !boundary.property.roles.contains("passive-environment") else { return false }
+                if hasRole(boundary.type, in: Self.ownerRoles) { return true }
+                return boundary.boundary.kind == .injects && boundary.type.roles.contains("component-model")
+            }.map { boundary in
+                finding(
+                    .reusableComponentOwnerDependency,
+                    .medium,
+                    .candidate,
+                    boundary.nodes,
+                    boundary.edges,
+                    ["action-closure", "explicit-component-model", "focused-binding", "focused-input"]
                 )
             }
         }
@@ -598,16 +619,31 @@ private struct ArchitectureFacts {
 
 func applyFindingDominance(_ findings: [AuditFinding]) -> [AuditFinding] {
     let specificByRule = Dictionary(grouping: findings, by: \.rule)
+    func sameBoundaryPath(_ lhs: AuditFinding, _ rhs: AuditFinding) -> Bool {
+        if !Set(lhs.edges).isDisjoint(with: rhs.edges) { return true }
+        return Set(lhs.nodes).intersection(rhs.nodes).count >= 2
+    }
     return findings.filter { finding in
-        let nodes = Set(finding.nodes)
         switch finding.rule {
         case .broadObservableInput:
-            return !(specificByRule[.modelAwareDescendant] ?? []).contains {
-                !nodes.isDisjoint(with: $0.nodes)
+            let legacyDominance = (specificByRule[.modelAwareDescendant] ?? []).contains {
+                !Set(finding.nodes).isDisjoint(with: $0.nodes)
             }
+            let reusableDominance = (specificByRule[.reusableComponentOwnerDependency] ?? []).contains {
+                sameBoundaryPath(finding, $0)
+            }
+            return !legacyDominance && !reusableDominance
         case .modelAwareDescendant:
+            let legacyDominance = (specificByRule[.multiOwnerComponent] ?? []).contains {
+                !Set(finding.nodes).isDisjoint(with: $0.nodes)
+            }
+            let reusableDominance = (specificByRule[.reusableComponentOwnerDependency] ?? []).contains {
+                sameBoundaryPath(finding, $0)
+            }
+            return !legacyDominance && !reusableDominance
+        case .reusableComponentOwnerDependency:
             return !(specificByRule[.multiOwnerComponent] ?? []).contains {
-                !nodes.isDisjoint(with: $0.nodes)
+                sameBoundaryPath(finding, $0)
             }
         case .viewOwnedExternalEffect:
             return !(specificByRule[.hiddenCommandInLifecycle] ?? []).contains {

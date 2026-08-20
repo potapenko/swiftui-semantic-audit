@@ -341,6 +341,14 @@ public struct ContextSlicer: Sendable {
                     "Is the receiving View a legitimate screen/container owner or a reusable component boundary?",
                     "Which focused values, bindings, and actions express the minimum required dependency surface?",
                 ]
+            case .reusableComponentOwnerDependency:
+                return [
+                    "Can multiple instances of this reusable component coexist?",
+                    "Is this dependency shared across the feature, or distinct per component instance?",
+                    "Is the model the component's domain model, or an application/feature owner?",
+                    "Can focused values, a focused Binding, and explicit actions express the required surface?",
+                    "Does the component or model require an independent lifetime?",
+                ]
             default:
                 break
             }

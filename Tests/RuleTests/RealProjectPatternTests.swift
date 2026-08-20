@@ -17,9 +17,9 @@ final class RealProjectPatternTests: XCTestCase {
                 .broadObservableInput: 1,
                 .crossFeatureOwnerDependency: 1,
                 .environmentCommandRouter: 1,
-                .modelAwareDescendant: 1,
                 .multiOwnerComponent: 2,
                 .observableModelTunnel: 1,
+                .reusableComponentOwnerDependency: 1,
                 .serviceOrRepositoryInView: 3,
                 .viewOwnedExternalEffect: 2,
             ],
@@ -78,6 +78,10 @@ final class RealProjectPatternTests: XCTestCase {
         )
         let crossFeature = try XCTUnwrap(report.findings.first { $0.rule == .crossFeatureOwnerDependency })
         XCTAssertEqual(viewNames(in: crossFeature, graph: graph), ["RealProjectPatterns.BadCrossFeatureLeaf"])
+        let reusable = try XCTUnwrap(report.findings.first {
+            $0.rule == .reusableComponentOwnerDependency
+        })
+        XCTAssertEqual(viewNames(in: reusable, graph: graph), ["RealProjectPatterns.BadCrossFeatureLeaf"])
 
         assertSeverityAndConfidence(report)
         assertFindingIntegrity(report, graph: graph)
@@ -158,6 +162,7 @@ final class RealProjectPatternTests: XCTestCase {
             .manualPositioningAsLayout,
             .modelAwareDescendant,
             .previewRequiresAppComposition,
+            .reusableComponentOwnerDependency,
             .viewOwnedExternalEffect,
         ]
         let highRules: Set<RuleID> = [

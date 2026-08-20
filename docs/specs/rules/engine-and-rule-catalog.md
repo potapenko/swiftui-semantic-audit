@@ -2,9 +2,9 @@
 
 - Node type: leaf
 - Status: Active
-- Contract revision: `spec-3`
+- Contract revision: `spec-4`
 - Authority: [Rule and adjudication contract](../rules.md)
-- Read when: selecting any of the twenty-nine findings, exclusions, dominance, adjudication, or fixture expectations.
+- Read when: selecting any of the thirty findings, exclusions, dominance, adjudication, or fixture expectations.
 - Do not read when: the task does not evaluate, interpret, or verify findings.
 - Maximum size: 100 physical lines.
 

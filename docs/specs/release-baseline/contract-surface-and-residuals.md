@@ -2,7 +2,7 @@
 
 - Node type: leaf
 - Status: Active
-- Contract revision: `spec-9`
+- Contract revision: `spec-10`
 - Authority: [Unreleased implementation baseline](../release-baseline.md)
 - Read when: checking realized behavior, canonical evidence hashes, or accepted product limits.
 - Do not read when: only dependency history, milestones, or addendum acceptance evidence is needed.
@@ -12,7 +12,7 @@
 
 **BASE-CAP-001.** Public commands are `scan`, `audit`, `snapshot`, `slice`, `diff`, `check`, and `doctor`, with syntax/index flags documented in [`cli.md`](../cli.md).
 
-**BASE-CAP-002.** Graph/audit/snapshot/diff/check/slice schemas are version 2, tool version is `0.4.0`, and the non-authoritative analysis-cache schema is version 1. Reports and snapshot manifests carry the canonical analysis-configuration digest or `none`.
+**BASE-CAP-002.** Graph/audit/snapshot/diff/check/slice schemas are version 2, the development tool version is `0.5.0`, and the non-authoritative analysis-cache schema is version 1. Public release 0.4.0 remains immutable. Reports and snapshot manifests carry the canonical analysis-configuration digest or `none`.
 
 **BASE-CAP-003.** The canonical RuleTests dogfood baseline is syntax-only and contains exactly five files under `Tests/Baselines/RuleTests`.
 
@@ -42,11 +42,13 @@
 
 **BASE-CAP-012.** `Tests/Fixtures/RealProjectPatterns` is a compilable configured SwiftUI corpus with bad/good pairs in twelve source files. Syntax-only and explicit indexed audits each emit the same 34-entry per-rule/per-file matrix spanning 24 rules, and no finding evidence points into `Good/`. The accepted repeated indexed audit SHA-256 is `bb03a5d3418a244fe66d8d7a3304a9e82b95dbd71daaf44e8c119466c123a96a`.
 
-**BASE-CAP-013.** Live-source commands persist integrity-checked frontend state and content-addressed indexed facts outside semantic snapshots. An exact warm frontend pass reparses zero files; add/delete/rename and declaration-bearing edits conservatively invalidate affected lexical dependents. Indexed facts include relative source path, source content, graph/tool/cache versions, compiler-unit digests, and the selected index-library identity. Every invocation still normalizes the complete current graph and evaluates all twenty-nine rules.
+**BASE-CAP-013.** Live-source commands persist integrity-checked frontend state and content-addressed indexed facts outside semantic snapshots. An exact warm frontend pass reparses zero files; add/delete/rename and declaration-bearing edits conservatively invalidate affected lexical dependents. Indexed facts include relative source path, source content, graph/tool/cache versions, compiler-unit digests, and the selected index-library identity. Every invocation still normalizes the complete current graph and evaluates all thirty rules.
 
 **BASE-CAP-014.** Live-source commands accept positive `--jobs`; omission uses active processors and `1` is serial. Eligible declaration phases and all contextual rules use bounded workers over immutable inputs; all built-in rules share one graph index. On the accepted host, uncached Release Sources audit improved from 1.43s before this audit to 0.57s, with serial/12-job graph and report bytes exact. Indexed whole-result miss with an existing database improved from a 4.24s cold initialization to 2.22s; the following whole-result hit was 0.77s. Reused-database and uncached indexed reports matched at SHA-256 `1380ea9cca5deb609dd520056d5347834c4166e532941b2966223c2d976c9594`.
 
 **BASE-CAP-015.** Release 0.4.0 exposes `swiftui-audit --version` from the same `ToolMetadata.version` used by reports and snapshots. The Homebrew package name is `swiftui-semantic-audit`; it installs the unchanged executable name `swiftui-audit` and leaves all agent-skill locations operator-owned.
+
+**BASE-CAP-016.** Config schema 2 adds exact View roles and `component-model`; schema 1 remains accepted. The thirtieth reusable-owner candidate is configuration-only, uses existing graph roles, and preserves the realistic corpus total through finding dominance.
 
 ## Accepted residuals and limits
 
@@ -64,6 +66,8 @@
 
 **BASE-LIM-007 — Bounded architecture analysis.** Role- and feature-aware conclusions require exact validated configuration and remain silent without it. Syntax extraction is not a full type checker or general control-flow/effect engine; architecture rules cover only their documented SwiftUI, lifecycle, geometry, representable, and platform-command topology. Automatic rewriting, embedded LLM APIs, GUI/IDE/Xcode extensions, broad Swift framework analysis, and SIL remain out of scope.
 
-**BASE-LIM-008 — Behavioral value freshness.** Collection-window exhaustion, stale captured values in already mounted Views, pagination progression, and similar runtime/control-flow defects are not inferred by the current twenty-nine rules. They require behavior tests or a separately authorized rule/IR evolution and must not be reported as architecture findings without deterministic topology.
+**BASE-LIM-008 — Behavioral value freshness.** Collection-window exhaustion, stale captured values in already mounted Views, pagination progression, and similar runtime/control-flow defects are not inferred by the current thirty rules. They require behavior tests or a separately authorized rule/IR evolution and must not be reported as architecture findings without deterministic topology.
+
+**BASE-LIM-010 — Component multiplicity.** Exact roles establish a candidate boundary, not runtime aliasing or instance multiplicity. Full interprocedural `ForEach` lifetime and alias analysis remains out of scope; the agent adjudicates instance count and lifetime from the bounded slice and source evidence.
 
 **BASE-LIM-009 — Parallelism ceiling.** Relationship extraction remains serial because it observes generated nodes in sorted file order; a lock-only parallel pass changed graph bytes and was rejected. Full scaling requires a two-phase immutable fact/merge frontend. IndexStoreDB's Swift object is not shared concurrently, and upstream unit import remains library-serialized; the tool instead reuses one persistent database behind a bounded interprocess lock. Therefore `--jobs` improves eligible work but does not promise linear all-core utilization for every project or stage.

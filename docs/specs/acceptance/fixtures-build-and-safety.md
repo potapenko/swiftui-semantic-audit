@@ -2,7 +2,7 @@
 
 - Node type: leaf
 - Status: Active
-- Contract revision: `spec-8`
+- Contract revision: `spec-9`
 - Authority: [Acceptance and QA contract](../acceptance.md)
 - Read when: selecting fixture, build, determinism, safety, dogfood, skill, CI, or completion obligations.
 - Do not read when: the task does not implement or verify accepted behavior.
@@ -45,6 +45,8 @@
 
 **ACC-FIX-017 — Scale and resolution invariance.** Adding at least forty clean SwiftUI source files to the realistic corpus must preserve every existing finding exactly. Two fresh explicit IndexStoreDB enrichments must be byte-identical, retain `resolution: "indexed"`, and preserve the syntax-mode per-rule/per-file finding matrix without duplication or loss.
 
+**ACC-FIX-018 — Reusable component surface.** The positive, exception, compatibility, dominance, slice, and realistic-corpus obligations are pinned in [`component-surface.md`](component-surface.md).
+
 ## Build and tests
 
 **ACC-TEST-001.** Resolve only intentionally, then run locked verification:
@@ -71,6 +73,8 @@ swift test --disable-automatic-resolution
 **ACC-TEST-009.** `INCREMENTAL-CACHE-001` advances the local suite to 86 passing tests. Four frontend tests prove warm reuse, one-file reparsing, lexical dependency invalidation, add/delete/rename equivalence, integrity failure, persistent round-trip, and concurrent writers. One indexed test proves exact per-file hit/miss counts, whole-result reuse without a repeated helper, and cached/uncached byte equivalence.
 
 **ACC-TEST-010.** `PARALLEL-EXECUTION-001` advances the local suite to 88 passing tests. Frontend and rule-engine tests compare one worker with four workers byte for byte; CLI integration covers one/two jobs and rejects zero; focused Thread Sanitizer runs cover both parallel boundaries.
+
+**ACC-TEST-011.** `COMPONENT-SURFACE-001` advances the target suite to 92 passing tests with four focused configuration/rule/exception/slice cases while reusing the realistic syntax/indexed parity gate.
 
 ## Determinism and safety
 

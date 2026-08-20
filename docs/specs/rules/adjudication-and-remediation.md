@@ -2,16 +2,16 @@
 
 - Node type: leaf
 - Status: Active
-- Contract revision: `spec-3`
+- Contract revision: `spec-4`
 - Authority: [Rule and adjudication contract](../rules.md)
-- Read when: selecting any of the twenty-nine findings, exclusions, dominance, adjudication, or fixture expectations.
+- Read when: selecting any of the thirty findings, exclusions, dominance, adjudication, or fixture expectations.
 - Do not read when: the task does not evaluate, interpret, or verify findings.
 - Maximum size: 100 physical lines.
 
 
 ## Finding dominance
 
-**RULE-DOM-001.** Suppress a generic finding for the same evidence path when a more specific rule explains it: model-aware suppresses broad input for one boundary; multi-owner suppresses per-owner model-aware findings; lifecycle-command suppresses view-effect for the same call; geometry effect/escape/manual positioning suppress generic geometry-layout for the same chain. Existing mirror rules retain precedence over broad observable input.
+**RULE-DOM-001.** Suppress a generic finding for the same evidence path when a more specific rule explains it: reusable-owner suppresses matching model-aware and broad input; multi-owner suppresses matching reusable-owner and model-aware; lifecycle-command suppresses view-effect; geometry effect/escape/manual positioning suppress generic geometry-layout. Cross-feature and observable-tunnel findings remain independent because they explain different feature/depth facts. Existing mirror rules retain precedence over broad observable input.
 
 ## Required distinctions
 
@@ -35,9 +35,11 @@
 
 **RULE-EXC-010 — Exact authority.** Composition roots, product roles, feature boundaries, and passive custom environment values come only from validated configuration or bounded compiler/platform facts, never name regexes.
 
+**RULE-EXC-011 — Reusable component roles.** The reusable-owner rule stays silent for screens, containers, unclassified Views, focused values/bindings/actions, explicit or locally owned `component-model` inputs, and passive Environment values. A configured reusable component is a review candidate, not an instruction to remove every model or create a ViewModel per View.
+
 ## Agent adjudication
 
-**RULE-LLM-001 — Allowed classifications.** Classify candidates as accidental mirror, transactional draft, derived state, transformed state, legitimate local UI state, command-shaped mutation, Binding factory boundary, observable-model tunnel, legitimate screen/container ownership, over-broad component input, or unknown.
+**RULE-LLM-001 — Allowed classifications.** Classify candidates as accidental mirror, transactional draft, derived state, transformed state, legitimate local UI state, command-shaped mutation, Binding factory boundary, observable-model tunnel, legitimate screen/container ownership, over-broad reusable input, explicit per-instance component model, or unknown.
 
 **RULE-LLM-002 — Allowed additions.** Add intent, semantic name, risk explanation, confidence in the classification, and conditional remediation.
 

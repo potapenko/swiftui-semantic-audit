@@ -44,6 +44,7 @@ public struct AuditEngine: Sendable {
         ArchitectureRule(.crossFeatureOwnerDependency),
         ArchitectureRule(.serviceOrRepositoryInView),
         ArchitectureRule(.environmentCommandRouter),
+        ArchitectureRule(.reusableComponentOwnerDependency),
         ArchitectureRule(.multiSourceBinding),
         ArchitectureRule(.manualOwnerSynchronization),
         ArchitectureRule(.hiddenCommandInLifecycle),

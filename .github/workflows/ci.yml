@@ -53,8 +53,8 @@ jobs:
           perl -e 'alarm shift; exec @ARGV' 900 swift test --disable-automatic-resolution
           version="$(perl -e 'alarm shift; exec @ARGV' 60 \
             swift run --disable-automatic-resolution swiftui-audit --version)"
-          test "$version" = "0.4.0" || {
-            echo "Expected swiftui-audit 0.4.0, received: $version" >&2
+          test "$version" = "0.5.0" || {
+            echo "Expected swiftui-audit 0.5.0, received: $version" >&2
             exit 1
           }
 
@@ -162,7 +162,8 @@ jobs:
           architecture_rules = {
               "model-aware-descendant", "multi-owner-component",
               "cross-feature-owner-dependency", "service-or-repository-in-view",
-              "environment-command-router", "multi-source-binding",
+              "environment-command-router", "reusable-component-owner-dependency",
+              "multi-source-binding",
               "manual-owner-synchronization", "hidden-command-in-lifecycle",
               "view-owned-external-effect", "imperative-focus-lifecycle",
               "selection-corrective-loop", "geometry-driven-product-layout",
@@ -177,6 +178,10 @@ jobs:
           assert realistic["resolution"] == "syntax-only"
           assert realistic["configurationDigest"] != "none"
           assert len(realistic["findings"]) == 34
+          assert any(
+              finding["rule"] == "reusable-component-owner-dependency"
+              for finding in realistic["findings"]
+          )
           assert all(
               not evidence["file"].startswith("Good/")
               for finding in realistic["findings"]

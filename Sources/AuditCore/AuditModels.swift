@@ -16,6 +16,7 @@ public enum RuleID: String, Codable, CaseIterable, Sendable {
     case crossFeatureOwnerDependency = "cross-feature-owner-dependency"
     case serviceOrRepositoryInView = "service-or-repository-in-view"
     case environmentCommandRouter = "environment-command-router"
+    case reusableComponentOwnerDependency = "reusable-component-owner-dependency"
     case multiSourceBinding = "multi-source-binding"
     case manualOwnerSynchronization = "manual-owner-synchronization"
     case hiddenCommandInLifecycle = "hidden-command-in-lifecycle"

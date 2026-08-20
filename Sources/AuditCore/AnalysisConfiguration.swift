@@ -12,6 +12,13 @@ public enum AnalysisRole: String, Codable, CaseIterable, Sendable {
     case player
     case dependencyBundle = "dependency-bundle"
     case effectSink = "effect-sink"
+    case componentModel = "component-model"
+}
+
+public enum AnalysisViewRole: String, Codable, CaseIterable, Sendable {
+    case screen
+    case container
+    case reusableComponent = "reusable-component"
 }
 
 public enum AnalysisConfigurationError: Error, LocalizedError, Equatable {
@@ -39,6 +46,7 @@ public enum AnalysisConfigurationError: Error, LocalizedError, Equatable {
 public struct AnalysisConfiguration: Codable, Equatable, Sendable {
     public let schemaVersion: Int
     public let compositionRoots: [String]
+    public let viewRoles: [String: AnalysisViewRole]
     public let typeRoles: [String: AnalysisRole]
     public let typeFeatures: [String: String]
     public let pathFeatures: [String: String]
@@ -47,13 +55,19 @@ public struct AnalysisConfiguration: Codable, Equatable, Sendable {
     public init(
         schemaVersion: Int = 1,
         compositionRoots: [String] = [],
+        viewRoles: [String: AnalysisViewRole] = [:],
         typeRoles: [String: AnalysisRole] = [:],
         typeFeatures: [String: String] = [:],
         pathFeatures: [String: String] = [:],
         passiveEnvironmentValues: [String] = []
     ) throws {
-        guard schemaVersion == 1 else { throw AnalysisConfigurationError.unsupportedSchema(schemaVersion) }
-        for name in compositionRoots + Array(typeRoles.keys) + Array(typeFeatures.keys) {
+        guard [1, 2].contains(schemaVersion) else {
+            throw AnalysisConfigurationError.unsupportedSchema(schemaVersion)
+        }
+        guard schemaVersion == 2 || (viewRoles.isEmpty && !typeRoles.values.contains(.componentModel)) else {
+            throw AnalysisConfigurationError.malformed("viewRoles and component-model require schema 2")
+        }
+        for name in compositionRoots + Array(viewRoles.keys) + Array(typeRoles.keys) + Array(typeFeatures.keys) {
             guard Self.isQualifiedName(name) else { throw AnalysisConfigurationError.invalidQualifiedName(name) }
         }
         for feature in Array(typeFeatures.values) + Array(pathFeatures.values) {
@@ -62,6 +76,7 @@ public struct AnalysisConfiguration: Codable, Equatable, Sendable {
         for path in pathFeatures.keys { try Self.validatePath(path) }
         self.schemaVersion = schemaVersion
         self.compositionRoots = Array(Set(compositionRoots)).sorted()
+        self.viewRoles = viewRoles
         self.typeRoles = typeRoles
         self.typeFeatures = typeFeatures
         self.pathFeatures = pathFeatures
@@ -90,16 +105,22 @@ public struct AnalysisConfiguration: Codable, Equatable, Sendable {
             guard let dictionary = object as? [String: Any] else {
                 throw AnalysisConfigurationError.malformed("root must be an object")
             }
-            let allowed: Set<String> = [
+            if let schemaVersion = dictionary["schemaVersion"] as? Int,
+               ![1, 2].contains(schemaVersion) {
+                throw AnalysisConfigurationError.unsupportedSchema(schemaVersion)
+            }
+            var allowed: Set<String> = [
                 "schemaVersion", "compositionRoots", "typeRoles", "typeFeatures",
                 "pathFeatures", "passiveEnvironmentValues",
             ]
+            if dictionary["schemaVersion"] as? Int == 2 { allowed.insert("viewRoles") }
             let unknown = Set(dictionary.keys).subtracting(allowed)
             guard unknown.isEmpty else { throw AnalysisConfigurationError.unknownFields(Array(unknown)) }
             let decoded = try JSONDecoder().decode(RawConfiguration.self, from: data)
             return try AnalysisConfiguration(
                 schemaVersion: decoded.schemaVersion,
                 compositionRoots: decoded.compositionRoots ?? [],
+                viewRoles: decoded.viewRoles ?? [:],
                 typeRoles: decoded.typeRoles ?? [:],
                 typeFeatures: decoded.typeFeatures ?? [:],
                 pathFeatures: decoded.pathFeatures ?? [:],
@@ -113,17 +134,29 @@ public struct AnalysisConfiguration: Codable, Equatable, Sendable {
     }
 
     public var digest: String {
-        let canonical = CanonicalConfiguration(
-            schemaVersion: schemaVersion,
-            compositionRoots: compositionRoots.sorted(),
-            typeRoles: typeRoles.map { KeyValue(key: $0.key, value: $0.value.rawValue) }.sorted(),
-            typeFeatures: typeFeatures.map(KeyValue.init).sorted(),
-            pathFeatures: pathFeatures.map(KeyValue.init).sorted(),
-            passiveEnvironmentValues: passiveEnvironmentValues.sorted()
-        )
         let encoder = JSONEncoder()
         encoder.outputFormatting = [.sortedKeys, .withoutEscapingSlashes]
-        let data = (try? encoder.encode(canonical)) ?? Data()
+        let data: Data
+        if schemaVersion == 1 {
+            data = (try? encoder.encode(CanonicalConfigurationV1(
+                schemaVersion: schemaVersion,
+                compositionRoots: compositionRoots.sorted(),
+                typeRoles: typeRoles.map { KeyValue(key: $0.key, value: $0.value.rawValue) }.sorted(),
+                typeFeatures: typeFeatures.map(KeyValue.init).sorted(),
+                pathFeatures: pathFeatures.map(KeyValue.init).sorted(),
+                passiveEnvironmentValues: passiveEnvironmentValues.sorted()
+            ))) ?? Data()
+        } else {
+            data = (try? encoder.encode(CanonicalConfigurationV2(
+                schemaVersion: schemaVersion,
+                compositionRoots: compositionRoots.sorted(),
+                viewRoles: viewRoles.map { KeyValue(key: $0.key, value: $0.value.rawValue) }.sorted(),
+                typeRoles: typeRoles.map { KeyValue(key: $0.key, value: $0.value.rawValue) }.sorted(),
+                typeFeatures: typeFeatures.map(KeyValue.init).sorted(),
+                pathFeatures: pathFeatures.map(KeyValue.init).sorted(),
+                passiveEnvironmentValues: passiveEnvironmentValues.sorted()
+            ))) ?? Data()
+        }
         return SHA256.hash(data: data).map { String(format: "%02x", $0) }.joined()
     }
 
@@ -131,7 +164,12 @@ public struct AnalysisConfiguration: Codable, Equatable, Sendable {
         let nodes = graph.nodes.map { node -> SemanticNode in
             var roles = node.roles
             if let role = typeRoles[node.qualifiedName] { roles.append(role.rawValue) }
+            if let role = viewRoles[node.qualifiedName] { roles.append(role.rawValue) }
             if compositionRoots.contains(node.qualifiedName) { roles.append("composition-root") }
+            if schemaVersion == 2,
+               Self.passiveEnvironmentNames.union(passiveEnvironmentValues).contains(Self.baseName(node.name)) {
+                roles.append("passive-environment")
+            }
             let exactFeature = typeFeatures[node.qualifiedName]
             let pathFeature = node.evidence.lazy.compactMap { evidence in
                 pathFeatures.sorted(by: { $0.key.count > $1.key.count }).first {
@@ -166,6 +204,15 @@ public struct AnalysisConfiguration: Codable, Equatable, Sendable {
             }
     }
 
+    private static let passiveEnvironmentNames: Set<String> = [
+        "locale", "colorScheme", "layoutDirection", "accessibilityDifferentiateWithoutColor",
+        "accessibilityReduceMotion", "accessibilityReduceTransparency", "accessibilityShowButtonShapes",
+    ]
+
+    private static func baseName(_ value: String) -> String {
+        value.split(separator: "#").first.map(String.init) ?? value
+    }
+
     private static func isFeature(_ value: String) -> Bool {
         !value.isEmpty && value.allSatisfy { $0.isLetter || $0.isNumber || $0 == "-" || $0 == "_" }
     }
@@ -180,6 +227,7 @@ public struct AnalysisConfiguration: Codable, Equatable, Sendable {
 private struct RawConfiguration: Decodable {
     let schemaVersion: Int
     let compositionRoots: [String]?
+    let viewRoles: [String: AnalysisViewRole]?
     let typeRoles: [String: AnalysisRole]?
     let typeFeatures: [String: String]?
     let pathFeatures: [String: String]?
@@ -192,9 +240,19 @@ private struct KeyValue: Codable, Comparable {
     static func < (lhs: KeyValue, rhs: KeyValue) -> Bool { (lhs.key, lhs.value) < (rhs.key, rhs.value) }
 }
 
-private struct CanonicalConfiguration: Encodable {
+private struct CanonicalConfigurationV1: Encodable {
     let schemaVersion: Int
     let compositionRoots: [String]
+    let typeRoles: [KeyValue]
+    let typeFeatures: [KeyValue]
+    let pathFeatures: [KeyValue]
+    let passiveEnvironmentValues: [String]
+}
+
+private struct CanonicalConfigurationV2: Encodable {
+    let schemaVersion: Int
+    let compositionRoots: [String]
+    let viewRoles: [KeyValue]
     let typeRoles: [KeyValue]
     let typeFeatures: [KeyValue]
     let pathFeatures: [KeyValue]

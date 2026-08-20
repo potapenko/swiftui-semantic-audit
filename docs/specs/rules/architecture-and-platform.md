@@ -2,9 +2,9 @@
 
 - Node type: leaf
 - Status: Active
-- Contract revision: `spec-3`
+- Contract revision: `spec-4`
 - Authority: [Rule and adjudication contract](../rules.md)
-- Read when: selecting any of the twenty-nine findings, exclusions, dominance, adjudication, or fixture expectations.
+- Read when: selecting any of the thirty findings, exclusions, dominance, adjudication, or fixture expectations.
 - Do not read when: the task does not evaluate, interpret, or verify findings.
 - Maximum size: 100 physical lines.
 
@@ -20,6 +20,8 @@
 **RULE-SERVICE-VIEW-001 — `service-or-repository-in-view`.** Detect a non-root View accepting a configured repository, service, player, dependency bundle, or effect sink. Severity `high`; confidence `strong-inference`.
 
 **RULE-ENV-COMMAND-001 — `environment-command-router`.** Detect an injected environment value whose typed/configured topology exposes callbacks or commands used by the View. Exclude bounded passive system values and configured passive values unless callable topology is present. Severity `medium`; confidence `candidate`.
+
+**RULE-REUSABLE-OWNER-001 — `reusable-component-owner-dependency`.** With schema-2 exact configuration, detect a `reusable-component` View accepting an application model, feature model, controller, store, or presenter through an owned, bound, observed, or injected typed boundary. Also detect an injected `component-model`, whose per-instance lifetime is unclear through Environment. Severity `medium`; confidence `candidate`; patterns `focused-input`, `focused-binding`, `action-closure`, `explicit-component-model`.
 
 **RULE-MULTI-SOURCE-BINDING-001 — `multi-source-binding`.** Detect an explicit Binding whose getter/setter reads or writes multiple independent semantic values, or whose setter reconstructs an aggregate using both the new value and current state. Severity `medium`; confidence `strong-inference`.
 

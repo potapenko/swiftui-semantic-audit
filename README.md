@@ -7,6 +7,8 @@ SwiftUI Semantic Audit is an architecture guardrail for coding agents. It turns 
 The tool is built for SwiftUI work that crosses file boundaries: auditing an unfamiliar project, removing manual synchronization, narrowing component inputs, or reviewing an agent-authored change. It does not rewrite source by itself or ask a model to invent compiler facts.
 
 > **Current release:** 0.4.0 for macOS 13 or later.
+>
+> **Development:** 0.5.0 adds opt-in config-schema-2 component roles and one candidate reusable-owner finding. Release 0.4.0 remains unchanged.
 
 [Install](#install-the-cli-and-agent-skills) · [Copy a task prompt](#copy-a-task-prompt) · [Run the first audit](docs/getting-started/first-audit.md) · [Read the docs](docs/README.md)
 
@@ -503,8 +505,8 @@ One router selects the smallest workflow:
 ## Know the boundary
 
 - Agent workflows require a fresh project-covering compiler Index Store and stop when indexed evidence is unavailable.
-- Role-aware findings require exact project configuration; type names do not establish application roles.
-- The 29 rules cover bounded SwiftUI topology, not every runtime, concurrency, security, or performance defect.
+- Role-aware findings require exact project configuration; schema 2 can classify `screen`, `container`, `reusable-component`, and `component-model` without inferring from names.
+- The 30 rules cover bounded SwiftUI topology, not every runtime, concurrency, security, or performance defect. The reusable-owner rule is a candidate for instance/lifetime review, not a ban on models in Views.
 - A clean semantic diff does not prove behavior. Relevant builds and behavior tests remain required.
 - The CLI does not call a model-provider API, rewrite source automatically, or install an IDE/Xcode extension.
 

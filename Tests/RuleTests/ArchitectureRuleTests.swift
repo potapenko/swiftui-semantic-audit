@@ -17,8 +17,20 @@ final class ArchitectureRuleTests: XCTestCase {
 
         let grouped = Dictionary(grouping: report.findings, by: \.rule)
         for generic in grouped[.modelAwareDescendant] ?? [] {
+            let specifics = (grouped[.multiOwnerComponent] ?? []) +
+                (grouped[.reusableComponentOwnerDependency] ?? [])
+            XCTAssertFalse(specifics.contains {
+                sameBoundaryPath(generic, $0)
+            })
+        }
+        for generic in grouped[.broadObservableInput] ?? [] {
+            XCTAssertFalse((grouped[.reusableComponentOwnerDependency] ?? []).contains {
+                sameBoundaryPath(generic, $0)
+            })
+        }
+        for reusable in grouped[.reusableComponentOwnerDependency] ?? [] {
             XCTAssertFalse((grouped[.multiOwnerComponent] ?? []).contains {
-                !Set(generic.nodes).isDisjoint(with: $0.nodes)
+                sameBoundaryPath(reusable, $0)
             })
         }
         for generic in grouped[.geometryDrivenProductLayout] ?? [] {
@@ -48,11 +60,22 @@ final class ArchitectureRuleTests: XCTestCase {
             sourceURL: positiveFixture
         )
         let reordered = try AnalysisConfiguration(
+            schemaVersion: 2,
             compositionRoots: ["ArchitectureTests.AppRoot", "ArchitectureTests.AppRoot"],
+            viewRoles: [
+                "ArchitectureTests.ReusableBindingLeaf": .reusableComponent,
+                "ArchitectureTests.ReusableBindableLeaf": .reusableComponent,
+                "ArchitectureTests.MultiOwnerLeaf": .reusableComponent,
+                "ArchitectureTests.ModelLeaf": .reusableComponent,
+                "ArchitectureTests.EnvironmentOwnerLeaf": .reusableComponent,
+                "ArchitectureTests.EnvironmentComponentLeaf": .reusableComponent,
+                "ArchitectureTests.AppRoot": .screen,
+            ],
             typeRoles: [
                 "ArchitectureTests.SearchRepository": .repository,
                 "ArchitectureTests.OtherModel": .featureModel,
                 "ArchitectureTests.FeatureModel": .featureModel,
+                "ArchitectureTests.ComponentModel": .componentModel,
                 "ArchitectureTests.CommandRouter": .effectSink,
                 "ArchitectureTests.AppModel": .applicationModel,
             ],
@@ -86,6 +109,121 @@ final class ArchitectureRuleTests: XCTestCase {
         try Data("{\"schemaVersion\":1,\"typeRoles\":{\"App.Model\":\"service\",\"App.Model\":\"repository\"}}".utf8)
             .write(to: duplicate)
         XCTAssertThrowsError(try AnalysisConfiguration.load(explicitURL: duplicate, sourceURL: child))
+    }
+
+    func testSchemaOneDigestIsStableAndSchemaTwoRolesAreCanonical() throws {
+        let legacy = try XCTUnwrap(AnalysisConfiguration.load(
+            explicitURL: negativeFixture.appendingPathComponent(".swiftui-audit.json"),
+            sourceURL: negativeFixture
+        ))
+        XCTAssertEqual(legacy.schemaVersion, 1)
+        XCTAssertEqual(legacy.digest, "547239c1f16b07d016a306b0dc37278a813bfb02893c30d4959990022189940a")
+        XCTAssertThrowsError(try AnalysisConfiguration(
+            viewRoles: ["App.Row": .reusableComponent]
+        ))
+        XCTAssertThrowsError(try AnalysisConfiguration(
+            typeRoles: ["App.RowModel": .componentModel]
+        ))
+
+        let first = try AnalysisConfiguration(
+            schemaVersion: 2,
+            viewRoles: ["App.Screen": .screen, "App.Row": .reusableComponent],
+            typeRoles: ["App.RowModel": .componentModel]
+        )
+        let reordered = try AnalysisConfiguration(
+            schemaVersion: 2,
+            viewRoles: ["App.Row": .reusableComponent, "App.Screen": .screen],
+            typeRoles: ["App.RowModel": .componentModel]
+        )
+        XCTAssertEqual(first.digest, reordered.digest)
+        XCTAssertNotEqual(first.digest, legacy.digest)
+    }
+
+    func testReusableOwnerRuleCoversPlainBindableBindingAndEnvironmentBoundaries() throws {
+        let graph = try configuredGraph(at: positiveFixture)
+        let report = AuditEngine().audit(graph: graph)
+        let findings = report.findings.filter { $0.rule == .reusableComponentOwnerDependency }
+
+        XCTAssertEqual(
+            Set(findings.flatMap { viewNames(in: $0, graph: graph) }),
+            [
+                "ArchitectureTests.EnvironmentComponentLeaf",
+                "ArchitectureTests.EnvironmentOwnerLeaf",
+                "ArchitectureTests.ModelLeaf",
+                "ArchitectureTests.ReusableBindableLeaf",
+                "ArchitectureTests.ReusableBindingLeaf",
+            ]
+        )
+        XCTAssertFalse(findings.contains {
+            viewNames(in: $0, graph: graph).contains("ArchitectureTests.MultiOwnerLeaf")
+        })
+    }
+
+    func testReusableOwnerRulePreservesExplicitLifetimeAndRoleExceptions() throws {
+        let temporary = FileManager.default.temporaryDirectory
+            .appendingPathComponent("swiftui-audit-component-exceptions-\(UUID().uuidString)", isDirectory: true)
+        let fixture = temporary.appendingPathComponent("ComponentRoleFixture", isDirectory: true)
+        try FileManager.default.createDirectory(at: fixture, withIntermediateDirectories: true)
+        defer { try? FileManager.default.removeItem(at: temporary) }
+        let source = """
+        import SwiftUI
+        final class AppModel { var value = 0 }
+        final class ItemModel { var value = 0 }
+        final class RoleLikeModel { var value = 0 }
+        struct ScreenOwner: View { let model: AppModel; var body: some View { Text("screen") } }
+        struct ContainerOwner: View { let model: AppModel; var body: some View { Text("container") } }
+        struct ExplicitItemLeaf: View { let model: ItemModel; var body: some View { Text("item") } }
+        struct LocalItemLeaf: View {
+            @State private var model = ItemModel()
+            var body: some View { Text("local") }
+        }
+        struct PassiveLeaf: View {
+            @Environment var appEnvironment: AppModel
+            var body: some View { Text("passive") }
+        }
+        struct UnclassifiedLeaf: View { let model: AppModel; var body: some View { Text("unknown") } }
+        struct RoleLikeReusableLeaf: View {
+            let model: RoleLikeModel
+            var body: some View { Text("spelling") }
+        }
+        struct FocusedLeaf: View {
+            let value: Int
+            @Binding var selection: Int
+            let action: () -> Void
+            var body: some View { Button("Run", action: action) }
+        }
+        """
+        try source.write(to: fixture.appendingPathComponent("Fixture.swift"), atomically: true, encoding: .utf8)
+        let configuration = try AnalysisConfiguration(
+            schemaVersion: 2,
+            viewRoles: [
+                "ComponentRoleFixture.ScreenOwner": .screen,
+                "ComponentRoleFixture.ContainerOwner": .container,
+                "ComponentRoleFixture.ExplicitItemLeaf": .reusableComponent,
+                "ComponentRoleFixture.LocalItemLeaf": .reusableComponent,
+                "ComponentRoleFixture.PassiveLeaf": .reusableComponent,
+                "ComponentRoleFixture.RoleLikeReusableLeaf": .reusableComponent,
+                "ComponentRoleFixture.FocusedLeaf": .reusableComponent,
+            ],
+            typeRoles: [
+                "ComponentRoleFixture.AppModel": .applicationModel,
+                "ComponentRoleFixture.ItemModel": .componentModel,
+            ],
+            passiveEnvironmentValues: ["appEnvironment"]
+        )
+        let graph = configuration.applying(to: try GraphScanner().scan(path: fixture.path))
+        let report = AuditEngine().audit(graph: graph)
+
+        XCTAssertTrue(report.findings.filter { $0.rule == .reusableComponentOwnerDependency }.isEmpty)
+        XCTAssertTrue(graph.nodes.first {
+            $0.qualifiedName == "ComponentRoleFixture.ScreenOwner"
+        }?.roles.contains("screen") == true)
+        XCTAssertTrue(graph.nodes.first {
+            $0.qualifiedName == "ComponentRoleFixture.ItemModel"
+        }?.roles.contains("component-model") == true)
+        XCTAssertTrue(graph.nodes.first {
+            $0.qualifiedName == "ComponentRoleFixture.PassiveLeaf.appEnvironment"
+        }?.roles.contains("passive-environment") == true)
     }
 
     func testSameNamedFileLocalDeclarationsRemainDistinctAndFileScoped() throws {
@@ -138,6 +276,17 @@ final class ArchitectureRuleTests: XCTestCase {
                 !$0.file.hasPrefix("/") && $0.startLine > 0 && $0.endLine >= $0.startLine
             }, finding.rule.rawValue)
         }
+    }
+
+    private func viewNames(in finding: AuditFinding, graph: SemanticGraph) -> Set<String> {
+        Set(finding.nodes.compactMap { id in
+            graph.nodes.first { $0.id == id && $0.kind == .view }?.qualifiedName
+        })
+    }
+
+    private func sameBoundaryPath(_ lhs: AuditFinding, _ rhs: AuditFinding) -> Bool {
+        !Set(lhs.edges).isDisjoint(with: rhs.edges) ||
+            Set(lhs.nodes).intersection(rhs.nodes).count >= 2
     }
 
     private var projectRoot: URL {

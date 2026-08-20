@@ -2,7 +2,7 @@
 
 - Node type: leaf
 - Status: Active
-- Contract revision: `spec-9`
+- Contract revision: `spec-10`
 - Authority: [Specification coverage and evidence map](../evidence-map.md)
 - Read when: identifying the owner of facts, findings, persistence, comparison, judgment, or acceptance.
 - Do not read when: only clause coverage or evidence precedence is needed.
@@ -10,12 +10,13 @@
 
 ## Ownership map
 
-- Product authority: user-approved base epoch `tz-v1` plus explicit semantic addenda through `HOMEBREW-RELEASE-001`, combined as `tz-v8`; `REALISTIC-FIXTURES-001` adds acceptance evidence and a restore of existing indexed semantics without advancing the product epoch.
+- Product authority: user-approved base epoch `tz-v1` plus semantic addenda through `COMPONENT-SURFACE-001`, combined as `tz-v13`; `REALISTIC-FIXTURES-001` remains acceptance/restore evidence without its own semantic epoch.
 - Semantic schema owner: `AuditCore` plus SnapshotStore transport.
 - Syntax fact owner: SwiftSyntaxFrontend and SwiftUISemantics vocabulary.
 - Compiler fact owner: SymbolResolution/IndexStoreDB on macOS.
 - Incremental fact-cache owner: AnalysisCache, with frontend dependency metadata and compiler-unit fingerprints supplied by their fact owners.
 - Finding owner: AuditRules over normalized graph.
+- Component-role authority owner: validated config schema 2; AuditCore applies exact View/type/passive roles and AuditRules consumes them without name inference.
 - Persistence/slice owner: SnapshotStore and ContextSlicer.
 - Comparison/policy/doctor owner: SemanticDiff and CLI commands.
 - Agent judgment owner: surrounding agent skills, limited by the immutable fact boundary.

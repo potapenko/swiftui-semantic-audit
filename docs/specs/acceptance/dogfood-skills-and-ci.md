@@ -2,7 +2,7 @@
 
 - Node type: leaf
 - Status: Active
-- Contract revision: `spec-8`
+- Contract revision: `spec-9`
 - Authority: [Acceptance and QA contract](../acceptance.md)
 - Read when: selecting fixture, build, determinism, safety, dogfood, skill, CI, or completion obligations.
 - Do not read when: the task does not implement or verify accepted behavior.
@@ -44,6 +44,8 @@
 
 **ACC-SKILL-006.** Every router, specialist skill, and skill reference requires explicit indexed analysis for agent workflows. Skill Markdown contains no `syntax-only` guidance or examples, does not rely on automatic resolution fallback, validates `resolution: "indexed"`, and stops when a fresh project-covering Index Store or compatible indexed snapshot is unavailable. Change review uses indexed snapshots rather than Git-revision operands that cannot preserve indexed resolution.
 
+**ACC-SKILL-007.** Audit, refactor, and review guidance treats reusable-owner findings as candidates, checks instance count and lifetime, and protects explicit per-item models, screen/container ownership, focused values/bindings/actions, and passive Environment. It forbids blanket model removal, Binding-everywhere, and one-View-one-ViewModel prescriptions.
+
 ## CI
 
 **ACC-CI-001.** Run on official `macos-26`. The official runner catalog identifies it as the macOS 26 arm64 label, and its image inventory lists Xcode 26.6 at `/Applications/Xcode_26.6.app`. Select that toolchain explicitly and fail early unless it reports Swift >= 6.3.
@@ -58,7 +60,7 @@
 2. verify Swift >= 6.3 and print Xcode version;
 3. resolve, build, and test;
 4. audit legacy rule fixtures, configured architecture fixtures, negative architecture fixtures, and `Sources` in syntax-only JSON mode;
-5. compile and audit `RealProjectPatterns` through a fresh explicit Index Store and audit the same corpus in syntax-only mode, requiring 34 findings, no good-file evidence, and an identical per-rule/per-file matrix;
+5. compile and audit `RealProjectPatterns` through a fresh explicit Index Store and audit the same corpus in syntax-only mode, requiring 34 findings including the specific reusable-owner replacement, no good-file evidence, and an identical per-rule/per-file matrix;
 6. snapshot fixtures twice and compare all five files byte for byte;
 7. prove cold-cache, warm-cache, and `--no-cache` report bytes are identical;
 8. compare the generated snapshot with the committed baseline using exact semantic-file bytes and the revision-only manifest normalization in `ACC-DET-003`;

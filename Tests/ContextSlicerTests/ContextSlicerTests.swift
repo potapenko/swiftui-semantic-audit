@@ -191,6 +191,26 @@ final class ContextSlicerTests: XCTestCase {
         }
     }
 
+    func testReusableComponentSliceAsksInstanceAndLifetimeQuestions() throws {
+        let scanned = try GraphScanner().scan(path: architectureFixtureRoot.path)
+        let configuration = try XCTUnwrap(AnalysisConfiguration.load(
+            explicitURL: architectureFixtureRoot.appendingPathComponent(".swiftui-audit.json"),
+            sourceURL: architectureFixtureRoot
+        ))
+        let graph = configuration.applying(to: scanned)
+        let report = AuditEngine().audit(graph: graph)
+        let finding = try XCTUnwrap(report.findings.first {
+            $0.rule == .reusableComponentOwnerDependency
+        })
+        let slice = try ContextSlicer().slice(graph: graph, report: report, findingID: finding.id)
+
+        XCTAssertEqual(slice.questions.count, 5)
+        for phrase in ["multiple instances", "shared", "domain model", "focused Binding", "independent lifetime"] {
+            XCTAssertTrue(slice.questions.contains { $0.contains(phrase) }, phrase)
+        }
+        try assertValidReferences(slice)
+    }
+
     private func mixedAudit() throws -> (SemanticGraph, AuditReport) {
         let graph = try GraphScanner().scan(path: fixtureRoot.path)
         return (graph, AuditEngine().audit(graph: graph))
@@ -201,6 +221,13 @@ final class ContextSlicerTests: XCTestCase {
             .deletingLastPathComponent()
             .deletingLastPathComponent()
             .appendingPathComponent("Fixtures/RuleTests", isDirectory: true)
+    }
+
+    private var architectureFixtureRoot: URL {
+        URL(fileURLWithPath: #filePath)
+            .deletingLastPathComponent()
+            .deletingLastPathComponent()
+            .appendingPathComponent("Fixtures/ArchitectureTests", isDirectory: true)
     }
 
     private func assertValidReferences(_ slice: ContextSlice) throws {

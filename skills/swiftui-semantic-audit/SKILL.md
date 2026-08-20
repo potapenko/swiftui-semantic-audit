@@ -12,7 +12,7 @@ description: Audit Swift and SwiftUI state/data-flow architecture with swiftui-a
 3. Pass `--index-store <path>` explicitly to every live-source audit or slice command. Do not omit it in reliance on automatic discovery.
 4. Parse the result and require `resolution: "indexed"`. Treat any other resolution as insufficient evidence and stop.
 5. Treat the CLI as provider-independent. Do not assume or add an OpenAI, Anthropic, or other model API call.
-6. For role-, feature-, or composition-root-aware analysis, locate and validate the exact project `.swiftui-audit.json`, pass it with `--config <path>`, and retain its digest. If authoritative classification is absent, report that role-aware conclusions are unavailable; never infer roles from names.
+6. For owner-, View-role-, feature-, or composition-root-aware analysis, locate and validate the exact project `.swiftui-audit.json`, pass it with `--config <path>`, and retain its digest. Schema 2 may classify `screen`, `container`, `reusable-component`, and `component-model`; schema 1 remains valid. If authoritative classification is absent, report that role-aware conclusions are unavailable; never infer roles from names.
 
 The CLI reuses content-addressed frontend and indexed facts automatically. Treat the cache only as an execution optimization: it never supplies intent or changes deterministic facts. Use one explicit `--cache-directory <path>` when the environment does not preserve the default user cache. If cache correctness is in doubt, repeat the same command with `--no-cache` and require byte-equivalent JSON before continuing.
 
@@ -48,9 +48,10 @@ Classify each candidate as one of:
 - command-shaped mutation or Binding factory boundary;
 - observable-model tunnel or over-broad component input;
 - legitimate screen/container ownership;
+- explicit per-instance component model;
 - unknown when evidence is insufficient.
 
-Base the classification on ownership, read/write/call topology, lifetime, commit/discard events, transformations, explicit Binding getter/setter roles, model-propagation depth, and the receiving View's component role. Treat `binding-factory` and `broad-observable-input` as candidates requiring architectural adjudication. Do not optimize for wrapper counts. Never prescribe “Use Binding everywhere” or “Minimize `@State`.” Optimize correct ownership, one canonical source of truth, explicit dependencies, minimal manual synchronization, focused component inputs, correct lifetime, and correct transaction semantics.
+Base the classification on ownership, read/write/call topology, instance count, lifetime, commit/discard events, transformations, explicit Binding getter/setter roles, model-propagation depth, and the receiving View's exact component role. Treat `binding-factory`, `broad-observable-input`, and `reusable-component-owner-dependency` as candidates requiring architectural adjudication. A reusable component may legitimately receive an explicit per-instance domain model; do not turn the finding into “remove all models,” “Binding everywhere,” or “one ViewModel per View.” Optimize correct ownership, one canonical source of truth, explicit dependencies, minimal manual synchronization, focused component inputs, correct lifetime, and correct transaction semantics.
 
 Allow LLM reasoning to add intent, risk, classification, or remediation. Never let it alter AST facts, symbol identities, reads, writes, compiler-derived relations, or source locations.
 

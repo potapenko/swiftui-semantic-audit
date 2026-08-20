@@ -1,5 +1,7 @@
 # Contract Change Envelope
 
+- Current reconciliation: historical deltas below stop at `INCREMENTAL-CACHE-001`; the active registry includes subsequent accepted addenda and `COMPONENT-SURFACE-001` at `tz-v13`. See [`component-surface-001.md`](component-surface-001.md) for the current bounded envelope and delta.
+
 - Task: Build SwiftUI Semantic Audit completely from the approved specification.
 - Change mode: `evolve` (greenfield implementation).
 - User-authorized outcome: A complete Swift Package and `swiftui-audit` CLI satisfying the referenced specification and its Definition of Done.
@@ -13,7 +15,7 @@
 - Allowed specification delta: Editorial project documentation and stable clause/acceptance mappings that faithfully restate the user-supplied contract.
 - Forbidden specification delta: New product behavior, provider-specific LLM integration, SIL/full type-checker foundation, automatic rewriting, GUI/IDE/Xcode extension, or weakening transactional/transform exceptions.
 - Material decisions requiring the user: Only a proven contract conflict, protected-domain expansion, destructive/external authority requirement, or materially different product fork.
-- Current contract revision or epoch: `tz-v6` (`tz-v1` base plus authorized addenda through `INCREMENTAL-CACHE-001`).
+- Current contract revision or epoch: historical envelope through `tz-v6`; active registry `tz-v13`.
 - Pinned contract digest: `sha256:68f8a43d924659024b7d29fabb9ad302817c271838a7919b24bd942626927cac`.
 - Required review and QA: Independent review of each integration wave, SwiftPM build/test, CLI fixture validation, deterministic byte comparison, semantic diff/check policy verification, and final completion audit.
 

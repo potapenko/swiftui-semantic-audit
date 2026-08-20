@@ -2,7 +2,7 @@
 
 - Node type: leaf
 - Status: Active
-- Contract revision: `spec-4`
+- Contract revision: `spec-5`
 - Authority: [Semantic IR contract](../semantic-ir.md)
 - Read when: selecting semantic graph, evidence, normalization, finding, snapshot, cache, slice, diff, or resolution contracts.
 - Do not read when: the task does not read, write, compare, or transport semantic data.
@@ -38,6 +38,8 @@ derivesFrom triggers aliases creates
 **IR-GRAPH-008 — Typed architecture facts.** Schema v2 adds `typedAs` and `flowsTo` edge kinds. `typedAs` connects a declaration/input to its declared type. `flowsTo` preserves non-assignment argument/closure-parameter value flow used by geometry, focus, selection, and effect rules. Nodes may carry sorted configured `roles` and one optional `feature`; these are deterministic configuration facts, not inferred names.
 
 **IR-GRAPH-009 — Collision-safe frontend identity.** Syntax nodes carry relative-file and lexical structural discriminators until an indexed declaration/use can be remapped to its compiler USR. Multiple provisional nodes may share a human `qualifiedName`; selectors must reject ambiguity.
+
+**IR-GRAPH-010 — Component classification.** Config schema 2 uses existing schema-v2 node `roles` for exact `screen`, `container`, `reusable-component`, `component-model`, and passive-environment facts. No node or edge kind is added, roles remain sorted, and absence of a role remains unknown rather than an inferred classification.
 
 ## Evidence and confidence
 

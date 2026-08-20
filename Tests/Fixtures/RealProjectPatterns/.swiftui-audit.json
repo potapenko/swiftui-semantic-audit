@@ -1,9 +1,18 @@
 {
-  "schemaVersion": 1,
+  "schemaVersion": 2,
   "compositionRoots": [
     "RealProjectPatterns.BadAppRoot",
     "RealProjectPatterns.GoodAppRoot"
   ],
+  "viewRoles": {
+    "RealProjectPatterns.BadAppRoot": "screen",
+    "RealProjectPatterns.BadCrossFeatureLeaf": "reusable-component",
+    "RealProjectPatterns.BadModelContainer": "container",
+    "RealProjectPatterns.BadModelLeaf": "reusable-component",
+    "RealProjectPatterns.GoodAppRoot": "screen",
+    "RealProjectPatterns.GoodFocusedLeaf": "reusable-component",
+    "RealProjectPatterns.GoodItemRow": "reusable-component"
+  },
   "typeRoles": {
     "RealProjectPatterns.BadApplicationModel": "application-model",
     "RealProjectPatterns.BadCommandRouter": "effect-sink",
@@ -11,6 +20,7 @@
     "RealProjectPatterns.BadProfileModel": "feature-model",
     "RealProjectPatterns.BadSearchRepository": "repository",
     "RealProjectPatterns.GoodApplicationModel": "application-model",
+    "RealProjectPatterns.GoodItemModel": "component-model",
     "RealProjectPatterns.GoodProfileModel": "feature-model",
     "RealProjectPatterns.GoodSearchRepository": "repository"
   },

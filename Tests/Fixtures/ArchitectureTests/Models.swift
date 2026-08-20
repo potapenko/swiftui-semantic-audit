@@ -22,6 +22,10 @@ final class CommandRouter {
     func send() {}
 }
 
+final class ComponentModel {
+    var value = 0
+}
+
 struct AppRoot: View {
     let model: AppModel
     let repository: SearchRepository
@@ -37,6 +41,26 @@ struct MultiOwnerLeaf: View {
     let model: AppModel
     let feature: FeatureModel
     var body: some View { Text("owners") }
+}
+
+struct ReusableBindableLeaf: View {
+    @Bindable var model: AppModel
+    var body: some View { Text("\(model.count)") }
+}
+
+struct ReusableBindingLeaf: View {
+    @Binding var model: AppModel
+    var body: some View { Text("\(model.count)") }
+}
+
+struct EnvironmentComponentLeaf: View {
+    @Environment var model: ComponentModel
+    var body: some View { Text("\(model.value)") }
+}
+
+struct EnvironmentOwnerLeaf: View {
+    @Environment var model: AppModel
+    var body: some View { Text("\(model.count)") }
 }
 
 struct ServiceLeaf: View {

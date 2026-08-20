@@ -1,9 +1,19 @@
 {
-  "schemaVersion": 1,
+  "schemaVersion": 2,
   "compositionRoots": ["ArchitectureTests.AppRoot"],
+  "viewRoles": {
+    "ArchitectureTests.AppRoot": "screen",
+    "ArchitectureTests.EnvironmentComponentLeaf": "reusable-component",
+    "ArchitectureTests.EnvironmentOwnerLeaf": "reusable-component",
+    "ArchitectureTests.ModelLeaf": "reusable-component",
+    "ArchitectureTests.MultiOwnerLeaf": "reusable-component",
+    "ArchitectureTests.ReusableBindableLeaf": "reusable-component",
+    "ArchitectureTests.ReusableBindingLeaf": "reusable-component"
+  },
   "typeRoles": {
     "ArchitectureTests.AppModel": "application-model",
     "ArchitectureTests.CommandRouter": "effect-sink",
+    "ArchitectureTests.ComponentModel": "component-model",
     "ArchitectureTests.FeatureModel": "feature-model",
     "ArchitectureTests.OtherModel": "feature-model",
     "ArchitectureTests.SearchRepository": "repository"

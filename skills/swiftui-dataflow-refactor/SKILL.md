@@ -9,7 +9,7 @@ description: Refactor SwiftUI state ownership and data flow with snapshot, audit
 
 1. Use an installed `swiftui-audit`, or use `swift run --disable-automatic-resolution swiftui-audit` in this repository.
 2. Build the project to produce a fresh compiler Index Store, validate that it covers the requested source, and record its exact path. Pass `--index-store <path>` explicitly to every live-source command; never rely on automatic discovery. Require `resolution: "indexed"` throughout baseline, current snapshot, audit, slice, diff, and check.
-3. When the cluster depends on product roles, features, or composition roots, validate the exact `.swiftui-audit.json`, pass `--config <path>` to every live-source command, and preserve its digest across both snapshots. Never infer missing roles from names.
+3. When the cluster depends on product roles, View roles, features, or composition roots, validate the exact `.swiftui-audit.json`, pass `--config <path>` to every live-source command, and preserve its digest across both snapshots. Schema 2 may distinguish screens, containers, reusable components, and component models. Never infer missing roles from names.
 
 Reuse the CLI's content-addressed cache across repeated live-source commands. Treat it only as an execution optimization. When the default user cache is not persistent, pass one stable `--cache-directory <path>` throughout the workflow. If cache correctness is in doubt, rerun the same command with `--no-cache` and require byte-equivalent JSON.
 
@@ -29,7 +29,7 @@ Reuse the CLI's content-addressed cache across repeated live-source commands. Tr
 6. Inspect source only at slice evidence locations and directly required declarations.
 7. Establish intended owner, canonical representation, lifetime, write authority, transaction boundary, and behavior invariants before editing.
 8. Choose among owned `State`, external focused `Binding`, model projection through `Bindable`, injected `Environment` dependency, focused value/action inputs, computed/derived value, or transactional draft. Never “Use Binding everywhere” or “Minimize `@State`.”
-9. Edit only the selected cluster and required call sites. When resolving a command-shaped setter or broad observable input, keep value mutation and actions explicit and narrow only the proven component boundary. Preserve transformations, side effects and their timing, commit/cancel semantics, identity, lifetime, legitimate screen/container ownership, and unrelated APIs.
+9. Edit only the selected cluster and required call sites. When resolving a command-shaped setter, broad observable input, or reusable-owner candidate, keep value mutation and actions explicit and narrow only the proven component boundary. First establish whether multiple instances coexist and whether an explicit model belongs to each component instance. Preserve per-instance domain models, transformations, side effects and their timing, commit/cancel semantics, identity, lifetime, legitimate screen/container ownership, and unrelated APIs. Never impose model removal or one ViewModel per View.
 10. Build and run behavior tests, refreshing the compiler Index Store after the edit.
 11. Re-run audit and create a current snapshot with the refreshed validated Index Store. Require indexed resolution again.
 12. Compare semantic snapshots, then enforce policy:

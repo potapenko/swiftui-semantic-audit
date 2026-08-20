@@ -2,7 +2,7 @@
 
 - Node type: leaf
 - Status: Active
-- Contract revision: `spec-8`
+- Contract revision: `spec-9`
 - Authority: [Unreleased implementation baseline](../release-baseline.md)
 - Read when: checking acceptance evidence for an authorized addendum.
 - Do not read when: only platform, milestone, current-surface, or residual information is needed.
@@ -25,3 +25,5 @@
 **BASE-NEXT-007.** `INCREMENTAL-CACHE-001` acceptance includes a locked build, 86 passing tests, exact cold/warm/uncached report bytes with SHA-256 `70b306ee81aa68eed0f03cc43dcf50179059d02521a95aef565f8d5828cdde9a`, zero Sources findings, two byte-identical five-file snapshots, empty semantic diff, passing check, valid bounded slice, healthy doctor, canonical RuleTests semantic-file equality, four valid skills, YAML/link validation, and clean diff checks. Hosted GitHub Actions run `32239872792` passed every CI step in 3m49s.
 
 **BASE-NEXT-008.** `PARALLEL-EXECUTION-001` acceptance includes 88 passing tests, positive/negative CLI job validation, byte-identical one/four-worker fixture reports, byte-identical one/twelve-worker Sources graph and report output, focused Thread Sanitizer passes for frontend and rules, zero Sources findings, exact reused-DB/uncached indexed report bytes, two successful concurrent indexed cache misses sharing one locked database identity, and passing hosted CI run `32259485471`. Release timings on the accepted host are recorded in `BASE-CAP-014`.
+
+**BASE-NEXT-009.** `COMPONENT-SURFACE-001` acceptance requires 92 passing tests, schema-1/v2 configuration compatibility, exact positive/negative role boundaries, dominance and slice questions, the unchanged 34-finding realistic total with specific-rule replacement, fresh indexed parity, cached/uncached and serial/parallel equality, canonical baseline protection, four valid skills, and a scoped checkpoint. Hosted CI remains future release evidence and is not claimed by the local candidate.

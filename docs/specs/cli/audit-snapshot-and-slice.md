@@ -2,7 +2,7 @@
 
 - Node type: leaf
 - Status: Active
-- Contract revision: `spec-4`
+- Contract revision: `spec-5`
 - Authority: [CLI contract](../cli.md)
 - Read when: selecting command syntax, flags, output, status, resolution, cache, failure, or timeout behavior.
 - Do not read when: the task does not invoke, document, or integrate the CLI.
@@ -18,7 +18,7 @@ swiftui-audit audit <path> [--format json]
                       [--index-store <path> | --syntax-only] [--config <path>]
 ```
 
-Evaluate exactly the twenty-nine current rules. Human output reports total and per-rule counts; JSON emits the complete audit report.
+Evaluate exactly the thirty current rules. Human output reports total and per-rule counts; JSON emits the complete audit report.
 
 ## `snapshot`
 
