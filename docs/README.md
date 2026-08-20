@@ -2,7 +2,7 @@
 
 SwiftUI Semantic Audit gives a coding agent a deterministic view of SwiftUI state and data flow before the agent makes an architectural judgment. These pages explain the product from first installation through audit, refactor, and review.
 
-[Back to the project README](../README.md)
+[Project website](https://swiftui-audit.dev/) · [Back to the project README](../README.md)
 
 ## Start here
 
@@ -12,6 +12,7 @@ SwiftUI Semantic Audit gives a coding agent a deterministic view of SwiftUI stat
 | Give an agent an installation, audit, refactor, review, or migration task | [Agent prompt library](getting-started/agent-prompts.md) |
 | Understand why source or Git diff is not enough | [Why semantic audit](concepts/why-semantic-audit.md) |
 | Define “functional SwiftUI” in practical terms | [Functional SwiftUI](concepts/functional-swiftui.md) |
+| Compare complete Before/Evidence/Safer shape examples | [Pattern catalog](concepts/pattern-catalog.md) |
 | Investigate an application | [Audit workflow](workflows/audit.md) |
 | Change ownership or data flow | [Refactor workflow](workflows/refactor.md) |
 | Review an existing change | [Change-review workflow](workflows/change-review.md) |
@@ -33,6 +34,7 @@ docs/
 │   ├── README.md
 │   ├── why-semantic-audit.md
 │   ├── functional-swiftui.md
+│   ├── pattern-catalog.md
 │   └── deterministic-facts-and-agent-judgment.md
 ├── workflows/
 │   ├── README.md

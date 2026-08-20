@@ -6,6 +6,7 @@ These pages explain the architectural model behind SwiftUI Semantic Audit. Read 
 
 - [Why semantic audit](why-semantic-audit.md) — why state-flow topology is more useful than wrapper counts or a raw diff.
 - [Functional SwiftUI](functional-swiftui.md) — the ownership, derivation, effect, lifetime, and transaction goals the project optimizes.
+- [SwiftUI architecture pattern catalog](pattern-catalog.md) — complete Before/Evidence/Safer shape examples with protected cases and decision boundaries.
 - [Deterministic facts and agent judgment](deterministic-facts-and-agent-judgment.md) — which conclusions belong to the CLI and which require contextual reasoning.
 
 ## The short model

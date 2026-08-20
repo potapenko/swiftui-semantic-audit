@@ -1,38 +1,78 @@
 # SwiftUI Semantic Audit
 
-**Give coding agents a map of SwiftUI state before they edit it.**
+**Give Codex or Claude a map of SwiftUI state before it edits code.**
 
-SwiftUI Semantic Audit is an architecture guardrail for coding agents. It turns state ownership, writes, bindings, effects, synchronization, and component boundaries into deterministic evidence before an agent changes code. Afterward, a semantic diff between compatible snapshots shows what the refactor actually changed.
+`swiftui-semantic` is a SwiftUI architecture skill for coding agents. Its
+deterministic engine, `swiftui-audit`, maps ownership, reads, writes, bindings,
+effects, synchronization, and component boundaries before an agent changes
+source. Compatible semantic snapshots then show what the refactor actually
+changed.
 
-The tool is built for SwiftUI work that crosses file boundaries: auditing an unfamiliar project, removing manual synchronization, narrowing component inputs, or reviewing an agent-authored change. It does not rewrite source by itself or ask a model to invent compiler facts.
+The product is built for SwiftUI work that crosses file boundaries: explaining
+an unfamiliar data flow, removing manual synchronization, narrowing component
+inputs, or reviewing an agent-authored change. It does not rewrite source by
+itself or ask a model to invent compiler facts.
 
-> **Current release:** 0.5.0 for macOS 13 or later.
->
-> **Component boundary:** config schema 2 adds exact screen, container, reusable-component, and component-model roles. The reusable-owner result is a candidate for agent judgment, not a blanket model-removal rule.
+> **Current release:** 0.5.0 · macOS 13 or later · MIT
 
-[Install](#install-the-cli-and-agent-skills) · [Copy a task prompt](#copy-a-task-prompt) · [Run the first audit](docs/getting-started/first-audit.md) · [Read the docs](docs/README.md)
+[Website](https://swiftui-audit.dev/) · [Quick start](#quick-start) ·
+[First audit](docs/getting-started/first-audit.md) ·
+[Documentation](docs/README.md) ·
+[Release 0.5.0](https://github.com/potapenko/swiftui-semantic-audit/releases/tag/0.5.0)
 
-## Give the agent architecture evidence
+## Quick start
 
-SwiftUI code can compile while hiding an imperative data-flow system underneath `body`:
+The normal setup has two separate parts.
+
+1. Install the released evidence engine from the upstream Homebrew tap:
+
+   ```bash
+   brew install potapenko/tap/swiftui-semantic-audit
+   swiftui-audit --version
+   ```
+
+2. Add the `swiftui-semantic` router and its three internal specialist skills
+   from the same immutable release tag. Use the
+   [two-step website setup](https://swiftui-audit.dev/#install) or the
+   [tagged installation guide](https://github.com/potapenko/swiftui-semantic-audit/blob/0.5.0/docs/getting-started/installation.md).
+
+Homebrew installs only `swiftui-audit`; it never modifies an agent host. In
+Codex, invoke the installed skill as `$swiftui-semantic`. In Claude Code, use
+`/swiftui-semantic`.
+
+Then ask for the SwiftUI outcome you already need:
+
+```text
+Use $swiftui-semantic to audit this project's SwiftUI ownership and data flow
+without editing code.
+```
+
+The skill selects the audit, refactor, or review workflow internally. The
+[prompt library](docs/getting-started/agent-prompts.md) contains longer recipes
+for focused changes, existing-change review, project guardrails, and staged
+migrations.
+
+## What it makes inspectable
+
+SwiftUI code can compile while hiding an imperative data-flow system underneath
+`body`:
 
 - local state mirrors a value that already has an owner;
-- reciprocal `onChange` handlers keep two mutable representations synchronized;
-- a custom `Binding` setter performs commands unrelated to value mutation;
-- leaf views receive whole models or services for one value or action;
-- lifecycle, focus, geometry, or platform bridges quietly drive product behavior.
+- reciprocal `onChange` handlers keep mutable representations synchronized;
+- custom `Binding` setters hide commands or unrelated effects;
+- values, callbacks, models, or services cross unnecessary View boundaries;
+- lifecycle, focus, geometry, or platform bridges drive product behavior.
 
-Compiler diagnostics and style linters catch different problems; a general prompt can still ask an agent to follow good SwiftUI practices. None gives the agent stable cross-file identities, evidence-backed read and write paths within the supported topology, a compatible semantic baseline, and repeatable evidence for a later review.
+Compiler diagnostics and style linters catch different problems. SwiftUI
+Semantic Audit instead gives the agent stable identities, evidence-backed read
+and write paths, compatible baselines, and bounded slices. The agent still has
+to establish ownership, lifetime, transformation, transaction boundaries, and
+product intent before changing code.
 
-SwiftUI Semantic Audit extracts that bounded evidence first. The agent then decides whether a candidate is an accidental mirror, a real transactional draft, legitimate local UI state, an intentional transformation, or something that still lacks evidence.
+## One value, two owners
 
-## See the patterns an agent can introduce
-
-The examples below are not wrapper prescriptions. Each starts with code a coding agent can plausibly introduce during extraction, cleanup, or feature work. The audit reports the topology; the agent still has to establish ownership, lifetime, transaction boundaries, and product intent before changing code.
-
-### Remove a duplicate owner
-
-An agent adapting an editor to an external owner can keep the existing local state and add reciprocal synchronization. The result compiles, but one logical value now has two mutable representations:
+This editor stores one logical value in both an external `Binding` and local
+`State`, then synchronizes the copies in both directions:
 
 ```swift
 struct NameEditor: View {
@@ -48,7 +88,7 @@ struct NameEditor: View {
 }
 ```
 
-The audit reports the topology, not a wrapper preference:
+The audit reports topology, not a wrapper preference:
 
 ```text
 mirrored-state          high
@@ -56,7 +96,8 @@ manual-two-way-sync     high
 logical sources         2
 ```
 
-When both representations mean the same thing and share one lifetime, the focused result can be direct:
+When both representations mean the same thing and share one lifetime, the
+focused shape can be direct:
 
 ```swift
 struct NameEditor: View {
@@ -68,432 +109,34 @@ struct NameEditor: View {
 }
 ```
 
-A screen with real **Apply** and **Discard** behavior is different. Its local draft should remain local. The tool distinguishes transaction topology from an accidental mirror instead of prescribing “Binding everywhere.”
+A real editor with **Apply** and **Discard** behavior is different. Its local
+draft should remain local. The tool preserves that transaction boundary instead
+of prescribing “Binding everywhere.”
 
-### Narrow a model tunnel created during view extraction
+[See the annotated walkthrough](https://swiftui-audit.dev/#xray) or
+[browse the full pattern catalog](docs/concepts/pattern-catalog.md), including
+model, callback, Binding, derivation, repository, and lifecycle examples.
 
-When an agent breaks a large screen into smaller views, passing the existing model through every new initializer is the easiest way to keep the code compiling:
+## How the boundary works
 
-```swift
-struct AccountScreen: View {
-    @State private var model = AccountModel()
-
-    var body: some View {
-        AccountSection(model: model)
-    }
-}
-
-struct AccountSection: View {
-    @Bindable var model: AccountModel
-
-    var body: some View {
-        AccountRow(model: model)
-    }
-}
-
-struct AccountRow: View {
-    @Bindable var model: AccountModel
-
-    var body: some View {
-        HStack {
-            Text(model.email)
-            Button("Retry") { model.retrySync() }
-        }
-    }
-}
+```mermaid
+flowchart LR
+    A[Swift source] --> B[SwiftSyntax facts]
+    B --> C[Fresh compiler-index facts]
+    C --> D[Semantic graph]
+    D --> E[Rules, snapshots, and bounded slices]
+    E --> F[swiftui-semantic]
+    F --> G[Agent judgment]
+    G --> H[Focused edit, build, and behavior tests]
+    D --> I[Semantic diff and check]
 ```
 
-The audit follows the same observable value across component boundaries and records where the leaf actually uses the broad dependency:
-
-```text
-observable-model-tunnel   medium   strong-inference   depth 2
-broad-observable-input    medium   candidate
-```
-
-The focused version passes the reusable leaf only the value and action it needs:
-
-```swift
-struct AccountScreen: View {
-    @State private var model = AccountModel()
-
-    var body: some View {
-        AccountSection(
-            email: model.email,
-            retry: model.retrySync
-        )
-    }
-}
-
-struct AccountSection: View {
-    let email: String
-    let retry: () -> Void
-
-    var body: some View {
-        AccountRow(email: email, retry: retry)
-    }
-}
-
-struct AccountRow: View {
-    let email: String
-    let retry: () -> Void
-
-    var body: some View {
-        HStack {
-            Text(email)
-            Button("Retry", action: retry)
-        }
-    }
-}
-```
-
-A screen or feature container may legitimately own or receive a broad model. The candidate becomes actionable only after the agent proves that the receiving view is a reusable leaf rather than that owner.
-
-### Keep derived form state derived
-
-An agent adding validation can store a convenience flag and update it from every input change:
-
-```swift
-struct SignupForm: View {
-    @State private var email = ""
-    @State private var password = ""
-    @State private var canContinue = false
-
-    var body: some View {
-        Form {
-            TextField("Email", text: $email)
-            SecureField("Password", text: $password)
-            Button("Continue") {}
-                .disabled(!canContinue)
-        }
-        .onChange(of: email) { _, _ in updateValidation() }
-        .onChange(of: password) { _, _ in updateValidation() }
-    }
-
-    private func updateValidation() {
-        canContinue = email.contains("@") && password.count >= 8
-    }
-}
-```
-
-The flag is mutable, but its value is fully determined by two other representations:
-
-```text
-stored-derived-state   medium   strong-inference
-```
-
-Keeping the rule in one computed value removes the synchronization paths:
-
-```swift
-struct SignupForm: View {
-    @State private var email = ""
-    @State private var password = ""
-
-    private var canContinue: Bool {
-        email.contains("@") && password.count >= 8
-    }
-
-    var body: some View {
-        Form {
-            TextField("Email", text: $email)
-            SecureField("Password", text: $password)
-            Button("Continue") {}
-                .disabled(!canContinue)
-        }
-    }
-}
-```
-
-Server validation, debouncing, or another independent lifetime may justify stored state. The agent must prove that lifecycle instead of replacing every derived-looking property mechanically.
-
-### Expose a command-shaped Binding
-
-An agent connecting a control to an existing model method can hide a command behind a conventional-looking `Binding`:
-
-```swift
-struct PagePicker: View {
-    @Bindable var model: PagerModel
-
-    var body: some View {
-        Picker(
-            "Page",
-            selection: Binding(
-                get: { model.selectedPage },
-                set: { model.selectPage($0) }
-            )
-        ) {
-            Text("Overview").tag(0)
-            Text("Activity").tag(1)
-        }
-    }
-}
-```
-
-The setter calls a command rather than directly expressing one focused value mutation, while the reusable picker receives the whole model:
-
-```text
-command-shaped-binding    medium   strong-inference
-broad-observable-input    medium   candidate
-```
-
-If `selectPage` is only an identity write, a direct focused Binding expresses the same authority without the hidden adapter:
-
-```swift
-struct PagePicker: View {
-    @Binding var selectedPage: Int
-
-    var body: some View {
-        Picker("Page", selection: $selectedPage) {
-            Text("Overview").tag(0)
-            Text("Activity").tag(1)
-        }
-    }
-}
-```
-
-If the method validates a transition, persists data, records analytics, or performs another effect, replacing it with a direct Binding would change behavior. In that case the agent must preserve the command as an explicit action boundary and verify its timing instead of optimizing for a lower finding count.
-
-### Collapse a value-and-callback tunnel
-
-An agent asked to avoid passing `Binding` can replace it with a value and setter callback, then forward both through every extracted component:
-
-```swift
-struct VolumeScreen: View {
-    @State private var volume = 0.5
-
-    var body: some View {
-        VolumeSection(volume: volume) { newValue in
-            volume = newValue
-        }
-    }
-}
-
-struct VolumeSection: View {
-    let volume: Double
-    let onVolumeChanged: (Double) -> Void
-
-    var body: some View {
-        VolumeRow(
-            volume: volume,
-            onVolumeChanged: onVolumeChanged
-        )
-    }
-}
-
-struct VolumeRow: View {
-    let volume: Double
-    let onVolumeChanged: (Double) -> Void
-
-    var body: some View {
-        VolumeSlider(
-            volume: volume,
-            onVolumeChanged: onVolumeChanged
-        )
-    }
-}
-
-struct VolumeSlider: View {
-    let volume: Double
-    let onVolumeChanged: (Double) -> Void
-    @State private var localVolume = 0.0
-
-    var body: some View {
-        Slider(value: $localVolume)
-            .onAppear { localVolume = volume }
-            .onChange(of: volume) { _, newValue in
-                localVolume = newValue
-            }
-            .onChange(of: localVolume) { _, newValue in
-                onVolumeChanged(newValue)
-            }
-    }
-}
-```
-
-When the root callback only writes the same upstream value, the audit follows the callback path through all three extracted views and sees that the leaf also created a second mutable representation:
-
-```text
-callback-binding-tunnel    medium   strong-inference   depth 3
-logical sources            2
-```
-
-A focused Binding chain keeps one logical owner and removes the manual forwarding callbacks:
-
-```swift
-struct VolumeScreen: View {
-    @State private var volume = 0.5
-
-    var body: some View {
-        VolumeSection(volume: $volume)
-    }
-}
-
-struct VolumeSection: View {
-    @Binding var volume: Double
-
-    var body: some View {
-        VolumeRow(volume: $volume)
-    }
-}
-
-struct VolumeRow: View {
-    @Binding var volume: Double
-
-    var body: some View {
-        VolumeSlider(volume: $volume)
-    }
-}
-
-struct VolumeSlider: View {
-    @Binding var volume: Double
-
-    var body: some View {
-        Slider(value: $volume)
-    }
-}
-```
-
-A local slider draft and callback remain appropriate when they implement throttling, a transaction, validation, or another distinct lifetime. “Callbacks instead of Binding” and “Binding everywhere” are both insufficient rules.
-
-### Move external work out of a reusable leaf
-
-During extraction, an agent can move a repository and its lifecycle modifier together with the visible grid:
-
-```swift
-struct RecommendationsGrid: View {
-    let categoryID: String
-    let repository: RecommendationsRepository
-    @State private var items: [Recommendation] = []
-
-    var body: some View {
-        GridView(items: items)
-            .task(id: categoryID) {
-                items = await repository.load(categoryID: categoryID)
-            }
-    }
-}
-```
-
-With exact project configuration identifying the repository role, the audit reports both the dependency boundary and the lifecycle-triggered command. Finding dominance suppresses the more generic external-effect finding for the same call:
-
-```text
-service-or-repository-in-view   high     strong-inference
-hidden-command-in-lifecycle     medium   candidate
-```
-
-The reusable grid can remain a presentation component while a feature container owns the model, loading lifetime, and repository interaction:
-
-```swift
-struct RecommendationsContainer: View {
-    @State private var model: RecommendationsModel
-
-    var body: some View {
-        RecommendationsGrid(items: model.items)
-            .task(id: model.categoryID) {
-                await model.loadCurrentCategory()
-            }
-    }
-}
-
-struct RecommendationsGrid: View {
-    let items: [Recommendation]
-
-    var body: some View {
-        GridView(items: items)
-    }
-}
-```
-
-The lifecycle command may still be a candidate on the container. That is intentional: the goal is not zero findings, but a defensible owner whose lifetime matches cancellation and reload behavior. Role-aware conclusions require a validated `.swiftui-audit.json`; type names such as `Repository` or `Model` never establish authority by themselves.
-
-## Install the CLI and agent skills
-
-Install the released CLI from the upstream Homebrew tap:
-
-```bash
-brew install potapenko/tap/swiftui-semantic-audit
-swiftui-audit --version
-```
-
-Homebrew installs `swiftui-audit`; it does not modify an agent host. The normal workflow also installs one router and three specialist skills from the same immutable release tag.
-
-Give a local Codex or Claude Code session this prompt:
-
-```text
-Install exactly the four SwiftUI Semantic Audit agent skills for release 0.5.0.
-The CLI is already managed by Homebrew; verify `swiftui-audit --version` first.
-Read and follow the tagged installation guide:
-https://github.com/potapenko/swiftui-semantic-audit/blob/0.5.0/docs/getting-started/installation.md
-Clone only tag 0.5.0 from
-https://github.com/potapenko/swiftui-semantic-audit.git into a stable user-owned
-path. Before linking anything, verify the origin, tag, and exact tag commit. Detect this agent host and link all
-four sibling skill directories into its documented personal skill directory.
-Do not overwrite, delete, move, or repoint an existing path. Finish with the
-tag, commit, CLI version, installed paths, host, and verification receipt.
-```
-
-See [Installation](docs/getting-started/installation.md) for the complete safe procedure and source-build fallback.
-
-## Copy a task prompt
-
-The prompts below use Codex syntax: `$swiftui-semantic`. In Claude Code, replace it with `/swiftui-semantic`. The staged migration prompt also starts with Codex `/goal`; in Claude Code, remove that prefix and submit the rest as a project task.
-
-### Audit a project without editing it
-
-```text
-Use $swiftui-semantic to audit this repository's SwiftUI state and data-flow
-architecture. Do not edit product code or configuration. Build the exact
-current source, validate a fresh project-covering compiler Index Store, and
-accept only indexed evidence. Audit before reading broad source, group
-overlapping findings by semantic value, and slice the highest-risk clusters.
-Return canonical owners, duplicated representations, synchronization and
-effect paths, legitimate exceptions, prioritized candidate refactors, and
-the exact missing evidence behind every unknown.
-```
-
-### Add the guardrail to a project
-
-```text
-Preserve the repository's existing agent instructions and add one bounded
-project rule: route SwiftUI tasks that change state ownership, data flow,
-Bindings, effects, lifetime, or component boundaries through
-$swiftui-semantic. Require its semantic review for existing changes in those
-areas. Do not apply the rule to unrelated styling, layout-only, performance,
-concurrency, or security work. Show the exact instruction diff before making
-any other project change.
-```
-
-### Run a staged migration
-
-```text
-/goal Migrate this project's SwiftUI state and data-flow architecture with
-$swiftui-semantic while preserving product behavior. Start with a read-only
-indexed audit and create a restart-safe registry with one row per overlapping
-finding cluster, including evidence IDs, owner, invariants, tests, risk, and
-status. Process one approved cluster per checkpoint through baseline, slice,
-focused edit, build, behavior tests, refreshed indexed snapshot, semantic
-diff, check, and independent review. Never hide a finding by weakening scope,
-configuration, thresholds, or by moving the same mechanism into another
-wrapper. Finish only when every in-scope row has an evidence-backed terminal
-disposition and the final configured audit matches the approved scope.
-```
-
-This prompt coordinates the existing audit, refactor, and review workflows. It is not a new CLI mode or a one-pass rewrite command.
-
-The [prompt library](docs/getting-started/agent-prompts.md) also includes focused-refactor and existing-change review recipes with their stop conditions.
-
-## Follow one evidence boundary
-
-```text
-Swift source + fresh compiler index
-    → deterministic ownership and data-flow facts
-    → evidence-backed findings and bounded slices
-    → agent judgment
-    → focused edit + behavior tests + semantic diff
-```
-
-The CLI owns syntax, symbols, topology, confidence, and source locations. The agent may classify intent, explain risk, and choose a conditional remediation. It must return `unknown` when ownership, lifetime, transformation, or transaction evidence is missing.
-
-One router selects the smallest workflow:
+The CLI owns syntax, symbols, topology, confidence, and source locations. The
+agent may classify intent, explain risk, and choose a conditional remediation.
+It must return `unknown` when the evidence cannot establish ownership, lifetime,
+transformation, or transaction behavior.
+
+You invoke one skill; it selects the smallest internal workflow:
 
 | Requested result | Workflow |
 | --- | --- |
@@ -501,24 +144,68 @@ One router selects the smallest workflow:
 | Change one established state/data-flow cluster | [Data-flow refactor](docs/workflows/refactor.md) |
 | Evaluate pre-existing SwiftUI changes | [Change review](docs/workflows/change-review.md) |
 
-## Know the boundary
+## Product surface
 
-- Agent workflows require a fresh project-covering compiler Index Store and stop when indexed evidence is unavailable.
-- Role-aware findings require exact project configuration; schema 2 can classify `screen`, `container`, `reusable-component`, and `component-model` without inferring from names.
-- The 30 rules cover bounded SwiftUI topology, not every runtime, concurrency, security, or performance defect. The reusable-owner rule is a candidate for instance/lifetime review, not a ban on models in Views.
-- A clean semantic diff does not prove behavior. Relevant builds and behavior tests remain required.
-- The CLI does not call a model-provider API, rewrite source automatically, or install an IDE/Xcode extension.
+- **30 bounded rules** cover state ownership, derivation, synchronization,
+  Bindings, component boundaries, effects, lifecycle, interaction, layout, and
+  selected platform bridges.
+- **Seven public commands** provide `scan`, `audit`, `snapshot`, `slice`,
+  `diff`, `check`, and `doctor`.
+- **Persistent evidence** records five-file snapshots, bounded finding or symbol
+  slices, semantic diffs, and no-new-finding policy checks.
+- **Explicit project roles** let config schema 2 identify screens, containers,
+  reusable components, and component models without guessing from type names.
 
-## Go deeper
+Read the [rule reference](docs/reference/rules.md),
+[CLI reference](docs/reference/cli.md), and
+[snapshot and diff guide](docs/reference/outputs-snapshots-and-diff.md) for the
+complete surface.
 
-- [Getting started](docs/getting-started/README.md)
-- [Why semantic audit](docs/concepts/why-semantic-audit.md)
-- [Functional SwiftUI](docs/concepts/functional-swiftui.md)
-- [Rules](docs/reference/rules.md)
-- [CLI](docs/reference/cli.md)
-- [Snapshots and semantic diff](docs/reference/outputs-snapshots-and-diff.md)
-- [Development](docs/development/README.md)
-- [Product specifications](docs/specs/README.md)
+## Boundaries
+
+- Agent workflows require a fresh project-covering compiler Index Store and
+  stop when indexed evidence is unavailable.
+- Role-aware findings require exact project configuration; names such as
+  `Repository`, `Service`, or `Model` never establish authority by themselves.
+- The rules cover bounded SwiftUI topology, not every runtime, concurrency,
+  security, or performance defect.
+- A clean semantic diff does not prove behavior. Relevant builds, source review,
+  and behavior tests remain required.
+- The CLI does not call a model-provider API, rewrite source automatically, or
+  install an IDE or Xcode extension.
+
+## Documentation
+
+- **Start:** [installation](docs/getting-started/installation.md),
+  [first audit](docs/getting-started/first-audit.md), and
+  [agent prompts](docs/getting-started/agent-prompts.md).
+- **Understand:** [why semantic audit](docs/concepts/why-semantic-audit.md),
+  [functional SwiftUI](docs/concepts/functional-swiftui.md),
+  [pattern catalog](docs/concepts/pattern-catalog.md), and
+  [deterministic facts versus agent judgment](docs/concepts/deterministic-facts-and-agent-judgment.md).
+- **Apply:** [audit](docs/workflows/audit.md),
+  [refactor](docs/workflows/refactor.md), and
+  [change-review](docs/workflows/change-review.md) workflows.
+- **Look up:** [commands](docs/reference/cli.md),
+  [configuration](docs/reference/configuration.md),
+  [rules](docs/reference/rules.md), and
+  [outputs](docs/reference/outputs-snapshots-and-diff.md).
+- **Contribute:** [development guide](docs/development/README.md).
+
+The [documentation hub](docs/README.md) maps every public guide. Maintainers can
+trace normative behavior through the [specification registry](docs/specs/README.md).
+
+## Development
+
+```bash
+swift build --disable-automatic-resolution
+swift test --disable-automatic-resolution
+swift run --disable-automatic-resolution swiftui-audit doctor . --format json
+```
+
+The package requires a Swift 6.3-compatible toolchain. See the
+[development guide](docs/development/README.md) for dependency, CI, fixture,
+dogfood, and contribution details.
 
 ## License
 

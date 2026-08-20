@@ -408,6 +408,7 @@ jobs:
             docs/concepts/README.md
             docs/concepts/why-semantic-audit.md
             docs/concepts/functional-swiftui.md
+            docs/concepts/pattern-catalog.md
             docs/concepts/deterministic-facts-and-agent-judgment.md
             docs/workflows/README.md
             docs/workflows/audit.md
