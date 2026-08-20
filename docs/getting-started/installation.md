@@ -1,6 +1,6 @@
 # Installation
 
-SwiftUI Semantic Audit 0.4.0 installs the CLI through the upstream Homebrew tap. Agent skills are optional, remain a separate operator-owned step, and are pinned to the same immutable release tag.
+SwiftUI Semantic Audit 0.5.0 installs the CLI through the upstream Homebrew tap. Agent skills are optional, remain a separate operator-owned step, and are pinned to the same immutable release tag.
 
 ## Requirements
 
@@ -43,7 +43,7 @@ brew uninstall potapenko/tap/swiftui-semantic-audit
 
 The recommended skill installer is the [copy-paste recipe in the agent prompt library](agent-prompts.md#install-the-agent-skills). It tells the current agent to:
 
-- clone the immutable `0.4.0` tag into a stable user-owned location;
+- clone the immutable `0.5.0` tag into a stable user-owned location;
 - verify the exact tag and commit;
 - verify the Homebrew-installed CLI version;
 - detect Codex or Claude Code and use its documented personal skill directory;
@@ -59,13 +59,13 @@ Choose an empty stable source directory and a user-owned bin directory. This blo
 ```bash
 (
   set -euo pipefail
-  install_root="$HOME/.local/share/swiftui-semantic-audit"
+  install_root="$HOME/.local/share/swiftui-semantic-audit/0.5.0"
   bin_dir="$HOME/.local/bin"
 
   test ! -e "$install_root" && test ! -L "$install_root"
   test ! -e "$bin_dir/swiftui-audit" && test ! -L "$bin_dir/swiftui-audit"
 
-  git clone --branch 0.4.0 --depth 1 \
+  git clone --branch 0.5.0 --depth 1 \
     https://github.com/potapenko/swiftui-semantic-audit.git "$install_root"
   cd "$install_root"
   git rev-parse HEAD
@@ -115,7 +115,7 @@ Preflight every target before creating any link, then create all four as one ope
 ```bash
 (
   set -euo pipefail
-  install_root="$HOME/.local/share/swiftui-semantic-audit"
+  install_root="$HOME/.local/share/swiftui-semantic-audit/0.5.0"
   skill_root="$HOME/.agents/skills"
 
   for skill in swiftui-semantic swiftui-semantic-audit swiftui-dataflow-refactor swiftui-change-review; do

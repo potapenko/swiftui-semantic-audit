@@ -99,6 +99,6 @@ the apex.
 The large duplicate-owner example and protected transaction come from accepted
 fixtures. The compact command Binding, model tunnel, and derived-state stories
 use accepted fixture shapes and label editorial remediation where behavior
-tests are still required. Product claims stay within release `0.4.0`: the CLI
+tests are still required. Product claims stay within release `0.5.0`: the CLI
 does not rewrite source, call a model provider, replace behavior tests, or turn
 candidate findings into automatic decisions.

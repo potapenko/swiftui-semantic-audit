@@ -2,7 +2,7 @@
 
 - Node type: leaf
 - Status: Active
-- Contract revision: `spec-10`
+- Contract revision: `spec-11`
 - Authority: [Specification coverage and evidence map](../evidence-map.md)
 - Read when: tracing an authorized addendum or selecting evidence for a product decision.
 - Do not read when: only source-section coverage or ownership is needed.
@@ -21,6 +21,7 @@
 | `PARALLEL-EXECUTION-001` | CPU-scaled frontend/rule execution with explicit job control and serial/parallel equivalence | `PC-SCOPE-006`, `CLI-EXEC-001`, `ACC-PERF-001` | GraphScanner, AuditEngine, CLI live-source commands, determinism and Thread Sanitizer tests |
 | `HOMEBREW-RELEASE-001` | Stable 0.4.0 tag/release, version output, and upstream Homebrew tap distribution | `PC-REL-002..003`, `CLI-GEN-005`, `ACC-BREW-*`, `ACC-DOD-012` | `SwiftUIAuditCLI`, release documentation, `potapenko/homebrew-tap`, brew audit/install/test receipt |
 | `COMPONENT-SURFACE-001` | Exact reusable/screen/container roles, component-model lifetime boundary, and one candidate rule | `PC-OPS-010`, `CFG-*`, `IR-GRAPH-010`, `RULE-REUSABLE-OWNER-001`, `ACC-COMP-*` | AuditCore config, AuditRules, ContextSlicer, fixtures, skills, CI |
+| `RELEASE-0.5.0-001` | Stable publication of the accepted component candidate and tagged skills | `PC-REL-002..004`, `CLI-GEN-005`, `ACC-BREW-*`, `ACC-DOD-013..014`, `WEB-CLAIM-001` | immutable 0.5.0 tag/archive, release docs/site facts, `potapenko/homebrew-tap`, local and hosted receipts |
 
 ## Evidence precedence by decision
 

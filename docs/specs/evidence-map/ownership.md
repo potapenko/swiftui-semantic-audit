@@ -2,7 +2,7 @@
 
 - Node type: leaf
 - Status: Active
-- Contract revision: `spec-10`
+- Contract revision: `spec-11`
 - Authority: [Specification coverage and evidence map](../evidence-map.md)
 - Read when: identifying the owner of facts, findings, persistence, comparison, judgment, or acceptance.
 - Do not read when: only clause coverage or evidence precedence is needed.
@@ -10,7 +10,7 @@
 
 ## Ownership map
 
-- Product authority: user-approved base epoch `tz-v1` plus semantic addenda through `COMPONENT-SURFACE-001`, combined as `tz-v13`; `REALISTIC-FIXTURES-001` remains acceptance/restore evidence without its own semantic epoch.
+- Product authority: user-approved base epoch `tz-v1` plus semantic addenda through `RELEASE-0.5.0-001`, combined as `tz-v14`; `REALISTIC-FIXTURES-001` remains acceptance/restore evidence without its own semantic epoch.
 - Semantic schema owner: `AuditCore` plus SnapshotStore transport.
 - Syntax fact owner: SwiftSyntaxFrontend and SwiftUISemantics vocabulary.
 - Compiler fact owner: SymbolResolution/IndexStoreDB on macOS.

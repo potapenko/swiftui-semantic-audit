@@ -2,7 +2,7 @@
 
 - Node type: leaf
 - Status: Active
-- Contract revision: `spec-3`
+- Contract revision: `spec-4`
 - Authority: [Website contract](../website.md)
 - Maximum size: 100 physical lines.
 
@@ -69,7 +69,7 @@ tracking, a new route, or a second author surface elsewhere on the page.
 `de-ai-writing` landing rules. Ban rhetorical questions, urgency, fake empathy,
 vague authority, lifestyle theater, and unsupported qualitative outcomes.
 
-**WEB-CLAIM-001.** Supported claims include release 0.4.0, 29 bounded rules,
+**WEB-CLAIM-001.** Supported claims include release 0.5.0, 30 bounded rules,
 seven public CLI commands, deterministic evidence, semantic snapshots/diff,
 separate agent judgment, provider independence, and the documented Homebrew
 plus agent-skill installation boundary.

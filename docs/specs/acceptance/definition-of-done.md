@@ -2,7 +2,7 @@
 
 - Node type: leaf
 - Status: Active
-- Contract revision: `spec-10`
+- Contract revision: `spec-11`
 - Authority: [Acceptance and QA contract](../acceptance.md)
 - Read when: selecting fixture, build, determinism, safety, dogfood, skill, CI, or completion obligations.
 - Do not read when: the task does not implement or verify accepted behavior.
@@ -35,4 +35,6 @@
 
 **ACC-DOD-012.** `HOMEBREW-RELEASE-001` publishes stable tool `0.4.0` from one immutable Git tag and release archive, exposes `swiftui-audit --version`, and supplies a tested upstream Homebrew formula whose direct install preserves the standalone CLI contract without installing agent skills or mutating user configuration.
 
-**ACC-DOD-013.** Unreleased tool `0.5.0` accepts config schemas 1 and 2, ships thirty bounded rules, uses exact reusable/screen/container and component-model roles without name inference, emits the reusable-owner candidate with documented dominance/slices, preserves the 34-finding realistic total, and leaves release 0.4.0 immutable.
+**ACC-DOD-013.** Released tool `0.5.0` accepts config schemas 1 and 2, ships thirty bounded rules, uses exact reusable/screen/container and component-model roles without name inference, emits the reusable-owner candidate with documented dominance/slices, preserves the 34-finding realistic total, and leaves release 0.4.0 immutable.
+
+**ACC-DOD-014.** `RELEASE-0.5.0-001` publishes one immutable tag/archive, a tested upstream formula, the same four validated skills, and truthful 0.5.0 public/website facts without adding bottles, automatic skill installation, or new analysis behavior.

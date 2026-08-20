@@ -1,6 +1,6 @@
 # Rule reference
 
-Release 0.4.0 evaluates 29 rules over the canonical semantic graph. Development version 0.5.0 adds the exact-config `reusable-component-owner-dependency` candidate as the thirtieth rule. A rule uses ownership, identity, read/write/call, binding, observation, configuration, and event topology. No rule is allowed to conclude from a property-wrapper or type name alone.
+Version 0.5.0 evaluates 30 rules over the canonical semantic graph. The exact-config `reusable-component-owner-dependency` result is the thirtieth rule and remains a candidate for agent judgment. A rule uses ownership, identity, read/write/call, binding, observation, configuration, and event topology. No rule is allowed to conclude from a property-wrapper or type name alone.
 
 Severity describes the architectural risk selected by the contract. Confidence describes the evidence basis:
 

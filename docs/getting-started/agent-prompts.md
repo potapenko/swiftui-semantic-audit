@@ -1,6 +1,6 @@
 # Agent prompts
 
-These prompts use the released SwiftUI Semantic Audit 0.4.0 router and its
+These prompts use the released SwiftUI Semantic Audit 0.5.0 router and its
 three specialist skills. They do not add another skill, a migration command,
 or automatic source rewriting.
 
@@ -13,7 +13,7 @@ project task brief.
 
 The audit, refactor, review, and migration prompts require:
 
-- `swiftui-audit --version` to report `0.4.0`;
+- `swiftui-audit --version` to report `0.5.0`;
 - a normal build of the exact source state being analyzed;
 - a fresh compiler Index Store that covers the project scope;
 - the raw Index Store path passed explicitly to live-source commands;
@@ -34,19 +34,19 @@ Run this after installing the CLI with Homebrew. Homebrew owns the executable;
 the agent installs only the four separate skill directories.
 
 ```text
-Install exactly the four SwiftUI Semantic Audit agent skills for release 0.4.0:
+Install exactly the four SwiftUI Semantic Audit agent skills for release 0.5.0:
 swiftui-semantic, swiftui-semantic-audit, swiftui-dataflow-refactor, and
 swiftui-change-review.
 
 The swiftui-audit CLI is already managed by Homebrew. Do not reinstall,
 upgrade, or replace it. First verify that `swiftui-audit --version` reports
-exactly 0.4.0. Then read the tagged installation guide at
-https://github.com/potapenko/swiftui-semantic-audit/blob/0.4.0/docs/getting-started/installation.md.
+exactly 0.5.0. Then read the tagged installation guide at
+https://github.com/potapenko/swiftui-semantic-audit/blob/0.5.0/docs/getting-started/installation.md.
 
-Clone only the immutable 0.4.0 tag from
+Clone only the immutable 0.5.0 tag from
 https://github.com/potapenko/swiftui-semantic-audit.git into a stable,
-user-owned directory. Verify the origin, tag, and exact commit
-189dc44c928f7f61b393f6e4ca7d8f6f5d183a48 before installing anything.
+user-owned directory. Verify the origin, tag, and exact tag commit before
+installing anything.
 
 Detect whether this session is Codex or Claude Code. Use only that host's
 documented personal skill directory. Preflight all four destinations, then
@@ -271,7 +271,7 @@ regression remains, and the final review reports the remaining limitations.
 
 ## Related workflows
 
-- [Install and verify release 0.4.0](installation.md)
+- [Install and verify release 0.5.0](installation.md)
 - [Run a first indexed audit](first-audit.md)
 - [Audit](../workflows/audit.md)
 - [Refactor](../workflows/refactor.md)

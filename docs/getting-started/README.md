@@ -5,7 +5,7 @@ The normal setup has two parts:
 - `swiftui-audit`, the deterministic CLI;
 - `swiftui-semantic`, the user-facing router skill, plus its three specialist skills.
 
-Release 0.4.0 separates Homebrew CLI installation from optional agent-skill installation. Both remain pinned to the same immutable tag.
+Release 0.5.0 separates Homebrew CLI installation from optional agent-skill installation. Both remain pinned to the same immutable tag.
 
 ## Recommended route
 

@@ -2,8 +2,8 @@
 
 - Node type: hybrid
 - Status: Active
-- Contract revision: `spec-5`
-- Authority: user-authorized `WEBSITE-001`, `WEBSITE-PUBLISH-001`, `WEBSITE-AUTHOR-001`, and `WEBSITE-SKILL-STORY-001` on 2026-08-19
+- Contract revision: `spec-6`
+- Authority: user-authorized website addenda on 2026-08-19 plus `RELEASE-0.5.0-001` on 2026-08-20
 - Stability: released at the canonical domain
 - Read when: designing, implementing, publishing, or verifying the product website.
 - Do not read when: work is limited to the Swift package, CLI, rules, or agent skills.
@@ -41,6 +41,11 @@ makes `swiftui-semantic` in Codex or Claude Code the landing page's primary
 product interface. Use cases are normal SwiftUI tasks asked through that one
 skill. The CLI, router, and specialist workflows are subordinate implementation
 details; product and installation semantics do not change.
+
+**WEB-DELTA-006 — 0.5.0 release facts.** `RELEASE-0.5.0-001` updates only the
+version, tagged links, thirty-rule count, and installation prompt after the
+GitHub/Homebrew release is terminal. It does not change layout, narrative,
+examples, interaction, assets, accessibility, or deployment mechanics.
 
 ## Choose the governing child
 

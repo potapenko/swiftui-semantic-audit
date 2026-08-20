@@ -44,7 +44,7 @@ swift build -c release --disable-automatic-resolution
 | `SwiftSyntaxFrontend` | Deterministic source extraction |
 | `SwiftUISemantics` | Bounded SwiftUI vocabulary and normalization facts |
 | `SemanticNormalization` | Logical semantic-value grouping |
-| `AuditRules` | The 29 deterministic/candidate rules and dominance |
+| `AuditRules` | The 30 deterministic/candidate rules and dominance |
 | `SnapshotStore` | Canonical five-file persistence and integrity |
 | `ContextSlicer` | Bounded finding/symbol context |
 | `AnalysisCache` | Integrity-checked persistent frontend and indexed fact reuse |

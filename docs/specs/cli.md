@@ -2,15 +2,15 @@
 
 - Node type: hybrid
 - Status: Active
-- Contract revision: `spec-7`
+- Contract revision: `spec-8`
 - Read when: selecting command syntax, flags, output, status, resolution, cache, failure, or timeout behavior.
 - Do not read when: the task does not invoke, document, or integrate the CLI.
 - Maximum size: 100 physical lines.
 
-Revision: `spec-7`
+Revision: `spec-8`
 Executable: `swiftui-audit`  
 Tool version in schema: `0.5.0`
-Status: active; 0.4.0 released, 0.5.0 unreleased
+Status: active; 0.5.0 released, 0.4.0 immutable
 
 All syntax below was verified against the accepted P1–P5 executable help.
 

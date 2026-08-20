@@ -6,9 +6,9 @@ SwiftUI Semantic Audit is an architecture guardrail for coding agents. It turns 
 
 The tool is built for SwiftUI work that crosses file boundaries: auditing an unfamiliar project, removing manual synchronization, narrowing component inputs, or reviewing an agent-authored change. It does not rewrite source by itself or ask a model to invent compiler facts.
 
-> **Current release:** 0.4.0 for macOS 13 or later.
+> **Current release:** 0.5.0 for macOS 13 or later.
 >
-> **Development:** 0.5.0 adds opt-in config-schema-2 component roles and one candidate reusable-owner finding. Release 0.4.0 remains unchanged.
+> **Component boundary:** config schema 2 adds exact screen, container, reusable-component, and component-model roles. The reusable-owner result is a candidate for agent judgment, not a blanket model-removal rule.
 
 [Install](#install-the-cli-and-agent-skills) · [Copy a task prompt](#copy-a-task-prompt) · [Run the first audit](docs/getting-started/first-audit.md) · [Read the docs](docs/README.md)
 
@@ -419,14 +419,13 @@ Homebrew installs `swiftui-audit`; it does not modify an agent host. The normal 
 Give a local Codex or Claude Code session this prompt:
 
 ```text
-Install exactly the four SwiftUI Semantic Audit agent skills for release 0.4.0.
+Install exactly the four SwiftUI Semantic Audit agent skills for release 0.5.0.
 The CLI is already managed by Homebrew; verify `swiftui-audit --version` first.
 Read and follow the tagged installation guide:
-https://github.com/potapenko/swiftui-semantic-audit/blob/0.4.0/docs/getting-started/installation.md
-Clone only tag 0.4.0 from
+https://github.com/potapenko/swiftui-semantic-audit/blob/0.5.0/docs/getting-started/installation.md
+Clone only tag 0.5.0 from
 https://github.com/potapenko/swiftui-semantic-audit.git into a stable user-owned
-path. Before linking anything, verify the origin, tag, and exact commit
-189dc44c928f7f61b393f6e4ca7d8f6f5d183a48. Detect this agent host and link all
+path. Before linking anything, verify the origin, tag, and exact tag commit. Detect this agent host and link all
 four sibling skill directories into its documented personal skill directory.
 Do not overwrite, delete, move, or repoint an existing path. Finish with the
 tag, commit, CLI version, installed paths, host, and verification receipt.

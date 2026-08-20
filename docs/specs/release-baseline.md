@@ -2,17 +2,17 @@
 
 - Node type: hybrid
 - Status: Active
-- Contract revision: `spec-15`
-- Read when: checking the current 0.4.0 release, dependencies, milestones, capabilities, residuals, or acceptance evidence.
+- Contract revision: `spec-16`
+- Read when: checking the current 0.5.0 release, dependencies, milestones, capabilities, residuals, or acceptance evidence.
 - Do not read when: the task concerns intended behavior without realization or release evidence.
 - Maximum size: 100 physical lines.
 
-Revision: `spec-15`
-Baseline state: `0.4.0 released; 0.5.0 component-surface candidate; website canonical domain released`
-Contract epoch: `tz-v13`
+Revision: `spec-16`
+Baseline state: `0.5.0 released; 0.4.0 immutable; website canonical domain released`
+Contract epoch: `tz-v14`
 Website contract epoch: `tz-v12`
 
-**BASE-REL-001 — Publication state.** Tool `0.4.0` is the first public release. It is distributed from one immutable Git tag and GitHub Release through the tested upstream tap formula; the terminal receipt pins every external artifact.
+**BASE-REL-001 — Publication state.** Tool `0.5.0` is the current public release and `0.4.0` remains the immutable first release. Each is distributed from its own immutable Git tag and GitHub Release through the tested upstream tap formula; terminal receipts pin every external artifact.
 
 **BASE-REL-002 — Implementation revision.** P6 began on branch `master` at Git commit `f24751cd25781426ec2c1531243e498534165e60`. Accepted P1–P5 implementation changes, including indexed enrichment, are present in the working tree at that revision. Generated P6 baseline manifests therefore record that Git revision while representing the accepted working tree.
 
@@ -30,7 +30,9 @@ Website contract epoch: `tz-v12`
 
 **BASE-REL-009 — 0.4.0 publication receipt.** Immutable tag `0.4.0` targets commit `189dc44c928f7f61b393f6e4ca7d8f6f5d183a48`; upstream CI run [`32260347511`](https://github.com/potapenko/swiftui-semantic-audit/actions/runs/32260347511) passed on that commit. The public [GitHub Release](https://github.com/potapenko/swiftui-semantic-audit/releases/tag/0.4.0) asset `swiftui-semantic-audit-0.4.0.tar.gz` has SHA-256 `e314379b9cf67f1d5d6ccf3e8b9dce9b10d4a619c6af9eff4d39af0f4a8f08d3`. Tap formula commit `73895365dbd6bea905fc11a6fda2496f3126c620` and bounded-automation head `7979f7f7a1e4c71a2acf92d984926ec63e64c5c5` are public in [`potapenko/homebrew-tap`](https://github.com/potapenko/homebrew-tap). Clean [`macos-26` arm64 run `32261229672`](https://github.com/potapenko/homebrew-tap/actions/runs/32261229672) built from source, passed the functional `brew test`, and verified version `0.4.0`; macOS and Linux tap-syntax jobs also passed. The direct command is `brew install potapenko/tap/swiftui-semantic-audit`. No bottles are claimed for 0.4.0: installation builds the locked package from source and requires Xcode 26.6.
 
-**BASE-REL-010 — Component-surface candidate.** User-approved `COMPONENT-SURFACE-001` on 2026-08-20 advances the combined contract to `tz-v13` and authorizes unreleased tool `0.5.0`, config schema 2 with schema-1 compatibility, and one thirtieth candidate rule. Product implementation commit `fe74a71b1aea769f2cc724b18af67b0df9a84f87` is the canonical baseline-manifest revision. It does not republish or mutate the immutable 0.4.0 release, Homebrew formula, or website.
+**BASE-REL-010 — Component-surface implementation.** User-approved `COMPONENT-SURFACE-001` on 2026-08-20 advances the combined contract to `tz-v13` and authorizes tool `0.5.0`, config schema 2 with schema-1 compatibility, and one thirtieth candidate rule. Product implementation commit `fe74a71b1aea769f2cc724b18af67b0df9a84f87` is the canonical baseline-manifest revision. Acceptance checkpoint `c6c28fcadee4c3567d2cc607d251360fc9e333bc` is present on `origin/master`; hosted CI run `32355521839` passed the full Swift, indexed, dogfood, skills, docs, and website route.
+
+**BASE-REL-011 — 0.5.0 publication authority.** User-authorized `RELEASE-0.5.0-001` on 2026-08-20 advances the combined contract to `tz-v14`. It publishes the accepted component implementation, current four-skill workflow, truthful public/site facts, and source-built Homebrew formula without changing analysis semantics, 0.4.0 artifacts, or the no-bottles/no-automatic-skill-installation boundary. The terminal receipt records the tag, archive, tap, hosted source install, local deployment, and public-site evidence.
 
 **BASE-WEB-001 — Initial website deployment receipt.** On 2026-08-19,
 DigitalOcean app `ed5742fe-8bca-444f-a55b-abb8d005ff55` reached ACTIVE deployment
