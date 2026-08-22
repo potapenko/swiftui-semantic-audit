@@ -7,6 +7,8 @@ description: Audit Swift and SwiftUI state/data-flow architecture with swiftui-a
 
 ## Establish indexed analysis
 
+When the project contains `.swiftui-audit/project.json`, first read and follow [project watcher freshness](../swiftui-semantic/references/project-watcher.md). Accept its live snapshot only with a matching fresh indexed status receipt; otherwise continue with the explicit Index Store workflow below.
+
 1. Use an installed `swiftui-audit` binary when available. In this repository, use `swift run --disable-automatic-resolution swiftui-audit`.
 2. Build the project when needed to produce a fresh compiler Index Store that covers the requested source. Validate its readiness and exact path with project build output and `swiftui-audit doctor <source-path> --format json`.
 3. Pass `--index-store <path>` explicitly to every live-source audit or slice command. Do not omit it in reliance on automatic discovery.
@@ -20,7 +22,7 @@ Before emitting command output or snapshots, read and apply [run artifact hygien
 
 ## Audit before source
 
-1. Run JSON audit before opening arbitrary Swift source:
+1. Run JSON audit before opening arbitrary Swift source. With an accepted watcher snapshot, read its canonical findings and summary and slice selected IDs directly. Otherwise run live audit:
 
    ```bash
    swiftui-audit audit <source-path> --index-store <path> --config <path> --format json

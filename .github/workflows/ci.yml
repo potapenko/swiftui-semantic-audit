@@ -53,8 +53,8 @@ jobs:
           perl -e 'alarm shift; exec @ARGV' 900 swift test --disable-automatic-resolution
           version="$(perl -e 'alarm shift; exec @ARGV' 60 \
             swift run --disable-automatic-resolution swiftui-audit --version)"
-          test "$version" = "0.5.0" || {
-            echo "Expected swiftui-audit 0.5.0, received: $version" >&2
+          test "$version" = "0.6.0" || {
+            echo "Expected swiftui-audit 0.6.0 candidate, received: $version" >&2
             exit 1
           }
 
@@ -196,6 +196,53 @@ jobs:
           )
           assert finding_matrix(realistic) == finding_matrix(realistic_indexed)
           (root / "finding-id.txt").write_text(fixtures["findings"][0]["id"])
+          PY
+
+      - name: Prove project watcher dogfood
+        run: |
+          set -euo pipefail
+          perl -e 'alarm shift; exec @ARGV' 60 \
+            swift run --disable-automatic-resolution swiftui-audit project setup \
+              . --format json > "$RUNNER_TEMP/project-setup.json"
+          perl -e 'alarm shift; exec @ARGV' 300 \
+            swift run --disable-automatic-resolution swiftui-audit project watch \
+              . --once --format json > "$RUNNER_TEMP/project-watch.json"
+          perl -e 'alarm shift; exec @ARGV' 60 \
+            swift run --disable-automatic-resolution swiftui-audit project status \
+              . --wait indexed --timeout 30 --format json > "$RUNNER_TEMP/project-status.json"
+          python3 - <<'PY'
+          import json
+          import os
+          from pathlib import Path
+
+          root = Path(os.environ["RUNNER_TEMP"])
+          setup = json.loads((root / "project-setup.json").read_text())
+          status = json.loads((root / "project-status.json").read_text())
+          assert setup["applied"] is False
+          assert setup["blockers"] == []
+          assert status["fresh"] is True
+          assert status["resolution"] == "indexed"
+          assert status["workspaceDigest"] == status["indexedWorkspaceDigest"]
+          live = Path(status["liveSnapshotPath"])
+          assert {path.name for path in live.iterdir()} == {
+              "manifest.json", "nodes.jsonl", "edges.jsonl", "findings.jsonl", "summary.json"
+          }
+          (root / "project-live-path.txt").write_text(str(live))
+          PY
+          live_path="$(cat "$RUNNER_TEMP/project-live-path.txt")"
+          perl -e 'alarm shift; exec @ARGV' 60 \
+            swift run --disable-automatic-resolution swiftui-audit diff \
+              .swiftui-audit/baseline "$live_path" --format json \
+              > "$RUNNER_TEMP/project-watch-diff.json"
+          python3 - <<'PY'
+          import json
+          import os
+          from pathlib import Path
+
+          report = json.loads((Path(os.environ["RUNNER_TEMP"]) / "project-watch-diff.json").read_text())
+          assert report["changes"] == []
+          assert report["newFindings"] == []
+          assert report["resolvedFindings"] == []
           PY
 
       - name: Prove incremental cache equivalence
@@ -411,6 +458,7 @@ jobs:
             docs/getting-started/README.md
             docs/getting-started/installation.md
             docs/getting-started/agent-prompts.md
+            docs/getting-started/project-watcher.md
             docs/getting-started/first-audit.md
             docs/concepts/README.md
             docs/concepts/why-semantic-audit.md

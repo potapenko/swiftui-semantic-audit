@@ -9,6 +9,7 @@ SwiftUI Semantic Audit gives a coding agent a deterministic view of SwiftUI stat
 | If you want to… | Read… |
 | --- | --- |
 | Install the CLI and skills | [Getting started](getting-started/README.md) |
+| Configure continuous semantic project state | [Project watcher setup](getting-started/project-watcher.md) |
 | Give an agent an installation, audit, refactor, review, or migration task | [Agent prompt library](getting-started/agent-prompts.md) |
 | Understand why source or Git diff is not enough | [Why semantic audit](concepts/why-semantic-audit.md) |
 | Define “functional SwiftUI” in practical terms | [Functional SwiftUI](concepts/functional-swiftui.md) |

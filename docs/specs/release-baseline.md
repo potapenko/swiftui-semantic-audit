@@ -3,12 +3,12 @@
 - Node type: hybrid
 - Status: Active
 - Contract revision: `spec-17`
-- Read when: checking the current 0.5.0 release, dependencies, milestones, capabilities, residuals, or acceptance evidence.
+- Read when: checking the current 0.5.0 release, the 0.6.0 watcher candidate, dependencies, milestones, capabilities, residuals, or acceptance evidence.
 - Do not read when: the task concerns intended behavior without realization or release evidence.
 - Maximum size: 100 physical lines.
 
 Revision: `spec-17`
-Baseline state: `0.5.0 released; 0.4.0 immutable; website canonical domain released`
+Baseline state: `0.5.0 released; 0.4.0 immutable; website canonical domain released; 0.6.0 project-watcher candidate unreleased`
 Contract epoch: `tz-v14`
 Website contract epoch: `tz-v12`
 
@@ -35,6 +35,8 @@ Website contract epoch: `tz-v12`
 **BASE-REL-011 — 0.5.0 publication authority.** User-authorized `RELEASE-0.5.0-001` on 2026-08-20 advances the combined contract to `tz-v14`. It publishes the accepted component implementation, current four-skill workflow, truthful public/site facts, and source-built Homebrew formula without changing analysis semantics, 0.4.0 artifacts, or the no-bottles/no-automatic-skill-installation boundary. The terminal receipt records the tag, archive, tap, hosted source install, local deployment, and public-site evidence.
 
 **BASE-REL-012 — 0.5.0 publication receipt.** Immutable tag `0.5.0` targets release commit `e460237d1175a0007c6cf91af34898637fdeedb2`; [tag CI `32356553085`](https://github.com/potapenko/swiftui-semantic-audit/actions/runs/32356553085) passed. The public [GitHub Release](https://github.com/potapenko/swiftui-semantic-audit/releases/tag/0.5.0) asset `swiftui-semantic-audit-0.5.0.tar.gz` has SHA-256 `c8d2ea55ea7719de61d55fca13a0d7b2b4053c056c85e15d65d3a1a7eeadcb6b`. Tap commit `7f4a48dec5f0ceb826bd6b2c173ee7764c53184d` is public; [hosted run `32357486034`](https://github.com/potapenko/homebrew-tap/actions/runs/32357486034) built from source, passed `brew test`, and verified `0.5.0`. The local Homebrew command reports `0.5.0`; the four validated Codex skills resolve to the tagged bundle at `~/.local/share/swiftui-semantic-audit/0.5.0/skills`. The canonical site returned build marker `e460237d1175a0007c6cf91af34898637fdeedb2`, version `0.5.0`, thirty bounded rules, tagged release/docs links, healthy metadata routes and 404, and the permanent path-preserving `www` redirect.
+
+**BASE-REL-013 — Project watcher candidate.** User-authorized `PROJECT-WATCHER-001` on 2026-08-22 advances the combined contract to `tz-v17` and authorizes an unreleased 0.6.0 implementation candidate. Local acceptance passes 92 XCTest cases plus 10 Swift Testing cases, indexed self-dogfood at 6,196 nodes and 24,113 edges with zero findings, exact live/baseline diff, safe setup and stale-state tests, exact typed build-adapter tests, real idempotent launchd start/stop, skill validation, documentation links, and source doctor. Hosted candidate CI remains pending. This evidence does not publish a tag, release, formula, website change, or automatic upgrade of the released skills.
 
 **BASE-WEB-001 — Initial website deployment receipt.** On 2026-08-19,
 DigitalOcean app `ed5742fe-8bca-444f-a55b-abb8d005ff55` reached ACTIVE deployment

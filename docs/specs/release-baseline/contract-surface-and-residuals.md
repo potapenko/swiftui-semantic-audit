@@ -26,7 +26,7 @@
 | `edges.jsonl` | `e1ba91905742c9a088790b35e18a46ae5a566254af7728484738ed8ad13a6bf2` |
 | `findings.jsonl` | `9d9305389503bffcaa70651fa233ebb372ef0d4f7edd2bf1901c353a0391c7b3` |
 | `summary.json` | `b37146210fbf1a690985d89c2f617ef892727d8f4597087abaed1739dbc15177` |
-| `manifest.json` | `6a86aa95fc236f9290757a087878dbb5e45a3c8a0658d255a2ac8cc46f76bb3b` |
+| `manifest.json` | `33a91e9abcf7b18cd0a8c0a1e703fb10739e2aae61c0f3024d68005919200f7a` |
 
 **BASE-CAP-006.** The current P1 extraction fixture contains 42 nodes and 83 edges (SHA-256 `ae2f86326085816ee62f9d3fcf8a1531f007df80d2f60a895d2a9f1ea7241ceb`). Schema v2 adds bounded typed/value-flow facts while preserving accepted lexical behavior: identity for an unshadowed nested `onChange` parameter capture, a same-name nested parameter as a shadow barrier, and derivation for transformed captures.
 
@@ -50,6 +50,8 @@
 
 **BASE-CAP-016.** Config schema 2 adds exact View roles and `component-model`; schema 1 remains accepted. The thirtieth reusable-owner candidate is configuration-only, uses existing graph roles, and preserves the realistic corpus total through finding dominance.
 
+**BASE-CAP-017.** `PROJECT-WATCHER-001` is an unreleased 0.6.0 candidate. It adds one `project` namespace, project manifest schema 1, external per-project runtime state, typed SwiftPM/Xcode builds, freshness-qualified indexed live snapshots, baseline promotion, foreground/background lifecycle, and router integration while preserving the released analysis and snapshot schemas.
+
 ## Accepted residuals and limits
 
 **BASE-LIM-001 — PoC extraction.** Syntax-only extraction remains intentionally bounded to the PoC vocabulary. A nested closure passed through an unregistered call can attach to an outer registered call, and receiver identity for same-named member calls is conservative. The frontend is not a full type checker, SIL pipeline, or full interprocedural/alias/control-flow analyzer.
@@ -71,3 +73,5 @@
 **BASE-LIM-010 — Component multiplicity.** Exact roles establish a candidate boundary, not runtime aliasing or instance multiplicity. Full interprocedural `ForEach` lifetime and alias analysis remains out of scope; the agent adjudicates instance count and lifetime from the bounded slice and source evidence.
 
 **BASE-LIM-009 — Parallelism ceiling.** Relationship extraction remains serial because it observes generated nodes in sorted file order; a lock-only parallel pass changed graph bytes and was rejected. Full scaling requires a two-phase immutable fact/merge frontend. IndexStoreDB's Swift object is not shared concurrently, and upstream unit import remains library-serialized; the tool instead reuses one persistent database behind a bounded interprocess lock. Therefore `--jobs` improves eligible work but does not promise linear all-core utilization for every project or stage.
+
+**BASE-LIM-011 — Watcher scope.** Project manifest schema 1 supports one source root and one typed build adapter. Foreground watching uses digest polling with coalescing delays, background lifecycle is macOS launchd for the current login session, and login autostart plus multi-root workspace orchestration remain out of scope.

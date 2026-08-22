@@ -3,10 +3,12 @@ import AuditCore
 import AuditRules
 import ContextSlicer
 import Foundation
+import ProjectWorkspace
 import SemanticDiff
 import SnapshotStore
 import SymbolResolution
 import SwiftSyntaxFrontend
+import WatcherRuntime
 
 @main
 struct SwiftUIAudit: ParsableCommand {
@@ -14,7 +16,10 @@ struct SwiftUIAudit: ParsableCommand {
         commandName: "swiftui-audit",
         abstract: "Build a deterministic semantic graph from Swift/SwiftUI source.",
         version: ToolMetadata.version,
-        subcommands: [Scan.self, Audit.self, Snapshot.self, Slice.self, Diff.self, Check.self, Doctor.self, IndexEnrichHelper.self]
+        subcommands: [
+            Scan.self, Audit.self, Snapshot.self, Slice.self, Diff.self, Check.self, Doctor.self,
+            Project.self, IndexEnrichHelper.self,
+        ]
     )
 }
 

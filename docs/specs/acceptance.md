@@ -2,14 +2,14 @@
 
 - Node type: branch
 - Status: Active
-- Contract revision: `spec-12`
+- Contract revision: `spec-13`
 - Read when: selecting fixture, build, determinism, safety, dogfood, skill, CI, or completion obligations.
 - Do not read when: the task does not implement or verify accepted behavior.
 - Maximum size: 100 physical lines.
 
-Revision: `spec-12`
+Revision: `spec-13`
 Status: active  
-Release state: 0.5.0 released; 0.4.0 immutable; artifact-hygiene workflow candidate unreleased
+Release state: 0.5.0 released; 0.4.0 immutable; 0.6.0 project-watcher candidate unreleased
 
 ## Choose the governing child
 
@@ -17,3 +17,4 @@ Release state: 0.5.0 released; 0.4.0 immutable; artifact-hygiene workflow candid
 - [Reusable Component Surface Acceptance](acceptance/component-surface.md) — exact role/config compatibility, positive/negative boundaries, dominance, slice, and realistic/indexed parity.
 - [CLI Dogfood, Skills, and CI Acceptance](acceptance/dogfood-skills-and-ci.md) — release-path commands, four skill workflows, and hosted CI obligations.
 - [Definition of Done](acceptance/definition-of-done.md) — accepted product, schema, rule, fixture, workflow, and cache completion states.
+- [Project Watcher Acceptance](acceptance/project-watcher.md) — setup safety, freshness, lifecycle, indexed snapshots, agent integration, and compatibility.

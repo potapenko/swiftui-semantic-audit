@@ -1,6 +1,6 @@
 # CLI reference
 
-`swiftui-audit` 0.5.0 exposes seven public subcommands. JSON written to stdout is the machine contract. Diagnostics belong on stderr, and callers must always inspect process status.
+Release 0.5.0 exposes seven analysis subcommands. The checked-out unreleased 0.6.0 candidate adds the `project` namespace without changing those commands. JSON written to stdout is the machine contract. Diagnostics belong on stderr, and callers must always inspect process status.
 
 Run the executable help for the checked-out build:
 
@@ -10,7 +10,7 @@ swiftui-audit --version
 swiftui-audit <command> --help
 ```
 
-`--version` prints the same `0.5.0` value embedded in reports and snapshots and does not inspect the current project.
+`--version` prints the tool version embedded in reports and snapshots and does not inspect the current project. The candidate reports `0.6.0`; the current published release reports `0.5.0`.
 
 When developing inside this repository, replace `swiftui-audit` with:
 
@@ -107,6 +107,19 @@ Default path: `.`. The command inspects without mutation:
 - Git version and worktree membership.
 
 Swift, Git, or SwiftSyntax incompatibility can make the overall result an error. Treat Xcode and index-readiness warnings as blockers before an agent workflow.
+
+### `project`
+
+```text
+swiftui-audit project setup [<path>] [--apply] [--start] [--create-baseline] [--format json]
+swiftui-audit project watch [<path>] [--once] [--format json]
+swiftui-audit project start [<path>] [--format json]
+swiftui-audit project status [<path>] [--wait indexed] [--timeout <seconds>] [--format json]
+swiftui-audit project stop [<path>] [--format json]
+swiftui-audit project baseline update [<path>] [--format json]
+```
+
+Setup previews by default and requires `--apply` for writes. The watcher reuses the normal deterministic pipeline and publishes a live snapshot only after explicit indexed coverage succeeds. Runtime state is external; `.swiftui-audit/project.json` and `.swiftui-audit/baseline` are the project-owned Git surface. See [Project watcher setup](../getting-started/project-watcher.md).
 
 ## Indexed analysis
 

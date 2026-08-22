@@ -10,6 +10,18 @@ public struct SemanticDiffEngine: Sendable {
         baseIdentity: String? = nil,
         currentIdentity: String? = nil
     ) -> SemanticDiffReport {
+        if base.graph == current.graph, base.report == current.report {
+            return SemanticDiffReport(
+                baseIdentity: baseIdentity ?? identity(for: base.manifest),
+                currentIdentity: currentIdentity ?? identity(for: current.manifest),
+                beforeMetrics: base.report.metrics,
+                afterMetrics: current.report.metrics,
+                changes: [],
+                newFindings: [],
+                resolvedFindings: [],
+                affectedSemanticValues: []
+            )
+        }
         let baseNodes = Dictionary(uniqueKeysWithValues: base.graph.nodes.map { ($0.id, $0) })
         let currentNodes = Dictionary(uniqueKeysWithValues: current.graph.nodes.map { ($0.id, $0) })
         let baseEdges = Dictionary(uniqueKeysWithValues: base.graph.edges.map { ($0.id, $0) })

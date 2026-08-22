@@ -2,7 +2,7 @@
 
 - Node type: leaf
 - Status: Active
-- Contract revision: `spec-12`
+- Contract revision: `spec-13`
 - Authority: [Specification coverage and evidence map](../evidence-map.md)
 - Read when: tracing an authorized addendum or selecting evidence for a product decision.
 - Do not read when: only source-section coverage or ownership is needed.
@@ -23,6 +23,7 @@
 | `COMPONENT-SURFACE-001` | Exact reusable/screen/container roles, component-model lifetime boundary, and one candidate rule | `PC-OPS-010`, `CFG-*`, `IR-GRAPH-010`, `RULE-REUSABLE-OWNER-001`, `ACC-COMP-*` | AuditCore config, AuditRules, ContextSlicer, fixtures, skills, CI |
 | `RELEASE-0.5.0-001` | Stable publication of the accepted component candidate and tagged skills | `PC-REL-002..004`, `CLI-GEN-005`, `ACC-BREW-*`, `ACC-DOD-013..014`, `WEB-CLAIM-001` | immutable 0.5.0 tag/archive, release docs/site facts, `potapenko/homebrew-tap`, local and hosted receipts |
 | `ARTIFACT-HYGIENE-001` | Temporary-by-default auxiliary agent evidence, explicit non-repository durable state, and bounded retention | `PC-OPS-011`, `ACC-SKILL-008`, `ACC-DOD-015` | shared skill policy, four direct links, CI validation, Codex ignore/runtime-evidence policy |
+| `PROJECT-WATCHER-001` | Safe project bootstrap, freshness-qualified continuous indexed state, managed lifecycle, and baseline promotion | `PC-OPS-012`, `PRJ-*`, `CLI-PRJ-*`, `ACC-PRJ-*`, `ACC-WATCH-*`, `ACC-DOD-016` | ProjectWorkspace, WatcherRuntime, CLI, four skills, dogfood baseline, tests, CI |
 
 ## Evidence precedence by decision
 
@@ -31,5 +32,6 @@
 | Finding correctness | `rules.md`, `semantic-ir.md` | exceptions and fact boundary | graph/report JSON, fixture tests, slice |
 | CLI behavior | `cli.md` | flags, status, path/resolution safety | command help, end-to-end invocation |
 | Snapshot/diff | `semantic-ir.md` | determinism/integrity/mixed-mode guard | five-file byte compare, reader/diff tests |
+| Watcher freshness | `project-runtime.md` | indexed-only agent evidence, runtime isolation, one writer | status receipt, explicit coverage, live snapshot validation, lifecycle tests |
 | Refactor acceptance | `product-contract.md`, skills | behavior, ownership, lifetime, transaction | build/tests + audit/diff/check |
 | Release readiness | `acceptance.md`, `release-baseline.md` | truthful candidate/released state and immutable distribution | full tests, dogfood, CI, tag/archive checksum, formula audit/install/test receipt |

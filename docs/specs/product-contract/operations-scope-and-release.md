@@ -33,6 +33,8 @@
 
 **PC-OPS-011 — Agent run artifact hygiene.** Stream separation is logical and does not require permanent per-command files. Auxiliary command output, status, timestamps, hashes, and receipts are temporary by default and stay outside source repositories, Codex configuration homes, and installed skill/package directories. Durable cross-handoff evidence requires an explicit non-repository state root, minimum necessary contents, and a retention owner or cleanup condition. Canonical snapshots may use an explicitly selected workflow path and retain their exact five-file contract.
 
+**PC-OPS-012 — Project watcher.** The unreleased 0.6.0 candidate adds an opt-in `project` command namespace for safe setup, foreground/background watching, freshness-qualified indexed live snapshots, status/wait, stop, and deliberate baseline promotion under [`project-runtime.md`](../project-runtime.md). Existing one-shot commands remain independently usable.
+
 ## Resolution and platform
 
 **PC-RES-001 — Syntax-only guarantee.** Support useful analysis without a build or index and label it `resolution: "syntax-only"`.
@@ -77,7 +79,7 @@
 
 **PC-NONGOAL-001.** Do not make SIL, a full Swift type checker, full interprocedural/alias/control-flow analysis, or generic support for every Swift framework part of the PoC foundation.
 
-**PC-NONGOAL-002.** Do not provide automatic source rewriting, embedded LLM API integration, an IDE plugin, GUI, Xcode extension, security analysis, or performance analysis.
+**PC-NONGOAL-002.** Do not provide automatic source rewriting, embedded LLM API integration, an IDE plugin, GUI, Xcode extension, security analysis, or performance analysis. `PROJECT-WATCHER-001` permits only the bounded local watcher and setup surface; it does not add an IDE extension or remote service.
 
 **PC-NONGOAL-003.** General analysis of concurrency, actors, dependency injection, navigation, persistence, resources, networking, and errors remains directional context. `ARCHITECTURE-001` permits only bounded call/effect topology needed by its named lifecycle, view-effect, Binding, geometry, and platform-command rules.
 

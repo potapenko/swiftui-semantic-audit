@@ -40,3 +40,5 @@
 **ACC-DOD-014.** `RELEASE-0.5.0-001` publishes one immutable tag/archive, a tested upstream formula, the same four validated skills, and truthful 0.5.0 public/website facts without adding bottles, automatic skill installation, or new analysis behavior.
 
 **ACC-DOD-015.** `ARTIFACT-HYGIENE-001` makes auxiliary agent evidence temporary by default, keeps required durable evidence outside repositories and installed packages with explicit retention, preserves canonical snapshot behavior, and prevents Codex configuration commits from collecting run output.
+
+**ACC-DOD-016.** `PROJECT-WATCHER-001` supplies safe project setup, project manifest schema 1, one-writer foreground/background lifecycle, freshness-qualified indexed live snapshots, deliberate baseline promotion, router integration, runtime-state isolation, and compatibility with the seven released analysis commands as an unreleased 0.6.0 candidate.

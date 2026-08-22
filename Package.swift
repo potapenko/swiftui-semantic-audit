@@ -16,6 +16,8 @@ let package = Package(
         .library(name: "SemanticDiff", targets: ["SemanticDiff"]),
         .library(name: "SymbolResolution", targets: ["SymbolResolution"]),
         .library(name: "AnalysisCache", targets: ["AnalysisCache"]),
+        .library(name: "ProjectWorkspace", targets: ["ProjectWorkspace"]),
+        .library(name: "WatcherRuntime", targets: ["WatcherRuntime"]),
         .executable(name: "swiftui-audit", targets: ["SwiftUIAuditCLI"]),
     ],
     dependencies: [
@@ -73,6 +75,21 @@ let package = Package(
             ]
         ),
         .target(
+            name: "ProjectWorkspace",
+            dependencies: ["AuditCore"]
+        ),
+        .target(
+            name: "WatcherRuntime",
+            dependencies: [
+                "AnalysisCache",
+                "AuditCore",
+                "ProjectWorkspace",
+                "SemanticDiff",
+                "SnapshotStore",
+                "SymbolResolution",
+            ]
+        ),
+        .target(
             name: "SymbolResolution",
             dependencies: [
                 "AuditCore",
@@ -91,10 +108,12 @@ let package = Package(
                 "AnalysisCache",
                 "AuditRules",
                 "ContextSlicer",
+                "ProjectWorkspace",
                 "SemanticDiff",
                 "SnapshotStore",
                 "SymbolResolution",
                 "SwiftSyntaxFrontend",
+                "WatcherRuntime",
                 .product(name: "ArgumentParser", package: "swift-argument-parser"),
             ]
         ),
@@ -138,6 +157,14 @@ let package = Package(
                 "SymbolResolution",
                 "SwiftSyntaxFrontend",
             ]
+        ),
+        .testTarget(
+            name: "ProjectWorkspaceTests",
+            dependencies: ["ProjectWorkspace"]
+        ),
+        .testTarget(
+            name: "WatcherRuntimeTests",
+            dependencies: ["AuditCore", "ProjectWorkspace", "SnapshotStore", "WatcherRuntime"]
         ),
     ]
 )

@@ -7,6 +7,8 @@ description: Review AI-generated or human SwiftUI changes through semantic diff 
 
 ## Review semantic change first
 
+When the project contains `.swiftui-audit/project.json`, first read and follow [project watcher freshness](../swiftui-semantic/references/project-watcher.md). Accept the tracked baseline and live snapshot only when the current status receipt proves fresh indexed state and matching configuration; otherwise require the explicit compatible snapshots below.
+
 1. Use an installed `swiftui-audit`, or use `swift run --disable-automatic-resolution swiftui-audit` in this repository.
 2. Require compatible indexed snapshots for both sides. Each snapshot must have been created from a fresh validated compiler Index Store while that exact source state was built. Do not use Git-revision operands for semantic review because they cannot preserve indexed resolution.
 3. Require matching configuration digests. For role-aware review, confirm both snapshots used the same authoritative `.swiftui-audit.json`, including schema-2 View/component roles when applicable; never infer roles from names or compare differently classified graphs.

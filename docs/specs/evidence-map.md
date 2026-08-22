@@ -2,13 +2,13 @@
 
 - Node type: hybrid
 - Status: Active
-- Contract revision: `spec-12`
+- Contract revision: `spec-13`
 - Read when: tracing original sections or authorized addenda to stable clauses and evidence ownership.
 - Do not read when: the governing contract is already selected and traceability is not in question.
 - Maximum size: 100 physical lines.
 
-Revision: `spec-12`
-Authority: ТЗ epoch `tz-v1` plus user-authorized addenda through `ARTIFACT-HYGIENE-001`, combined epoch `tz-v16`
+Revision: `spec-13`
+Authority: ТЗ epoch `tz-v1` plus user-authorized addenda through `PROJECT-WATCHER-001`, combined epoch `tz-v17`
 Purpose: route every source section to stable local clauses and evidence owners
 
 This map proves coverage; it does not create new requirements. Source and tests establish realization only after the normative contract is fixed.
@@ -22,7 +22,7 @@ This map proves coverage; it does not create new requirements. Source and tests 
 | 5 | SwiftSyntax/IndexStoreDB/SourceKit-LSP/CLI stack | `PC-ARCH-004`, `PC-RES-*` | Package pins, SymbolResolution, CLI |
 | 6 | Excluded PoC foundations | `PC-NONGOAL-001`, `PC-LLM-001` | package dependency boundary |
 | 7 | Swift package organization | `PC-ARCH-004` | `Package.swift`, Sources/Tests topology |
-| 8 | CLI and seven commands | `PC-OPS-*`, `CLI-GEN-001` | executable help |
+| 8 | CLI analysis commands and project namespace | `PC-OPS-*`, `CLI-GEN-001`, `CLI-PRJ-*` | executable help |
 | 9 | IR properties | `IR-GRAPH-001` | canonical models/encoders |
 | 10 | Node model | `IR-GRAPH-002`, `IR-GRAPH-004` | `NodeKind`, `SemanticNode` |
 | 11 | Edge model | `IR-GRAPH-003`, `IR-GRAPH-005` | `EdgeKind`, `SemanticEdge` |
@@ -73,6 +73,8 @@ This map proves coverage; it does not create new requirements. Source and tests 
 `COMPONENT-SURFACE-001` maps to `PC-OPS-010`, `CFG-003/004/009`, `IR-GRAPH-010`, `RULE-REUSABLE-OWNER-001`, `RULE-DOM-001`, `RULE-EXC-011`, and `ACC-COMP-001..007`; realization owners are AuditCore configuration, AuditRules, ContextSlicer, configured fixtures, skills, and CI. `RELEASE-0.5.0-001` maps to `PC-REL-002..004`, `CLI-GEN-005`, `ACC-BREW-001..004`, `ACC-DOD-013..014`, and `WEB-CLAIM-001`; realization owners are the immutable tag/archive, tap formula, release docs, four tagged skills, and publication receipt.
 
 `ARTIFACT-HYGIENE-001` maps to `PC-OPS-011`, `ACC-SKILL-008`, and `ACC-DOD-015`; realization owners are the shared skill reference, all four direct skill links, skill validation, and the Codex configuration ignore/runtime-evidence policy.
+
+`PROJECT-WATCHER-001` maps to `PC-OPS-012`, `PRJ-*`, `CLI-PRJ-*`, `ACC-PRJ-*`, `ACC-WATCH-*`, and `ACC-DOD-016`; realization owners are ProjectWorkspace, WatcherRuntime, the CLI project namespace, the four skills, the tracked dogfood manifest/baseline, tests, docs, and CI.
 
 ## Choose the supporting map
 

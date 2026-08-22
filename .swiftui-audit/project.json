@@ -1,0 +1,12 @@
+{
+  "baseline" : ".swiftui-audit/baseline",
+  "build" : {
+    "kind" : "swiftpm"
+  },
+  "schemaVersion" : 1,
+  "sourceRoot" : "Sources",
+  "watch" : {
+    "debounceMilliseconds" : 250,
+    "indexQuiescenceMilliseconds" : 1000
+  }
+}

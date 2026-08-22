@@ -2,7 +2,7 @@
 
 - Node type: leaf
 - Status: Active
-- Contract revision: `spec-6`
+- Contract revision: `spec-7`
 - Authority: [CLI contract](../cli.md)
 - Read when: selecting command syntax, flags, output, status, resolution, cache, failure, or timeout behavior.
 - Do not read when: the task does not invoke, document, or integrate the CLI.
@@ -11,7 +11,7 @@
 
 ## Global behavior
 
-**CLI-GEN-001 — Shape.** Provide one executable with seven public subcommands: `scan`, `audit`, `snapshot`, `slice`, `diff`, `check`, `doctor`.
+**CLI-GEN-001 — Shape.** Provide one executable with seven analysis subcommands: `scan`, `audit`, `snapshot`, `slice`, `diff`, `check`, `doctor`. `PROJECT-WATCHER-001` adds one public `project` namespace while preserving all seven command contracts.
 
 **CLI-GEN-002 — Machine stream.** Write requested JSON to stdout (or the explicit `scan --output` file). Keep diagnostics/errors on stderr. JSON uses sorted keys, unescaped slashes, and a final newline.
 

@@ -21,6 +21,8 @@ After the agent returns the installation receipt:
 
 2. Ask for an audit, refactor, or review in ordinary language. The router selects the matching specialist workflow.
 
+On the unreleased 0.6.0 candidate, ask the router to set up continuous semantic analysis first. It previews project writes, creates the project manifest/baseline, starts the watcher, and waits for fresh indexed state. See [Project watcher setup](project-watcher.md).
+
 The [installation guide](installation.md) covers verification, conflicts, manual
 setup, updates, removal, and why all four skill directories remain siblings.
 The [agent prompt library](agent-prompts.md#install-the-cli-and-agent-skills)
@@ -44,5 +46,6 @@ Continue with [Run a first audit](first-audit.md).
 - [Installation](installation.md)
 - [Agent prompt library](agent-prompts.md)
 - [First audit](first-audit.md)
+- [Project watcher setup](project-watcher.md)
 - [Why semantic audit](../concepts/why-semantic-audit.md)
 - [CLI reference](../reference/cli.md)

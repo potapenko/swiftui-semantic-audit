@@ -25,6 +25,8 @@
 
 **ACC-DOG-003.** Dogfood does not require zero legacy findings. CI policy is no new high-severity finding relative to the compatible baseline.
 
+**ACC-DOG-004.** The 0.6.0 candidate previews the repository's project setup without writes, runs one indexed watcher generation, validates the fresh status receipt and five-file live snapshot, and compares it with the tracked `.swiftui-audit/baseline`.
+
 ## Skills
 
 **ACC-SKILL-001.** Create exactly one user-facing router and three specialist workflows:
@@ -40,7 +42,7 @@
 
 **ACC-SKILL-004.** Every skill preserves JSON stdout discipline, indexed-resolution consistency, exact failure policy, provider independence, topology-over-wrapper reasoning, and the deterministic/LLM fact boundary.
 
-**ACC-SKILL-005.** `swiftui-semantic` routes investigation or ambiguity to audit, requested state/data-flow implementation to refactor, and pre-existing changes to review. Mixed tasks use the smallest valid sequence, read the selected specialist completely, preserve handoff state, and never replace specialist acceptance gates with a shortened combined workflow.
+**ACC-SKILL-005.** `swiftui-semantic` routes project setup/lifecycle to its bounded watcher reference, investigation or ambiguity to audit, requested state/data-flow implementation to refactor, and pre-existing changes to review. Mixed tasks use the smallest valid sequence, read the selected specialist completely, preserve handoff state, and never replace specialist acceptance gates with a shortened combined workflow.
 
 **ACC-SKILL-006.** Every router, specialist skill, and skill reference requires explicit indexed analysis for agent workflows. Skill Markdown contains no `syntax-only` guidance or examples, does not rely on automatic resolution fallback, validates `resolution: "indexed"`, and stops when a fresh project-covering Index Store or compatible indexed snapshot is unavailable. Change review uses indexed snapshots rather than Git-revision operands that cannot preserve indexed resolution.
 
@@ -71,6 +73,7 @@
 11. run doctor JSON;
 12. validate all skills, their shared artifact-hygiene link, and their YAML metadata without repository or global-environment mutation, and reject frontend-only resolution guidance anywhere under `skills/`;
 13. parse JSON/YAML and check placeholders/links.
+14. preview project setup, run one indexed watcher generation, validate fresh status/live snapshot, and compare the tracked project baseline.
 
 ## Homebrew release
 

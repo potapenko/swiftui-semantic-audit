@@ -1,6 +1,6 @@
 ---
 name: swiftui-semantic
-description: Route SwiftUI state and data-flow work to the appropriate semantic audit, refactor, or change-review workflow. Use when Codex receives one entry point for investigating ownership or component boundaries, fixing synchronization or Binding architecture, reviewing existing changes, or completing a mixed audit-to-refactor-to-review task with swiftui-audit.
+description: Set up continuous SwiftUI semantic project analysis or route state and data-flow work to audit, refactor, or change-review workflows. Use when Codex needs one entry point for project watcher setup, ownership investigation, synchronization or Binding fixes, change review, or a mixed swiftui-audit workflow.
 ---
 
 # SwiftUI Semantic Workflow
@@ -9,11 +9,12 @@ description: Route SwiftUI state and data-flow work to the appropriate semantic 
 
 Classify the requested outcome before reading broad Swift source:
 
+- Read and follow [project watcher setup](references/project-watcher.md) when the user asks to configure, bootstrap, start, stop, or inspect continuous semantic analysis for a project.
 - Read and follow [swiftui-semantic-audit](../swiftui-semantic-audit/SKILL.md) for investigation, diagnosis, architecture explanation, ownership or component-boundary analysis, or an ambiguous state/data-flow problem.
 - Read and follow [swiftui-dataflow-refactor](../swiftui-dataflow-refactor/SKILL.md) when the user asks to change SwiftUI state ownership, remove manual synchronization, replace callback plumbing, or correct Binding, Observation, derived-state, or lifetime architecture.
 - Read and follow [swiftui-change-review](../swiftui-change-review/SKILL.md) when changes, commits, snapshots, or a diff already exist and the user asks whether they are safe or architecturally correct.
 
-Read only the selected specialist `SKILL.md` first, then load the references that specialist requires. Do not merge shortened versions of all three workflows or skip a specialist's gates.
+For setup, read the watcher reference and execute only that bounded workflow. Otherwise read only the selected specialist `SKILL.md` first, then load the references that specialist requires. Do not merge shortened versions of all three workflows or skip a specialist's gates.
 
 Before the selected workflow emits command output or snapshots, read and apply [run artifact hygiene](references/artifact-hygiene.md). Stream separation does not require permanent per-command files.
 

@@ -7,6 +7,8 @@ description: Refactor SwiftUI state ownership and data flow with snapshot, audit
 
 ## Fix one semantic-value cluster
 
+When the project contains `.swiftui-audit/project.json`, first read and follow [project watcher freshness](../swiftui-semantic/references/project-watcher.md). A fresh watcher baseline/live pair may satisfy snapshot generation only when its status receipt proves the exact indexed workspace and configuration identities. Never auto-promote the post-edit state.
+
 1. Use an installed `swiftui-audit`, or use `swift run --disable-automatic-resolution swiftui-audit` in this repository.
 2. Build the project to produce a fresh compiler Index Store, validate that it covers the requested source, and record its exact path. Pass `--index-store <path>` explicitly to every live-source command; never rely on automatic discovery. Require `resolution: "indexed"` throughout baseline, current snapshot, audit, slice, diff, and check.
 3. When the cluster depends on product roles, View roles, features, or composition roots, validate the exact `.swiftui-audit.json`, pass `--config <path>` to every live-source command, and preserve its digest across both snapshots. Schema 2 may distinguish screens, containers, reusable components, and component models. Never infer missing roles from names.

@@ -50,6 +50,8 @@ swift build -c release --disable-automatic-resolution
 | `AnalysisCache` | Integrity-checked persistent frontend and indexed fact reuse |
 | `SemanticDiff` | Snapshot/revision comparison, check policy, and doctor support |
 | `SymbolResolution` | Optional macOS IndexStoreDB enrichment |
+| `ProjectWorkspace` | Project manifest, safe setup planning/apply, discovery, and runtime locations |
+| `WatcherRuntime` | Workspace freshness, typed builds, indexed live snapshots, service lifecycle, and baseline promotion |
 | `SwiftUIAuditCLI` | ArgumentParser commands and process/output policy |
 
 The executable product is named `swiftui-audit`.
@@ -77,6 +79,7 @@ swift test --disable-automatic-resolution
 ```
 
 Tests cover extraction, incremental frontend/indexed cache hits and invalidation, normalization, rules, configuration, snapshot integrity and determinism, slicing, diff, check, doctor, syntax identity, and indexed enrichment.
+Project-watcher tests additionally cover preview/apply idempotence, path safety, workspace digests, single-writer locking, indexed one-shot publication, baseline promotion, and managed-service lifecycle.
 
 ### Standalone dogfood
 
@@ -122,9 +125,10 @@ The GitHub Actions workflow:
 5. regenerates two snapshots and checks byte identity;
 6. compares semantic files with the committed baseline;
 7. runs diff, check, slice, and doctor;
-8. validates the exact four-skill inventory, frontmatter, YAML, and links;
-9. validates Markdown links throughout the public and normative documentation;
-10. runs `git diff --check`.
+8. previews setup, builds one fresh indexed watcher generation, and compares its live snapshot with the tracked project baseline;
+9. validates the exact four-skill inventory, frontmatter, YAML, and links;
+10. validates Markdown links throughout the public and normative documentation;
+11. runs `git diff --check`.
 
 CI does not require zero legacy findings. Its policy prevents new findings at or above the selected threshold against a compatible baseline.
 

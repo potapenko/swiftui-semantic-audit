@@ -4,6 +4,8 @@ These prompts use the released SwiftUI Semantic Audit 0.5.0 router and its
 three specialist skills. They do not add another skill, a migration command,
 or automatic source rewriting.
 
+The project-watcher prompt below targets the unreleased 0.6.0 candidate in the checked-out repository; it is not part of the published 0.5.0 installation.
+
 In Codex, invoke the router as `$swiftui-semantic`. In Claude Code, replace that
 spelling with `/swiftui-semantic`. For the final long-running prompt, keep the
 `/goal` prefix in Codex; in Claude Code, remove the prefix and use the rest as a
@@ -40,6 +42,12 @@ https://github.com/potapenko/swiftui-semantic-audit/blob/master/docs/getting-sta
 The GitHub installation guide is the canonical detailed procedure. It pins
 artifacts to release `0.5.0` and keeps Homebrew's CLI ownership separate from
 the agent-owned installation of all four skills.
+
+## Set up continuous project analysis
+
+```text
+Use $swiftui-semantic to set up continuous semantic analysis for this project. Preview all project writes first, apply the project manifest and initial indexed baseline, start the watcher, and return only after project status proves a fresh indexed generation. Do not infer product roles from names, store runtime artifacts in the repository, stage files, or commit.
+```
 
 ## Add a bounded project instruction
 

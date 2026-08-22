@@ -15,6 +15,8 @@ itself or ask a model to invent compiler facts.
 
 > **Current release:** 0.5.0 · macOS 13 or later · MIT
 
+The checked-out `master` branch contains an unreleased 0.6.0 project-watcher candidate. Released installation instructions remain pinned to 0.5.0 until a separate publication.
+
 [Website](https://swiftui-audit.dev/) · [Quick start](#quick-start) ·
 [First audit](docs/getting-started/first-audit.md) ·
 [Documentation](docs/README.md) ·
@@ -44,6 +46,14 @@ The skill selects the audit, refactor, or review workflow internally. The
 [prompt library](docs/getting-started/agent-prompts.md) contains longer recipes
 for focused changes, existing-change review, project guardrails, and staged
 migrations.
+
+On the unreleased 0.6.0 candidate, the same router can configure continuous semantic state:
+
+```text
+Use $swiftui-semantic to set up continuous semantic analysis for this project.
+```
+
+The setup previews every write, creates a Git-trackable project manifest and indexed baseline, starts a per-project watcher, and keeps live runtime state outside the repository. See [Project watcher setup](docs/getting-started/project-watcher.md).
 
 ## What it makes inspectable
 
@@ -133,6 +143,7 @@ You invoke one skill; it selects the smallest internal workflow:
 
 | Requested result | Workflow |
 | --- | --- |
+| Configure continuous semantic project state | [Project watcher](docs/getting-started/project-watcher.md) |
 | Explain ownership, synchronization, effects, or component boundaries | [Semantic audit](docs/workflows/audit.md) |
 | Change one established state/data-flow cluster | [Data-flow refactor](docs/workflows/refactor.md) |
 | Evaluate pre-existing SwiftUI changes | [Change review](docs/workflows/change-review.md) |
@@ -142,8 +153,7 @@ You invoke one skill; it selects the smallest internal workflow:
 - **30 bounded rules** cover state ownership, derivation, synchronization,
   Bindings, component boundaries, effects, lifecycle, interaction, layout, and
   selected platform bridges.
-- **Seven public commands** provide `scan`, `audit`, `snapshot`, `slice`,
-  `diff`, `check`, and `doctor`.
+- **Seven released analysis commands** provide `scan`, `audit`, `snapshot`, `slice`, `diff`, `check`, and `doctor`; the unreleased candidate adds one `project` namespace for setup and continuous state.
 - **Persistent evidence** records five-file snapshots, bounded finding or symbol
   slices, semantic diffs, and no-new-finding policy checks.
 - **Explicit project roles** let config schema 2 identify screens, containers,
@@ -170,6 +180,7 @@ complete surface.
 ## Documentation
 
 - **Start:** [installation](docs/getting-started/installation.md),
+  [project watcher](docs/getting-started/project-watcher.md),
   [first audit](docs/getting-started/first-audit.md), and
   [agent prompts](docs/getting-started/agent-prompts.md).
 - **Understand:** [why semantic audit](docs/concepts/why-semantic-audit.md),
