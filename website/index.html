@@ -4,26 +4,26 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>SwiftUI Semantic Audit — A semantic twin for SwiftUI coding agents</title>
-  <meta name="description" content="Build a deterministic semantic twin of SwiftUI ownership and data flow for coding-agent audits, refactors, and reviews.">
+  <meta name="description" content="Give coding agents deterministic SwiftUI ownership and data-flow evidence for explaining, refactoring, and reviewing code.">
   <meta name="robots" content="index,follow">
   <meta name="theme-color" content="#08121F">
   <link rel="canonical" href="{{SITE_URL}}">
   <link rel="icon" href="assets/site-icon.svg" type="image/svg+xml">
   <meta property="og:type" content="website">
   <meta property="og:site_name" content="SwiftUI Semantic Audit">
-  <meta property="og:title" content="Build a semantic twin before the agent edits.">
-  <meta property="og:description" content="Build a deterministic semantic twin of SwiftUI ownership and data flow for coding-agent audits, refactors, and reviews.">
+  <meta property="og:title" content="Give coding agents a map of SwiftUI state before they edit.">
+  <meta property="og:description" content="A deterministic semantic twin for explaining, refactoring, and reviewing SwiftUI ownership and data flow.">
   <meta property="og:url" content="{{SITE_URL}}">
   <meta property="og:image" content="{{SITE_URL}}assets/social-preview.png">
   <meta property="og:image:type" content="image/png">
   <meta property="og:image:width" content="1200">
   <meta property="og:image:height" content="630">
-  <meta property="og:image:alt" content="SwiftUI source and its deterministic semantic twin shown as an editorial data-flow graph.">
+  <meta property="og:image:alt" content="SwiftUI Semantic Audit shown as a warm editorial page and a dark semantic ownership graph.">
   <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:title" content="A semantic twin for SwiftUI coding agents">
-  <meta name="twitter:description" content="Build a deterministic semantic twin of SwiftUI ownership and data flow for coding-agent audits, refactors, and reviews.">
+  <meta name="twitter:title" content="Give coding agents a map of SwiftUI state before they edit">
+  <meta name="twitter:description" content="A deterministic semantic twin for explaining, refactoring, and reviewing SwiftUI ownership and data flow.">
   <meta name="twitter:image" content="{{SITE_URL}}assets/social-preview.png">
-  <meta name="twitter:image:alt" content="SwiftUI source and its deterministic semantic twin shown as an editorial data-flow graph.">
+  <meta name="twitter:image:alt" content="SwiftUI Semantic Audit shown as a warm editorial page and a dark semantic ownership graph.">
   <link rel="stylesheet" href="styles.css">
   <script src="script.js" defer></script>
   <script type="application/ld+json">
@@ -31,7 +31,7 @@
       "@context": "https://schema.org",
       "@type": "SoftwareApplication",
       "name": "SwiftUI Semantic Audit",
-      "description": "Build a deterministic semantic twin of SwiftUI ownership and data flow for coding-agent audits, refactors, and reviews.",
+      "description": "A deterministic semantic twin for explaining, refactoring, and reviewing SwiftUI ownership and data flow.",
       "applicationCategory": "DeveloperApplication",
       "operatingSystem": "macOS 13 or later",
       "softwareVersion": "0.5.0",
@@ -59,9 +59,9 @@
       </button>
 
       <nav id="site-navigation" class="site-nav" aria-label="Main navigation">
-        <a href="#twin">Semantic twin</a>
-        <a href="#loop">Agent loop</a>
-        <a href="#use-cases">Use cases</a>
+        <a href="#workflow">Use cases</a>
+        <a href="#rules">Rules</a>
+        <a href="#examples">Examples</a>
         <a href="https://github.com/potapenko/swiftui-semantic-audit/tree/0.5.0/docs">Docs</a>
         <a class="twitter-link" href="https://x.com/potapenko" aria-label="Follow @potapenko on Twitter">
           <img src="assets/icons/brand-twitter.svg" alt="" aria-hidden="true">
@@ -79,17 +79,17 @@
     <section id="top" class="hero section-paper" aria-labelledby="hero-title">
       <div class="shell hero-grid">
         <div class="hero-copy">
-          <p class="eyebrow">Deterministic SwiftUI context for coding agents</p>
-          <h1 id="hero-title">Build a semantic twin before the agent edits.</h1>
-          <p class="hero-lede">Release 0.5.0 builds an on-demand semantic twin from Swift source and fresh compiler-index facts. It keeps ownership and data-flow relationships, then gives the agent a bounded slice for reasoning and a semantic diff for review.</p>
+          <p class="eyebrow">SwiftUI architecture evidence for coding agents</p>
+          <h1 id="hero-title">Give coding agents a map of SwiftUI state before they edit.</h1>
+          <p class="hero-lede">SwiftUI Semantic Audit builds a deterministic semantic twin of ownership and data flow. Ask Codex or Claude to explain unfamiliar state, refactor a broken boundary, or review a change with evidence tied back to source.</p>
 
           <div class="hero-actions">
             <a class="button button-primary" href="#install">
               <img src="assets/icons/terminal-2.svg" alt="" aria-hidden="true">
-              Add release 0.5.0
+              Add the skill
             </a>
-            <a class="button button-secondary" href="#xray">
-              See the semantic twin
+            <a class="button button-secondary" href="#workflow">
+              See the use cases
               <img src="assets/icons/arrow-right.svg" alt="" aria-hidden="true">
             </a>
           </div>
@@ -97,11 +97,11 @@
           <ul class="fact-strip" aria-label="Product facts">
             <li>
               <img src="assets/icons/shield-check.svg" alt="" aria-hidden="true">
-              <span><strong>Released</strong>Version 0.5.0</span>
+              <span><strong>Open source</strong>MIT License</span>
             </li>
             <li>
-              <img src="assets/icons/hierarchy-2.svg" alt="" aria-hidden="true">
-              <span><strong>Deterministic facts</strong>30 bounded rules</span>
+              <img src="assets/icons/book-2.svg" alt="" aria-hidden="true">
+              <span><strong>One skill to invoke</strong>Codex or Claude Code</span>
             </li>
             <li>
               <img src="assets/icons/cube.svg" alt="" aria-hidden="true">
@@ -110,109 +110,20 @@
           </ul>
         </div>
 
-        <aside class="hero-brief" aria-label="Semantic twin boundary">
+        <aside class="hero-brief" aria-label="Product boundary">
           <div>
-            <h2>Semantic twin</h2>
-            <p>A deterministic graph of supported ownership and data-flow facts.</p>
-          </div>
-          <div>
-            <h2>Agent consumer</h2>
+            <h2>Main interface</h2>
             <p><code>$swiftui-semantic</code> in Codex or <code>/swiftui-semantic</code> in Claude Code.</p>
           </div>
           <div>
-            <h2>Fact boundary</h2>
-            <p><code>swiftui-audit</code> extracts facts. The agent judges intent and remediation.</p>
+            <h2>What to ask</h2>
+            <p>Explain a data flow, change state ownership, or review an agent-authored diff.</p>
+          </div>
+          <div>
+            <h2>Semantic twin</h2>
+            <p><code>swiftui-audit</code> maps supported ownership, reads, writes, Bindings, effects, and boundaries. The agent decides what they mean.</p>
           </div>
         </aside>
-      </div>
-    </section>
-
-    <section id="problem" class="problem section-paper" aria-labelledby="problem-title">
-      <div class="shell">
-        <div class="section-heading split-heading">
-          <div>
-            <p class="eyebrow">The context gap</p>
-            <h2 id="problem-title">Source code is exact. It is not organized for agent reasoning.</h2>
-          </div>
-          <p>SwiftUI architecture is spread across wrappers, initializers, closures, modifiers, and files. An agent needs the relationships between them, not a larger pile of source text.</p>
-        </div>
-
-        <div class="problem-grid">
-          <article>
-            <span class="problem-index">01</span>
-            <h3>Ownership is distributed</h3>
-            <p>One value can appear as State, Binding, an observed member, a callback parameter, and a derived representation.</p>
-          </article>
-          <article>
-            <span class="problem-index">02</span>
-            <h3>Effects hide behind value syntax</h3>
-            <p>Lifecycle hooks, custom setters, and reciprocal copies can form an imperative system underneath <code>body</code>.</p>
-          </article>
-          <article>
-            <span class="problem-index">03</span>
-            <h3>Text diffs miss semantic movement</h3>
-            <p>A line diff can show an edit without showing whether ownership, write authority, or a transaction boundary changed.</p>
-          </article>
-        </div>
-      </div>
-    </section>
-
-    <section id="twin" class="twin-anatomy section-paper" aria-labelledby="twin-title">
-      <div class="shell twin-layout">
-        <div class="twin-heading">
-          <p class="eyebrow">Semantic twin</p>
-          <h2 id="twin-title">Keep the data flow. Drop the syntax noise.</h2>
-          <p>The twin is a compact, versioned representation built by the CLI. It is smaller than source, but every supported fact stays tied to evidence and confidence.</p>
-          <a class="text-link" href="https://github.com/potapenko/swiftui-semantic-audit/blob/0.5.0/docs/concepts/deterministic-facts-and-agent-judgment.md">
-            Read the fact boundary
-            <img src="assets/icons/external-link.svg" alt="" aria-hidden="true">
-          </a>
-        </div>
-
-        <div class="twin-ledger" role="region" aria-label="Semantic twin anatomy">
-          <div class="twin-ledger-row twin-ledger-head">
-            <span>Preserved for the agent</span>
-            <span>Left in source</span>
-          </div>
-          <div class="twin-ledger-row">
-            <span><strong>Ownership and state</strong>Owners, representations, write authority, lifetime evidence</span>
-            <span>Wrapper spelling and unrelated declaration detail</span>
-          </div>
-          <div class="twin-ledger-row">
-            <span><strong>Data movement</strong>Reads, writes, Bindings, copies, derivations, dependencies</span>
-            <span>Formatting, boilerplate, and syntax not needed for the selected path</span>
-          </div>
-          <div class="twin-ledger-row">
-            <span><strong>Boundaries and effects</strong>Components, lifecycle, calls, triggers, evidence</span>
-            <span>Runtime behavior the static evidence cannot prove</span>
-          </div>
-          <div class="twin-ledger-row">
-            <span><strong>Review state</strong>Snapshots, findings, compatible semantic changes</span>
-            <span>Agent opinion, invented facts, and automatic source edits</span>
-          </div>
-        </div>
-      </div>
-
-      <div class="shell twin-pipeline" aria-label="Semantic twin pipeline">
-        <div>
-          <img src="assets/icons/book-2.svg" alt="" aria-hidden="true">
-          <span>Swift source</span>
-        </div>
-        <img class="pipeline-arrow" src="assets/icons/arrow-right.svg" alt="" aria-hidden="true">
-        <div>
-          <img src="assets/icons/terminal-2.svg" alt="" aria-hidden="true">
-          <span>SwiftSyntax + Index Store</span>
-        </div>
-        <img class="pipeline-arrow" src="assets/icons/arrow-right.svg" alt="" aria-hidden="true">
-        <div class="pipeline-focus">
-          <img src="assets/icons/hierarchy-2.svg" alt="" aria-hidden="true">
-          <span>Semantic twin</span>
-        </div>
-        <img class="pipeline-arrow" src="assets/icons/arrow-right.svg" alt="" aria-hidden="true">
-        <div>
-          <img src="assets/icons/user.svg" alt="" aria-hidden="true">
-          <span>Agent workflow</span>
-        </div>
       </div>
     </section>
 
@@ -220,8 +131,8 @@
       <div class="shell">
         <div class="section-heading section-heading-inverse">
           <p class="eyebrow">Inside the semantic twin</p>
-          <h2 id="xray-title">A smaller model of the program, not a summary of the code.</h2>
-          <p>This editorial X-ray shows fixture-backed ownership and copy paths from the semantic graph. It is not a product GUI, an LLM summary, or model-written pseudocode.</p>
+          <h2 id="xray-title">The agent sees ownership and data flow before it edits.</h2>
+          <p>This X-ray uses accepted fixture evidence from the deterministic graph. It is not a product GUI or an LLM summary.</p>
         </div>
 
         <div class="xray-grid">
@@ -311,13 +222,158 @@
       </div>
     </section>
 
+    <section id="examples" class="examples section-paper" aria-labelledby="examples-title">
+      <div class="shell">
+        <div class="section-heading">
+          <p class="eyebrow">Use cases in code</p>
+          <h2 id="examples-title">Three SwiftUI problems agents can inspect with evidence</h2>
+          <p>The finding identifies topology. The safer shape depends on the value's owner and lifetime. Behavior tests still decide whether the change is safe.</p>
+        </div>
+
+        <div class="example-grid">
+          <article class="example-card">
+            <header class="example-card-header">
+              <span class="step-number">1</span>
+              <div>
+                <h3>Keep commands visible</h3>
+                <p>A custom setter can hide a method call behind value-shaped syntax.</p>
+              </div>
+            </header>
+
+            <div class="mini-example">
+              <div class="mini-example-heading">
+                <span>Accepted fixture excerpt</span>
+                <code>command-shaped-binding</code>
+              </div>
+              <pre tabindex="0"><code><span class="syntax-attribute">@Bindable</span> <span class="syntax-keyword">var</span> model: <span class="syntax-type">CommandPagerModel</span>
+
+selection: <span class="syntax-type">Binding</span>(
+    get: { model.page },
+    set: { model.selectPage($0) }
+)</code></pre>
+            </div>
+
+            <div class="example-shift">
+              <img src="assets/icons/arrow-right.svg" alt="" aria-hidden="true">
+              <span>When the method only performs an identity write, expose that write directly.</span>
+            </div>
+
+            <div class="mini-example mini-example-safer">
+              <div class="mini-example-heading">
+                <span>Accepted clean fixture</span>
+                <span class="plain-status">no finding</span>
+              </div>
+              <pre tabindex="0"><code><span class="syntax-attribute">@Binding</span> <span class="syntax-keyword">var</span> value: <span class="syntax-type">Int</span>
+
+selection: <span class="syntax-type">Binding</span>(
+    get: { value },
+    set: { next <span class="syntax-keyword">in</span> value = next }
+)</code></pre>
+            </div>
+            <p class="example-caveat">A method with validation or side effects needs an explicit action boundary, not deletion.</p>
+          </article>
+
+          <article class="example-card">
+            <header class="example-card-header">
+              <span class="step-number">2</span>
+              <div>
+                <h3>Narrow the component boundary</h3>
+                <p>Passing one model through extracted views keeps every layer coupled to the owner.</p>
+              </div>
+            </header>
+
+            <div class="mini-example">
+              <div class="mini-example-heading">
+                <span>Representative accepted topology</span>
+                <code>depth 2</code>
+              </div>
+              <pre tabindex="0"><code><span class="syntax-keyword">struct</span> Middle: <span class="syntax-type">View</span> {
+    <span class="syntax-attribute">@Bindable</span> <span class="syntax-keyword">var</span> model: <span class="syntax-type">FeatureModel</span>
+    <span class="syntax-keyword">var</span> body: <span class="syntax-keyword">some</span> <span class="syntax-type">View</span> {
+        Leaf(model: model)
+    }
+}
+
+<span class="syntax-keyword">struct</span> Leaf: <span class="syntax-type">View</span> {
+    <span class="syntax-attribute">@Bindable</span> <span class="syntax-keyword">var</span> model: <span class="syntax-type">FeatureModel</span>
+}</code></pre>
+            </div>
+
+            <div class="example-shift">
+              <img src="assets/icons/arrow-right.svg" alt="" aria-hidden="true">
+              <span>Give a reusable leaf the value and action it actually consumes.</span>
+            </div>
+
+            <div class="mini-example mini-example-safer">
+              <div class="mini-example-heading">
+                <span>Accepted clean boundary</span>
+                <span class="plain-status">focused input</span>
+              </div>
+              <pre tabindex="0"><code><span class="syntax-keyword">struct</span> GoodFocusedLeaf: <span class="syntax-type">View</span> {
+    <span class="syntax-keyword">let</span> title: <span class="syntax-type">String</span>
+    <span class="syntax-keyword">let</span> reload: () -&gt; <span class="syntax-type">Void</span>
+
+    <span class="syntax-keyword">var</span> body: <span class="syntax-keyword">some</span> <span class="syntax-type">View</span> {
+        <span class="syntax-call">Button</span>(<span class="syntax-string">"Reload"</span>, action: reload)
+    }
+}</code></pre>
+            </div>
+            <p class="example-caveat">A screen or composition root may legitimately receive a broad model. The agent must establish that role.</p>
+          </article>
+
+          <article class="example-card">
+            <header class="example-card-header">
+              <span class="step-number">3</span>
+              <div>
+                <h3>Keep derived state derived</h3>
+                <p>A stored flag creates write paths when its value is already determined by inputs.</p>
+              </div>
+            </header>
+
+            <div class="mini-example">
+              <div class="mini-example-heading">
+                <span>Accepted fixture excerpt</span>
+                <code>stored-derived-state</code>
+              </div>
+              <pre tabindex="0"><code><span class="syntax-attribute">@State</span> <span class="syntax-keyword">private var</span> username = <span class="syntax-string">""</span>
+<span class="syntax-attribute">@State</span> <span class="syntax-keyword">private var</span> password = <span class="syntax-string">""</span>
+<span class="syntax-attribute">@State</span> <span class="syntax-keyword">private var</span> canSubmit = <span class="syntax-keyword">false</span>
+
+.onChange(of: username) { _, _ <span class="syntax-keyword">in</span>
+    canSubmit = !username.isEmpty &amp;&amp; !password.isEmpty
+}</code></pre>
+            </div>
+
+            <div class="example-shift">
+              <img src="assets/icons/arrow-right.svg" alt="" aria-hidden="true">
+              <span>When the value has no independent lifetime, compute it from its sources.</span>
+            </div>
+
+            <div class="mini-example mini-example-safer">
+              <div class="mini-example-heading">
+                <span>Safer shape, pending behavior tests</span>
+                <span class="plain-status">computed</span>
+              </div>
+              <pre tabindex="0"><code><span class="syntax-attribute">@State</span> <span class="syntax-keyword">private var</span> username = <span class="syntax-string">""</span>
+<span class="syntax-attribute">@State</span> <span class="syntax-keyword">private var</span> password = <span class="syntax-string">""</span>
+
+<span class="syntax-keyword">private var</span> canSubmit: <span class="syntax-type">Bool</span> {
+    !username.isEmpty &amp;&amp; !password.isEmpty
+}</code></pre>
+            </div>
+            <p class="example-caveat">Debouncing, server validation, or a separate lifetime may justify stored state.</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
     <section class="protected-case section-paper" aria-labelledby="protected-title">
       <div class="shell protected-panel">
         <div class="protected-intro">
           <img src="assets/icons/shield-check.svg" alt="" aria-hidden="true">
           <p class="eyebrow">Protected case</p>
           <h2 id="protected-title">A real local draft is not a fix target.</h2>
-          <p>A draft is valid when the UI has real commit and discard behavior. The distinction comes from action and copy topology, not button names.</p>
+          <p>A local draft is valid when the UI has real commit and discard behavior. The distinction comes from action and copy topology, not button names.</p>
         </div>
 
         <div class="code-panel protected-code">
@@ -333,7 +389,8 @@
 
 <span class="syntax-call">TextField</span>(<span class="syntax-string">"Name"</span>, text: $draft)
 <span class="syntax-call">Button</span>(<span class="syntax-string">"Apply"</span>) { applyEdits() }
-<span class="syntax-call">Button</span>(<span class="syntax-string">"Discard"</span>) { abandonEdits() }</code></pre>
+<span class="syntax-call">Button</span>(<span class="syntax-string">"Discard"</span>) { abandonEdits() }
+.onAppear { draft = name }</code></pre>
         </div>
 
         <ul class="protected-evidence">
@@ -343,7 +400,7 @@
           </li>
           <li>
             <img src="assets/icons/pencil.svg" alt="" aria-hidden="true">
-            <span><strong>Explicit commit</strong>Apply writes to the external owner.</span>
+            <span><strong>Explicit commit</strong>Apply writes the draft to the external owner.</span>
           </li>
           <li>
             <img src="assets/icons/arrows-exchange.svg" alt="" aria-hidden="true">
@@ -357,71 +414,48 @@
       </div>
     </section>
 
-    <section id="loop" class="agent-loop section-paper" aria-labelledby="loop-title">
+    <section id="workflow" class="workflow section-paper" aria-labelledby="workflow-title">
       <div class="shell">
         <div class="section-heading split-heading">
           <div>
-            <p class="eyebrow">Release 0.5.0 agent loop</p>
-            <h2 id="loop-title">Build the twin, gate the evidence, then edit.</h2>
+            <p class="eyebrow">Use cases</p>
+            <h2 id="workflow-title">Ask for the SwiftUI work you already need.</h2>
           </div>
-          <p>The released workflow is exact-state and on demand. Each agent run validates the compiler evidence it consumes; it does not rely on a background watcher receipt.</p>
+          <p>Invoke <code>$swiftui-semantic</code> in Codex or <code>/swiftui-semantic</code> in Claude Code, then describe the outcome. The skill selects the workflow internally.</p>
         </div>
 
-        <ol class="agent-loop-rail">
+        <ol class="workflow-list">
           <li>
+            <div class="workflow-icon"><img src="assets/icons/user.svg" alt="" aria-hidden="true"></div>
             <span class="step-number">1</span>
-            <img src="assets/icons/terminal-2.svg" alt="" aria-hidden="true">
-            <h3>Build the exact state</h3>
-            <p>Produce a project-covering raw Index Store for the source under review.</p>
-            <img class="loop-arrow" src="assets/icons/arrow-right.svg" alt="" aria-hidden="true">
+            <h3>Understand unfamiliar state flow</h3>
+            <p>Ask who owns a value, why it is synchronized, or where a model crosses component boundaries.</p>
+            <code>Explain who owns this state and why it is synchronized.</code>
           </li>
           <li>
+            <div class="workflow-icon"><img src="assets/icons/pencil.svg" alt="" aria-hidden="true"></div>
             <span class="step-number">2</span>
-            <img src="assets/icons/hierarchy-2.svg" alt="" aria-hidden="true">
-            <h3>Compile the twin</h3>
-            <p>Extract syntax and compiler facts into one canonical semantic graph.</p>
-            <img class="loop-arrow" src="assets/icons/arrow-right.svg" alt="" aria-hidden="true">
+            <h3>Fix a data-flow problem</h3>
+            <p>Ask to remove duplicated state, callback plumbing, or a suspicious Binding without changing behavior.</p>
+            <code>Remove this duplicated state without changing behavior.</code>
           </li>
           <li>
+            <div class="workflow-icon"><img src="assets/icons/shield-check.svg" alt="" aria-hidden="true"></div>
             <span class="step-number">3</span>
-            <img src="assets/icons/shield-check.svg" alt="" aria-hidden="true">
-            <h3>Gate the result</h3>
-            <p>Require indexed resolution and the expected configuration identity.</p>
-            <img class="loop-arrow" src="assets/icons/arrow-right.svg" alt="" aria-hidden="true">
-          </li>
-          <li>
-            <span class="step-number">4</span>
-            <img src="assets/icons/link.svg" alt="" aria-hidden="true">
-            <h3>Slice one concern</h3>
-            <p>Send the agent the ownership and data-flow path needed for the task.</p>
-            <img class="loop-arrow" src="assets/icons/arrow-right.svg" alt="" aria-hidden="true">
-          </li>
-          <li>
-            <span class="step-number">5</span>
-            <img src="assets/icons/user.svg" alt="" aria-hidden="true">
-            <h3>Judge and edit</h3>
-            <p>The agent establishes intent, then makes the smallest supported change.</p>
-            <img class="loop-arrow" src="assets/icons/arrow-right.svg" alt="" aria-hidden="true">
-          </li>
-          <li>
-            <span class="step-number">6</span>
-            <img src="assets/icons/scale.svg" alt="" aria-hidden="true">
-            <h3>Compare and test</h3>
-            <p>Review the semantic delta alongside builds, behavior tests, and source.</p>
+            <h3>Review an agent-authored change</h3>
+            <p>Ask whether an existing diff changed ownership, write paths, or dependencies in ways that may affect transaction semantics.</p>
+            <code>Review these SwiftUI changes for ownership regressions.</code>
           </li>
         </ol>
-
-        <div class="loop-gate">
-          <img src="assets/icons/lock.svg" alt="" aria-hidden="true">
-          <p><strong>Fail closed.</strong> Missing coverage, invalid JSON, syntax-only fallback, mixed resolution, or a configuration mismatch is a blocker—not an empty or clean result.</p>
-        </div>
       </div>
+    </section>
 
-      <div class="shell diff-grid loop-diff">
+    <section class="diff-ledger" aria-labelledby="diff-title">
+      <div class="shell diff-grid">
         <div class="diff-heading">
           <p class="eyebrow">Semantic diff</p>
-          <h2>Compare the twin before and after.</h2>
-          <p>Compatible five-file snapshots record changes to representations, relationships, metrics, and findings. This ledger summarizes the X-ray refactor.</p>
+          <h2 id="diff-title">See what changed in the architecture.</h2>
+          <p>A compatible snapshot diff records changes to representations, relationships, metrics, and findings. This ledger summarizes the fixture refactor shown above.</p>
         </div>
 
         <div class="table-wrap" tabindex="0" role="region" aria-label="Semantic change ledger">
@@ -431,7 +465,7 @@
                 <th scope="col">Architecture fact</th>
                 <th scope="col">Baseline</th>
                 <th scope="col">Current</th>
-                <th scope="col">Evidence</th>
+                <th scope="col">Review evidence</th>
               </tr>
             </thead>
             <tbody>
@@ -455,7 +489,7 @@
               </tr>
               <tr>
                 <th scope="row">Field write</th>
-                <td>Through local State</td>
+                <td>Through local draft</td>
                 <td>Direct Binding</td>
                 <td><span class="ledger-status ledger-stable">Explicit</span></td>
               </tr>
@@ -476,49 +510,85 @@
       </div>
     </section>
 
-    <section id="use-cases" class="use-cases section-paper" aria-labelledby="use-cases-title">
-      <div class="shell">
-        <div class="section-heading split-heading">
-          <div>
-            <p class="eyebrow">Agent consumers</p>
-            <h2 id="use-cases-title">One twin, three SwiftUI tasks.</h2>
-          </div>
-          <p>Invoke <code>$swiftui-semantic</code> in Codex or <code>/swiftui-semantic</code> in Claude Code. The router selects the workflow; the deterministic twin remains the shared evidence.</p>
+    <section id="rules" class="rules section-paper" aria-labelledby="rules-title">
+      <div class="shell rules-layout">
+        <div class="rules-heading">
+          <p class="eyebrow">Semantic surface</p>
+          <h2 id="rules-title">What the twin can inspect</h2>
+          <p>Thirty bounded rules cover ownership, writes, Bindings, component boundaries, interaction, layout, and environment. A finding is evidence for review, not a command to edit.</p>
+          <a class="text-link" href="https://github.com/potapenko/swiftui-semantic-audit/blob/0.5.0/docs/reference/rules.md">
+            Read the rule reference
+            <img src="assets/icons/external-link.svg" alt="" aria-hidden="true">
+          </a>
         </div>
 
-        <ol class="workflow-list">
-          <li>
-            <div class="workflow-icon"><img src="assets/icons/user.svg" alt="" aria-hidden="true"></div>
-            <span class="step-number">1</span>
-            <h3>Understand unfamiliar state flow</h3>
-            <p>Trace owners, writes, synchronization, effects, and component boundaries before reading broad source.</p>
-            <code>Explain who owns this state and why it is synchronized.</code>
-          </li>
-          <li>
-            <div class="workflow-icon"><img src="assets/icons/pencil.svg" alt="" aria-hidden="true"></div>
-            <span class="step-number">2</span>
-            <h3>Refactor one data-flow cluster</h3>
-            <p>Remove duplicated state or callback plumbing while preserving lifetime, transactions, and behavior.</p>
-            <code>Remove this duplicated state without changing behavior.</code>
-          </li>
-          <li>
-            <div class="workflow-icon"><img src="assets/icons/shield-check.svg" alt="" aria-hidden="true"></div>
-            <span class="step-number">3</span>
-            <h3>Review an agent-authored change</h3>
-            <p>Compare compatible twins to see whether ownership, writes, dependencies, or transaction semantics moved.</p>
-            <code>Review these SwiftUI changes for ownership regressions.</code>
-          </li>
-        </ol>
-
-        <div class="use-case-links">
-          <a class="text-link" href="https://github.com/potapenko/swiftui-semantic-audit/blob/0.5.0/docs/concepts/pattern-catalog.md">
-            Browse the pattern catalog
-            <img src="assets/icons/external-link.svg" alt="" aria-hidden="true">
-          </a>
-          <a class="text-link" href="https://github.com/potapenko/swiftui-semantic-audit/blob/0.5.0/docs/reference/rules.md">
-            See all 30 rules
-            <img src="assets/icons/external-link.svg" alt="" aria-hidden="true">
-          </a>
+        <div class="rule-groups">
+          <article>
+            <img src="assets/icons/user.svg" alt="" aria-hidden="true">
+            <h3>Ownership</h3>
+            <ul>
+              <li><code>mirrored-state</code></li>
+              <li><code>observable-state-mirror</code></li>
+              <li><code>stored-derived-state</code></li>
+              <li><code>model-aware-descendant</code></li>
+              <li><code>multi-owner-component</code></li>
+              <li><code>cross-feature-owner-dependency</code></li>
+            </ul>
+          </article>
+          <article>
+            <img src="assets/icons/pencil.svg" alt="" aria-hidden="true">
+            <h3>Writes and effects</h3>
+            <ul>
+              <li><code>value-setter-pair</code></li>
+              <li><code>command-shaped-binding</code></li>
+              <li><code>manual-owner-synchronization</code></li>
+              <li><code>hidden-command-in-lifecycle</code></li>
+              <li><code>view-owned-external-effect</code></li>
+            </ul>
+          </article>
+          <article>
+            <img src="assets/icons/link.svg" alt="" aria-hidden="true">
+            <h3>Bindings and sync</h3>
+            <ul>
+              <li><code>manual-two-way-sync</code></li>
+              <li><code>callback-binding-tunnel</code></li>
+              <li><code>binding-factory</code></li>
+              <li><code>multi-source-binding</code></li>
+            </ul>
+          </article>
+          <article>
+            <img src="assets/icons/hierarchy-2.svg" alt="" aria-hidden="true">
+            <h3>Components</h3>
+            <ul>
+              <li><code>observable-model-tunnel</code></li>
+              <li><code>broad-observable-input</code></li>
+              <li><code>reusable-component-owner-dependency</code></li>
+              <li><code>service-or-repository-in-view</code></li>
+              <li><code>preview-requires-app-composition</code></li>
+            </ul>
+          </article>
+          <article>
+            <img src="assets/icons/arrows-exchange.svg" alt="" aria-hidden="true">
+            <h3>Interaction and layout</h3>
+            <ul>
+              <li><code>imperative-focus-lifecycle</code></li>
+              <li><code>selection-corrective-loop</code></li>
+              <li><code>geometry-driven-product-layout</code></li>
+              <li><code>geometry-escapes-layout-boundary</code></li>
+              <li><code>geometry-triggered-model-effect</code></li>
+              <li><code>manual-positioning-as-layout</code></li>
+              <li><code>gesture-button-emulation</code></li>
+            </ul>
+          </article>
+          <article>
+            <img src="assets/icons/leaf.svg" alt="" aria-hidden="true">
+            <h3>Platform and environment</h3>
+            <ul>
+              <li><code>environment-command-router</code></li>
+              <li><code>imperative-platform-view-update</code></li>
+              <li><code>direct-global-platform-command</code></li>
+            </ul>
+          </article>
         </div>
       </div>
     </section>
@@ -528,33 +598,33 @@
         <div class="section-heading split-heading">
           <div>
             <p class="eyebrow">Trust and limits</p>
-            <h2 id="trust-title">Know what the twin proves—and what it does not.</h2>
+            <h2 id="trust-title">Know what is fact—and what is judgment.</h2>
           </div>
-          <p>The CLI compiles deterministic facts. Skills route bounded evidence to Codex or Claude; the agent supplies contextual judgment.</p>
+          <p>The skill routes the work. The CLI extracts deterministic facts; Codex or Claude makes contextual decisions.</p>
         </div>
 
         <div class="trust-grid">
           <article>
             <img src="assets/icons/shield-check.svg" alt="" aria-hidden="true">
-            <div><h3>Released and inspectable</h3><p>Source, immutable 0.5.0 tag, archive, and MIT license are public.</p></div>
+            <div><h3>Released and inspectable</h3><p>Source, immutable tag, archive, and MIT license are public.</p></div>
           </article>
           <article>
             <img src="assets/icons/lock.svg" alt="" aria-hidden="true">
-            <div><h3>No automatic rewriting</h3><p>The CLI reports evidence. It never edits project source.</p></div>
+            <div><h3>No automatic source rewriting</h3><p>The CLI reports evidence. It never edits project source.</p></div>
           </article>
           <article>
             <img src="assets/icons/scale.svg" alt="" aria-hidden="true">
-            <div><h3>LLM is not the extractor</h3><p>Each extraction's source, symbol, read/write, and location facts are deterministic; agent judgment stays separate.</p></div>
+            <div><h3>Deterministic, not prescriptive</h3><p>Extracted records are deterministic evidence; source remains authoritative and architectural judgment stays separate.</p></div>
           </article>
           <article>
             <img src="assets/icons/cube.svg" alt="" aria-hidden="true">
-            <div><h3>No embedded model API</h3><p>The CLI is provider independent; the agent host controls its own data handling.</p></div>
+            <div><h3>No embedded model API</h3><p>The CLI stays provider independent; the agent host controls its own data handling.</p></div>
           </article>
         </div>
 
         <div class="limit-note">
           <img src="assets/icons/info-circle.svg" alt="" aria-hidden="true">
-          <p>The bounded twin is not a full type checker, runtime simulator, control-flow engine, security audit, or performance profiler. A clean report or semantic diff does not prove behavior.</p>
+          <p>The bounded analysis is not a full type checker, control-flow engine, security audit, or performance profiler. A clean report or semantic diff does not prove runtime behavior.</p>
         </div>
       </div>
     </section>
@@ -563,10 +633,10 @@
       <div class="shell">
         <div class="section-heading split-heading">
           <div>
-            <p class="eyebrow">Stable installation</p>
-            <h2 id="install-title">Install release 0.5.0 with one prompt</h2>
+            <p class="eyebrow">Installation</p>
+            <h2 id="install-title">Install with one prompt</h2>
           </div>
-          <p>Paste one setup request into Codex or Claude Code. The immutable guide installs Homebrew if needed, then the released CLI and all four tagged skills.</p>
+          <p>Paste one short setup request into Codex or Claude Code. The agent can install Homebrew if needed, then the CLI and all four skills.</p>
         </div>
 
         <div class="install-grid">
@@ -602,6 +672,7 @@ https://github.com/potapenko/swiftui-semantic-audit/blob/8c156128f56f01a295e510f
             <pre id="install-cli-command" tabindex="0"><code>brew install potapenko/tap/swiftui-semantic-audit</code></pre>
           </aside>
         </div>
+
       </div>
     </section>
 
@@ -609,7 +680,7 @@ https://github.com/potapenko/swiftui-semantic-audit/blob/8c156128f56f01a295e510f
       <div class="shell faq-grid">
         <div class="faq-heading">
           <p class="eyebrow">FAQ</p>
-          <h2 id="faq-title">Using the semantic twin safely</h2>
+          <h2 id="faq-title">Using the skill safely</h2>
           <a class="text-link" href="https://github.com/potapenko/swiftui-semantic-audit/tree/0.5.0/docs">
             Read the documentation
             <img src="assets/icons/external-link.svg" alt="" aria-hidden="true">
@@ -618,20 +689,16 @@ https://github.com/potapenko/swiftui-semantic-audit/blob/8c156128f56f01a295e510f
 
         <div class="faq-list">
           <details>
-            <summary>Is the semantic twin an LLM summary?</summary>
-            <p>No. It is a deterministic graph compiled from supported source and compiler-index facts. The agent receives bounded slices and may infer intent, but it cannot alter the extracted records in place; a source edit produces a new extraction.</p>
-          </details>
-          <details>
-            <summary>Is this a linter?</summary>
-            <p>No. The CLI maps supported ownership and data-flow topology. Findings are evidence for review, not style scores or wrapper prescriptions.</p>
-          </details>
-          <details>
-            <summary>Does release 0.5.0 maintain the twin continuously?</summary>
-            <p>No. Release 0.5.0 builds an exact-state twin on demand. The project watcher on <code>master</code> is an unreleased 0.6.0 candidate.</p>
+            <summary>What is the semantic twin?</summary>
+            <p>It is a deterministic, simplified representation of supported SwiftUI ownership and data-flow facts. The CLI extracts it from source and compiler evidence; the agent uses it for reasoning without rewriting the records.</p>
           </details>
           <details>
             <summary>Which skill should I use?</summary>
-            <p>Use <code>swiftui-semantic</code>. Describe the SwiftUI outcome; the skill selects audit, refactor, or review and carries the twin evidence forward.</p>
+            <p>Use <code>swiftui-semantic</code>. Describe the SwiftUI outcome you need in Codex or Claude Code; the skill selects the internal workflow and carries its evidence forward.</p>
+          </details>
+          <details>
+            <summary>Is this a linter?</summary>
+            <p>No. The CLI compiles supported source facts into a semantic graph and evidence-backed findings for agent reasoning. It does not score style or prescribe a wrapper.</p>
           </details>
           <details>
             <summary>Does it change project source?</summary>
@@ -639,7 +706,11 @@ https://github.com/potapenko/swiftui-semantic-audit/blob/8c156128f56f01a295e510f
           </details>
           <details>
             <summary>Why does the agent workflow require a fresh Index Store?</summary>
-            <p>Compiler-backed symbol identity and cross-file relations provide the evidence level required by the bundled workflows. They stop rather than present weaker evidence as an indexed result.</p>
+            <p>Agent workflows use a fresh compiler Index Store from the current build and the matching analysis configuration. They stop rather than present stale, mismatched, or lower-resolution evidence as a semantic result.</p>
+          </details>
+          <details>
+            <summary>Does the semantic twin update continuously?</summary>
+            <p>The current public release builds an exact-state twin on demand. The project watcher on <code>master</code> is an unreleased 0.6.0 candidate.</p>
           </details>
           <details>
             <summary>Are local drafts reported as duplicate state?</summary>
@@ -662,12 +733,12 @@ https://github.com/potapenko/swiftui-semantic-audit/blob/8c156128f56f01a295e510f
     <div class="shell footer-grid">
       <div>
         <strong>SwiftUI Semantic Audit</strong>
-        <p>A deterministic semantic twin for SwiftUI coding agents.</p>
+        <p>Deterministic SwiftUI architecture evidence for coding agents.</p>
       </div>
       <nav aria-label="Product links">
         <span>Product</span>
-        <a href="#twin">Semantic twin</a>
-        <a href="#loop">Agent loop</a>
+        <a href="#examples">Examples</a>
+        <a href="#rules">Rules</a>
         <a href="#install">Install</a>
       </nav>
       <nav aria-label="Resource links">

@@ -2,15 +2,15 @@
 
 - Node type: root
 - Status: Active
-- Contract revision: `spec-21`
-- Authority: epoch `tz-v18` and pinned digest declared below
+- Contract revision: `spec-22`
+- Authority: epoch `tz-v19` and pinned digest declared below
 - Read when: starting any product, behavior, compatibility, QA, release, or specification task in this repository.
 - Do not read when: the task is proven behavior-neutral and outside the specification system.
 - Maximum size: 100 physical lines.
 
 Status: active  
-Contract epoch: `tz-v18`
-Local specification revision: `spec-21`
+Contract epoch: `tz-v19`
+Local specification revision: `spec-22`
 Pinned authority digest: `sha256:68f8a43d924659024b7d29fabb9ad302817c271838a7919b24bd942626927cac`  
 Router addendum: user-authorized `ROUTER-001` on 2026-08-18
 Indexed-skills addendum: user-authorized `INDEXED-SKILLS-001` on 2026-08-18
@@ -28,7 +28,7 @@ Component-surface addendum: user-authorized `COMPONENT-SURFACE-001` on 2026-08-2
 Installation UX addendum: user-authorized `INSTALL-UX-001` on 2026-08-22; advances the combined contract to `tz-v15`
 Artifact-hygiene addendum: user-authorized [`ARTIFACT-HYGIENE-001`](../coordination/artifact-hygiene-001.md) on 2026-08-22; advances the combined contract to `tz-v16`
 Project-watcher addendum: user-authorized [`PROJECT-WATCHER-001`](../coordination/project-watcher-001.md) on 2026-08-22; advances the combined contract to `tz-v17`
-Semantic-twin story addendum: user-authorized [`SEMANTIC-TWIN-STORY-001`](../coordination/semantic-twin-story-001.md) on 2026-08-22; advances the combined contract to `tz-v18`
+Semantic-twin story addenda: user-authorized [`SEMANTIC-TWIN-STORY-001`](../coordination/semantic-twin-story-001.md) and capability-preservation correction [`SEMANTIC-TWIN-CAPABILITIES-001`](../coordination/semantic-twin-capabilities-001.md) on 2026-08-22; advance the combined contract to `tz-v19`
 Release baseline: `0.5.0 released`; immutable historical baseline: `0.4.0`; website baseline: canonical domain released at its prior story; project-watcher 0.6.0 and semantic-twin story candidates unreleased
 
 This directory is the self-contained active specification package for SwiftUI Semantic Audit. It faithfully restates the user-approved Russian ТЗ without expanding product semantics. Clause IDs are stable references for implementation, review, and QA.
@@ -37,7 +37,7 @@ This directory is the self-contained active specification package for SwiftUI Se
 
 When documents appear to disagree, apply this order:
 
-1. the user-approved ТЗ at epoch `tz-v1`, its pinned digest, the explicit addenda through `SEMANTIC-TWIN-STORY-001` that advance the combined contract to `tz-v18`, and the behavior-preserving `REALISTIC-FIXTURES-001` acceptance addendum;
+1. the user-approved ТЗ at epoch `tz-v1`, its pinned digest, the explicit addenda through `SEMANTIC-TWIN-CAPABILITIES-001` that advance the combined contract to `tz-v19`, and the behavior-preserving `REALISTIC-FIXTURES-001` acceptance addendum;
 2. [`product-contract.md`](product-contract.md) for product boundaries and invariants;
 3. domain contracts (`semantic-ir.md`, `rules.md`, `cli.md`);
 4. [`acceptance.md`](acceptance.md) for proof obligations;
@@ -50,7 +50,7 @@ A local spec edit cannot authorize a semantic change. Any semantic delta require
 
 | Contract | Domain | Authority | Status/stability | Read when | Baseline |
 | --- | --- | --- | --- | --- | --- |
-| [`product-contract.md`](product-contract.md) | Goal, semantic-twin identity, scope, invariants, LLM boundary, operations, safety, non-goals, workflow routing | Normative restatement of ТЗ plus authorized addenda through `SEMANTIC-TWIN-STORY-001` | active / released CLI plus watcher and story candidates | Any product decision or behavior claim | 0.5.0 + unreleased 0.6.0 candidate |
+| [`product-contract.md`](product-contract.md) | Goal, semantic-twin identity, scope, invariants, LLM boundary, operations, safety, non-goals, workflow routing | Normative restatement of ТЗ plus authorized addenda through `SEMANTIC-TWIN-CAPABILITIES-001` | active / released CLI plus watcher and story candidates | Any product decision or behavior claim | 0.5.0 + unreleased 0.6.0 candidate |
 | [`analysis-config.md`](analysis-config.md) | Explicit owner, View-role, feature, root, and environment classification | `ARCHITECTURE-001` plus `COMPONENT-SURFACE-001` | active / config schema 2, schema 1 accepted | Role-aware project analysis | 0.5.0 |
 | [`semantic-ir.md`](semantic-ir.md) | Graph, evidence, confidence, semantic values, snapshots, diff | Normative restatement of ТЗ plus `BOUNDARY-001` and `ARCHITECTURE-001` | active / released schema v2 | Reading/writing graph or snapshot contracts | 0.5.0 |
 | [`project-runtime.md`](project-runtime.md) | Project bootstrap, watcher freshness, lifecycle, runtime state, and baseline promotion | `PROJECT-WATCHER-001` | active / unreleased schema 1 | Continuous project analysis | 0.6.0 candidate |
@@ -59,7 +59,7 @@ A local spec edit cannot authorize a semantic change. Any semantic delta require
 | [`acceptance.md`](acceptance.md) | Fixtures, determinism, skills, CI, Definition of Done | Normative acceptance map for ТЗ §§44–51 plus authorized addenda through `PROJECT-WATCHER-001` | active | Implementing or verifying | 92-test released baseline; 102-test watcher candidate accepted locally; hosted candidate CI pending |
 | [`evidence-map.md`](evidence-map.md) | Clause ownership and all-54-section plus authorized-addendum coverage | Governance map | active | Tracing authority to evidence | P1–P13 map |
 | [`release-baseline.md`](release-baseline.md) | Current realization, dependency pins, residuals | Descriptive evidence; never higher than normative contracts | active / released | Release/readiness/status work | 0.5.0 tool release plus canonical website |
-| [`website.md`](website.md) | English landing-page experience, claims, semantic-twin story, build, deployment, and QA | Website addenda through `SEMANTIC-TWIN-STORY-001` | active / released prior story; semantic-twin story evolving | Designing, implementing, publishing, or reviewing the website | canonical domain at pre-change baseline |
+| [`website.md`](website.md) | English landing-page experience, claims, semantic-twin story, build, deployment, and QA | Website addenda through `SEMANTIC-TWIN-CAPABILITIES-001` | active / released prior story; corrected semantic-twin story evolving | Designing, implementing, publishing, or reviewing the website | canonical domain at pre-change baseline |
 
 ## Domain ownership
 
@@ -92,7 +92,7 @@ The pinned base plus authorized addenda authorizes a Swift package and `swiftui-
 
 `INSTALL-UX-001` replaces the prior public setup presentation with one short agent prompt linked to the GitHub installation guide. The guide pins artifacts to release 0.5.0. The agent installs Homebrew first when absent, the CLI through Homebrew, and then all four skills as a separately owned phase. Homebrew remains CLI-only and must never modify agent-host directories.
 
-`SEMANTIC-TWIN-STORY-001` makes the deterministic semantic twin the primary public product object, moves skills to the consumer/router role, and separates the released 0.5.0 exact-state story from the unreleased 0.6.0 watcher story without changing analysis or release semantics.
+`SEMANTIC-TWIN-STORY-001` makes the deterministic semantic twin the primary public product object, moves skills to the consumer/router role, and separates the released 0.5.0 exact-state story from the unreleased 0.6.0 watcher story without changing analysis or release semantics. `SEMANTIC-TWIN-CAPABILITIES-001` restores the accepted landing capability surface and marketing hierarchy: semantic twin unifies the existing examples, tasks, diff, rule groups, and trust story; it does not replace them. Versions remain supporting release truth rather than the primary promise.
 
 Advance the epoch before accepting a material semantic change. Editorial clarification may advance only the local specification revision and must preserve every protected behavior and exception.
 

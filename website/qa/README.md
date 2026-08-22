@@ -3,11 +3,13 @@
 This directory contains design evidence only. The build allowlist excludes it
 from `website/public/`.
 
-Current status: `selected-visual-target.png` remains the visual source for
-`SEMANTIC-TWIN-STORY-001`, and the social preview below belongs to that current
-candidate. The rendered and comparison PNGs are historical `INSTALL-UX-001`
-evidence; they have not been refreshed for the semantic-twin layout because
-direct Playwright use still requires explicit user authorization.
+Current status: `selected-visual-target.png` remains the visual source for the
+capability-preserving `SEMANTIC-TWIN-STORY-001` candidate. The user authorized
+a local Playwright pass on 2026-08-22. Current DPR2 renders were kept in the
+task-scoped temporary QA directory rather than committed here; their dimensions,
+hashes, responsive results, interaction results, and fidelity ledger are in the
+root `design-qa.md`. The rendered and comparison PNGs below remain historical
+`INSTALL-UX-001` evidence and are not presented as the current render.
 
 ## Selected visual target
 

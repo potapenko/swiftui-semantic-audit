@@ -102,14 +102,12 @@ swiftui-audit project watch . --format json
 swiftui-audit project watch . --once --format json
 ```
 
-In the current 0.6.0 candidate, `watch` is foreground. `start` registers one
-per-project launchd service and returns without waiting for an indexed
-generation; readiness comes only from the later `status --wait indexed`
-receipt. `stop` affects only that project. Schema 1 does not enable login
-autostart. The recorded service state describes the last analysis transition;
-do not treat it as an independent process-liveness probe.
+In the current 0.6.0 candidate, `watch` is foreground. `start`, `status`, and
+`stop` manage one bounded per-project background worker. Agent readiness comes
+only from a fresh `status --wait indexed` receipt. `stop` affects only that
+project, and schema 1 does not enable login autostart.
 
-Runtime snapshots, status, locks, service metadata, and logs are under
+Runtime snapshots, status, locks, service metadata, and bounded logs are under
 `~/Library/Application Support/swiftui-audit/projects/<project-id>/`; reusable
 analysis facts remain under the user cache directory.
 

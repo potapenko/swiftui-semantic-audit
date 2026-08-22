@@ -2,7 +2,7 @@
 
 - Node type: leaf
 - Status: Active
-- Contract revision: `spec-14`
+- Contract revision: `spec-15`
 - Authority: [Specification coverage and evidence map](../evidence-map.md)
 - Read when: tracing an authorized addendum or selecting evidence for a product decision.
 - Do not read when: only source-section coverage or ownership is needed.
@@ -25,6 +25,7 @@
 | `ARTIFACT-HYGIENE-001` | Temporary-by-default auxiliary agent evidence, explicit non-repository durable state, and bounded retention | `PC-OPS-011`, `ACC-SKILL-008`, `ACC-DOD-015` | shared skill policy, four direct links, CI validation, Codex ignore/runtime-evidence policy |
 | `PROJECT-WATCHER-001` | Safe project bootstrap, freshness-qualified continuous indexed state, managed lifecycle, and baseline promotion | `PC-OPS-012`, `PRJ-*`, `CLI-PRJ-*`, `ACC-PRJ-*`, `ACC-WATCH-*`, `ACC-DOD-016` | ProjectWorkspace, WatcherRuntime, CLI, four skills, dogfood baseline, tests, CI |
 | `SEMANTIC-TWIN-STORY-001` | Semantic-twin-first landing, README, docs, and skill-consumer narrative with a strict 0.5/0.6 release split | `PC-GOAL-004`, `WEB-DELTA-008`, `WEB-TWIN-001`, `WEB-LOOP-001`, `WEB-FRESH-001` | landing, README, public docs, router skill, metadata artwork, local website QA |
+| `SEMANTIC-TWIN-CAPABILITIES-001` | Restore accepted landing breadth and keep versions subordinate to the product promise | `WEB-DELTA-009`, `WEB-STORY-001/003`, `WEB-TWIN-001`, `WEB-LOOP-001`, `WEB-VERSION-001` | landing capability blocks, release-claim tests, local browser QA |
 
 ## Evidence precedence by decision
 

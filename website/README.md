@@ -96,13 +96,13 @@ the apex.
 
 ## Content evidence
 
-The landing page presents the deterministic graph, evidence, compatible
-snapshots, and bounded slices as a semantic twin. The large duplicate-owner
-example and protected transaction come from accepted fixtures. The exact-state
-agent loop describes released `0.5.0`; the FAQ labels the project watcher on
-`master` as an unreleased `0.6.0` candidate. The CLI does not rewrite source,
-call a model provider, replace behavior tests, or turn candidate findings into
-automatic decisions.
+The landing page presents the deterministic graph, evidence, and compatible
+snapshots as a semantic twin without replacing the accepted marketing surface.
+It retains the annotated X-Ray, three detailed code cases,
+protected transaction, audit/refactor/review tasks, semantic diff, and all six
+groups of the thirty-rule surface. Version numbers remain supporting release
+truth; the hero and primary CTA sell the product outcome. The FAQ labels the
+watcher on `master` as an unreleased `0.6.0` candidate.
 
 The stable setup prompt links to an immutable revision of the `0.5.0`
 installation guide. That guide keeps Homebrew's CLI installation separate from

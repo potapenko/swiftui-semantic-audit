@@ -2,10 +2,9 @@
 
 - Node type: leaf
 - Status: Active
-- Contract revision: `spec-6`
+- Contract revision: `spec-7`
 - Authority: [Website contract](../website.md)
 - Maximum size: 100 physical lines.
-
 ## Audience and outcome
 
 **WEB-GOAL-001.** Address SwiftUI developers and design engineers who use
@@ -13,37 +12,39 @@ coding agents and can read SwiftUI, run Homebrew, and follow an agent prompt.
 The page sells a deterministic semantic twin for inspectable agent reasoning,
 not a linter score, automatic correctness, or the number of rules.
 
-**WEB-GOAL-002.** A visitor should understand why source text is insufficient
-agent context, what the twin preserves, how the exact-state agent loop consumes
-it, see one concrete proof, understand limits, and reach one stable setup prompt
-without reading the full README.
+**WEB-GOAL-002.** A visitor should understand the product outcome, see the accepted
+breadth of SwiftUI problems and agent tasks, understand the deterministic fact
+boundary, and reach one stable setup prompt without reading the full README.
 
 ## Narrative and examples
 
-**WEB-STORY-001.** Preserve this order: header; paper hero; context problem;
-semantic-twin anatomy; full-bleed semantic X-ray and protected case; exact-state
-agent loop with semantic-diff proof; audit/refactor/review use cases; trust and
-limits; one-prompt stable installation; FAQ.
+**WEB-STORY-001.** Preserve the accepted marketing order: outcome-led hero;
+semantic X-ray; three detailed code use cases; protected case; audit/refactor/review
+tasks; semantic diff; six rule groups; trust/limits; installation; FAQ.
 
 **WEB-STORY-002.** The X-ray uses the accepted duplicate-owner topology:
 external Binding, local State, lifecycle copy, reciprocal synchronization,
 `mirrored-state`, `manual-two-way-sync`, and the direct-Binding alternative.
 
-**WEB-STORY-003.** Use cases are task-shaped audit, refactor, and review prompts.
-Keep the detailed pattern catalogs in linked docs instead of a landing-page wall.
+**WEB-STORY-003.** Preserve both use-case layers: fixture-backed command-shaped
+Binding, component-boundary, and derived-state examples, plus task-shaped audit,
+refactor, and review prompts. The full catalog supplements these examples.
 
 **WEB-STORY-004.** The protected case shows a real local transactional draft
 with explicit Apply and Discard. It must state that no finding is expected and
 must not expose a fake fix control.
 
-**WEB-TWIN-001.** Define the semantic twin as the deterministic simplified representation in `PC-GOAL-004`. Explain what it preserves and discards. Never describe it as an LLM summary, pseudocode, source replacement, runtime model, or complete behavioral account.
+**WEB-TWIN-001.** Define the semantic twin from `PC-GOAL-004` in the hero,
+fact boundary, and evidence examples. Keep the explanation outcome-led; do not
+insert separate context-gap, anatomy-ledger, or pipeline sections before the
+visitor sees concrete product value.
 
 **WEB-SKILL-001.** Present `swiftui-semantic` in Codex or Claude Code as the recommended consumer and router for the twin. Show concrete requests for that one skill; do not make the CLI, specialist workflows, or skill itself the semantic product object.
 
-**WEB-LOOP-001.** For public 0.5.0, show an exact-state loop: fresh project
-build and explicit Index Store, deterministic twin, indexed/configuration gate,
-bounded slice, agent judgment and edit, then build/tests plus compatible
-snapshot diff. Do not imply a watcher receipt exists in the released workflow.
+**WEB-LOOP-001.** Explain the exact-state workflow through the existing task
+and semantic-diff proof. Keep build/index/configuration requirements in concise
+supporting copy; do not turn internal pipeline steps into the main sales story
+or imply a released watcher receipt.
 
 **WEB-INSTALL-001.** Lead with one short prompt that tells the local agent to
 read the GitHub guide, install Homebrew first if absent, install the CLI through
@@ -52,6 +53,10 @@ phases separately owned: Homebrew installs only the CLI and must never modify an
 agent host directory. A compact CLI-only command and the full guide remain secondary.
 
 **WEB-FRESH-001.** Before public 0.6.0, describe the twin as built on demand for an exact source state and keep watcher details out of the released capability path. After a terminal 0.6.0 publication receipt, the landing may lead with a freshness-qualified live twin only alongside its indexed receipt and stale-state rejection. `Always-fresh` is never unconditional.
+
+**WEB-VERSION-001.** Version numbers belong in metadata, immutable links,
+installation detail, and the public-versus-candidate clarification. They are
+not the hero promise, primary CTA, section theme, or repeated value claim.
 
 ## Visual and interaction contract
 

@@ -64,7 +64,6 @@ If status is stale, failed, incompatible, timed out, or absent, do not use the w
 ## Operate safely
 
 - `project watch` is foreground; `project start` and `project stop` manage only the selected project service.
-- In the current 0.6.0 candidate, treat the saved service state as the last analysis transition, not as an independent liveness probe.
 - Treat build failures and the last stale snapshot as diagnostics, not current semantic evidence.
-- Runtime state and logs remain outside repositories. Only the explicit project manifest and canonical baseline are durable repository artifacts.
+- Runtime state and bounded logs remain outside repositories. Only the explicit project manifest and canonical baseline are durable repository artifacts.
 - Do not edit, stage, commit, or remove project files unless the user authorized that surrounding task.

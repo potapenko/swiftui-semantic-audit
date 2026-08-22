@@ -2,13 +2,13 @@
 
 - Node type: hybrid
 - Status: Active
-- Contract revision: `spec-14`
+- Contract revision: `spec-15`
 - Read when: tracing original sections or authorized addenda to stable clauses and evidence ownership.
 - Do not read when: the governing contract is already selected and traceability is not in question.
 - Maximum size: 100 physical lines.
 
-Revision: `spec-14`
-Authority: ТЗ epoch `tz-v1` plus user-authorized addenda through `SEMANTIC-TWIN-STORY-001`, combined epoch `tz-v18`
+Revision: `spec-15`
+Authority: ТЗ epoch `tz-v1` plus user-authorized addenda through `SEMANTIC-TWIN-CAPABILITIES-001`, combined epoch `tz-v19`
 Purpose: route every source section to stable local clauses and evidence owners
 
 This map proves coverage; it does not create new requirements. Source and tests establish realization only after the normative contract is fixed.
@@ -77,6 +77,8 @@ This map proves coverage; it does not create new requirements. Source and tests 
 `PROJECT-WATCHER-001` maps to `PC-OPS-012`, `PRJ-*`, `CLI-PRJ-*`, `ACC-PRJ-*`, `ACC-WATCH-*`, and `ACC-DOD-016`; realization owners are ProjectWorkspace, WatcherRuntime, the CLI project namespace, the four skills, the tracked dogfood manifest/baseline, tests, docs, and CI.
 
 `SEMANTIC-TWIN-STORY-001` maps to `PC-GOAL-004`, `WEB-DELTA-008`, `WEB-GOAL-*`, `WEB-STORY-*`, `WEB-TWIN-001`, `WEB-SKILL-001`, `WEB-LOOP-001`, and `WEB-FRESH-001`; realization owners are the landing, README, public semantic-state docs, router-skill framing, metadata artwork, and local website QA.
+
+`SEMANTIC-TWIN-CAPABILITIES-001` maps to `WEB-DELTA-009`, `WEB-STORY-001/003`, `WEB-TWIN-001`, `WEB-LOOP-001`, and `WEB-VERSION-001`; realization owners are the restored landing capability blocks, version hierarchy, release-claim tests, and browser QA.
 
 ## Choose the supporting map
 

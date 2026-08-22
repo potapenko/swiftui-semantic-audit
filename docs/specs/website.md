@@ -2,8 +2,8 @@
 
 - Node type: hybrid
 - Status: Active
-- Contract revision: `spec-8`
-- Authority: user-authorized website addenda through `SEMANTIC-TWIN-STORY-001` on 2026-08-22
+- Contract revision: `spec-9`
+- Authority: user-authorized website addenda through `SEMANTIC-TWIN-CAPABILITIES-001` on 2026-08-22
 - Stability: released prior-story baseline; `SEMANTIC-TWIN-STORY-001` evolving until publication
 - Read when: designing, implementing, publishing, or verifying the product website.
 - Do not read when: work is limited to the Swift package, CLI, rules, or agent skills.
@@ -61,6 +61,14 @@ the specialist skills are its agent-facing consumers. The landing leads with
 the problem, twin, exact-state agent loop, use cases, proof, limits, and stable
 installation. Release 0.5.0 remains the only public capability set; the watcher
 stays an unreleased 0.6.0 preview until a separate publication receipt.
+
+**WEB-DELTA-009 — Capability-preserving correction.**
+`SEMANTIC-TWIN-CAPABILITIES-001` restores the previously accepted landing
+structure and every prior use-case/capability block. Semantic twin is the
+unifying explanation, not a substitute for the X-Ray, detailed patterns,
+task-shaped workflows, semantic diff, thirty-rule surface, trust, installation,
+or FAQ. Release versions remain supporting truth and must not dominate the
+hero, CTA, or section narrative.
 
 ## Choose the governing child
 

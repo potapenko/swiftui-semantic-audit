@@ -1,22 +1,90 @@
 # Landing page design QA
 
-## Current semantic-twin candidate
+## Current capability-preserving semantic-twin candidate
 
-- Contract epoch: `tz-v18`, `SEMANTIC-TWIN-STORY-001`.
-- Static acceptance is complete: 20 website/publisher tests, deterministic
-  build, documentation links and anchors, JavaScript syntax, semantic HTML,
-  CSS structure, and the 1200 by 630 social asset passed their local checks.
-- Publication state: local implementation candidate only. No deployment,
+- Contract epoch: `tz-v19`, `SEMANTIC-TWIN-STORY-001` corrected by
+  `SEMANTIC-TWIN-CAPABILITIES-001`.
+- The prior accepted marketing surface is restored: hero, annotated X-Ray,
+  three detailed code cases, protected draft, audit/refactor/review prompts,
+  semantic diff, six rule groups, trust, one-prompt installation, and FAQ.
+- Semantic twin is concise connective copy in the hero, evidence labels, and
+  task explanation. Version `0.5.0` remains a small header/release fact and is
+  absent from the hero promise, CTA, and section narrative.
+- Publication state: local implementation candidate only. No push, deployment,
   release, or public-site mutation was performed.
-- The existing rendered and comparison PNGs are from the previous
-  `INSTALL-UX-001` page. They cannot accept the new layout.
 
-`WEB-QA-002` still requires an authorized local browser pass at 1280, 1024,
-768, 390, and 320 CSS pixels; a same-input comparison of the selected visual
-target and current desktop render; and interaction, no-JavaScript, focus,
-reduced-motion, overflow, zoom/wrapping, and console checks. The Product Design
-workflow requires explicit user permission before direct Playwright use. That
-permission has not been received, so visual acceptance is not claimed.
+**Target flow**
+
+`/` loads → a visitor sees the product outcome and concrete SwiftUI use cases
+→ mobile navigation and copy feedback respond → all setup content remains
+available without JavaScript.
+
+**Current visual comparison**
+
+- Source visual truth: `website/qa/selected-visual-target.png`, 863 by 1822.
+- Latest implementation: generated local artifact at 1280 by 720 CSS pixels,
+  DPR2, with a 2560 by 15376 lossless full-page PNG. SHA-256:
+  `20f60ba74ba0392c3c5055325d45d88edaf16bbaffd0107f6ca494d650dd0c30`.
+- Same-width check: 863 by 900 CSS pixels, DPR2, 1726 by 14892 output.
+  SHA-256:
+  `96940e5212072036a3c112e1cc26f7e9164f9103eba33db57ea59dcea15f96a1`.
+- The target and both current renders were opened together in one visual QA
+  pass. Temporary Playwright evidence remains outside the repository.
+
+**Fidelity ledger**
+
+- Hero: the accepted outcome-led headline remains exact. The authorized change
+  names the deterministic semantic twin in supporting copy without adding a
+  pipeline lecture or replacing the use-case CTA.
+- Information architecture: the accepted X-Ray, three detailed patterns,
+  protected transaction, task prompts, diff ledger, grouped rules, trust,
+  install, and FAQ order is restored. No capability block is missing.
+- Typography and palette: the warm paper, dark navy evidence canvas, blue
+  action color, green/amber semantic accents, editorial sans hierarchy, and
+  monospace evidence treatment match the selected X-Ray direction.
+- Container model: ruled open sections and code-led evidence remain; no card
+  wall, generic SaaS gradient, fake dashboard, or new visual system was added.
+- Desktop anatomy: the 1280 render keeps the three-part X-Ray and three-column
+  detailed examples. At the target raster's 863 CSS-pixel width, the existing
+  accepted breakpoint moves X-Ray evidence below the code pair while preserving
+  content and reading order.
+- Responsive behavior: 768, 390, and 320 stack the same evidence vertically;
+  code remains readable and no section clips or creates document overflow.
+- Authorized target deviations remain the accepted product history: one skill
+  is the agent entry point, one-prompt installation replaces the target's two
+  equal setup cards, and the rule count is thirty rather than the target's old
+  twenty-nine placeholder.
+- Above-the-fold copy diff: no unapproved block, label, badge, or section was
+  added. H1 and CTA roles match the accepted landing; only the user-authorized
+  semantic-twin lede and fact-boundary copy changed.
+
+**Responsive, interaction, and accessibility evidence**
+
+- Headed Chrome used the `Desktop Chrome HiDPI` profile at DPR2. Required CSS
+  widths 1280, 1024, 768, 390, and 320 all had equal client/scroll widths,
+  no broken images, no console warnings, and no page errors.
+- At 390 CSS pixels the menu opens with `aria-expanded="true"`, closes with
+  Escape, hides again, and returns focus to its toggle.
+- The install control copied the exact visible 263-character prompt, changed
+  its label to `Copied`, and announced `Copied to the clipboard.`
+- Without JavaScript, the main content, full setup prompt, link, CLI-only row,
+  and navigation remain visible; the enhancement-only copy control is hidden.
+- The first Tab target is `#main-content` with a visible 3-pixel amber outline.
+  Reduced motion resolves transitions and animations to `0.00001s` and smooth
+  scrolling to `auto`.
+- A 640 CSS-pixel reflow check, equivalent to 200% zoom on a 1280-pixel
+  viewport, had no document overflow.
+
+**Verification**
+
+- Browser plugin classification: absent. The user explicitly authorized an
+  isolated Playwright fallback against the local generated artifact.
+- Page identity, meaningful DOM, framework-overlay absence, screenshot
+  evidence, mobile navigation, copy interaction, no-JavaScript behavior,
+  focus, reduced motion, responsive layout, and console health: passed.
+- Static website/publisher tests, deterministic build, documentation and skill
+  validation, copy lint, JavaScript syntax, and diff hygiene are recorded by
+  the final task verification.
 
 ## Historical `INSTALL-UX-001` evidence
 
@@ -117,4 +185,4 @@ permission has not been received, so visual acceptance is not claimed.
 - Reduced the root README installation copy to the prompt, one CLI-only line,
   and one detailed-guide link.
 
-final result: pending — browser authorization required
+final result: passed

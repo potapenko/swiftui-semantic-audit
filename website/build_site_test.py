@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import binascii
+import re
 import struct
 import tempfile
 import unittest
@@ -256,22 +257,26 @@ class ProductionPageContractTests(unittest.TestCase):
 
         self.assertIn('<main id="main-content">', source)
         for required_id in (
-            "problem",
-            "twin",
             "xray",
-            "loop",
-            "use-cases",
+            "examples",
+            "workflow",
+            "rules",
             "install",
         ):
             self.assertIn(required_id, known_ids)
         self.assertIn(
-            '<h1 id="hero-title">Build a semantic twin before the agent edits.</h1>',
+            '<h1 id="hero-title">Give coding agents a map of SwiftUI state before they edit.</h1>',
             source,
         )
+        hero = source.split('<section id="top"', 1)[1].split("</section>", 1)[0]
+        self.assertIn("deterministic semantic twin", hero)
+        self.assertNotIn("0.5.0", hero)
+        for removed_explainer_id in ("problem", "twin", "loop", "use-cases"):
+            self.assertNotIn(removed_explainer_id, known_ids)
         self.assertIn('<section id="install"', source)
         install = source.split('<section id="install"', 1)[1].split("</section>", 1)[0]
         self.assertIn(
-            '<h2 id="install-title">Install release 0.5.0 with one prompt</h2>',
+            '<h2 id="install-title">Install with one prompt</h2>',
             install,
         )
         self.assertNotIn('class="step-number"', install)
@@ -288,10 +293,38 @@ class ProductionPageContractTests(unittest.TestCase):
         self.assertIn(f'href="{INSTALL_GUIDE_URL}"', install)
         self.assertNotIn('class="install-next"', install)
         self.assertNotIn("189dc44c928f7f61b393f6e4ca7d8f6f5d183a48", source)
-        self.assertIn("A deterministic graph of supported ownership and data-flow facts.", source)
-        self.assertIn("Release 0.5.0 builds an exact-state twin on demand.", source)
+        for capability in (
+            "Keep commands visible",
+            "Narrow the component boundary",
+            "Keep derived state derived",
+            "Understand unfamiliar state flow",
+            "Fix a data-flow problem",
+            "Review an agent-authored change",
+            "mirrored-state",
+            "command-shaped-binding",
+            "geometry-driven-product-layout",
+            "direct-global-platform-command",
+        ):
+            self.assertIn(capability, source)
+        for rule_group in (
+            "Ownership",
+            "Writes and effects",
+            "Bindings and sync",
+            "Components",
+            "Interaction and layout",
+            "Platform and environment",
+        ):
+            self.assertIn(f"<h3>{rule_group}</h3>", source)
+        rules = source.split('<section id="rules"', 1)[1].split("</section>", 1)[0]
+        listed_rules = re.findall(r"<li><code>([^<]+)</code></li>", rules)
+        self.assertEqual(len(listed_rules), 30)
+        self.assertEqual(len(set(listed_rules)), 30)
+        self.assertIn("reusable-component-owner-dependency", listed_rules)
+        self.assertIn("Thirty bounded rules", source)
+        self.assertIn("The current public release builds an exact-state twin on demand.", source)
+        self.assertIn("matching analysis configuration", source)
+        self.assertNotIn("Facts are canonical", source)
         self.assertIn("unreleased 0.6.0 candidate", source)
-        self.assertIn("30 bounded rules", source)
         self.assertIn("Which skill should I use?", source)
         self.assertNotIn("$swiftui-semantic-audit", source)
         self.assertNotIn("$swiftui-dataflow-refactor", source)
