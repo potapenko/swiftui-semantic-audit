@@ -2,7 +2,7 @@
 
 - Node type: leaf
 - Status: Active
-- Contract revision: `spec-10`
+- Contract revision: `spec-11`
 - Authority: [Product contract](../product-contract.md)
 - Read when: selecting the product goal, invariants, supported operations, scope, or release boundary.
 - Do not read when: a narrower linked domain contract fully governs the task.
@@ -30,6 +30,8 @@
 **PC-OPS-009 — Architecture analysis.** With explicit project classification where product roles are required, detect model-aware descendants, multiple mutable/reference owners, cross-feature owner dependencies, service/repository presentation inputs, environment command routers, multi-source Binding topology, lifecycle-owned synchronization/effects, imperative focus/selection correction, geometry-driven product behavior, gesture button emulation, imperative representable updates, direct global platform commands, and preview composition pressure.
 
 **PC-OPS-010 — Reusable component surface.** Config schema 2 may classify exact Views as screens, containers, or reusable components and exact types as component models. Emit one medium/candidate finding when a reusable component accepts an application/feature owner, or receives a component model through Environment. Preserve explicit per-instance component models, local component ownership, focused values/bindings/actions, passive environment, screen/container ownership, and unclassified code as non-conclusions for this rule.
+
+**PC-OPS-011 — Agent run artifact hygiene.** Stream separation is logical and does not require permanent per-command files. Auxiliary command output, status, timestamps, hashes, and receipts are temporary by default and stay outside source repositories, Codex configuration homes, and installed skill/package directories. Durable cross-handoff evidence requires an explicit non-repository state root, minimum necessary contents, and a retention owner or cleanup condition. Canonical snapshots may use an explicitly selected workflow path and retain their exact five-file contract.
 
 ## Resolution and platform
 

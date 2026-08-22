@@ -13,6 +13,8 @@ description: Review AI-generated or human SwiftUI changes through semantic diff 
 
 Snapshot creation may reuse the CLI's content-addressed cache, but cache state is never review evidence. Use one explicit `--cache-directory <path>` when the default user cache is not persistent. If cache correctness is in doubt, regenerate the affected snapshot with `--no-cache` and require byte-equivalent semantic files.
 
+Before emitting command output or snapshots, read and apply [run artifact hygiene](../swiftui-semantic/references/artifact-hygiene.md). Persist only deliberately selected snapshots or approved cross-handoff evidence.
+
 4. Obtain a semantic diff before reading the raw Git diff:
    - For two indexed snapshots:
 

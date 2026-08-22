@@ -2,7 +2,7 @@
 
 - Node type: leaf
 - Status: Active
-- Contract revision: `spec-10`
+- Contract revision: `spec-11`
 - Authority: [Acceptance and QA contract](../acceptance.md)
 - Read when: selecting fixture, build, determinism, safety, dogfood, skill, CI, or completion obligations.
 - Do not read when: the task does not implement or verify accepted behavior.
@@ -46,6 +46,8 @@
 
 **ACC-SKILL-007.** Audit, refactor, and review guidance treats reusable-owner findings as candidates, checks instance count and lifetime, and protects explicit per-item models, screen/container ownership, focused values/bindings/actions, and passive Environment. It forbids blanket model removal, Binding-everywhere, and one-View-one-ViewModel prescriptions.
 
+**ACC-SKILL-008.** All four skills link the shared run-artifact policy directly. Auxiliary evidence uses task-scoped temporary storage outside source repositories, Codex configuration homes, and installed skill/package directories; permanent per-command files are not required to separate streams. Durable evidence is minimal, uses an explicit non-repository state root, and records retention. Explicit canonical snapshots keep `IR-SNAP-*` behavior and may use a workflow-selected destination.
+
 ## CI
 
 **ACC-CI-001.** Run on official `macos-26`. The official runner catalog identifies it as the macOS 26 arm64 label, and its image inventory lists Xcode 26.6 at `/Applications/Xcode_26.6.app`. Select that toolchain explicitly and fail early unless it reports Swift >= 6.3.
@@ -67,7 +69,7 @@
 9. run `check --fail-on-new high`;
 10. slice an emitted real finding;
 11. run doctor JSON;
-12. validate all skills and their YAML metadata without repository or global-environment mutation, and reject frontend-only resolution guidance anywhere under `skills/`;
+12. validate all skills, their shared artifact-hygiene link, and their YAML metadata without repository or global-environment mutation, and reject frontend-only resolution guidance anywhere under `skills/`;
 13. parse JSON/YAML and check placeholders/links.
 
 ## Homebrew release

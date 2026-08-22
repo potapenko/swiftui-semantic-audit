@@ -2,13 +2,13 @@
 
 - Node type: hybrid
 - Status: Active
-- Contract revision: `spec-11`
+- Contract revision: `spec-12`
 - Read when: tracing original sections or authorized addenda to stable clauses and evidence ownership.
 - Do not read when: the governing contract is already selected and traceability is not in question.
 - Maximum size: 100 physical lines.
 
-Revision: `spec-11`
-Authority: ТЗ epoch `tz-v1` plus user-authorized addenda through `RELEASE-0.5.0-001`, combined epoch `tz-v14`
+Revision: `spec-12`
+Authority: ТЗ epoch `tz-v1` plus user-authorized addenda through `ARTIFACT-HYGIENE-001`, combined epoch `tz-v16`
 Purpose: route every source section to stable local clauses and evidence owners
 
 This map proves coverage; it does not create new requirements. Source and tests establish realization only after the normative contract is fixed.
@@ -71,6 +71,8 @@ This map proves coverage; it does not create new requirements. Source and tests 
 | 54 | Final product definition | `PC-GOAL-001..003` | README/product contract |
 
 `COMPONENT-SURFACE-001` maps to `PC-OPS-010`, `CFG-003/004/009`, `IR-GRAPH-010`, `RULE-REUSABLE-OWNER-001`, `RULE-DOM-001`, `RULE-EXC-011`, and `ACC-COMP-001..007`; realization owners are AuditCore configuration, AuditRules, ContextSlicer, configured fixtures, skills, and CI. `RELEASE-0.5.0-001` maps to `PC-REL-002..004`, `CLI-GEN-005`, `ACC-BREW-001..004`, `ACC-DOD-013..014`, and `WEB-CLAIM-001`; realization owners are the immutable tag/archive, tap formula, release docs, four tagged skills, and publication receipt.
+
+`ARTIFACT-HYGIENE-001` maps to `PC-OPS-011`, `ACC-SKILL-008`, and `ACC-DOD-015`; realization owners are the shared skill reference, all four direct skill links, skill validation, and the Codex configuration ignore/runtime-evidence policy.
 
 ## Choose the supporting map
 

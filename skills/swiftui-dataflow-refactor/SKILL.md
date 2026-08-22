@@ -13,6 +13,8 @@ description: Refactor SwiftUI state ownership and data flow with snapshot, audit
 
 Reuse the CLI's content-addressed cache across repeated live-source commands. Treat it only as an execution optimization. When the default user cache is not persistent, pass one stable `--cache-directory <path>` throughout the workflow. If cache correctness is in doubt, rerun the same command with `--no-cache` and require byte-equivalent JSON.
 
+Before emitting command output or snapshots, read and apply [run artifact hygiene](../swiftui-semantic/references/artifact-hygiene.md). Baseline and current snapshots may use deliberately selected destinations; unrelated command receipts remain temporary by default.
+
 4. Capture a canonical baseline before editing:
 
    ```bash

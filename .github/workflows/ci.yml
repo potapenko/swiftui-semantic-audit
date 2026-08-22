@@ -358,6 +358,9 @@ jobs:
             abort("frontend-only resolution guidance in #{path}") if content.match?(/syntax-only/i)
           end
 
+          artifact_policy = Pathname("skills/swiftui-semantic/references/artifact-hygiene.md").expand_path
+          abort("missing shared artifact policy") unless artifact_policy.file?
+
           expected.each do |name|
             root = Pathname("skills") / name
             skill = root / "SKILL.md"
@@ -385,6 +388,10 @@ jobs:
             abort("default prompt must be one sentence") unless prompt.scan(/[.!?](?:\s|\z)/).length == 1
 
             links = text.scan(/\[[^\]]+\]\(([^)]+)\)/).flatten
+            resolved_links = links.reject { |target| target.match?(/\A(?:https?:|#)/) }.map do |target|
+              (root / target.split("#", 2).first).expand_path
+            end
+            abort("#{skill} does not link shared artifact policy") unless resolved_links.include?(artifact_policy)
             links.each do |target|
               next if target.match?(/\A(?:https?:|#)/)
               path = root / target.split("#", 2).first

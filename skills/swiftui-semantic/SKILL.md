@@ -15,6 +15,8 @@ Classify the requested outcome before reading broad Swift source:
 
 Read only the selected specialist `SKILL.md` first, then load the references that specialist requires. Do not merge shortened versions of all three workflows or skip a specialist's gates.
 
+Before the selected workflow emits command output or snapshots, read and apply [run artifact hygiene](references/artifact-hygiene.md). Stream separation does not require permanent per-command files.
+
 Use [references/routing.md](references/routing.md) when the request combines phases, its starting state is unclear, or the workflow must hand evidence from one specialist to another.
 
 ## Route mixed work deliberately

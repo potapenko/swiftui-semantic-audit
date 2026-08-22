@@ -2,14 +2,14 @@
 
 - Node type: branch
 - Status: Active
-- Contract revision: `spec-11`
+- Contract revision: `spec-12`
 - Read when: selecting fixture, build, determinism, safety, dogfood, skill, CI, or completion obligations.
 - Do not read when: the task does not implement or verify accepted behavior.
 - Maximum size: 100 physical lines.
 
-Revision: `spec-11`
+Revision: `spec-12`
 Status: active  
-Release state: 0.5.0 released; 0.4.0 immutable
+Release state: 0.5.0 released; 0.4.0 immutable; artifact-hygiene workflow candidate unreleased
 
 ## Choose the governing child
 

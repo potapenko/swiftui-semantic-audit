@@ -2,7 +2,7 @@
 
 - Node type: leaf
 - Status: Active
-- Contract revision: `spec-11`
+- Contract revision: `spec-12`
 - Authority: [Acceptance and QA contract](../acceptance.md)
 - Read when: selecting fixture, build, determinism, safety, dogfood, skill, CI, or completion obligations.
 - Do not read when: the task does not implement or verify accepted behavior.
@@ -38,3 +38,5 @@
 **ACC-DOD-013.** Released tool `0.5.0` accepts config schemas 1 and 2, ships thirty bounded rules, uses exact reusable/screen/container and component-model roles without name inference, emits the reusable-owner candidate with documented dominance/slices, preserves the 34-finding realistic total, and leaves release 0.4.0 immutable.
 
 **ACC-DOD-014.** `RELEASE-0.5.0-001` publishes one immutable tag/archive, a tested upstream formula, the same four validated skills, and truthful 0.5.0 public/website facts without adding bottles, automatic skill installation, or new analysis behavior.
+
+**ACC-DOD-015.** `ARTIFACT-HYGIENE-001` makes auxiliary agent evidence temporary by default, keeps required durable evidence outside repositories and installed packages with explicit retention, preserves canonical snapshot behavior, and prevents Codex configuration commits from collecting run output.

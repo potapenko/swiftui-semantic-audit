@@ -16,6 +16,8 @@ description: Audit Swift and SwiftUI state/data-flow architecture with swiftui-a
 
 The CLI reuses content-addressed frontend and indexed facts automatically. Treat the cache only as an execution optimization: it never supplies intent or changes deterministic facts. Use one explicit `--cache-directory <path>` when the environment does not preserve the default user cache. If cache correctness is in doubt, repeat the same command with `--no-cache` and require byte-equivalent JSON before continuing.
 
+Before emitting command output or snapshots, read and apply [run artifact hygiene](../swiftui-semantic/references/artifact-hygiene.md). Keep auxiliary evidence temporary unless the user or an approved handoff requires durable evidence.
+
 ## Audit before source
 
 1. Run JSON audit before opening arbitrary Swift source:
