@@ -2,7 +2,7 @@
 
 - Node type: leaf
 - Status: Active
-- Contract revision: `spec-13`
+- Contract revision: `spec-14`
 - Authority: [Specification coverage and evidence map](../evidence-map.md)
 - Read when: tracing an authorized addendum or selecting evidence for a product decision.
 - Do not read when: only source-section coverage or ownership is needed.
@@ -24,6 +24,7 @@
 | `RELEASE-0.5.0-001` | Stable publication of the accepted component candidate and tagged skills | `PC-REL-002..004`, `CLI-GEN-005`, `ACC-BREW-*`, `ACC-DOD-013..014`, `WEB-CLAIM-001` | immutable 0.5.0 tag/archive, release docs/site facts, `potapenko/homebrew-tap`, local and hosted receipts |
 | `ARTIFACT-HYGIENE-001` | Temporary-by-default auxiliary agent evidence, explicit non-repository durable state, and bounded retention | `PC-OPS-011`, `ACC-SKILL-008`, `ACC-DOD-015` | shared skill policy, four direct links, CI validation, Codex ignore/runtime-evidence policy |
 | `PROJECT-WATCHER-001` | Safe project bootstrap, freshness-qualified continuous indexed state, managed lifecycle, and baseline promotion | `PC-OPS-012`, `PRJ-*`, `CLI-PRJ-*`, `ACC-PRJ-*`, `ACC-WATCH-*`, `ACC-DOD-016` | ProjectWorkspace, WatcherRuntime, CLI, four skills, dogfood baseline, tests, CI |
+| `SEMANTIC-TWIN-STORY-001` | Semantic-twin-first landing, README, docs, and skill-consumer narrative with a strict 0.5/0.6 release split | `PC-GOAL-004`, `WEB-DELTA-008`, `WEB-TWIN-001`, `WEB-LOOP-001`, `WEB-FRESH-001` | landing, README, public docs, router skill, metadata artwork, local website QA |
 
 ## Evidence precedence by decision
 
@@ -33,5 +34,6 @@
 | CLI behavior | `cli.md` | flags, status, path/resolution safety | command help, end-to-end invocation |
 | Snapshot/diff | `semantic-ir.md` | determinism/integrity/mixed-mode guard | five-file byte compare, reader/diff tests |
 | Watcher freshness | `project-runtime.md` | indexed-only agent evidence, runtime isolation, one writer | status receipt, explicit coverage, live snapshot validation, lifecycle tests |
+| Public semantic-twin claim | `product-contract.md`, `website.md`, release baseline | deterministic fact boundary and released/candidate split | landing/README copy, metadata, release-claim tests, local visual QA |
 | Refactor acceptance | `product-contract.md`, skills | behavior, ownership, lifetime, transaction | build/tests + audit/diff/check |
 | Release readiness | `acceptance.md`, `release-baseline.md` | truthful candidate/released state and immutable distribution | full tests, dogfood, CI, tag/archive checksum, formula audit/install/test receipt |

@@ -2,52 +2,56 @@
 
 - Node type: leaf
 - Status: Active
-- Contract revision: `spec-5`
+- Contract revision: `spec-6`
 - Authority: [Website contract](../website.md)
 - Maximum size: 100 physical lines.
 
 ## Audience and outcome
 
-**WEB-GOAL-001.** Address SwiftUI UI developers and design engineers who use
+**WEB-GOAL-001.** Address SwiftUI developers and design engineers who use
 coding agents and can read SwiftUI, run Homebrew, and follow an agent prompt.
-The page sells inspectable architecture evidence for safer agent-authored
-changes, not a linter score, automatic correctness, or the number of rules.
+The page sells a deterministic semantic twin for inspectable agent reasoning,
+not a linter score, automatic correctness, or the number of rules.
 
-**WEB-GOAL-002.** A visitor should understand the product, see one concrete
-problem/evidence/safer-shape chain, understand the agent workflow and limits,
-and reach one short agent setup prompt without reading the full README.
+**WEB-GOAL-002.** A visitor should understand why source text is insufficient
+agent context, what the twin preserves, how the exact-state agent loop consumes
+it, see one concrete proof, understand limits, and reach one stable setup prompt
+without reading the full README.
 
 ## Narrative and examples
 
-**WEB-STORY-001.** Preserve this order: paper hero; full-bleed semantic X-ray;
-three compact annotated examples; one protected case; audit/refactor/review;
-semantic diff proof; grouped rule map; trust and limits; one-prompt install; FAQ.
+**WEB-STORY-001.** Preserve this order: header; paper hero; context problem;
+semantic-twin anatomy; full-bleed semantic X-ray and protected case; exact-state
+agent loop with semantic-diff proof; audit/refactor/review use cases; trust and
+limits; one-prompt stable installation; FAQ.
 
 **WEB-STORY-002.** The X-ray uses the accepted duplicate-owner topology:
 external Binding, local State, lifecycle copy, reciprocal synchronization,
 `mirrored-state`, `manual-two-way-sync`, and the direct-Binding alternative.
 
-**WEB-STORY-003.** Compact stories cover command-shaped Binding, a broad model
-crossing component boundaries, and stored derived state. Use literal accepted
-fixture shapes or label representative editorial code; never claim an exact
-finding for an unverified composite snippet. Keep callback tunnels and
-repository/lifecycle composition in linked documentation for the first release.
+**WEB-STORY-003.** Use cases are task-shaped audit, refactor, and review prompts.
+Keep the detailed pattern catalogs in linked docs instead of a landing-page wall.
 
 **WEB-STORY-004.** The protected case shows a real local transactional draft
 with explicit Apply and Discard. It must state that no finding is expected and
 must not expose a fake fix control.
 
-**WEB-SKILL-001.** Present `swiftui-semantic` in Codex or Claude Code from hero
-through installation as the product's primary interface. Show concrete SwiftUI
-requests a visitor can give that one skill; do not present the CLI, router, or
-specialist workflows as co-equal user choices. Tagged setup may disclose its
-dependencies, but no automatic-understanding claim is allowed.
+**WEB-TWIN-001.** Define the semantic twin as the deterministic simplified representation in `PC-GOAL-004`. Explain what it preserves and discards. Never describe it as an LLM summary, pseudocode, source replacement, runtime model, or complete behavioral account.
+
+**WEB-SKILL-001.** Present `swiftui-semantic` in Codex or Claude Code as the recommended consumer and router for the twin. Show concrete requests for that one skill; do not make the CLI, specialist workflows, or skill itself the semantic product object.
+
+**WEB-LOOP-001.** For public 0.5.0, show an exact-state loop: fresh project
+build and explicit Index Store, deterministic twin, indexed/configuration gate,
+bounded slice, agent judgment and edit, then build/tests plus compatible
+snapshot diff. Do not imply a watcher receipt exists in the released workflow.
 
 **WEB-INSTALL-001.** Lead with one short prompt that tells the local agent to
 read the GitHub guide, install Homebrew first if absent, install the CLI through
 Homebrew, and then install all four skills pinned to release 0.5.0. Keep those
 phases separately owned: Homebrew installs only the CLI and must never modify an
 agent host directory. A compact CLI-only command and the full guide remain secondary.
+
+**WEB-FRESH-001.** Before public 0.6.0, describe the twin as built on demand for an exact source state and keep watcher details out of the released capability path. After a terminal 0.6.0 publication receipt, the landing may lead with a freshness-qualified live twin only alongside its indexed receipt and stale-state rejection. `Always-fresh` is never unconditional.
 
 ## Visual and interaction contract
 
@@ -75,10 +79,10 @@ tracking, a new route, or a second author surface elsewhere on the page.
 `de-ai-writing` landing rules. Ban rhetorical questions, urgency, fake empathy,
 vague authority, lifestyle theater, and unsupported qualitative outcomes.
 
-**WEB-CLAIM-001.** Supported claims include release 0.5.0, 30 bounded rules,
-seven public CLI commands, deterministic evidence, semantic snapshots/diff,
-separate agent judgment, provider independence, and the documented Homebrew
-plus agent-skill installation boundary.
+**WEB-CLAIM-001.** Supported claims include release 0.5.0, an on-demand
+deterministic semantic twin, 30 bounded rules, seven public CLI commands,
+semantic snapshots/diff, separate agent judgment, provider independence, and
+the documented Homebrew plus agent-skill installation boundary.
 
 **WEB-CLAIM-002.** Never claim automatic rewriting, guaranteed correctness,
 zero configuration, complete SwiftUI bug coverage, fully deterministic

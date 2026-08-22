@@ -2,6 +2,19 @@
 
 SwiftUI Semantic Audit keeps extraction separate from interpretation. This boundary lets different coding agents use the same evidence without letting a model rewrite inconvenient facts.
 
+## The semantic twin
+
+The semantic twin is a deterministic, simplified representation of supported
+Swift/SwiftUI program facts. It is built from source and, for agent workflows,
+fresh compiler Index Store evidence. It preserves ownership, state, Bindings,
+reads, writes, derivations, dependencies, component boundaries, lifecycle,
+effects, identity, confidence, and source provenance while leaving unrelated
+syntax in the source.
+
+The twin is not an LLM summary, model-written pseudocode, a source replacement,
+a runtime simulation, or a complete account of program behavior. The CLI owns
+the facts; the surrounding agent may interpret a bounded slice of them.
+
 ## The fact pipeline
 
 ```text
@@ -14,7 +27,9 @@ Swift source
   → agent adjudication
 ```
 
-The first six stages are deterministic for the same source, toolchain, configuration, and resolution. The last stage can use project context and product intent.
+The first six stages build the semantic twin deterministically for the same
+source, toolchain, configuration, and resolution. The last stage can use
+project context and product intent.
 
 ## What the CLI owns
 

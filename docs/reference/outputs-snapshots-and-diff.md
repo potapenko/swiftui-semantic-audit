@@ -2,6 +2,21 @@
 
 The CLI exposes one semantic model through several transports: graph JSON, audit JSON, a five-file snapshot, an LLM-ready slice, semantic diff, and check policy. Resolution and configuration identity travel with the evidence.
 
+## Semantic state taxonomy
+
+These artifacts have different authority and lifetimes:
+
+| Artifact | Purpose | Location and authority |
+| --- | --- | --- |
+| Analysis cache | Reuses integrity-checked frontend and indexed facts for speed. | User cache; non-authoritative and not part of a snapshot or semantic diff. |
+| Live semantic state | Holds the watcher's latest provisional and indexed generations. | External application state; available only in the unreleased `0.6.0` candidate and agent-usable only with a matching fresh indexed status receipt. |
+| Snapshot | Serializes one exact semantic state in the canonical five-file format. | Explicit output path; the portable full-fidelity input to `diff`, `check`, and review workflows. |
+| Baseline | Names a deliberately promoted snapshot for later comparison. | Optional repository-relative path; may be committed to Git, but promotion never stages or commits it. |
+
+Release `0.5.0` creates snapshots on demand from the exact source and Index
+Store selected for that run. The watcher does not become a released capability
+until a separate `0.6.0` publication.
+
 ## Graph output
 
 `scan` emits a canonical graph with:

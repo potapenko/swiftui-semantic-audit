@@ -6,16 +6,22 @@ Configuration is optional. Topology-only analysis still runs without it. A rule 
 
 ## Schema
 
-The current configuration schema is `1`:
+The current configuration schema is `2`. Schema `1` remains accepted and
+produces the same digest and classification facts as before. Schema `2` adds
+exact View roles and the `component-model` type role:
 
 ```json
 {
-  "schemaVersion": 1,
+  "schemaVersion": 2,
   "compositionRoots": [
     "ExampleApp.RootView"
   ],
+  "viewRoles": {
+    "ExampleApp.ProfileRow": "reusable-component"
+  },
   "typeRoles": {
     "ExampleApp.ProfileModel": "feature-model",
+    "ExampleApp.ProfileRowModel": "component-model",
     "ExampleApp.ProfileRepository": "repository"
   },
   "typeFeatures": {
@@ -36,8 +42,9 @@ Only `schemaVersion` is structurally required. Add the other fields when they ex
 
 | Field | Type | Purpose |
 | --- | --- | --- |
-| `schemaVersion` | integer | Must be `1`. |
+| `schemaVersion` | integer | `2` is current; `1` remains compatible. |
 | `compositionRoots` | array of strings | Exact qualified View names allowed to own application composition. |
+| `viewRoles` | object | Exact qualified View name to `screen`, `container`, or `reusable-component`; schema `2` only. |
 | `typeRoles` | object | Exact qualified type name to allowed product role. |
 | `typeFeatures` | object | Exact qualified type name to project-defined feature identifier. |
 | `pathFeatures` | object | Normalized repository-relative directory prefix to feature identifier. |
@@ -58,9 +65,21 @@ service
 player
 dependency-bundle
 effect-sink
+component-model
 ```
 
-Roles should describe the real product responsibility of the exact qualified type. Do not add a role merely to make a desired finding appear or disappear.
+`component-model` requires schema `2`; the other type roles are also accepted in
+schema `1`. View roles are exactly:
+
+```text
+screen
+container
+reusable-component
+```
+
+Roles should describe the real product responsibility of the exact qualified
+type or View. Do not add a role merely to make a desired finding appear or
+disappear. The analyzer never infers these roles from spelling.
 
 ## Discovery
 

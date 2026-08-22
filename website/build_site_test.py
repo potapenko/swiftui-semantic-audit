@@ -15,7 +15,8 @@ SITE_URL = "https://example.ondigitalocean.app/"
 BUILD_MARKER = "0123456789abcdef"
 INSTALL_GUIDE_URL = (
     "https://github.com/potapenko/swiftui-semantic-audit/"
-    "blob/master/docs/getting-started/installation.md"
+    "blob/8c156128f56f01a295e510f73e6a97bdaceea0a5/"
+    "docs/getting-started/installation.md"
 )
 SETUP_PROMPT = (
     "Install SwiftUI Semantic Audit from this GitHub guide. Install Homebrew "
@@ -254,10 +255,23 @@ class ProductionPageContractTests(unittest.TestCase):
             self.assertIn(status, known_ids)
 
         self.assertIn('<main id="main-content">', source)
+        for required_id in (
+            "problem",
+            "twin",
+            "xray",
+            "loop",
+            "use-cases",
+            "install",
+        ):
+            self.assertIn(required_id, known_ids)
+        self.assertIn(
+            '<h1 id="hero-title">Build a semantic twin before the agent edits.</h1>',
+            source,
+        )
         self.assertIn('<section id="install"', source)
         install = source.split('<section id="install"', 1)[1].split("</section>", 1)[0]
         self.assertIn(
-            '<h2 id="install-title">Install with one prompt</h2>',
+            '<h2 id="install-title">Install release 0.5.0 with one prompt</h2>',
             install,
         )
         self.assertNotIn('class="step-number"', install)
@@ -274,7 +288,10 @@ class ProductionPageContractTests(unittest.TestCase):
         self.assertIn(f'href="{INSTALL_GUIDE_URL}"', install)
         self.assertNotIn('class="install-next"', install)
         self.assertNotIn("189dc44c928f7f61b393f6e4ca7d8f6f5d183a48", source)
-        self.assertIn("One skill to invoke", source)
+        self.assertIn("A deterministic graph of supported ownership and data-flow facts.", source)
+        self.assertIn("Release 0.5.0 builds an exact-state twin on demand.", source)
+        self.assertIn("unreleased 0.6.0 candidate", source)
+        self.assertIn("30 bounded rules", source)
         self.assertIn("Which skill should I use?", source)
         self.assertNotIn("$swiftui-semantic-audit", source)
         self.assertNotIn("$swiftui-dataflow-refactor", source)
@@ -282,12 +299,11 @@ class ProductionPageContractTests(unittest.TestCase):
         self.assertIn('href="https://x.com/potapenko"', source)
         self.assertIn('aria-label="Follow @potapenko on Twitter"', source)
         self.assertIn('src="assets/icons/brand-twitter.svg"', source)
-
-        rules = source.split('<section id="rules"', 1)[1].split("</section>", 1)[0]
-        self.assertEqual(rules.count("<li><code>"), 29)
+        self.assertNotIn("swiftui-audit project ", source)
 
         lowered = source.lower()
         for forbidden in (
+            "always-fresh",
             "automatically rewrites project source",
             "guaranteed correctness",
             "zero configuration",

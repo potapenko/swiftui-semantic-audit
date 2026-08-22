@@ -1,4 +1,4 @@
 interface:
   display_name: "SwiftUI Semantic"
-  short_description: "Route SwiftUI semantic audit workflows"
-  default_prompt: "Use $swiftui-semantic to choose and run the right SwiftUI semantic audit, refactor, or review workflow."
+  short_description: "Route SwiftUI semantic-twin workflows"
+  default_prompt: "Use $swiftui-semantic to build and route deterministic semantic-twin evidence for this SwiftUI task."

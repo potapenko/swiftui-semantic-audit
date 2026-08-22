@@ -1,8 +1,15 @@
 # Documentation
 
-SwiftUI Semantic Audit gives a coding agent a deterministic view of SwiftUI state and data flow before the agent makes an architectural judgment. These pages explain the product from first installation through audit, refactor, and review.
+SwiftUI Semantic Audit builds a deterministic semantic twin of supported
+SwiftUI ownership and data flow before a coding agent makes an architectural
+judgment. These pages explain the twin, its evidence boundary, and the
+operational paths for audit, refactor, and review.
 
 [Project website](https://swiftui-audit.dev/) · [Back to the project README](../README.md)
+
+Release `0.5.0` builds an exact-state twin on demand. The project-watcher guide
+is explicitly for the unreleased `0.6.0` candidate; it is not part of the
+current Homebrew release.
 
 ## Start here
 
@@ -30,7 +37,8 @@ docs/
 │   ├── README.md                     # shortest route to a working audit
 │   ├── installation.md               # agent and manual installation
 │   ├── agent-prompts.md              # copy-paste tasks for coding agents
-│   └── first-audit.md                # indexed and standalone first passes
+│   ├── first-audit.md                # indexed and standalone first passes
+│   └── project-watcher.md            # unreleased 0.6.0 continuous state
 ├── concepts/
 │   ├── README.md
 │   ├── why-semantic-audit.md
@@ -66,6 +74,10 @@ When a public guide and a specification appear to disagree, the active specifica
 
 ## Product boundary
 
-The tool produces deterministic semantic evidence. It does not rewrite Swift, call a model API, replace behavior tests, or prove product intent from syntax alone. The installed agent skill reads bounded graph slices, classifies the evidence, and must stop when ownership or behavior cannot be established.
+The tool produces the deterministic facts in the semantic twin. It does not
+rewrite Swift, call a model API, replace behavior tests, or prove product
+intent from syntax alone. The installed agent skill consumes bounded graph
+slices, classifies the evidence, and must stop when ownership or behavior
+cannot be established.
 
 That split is the central design constraint, not an implementation detail. Read [Deterministic facts and agent judgment](concepts/deterministic-facts-and-agent-judgment.md) before integrating the output into another automated workflow.

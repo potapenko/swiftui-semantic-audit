@@ -2,9 +2,9 @@
 
 - Node type: hybrid
 - Status: Active
-- Contract revision: `spec-7`
-- Authority: user-authorized website addenda through `INSTALL-UX-001` on 2026-08-22
-- Stability: released baseline; `INSTALL-UX-001` evolving until publication
+- Contract revision: `spec-8`
+- Authority: user-authorized website addenda through `SEMANTIC-TWIN-STORY-001` on 2026-08-22
+- Stability: released prior-story baseline; `SEMANTIC-TWIN-STORY-001` evolving until publication
 - Read when: designing, implementing, publishing, or verifying the product website.
 - Do not read when: work is limited to the Swift package, CLI, rules, or agent skills.
 - Maximum size: 100 physical lines.
@@ -53,6 +53,14 @@ The agent installs Homebrew first when absent, the CLI through Homebrew, and
 then all four skills as a separately owned phase. The guide pins installation
 artifacts to release 0.5.0. The formula remains CLI-only and must never modify
 agent-host directories.
+
+**WEB-DELTA-008 — Semantic-twin-first story.** `SEMANTIC-TWIN-STORY-001`
+supersedes only the product-priority rule in `WEB-DELTA-005`: the deterministic
+semantic twin is now the primary product object, while `swiftui-semantic` and
+the specialist skills are its agent-facing consumers. The landing leads with
+the problem, twin, exact-state agent loop, use cases, proof, limits, and stable
+installation. Release 0.5.0 remains the only public capability set; the watcher
+stays an unreleased 0.6.0 preview until a separate publication receipt.
 
 ## Choose the governing child
 

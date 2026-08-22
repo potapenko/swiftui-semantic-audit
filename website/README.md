@@ -96,9 +96,14 @@ the apex.
 
 ## Content evidence
 
-The large duplicate-owner example and protected transaction come from accepted
-fixtures. The compact command Binding, model tunnel, and derived-state stories
-use accepted fixture shapes and label editorial remediation where behavior
-tests are still required. Product claims stay within release `0.5.0`: the CLI
-does not rewrite source, call a model provider, replace behavior tests, or turn
-candidate findings into automatic decisions.
+The landing page presents the deterministic graph, evidence, compatible
+snapshots, and bounded slices as a semantic twin. The large duplicate-owner
+example and protected transaction come from accepted fixtures. The exact-state
+agent loop describes released `0.5.0`; the FAQ labels the project watcher on
+`master` as an unreleased `0.6.0` candidate. The CLI does not rewrite source,
+call a model provider, replace behavior tests, or turn candidate findings into
+automatic decisions.
+
+The stable setup prompt links to an immutable revision of the `0.5.0`
+installation guide. That guide keeps Homebrew's CLI installation separate from
+the four agent-skill installations.

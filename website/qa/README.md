@@ -3,6 +3,12 @@
 This directory contains design evidence only. The build allowlist excludes it
 from `website/public/`.
 
+Current status: `selected-visual-target.png` remains the visual source for
+`SEMANTIC-TWIN-STORY-001`, and the social preview below belongs to that current
+candidate. The rendered and comparison PNGs are historical `INSTALL-UX-001`
+evidence; they have not been refreshed for the semantic-twin layout because
+direct Playwright use still requires explicit user authorization.
+
 ## Selected visual target
 
 - Repository copy: `selected-visual-target.png`
@@ -25,13 +31,15 @@ prompt and one secondary Homebrew CLI row.
 
 - Public asset: `../assets/social-preview.png`
 - Source: built-in ImageGen result
-  `/Users/eugenepotapenko/.codex/generated_images/01a01a7d-9fa2-72a0-ad8d-6b0722108c2a/exec-2ed27966-19e3-4251-a24b-94e6ab8503a9.png`
-- Source dimensions: 1729 by 910 pixels
-- Source SHA-256: `2f6e917d048afe3ac4a7d7ff6de57f2f3abd6d381dc3c52ed7e00ae7a0ade0ed`
+  `/Users/eugenepotapenko/.codex/generated_images/01a02a9b-5103-7e50-9b1f-a72e4287a335/exec-86cddfde-4cc7-42a5-97e0-53b69f6d5e5d.png`
+- Source dimensions: 1731 by 909 pixels
+- Source SHA-256: `df81f41ec3483f45aa8d43b9e37b8b601d4d90cfd7d3edd6cf946963ced3d210`
 - Published dimensions: 1200 by 630 pixels
-- Published SHA-256: `2d6d7c5ca82aefdfe84e0d9237ea56063e80f26597b8f63a8db80422b37fed5f`
-- Treatment: cropped and resampled once to the Open Graph aspect ratio; the
-  final PNG was inspected at 100% and at its intended rendered size.
+- Published SHA-256: `00f88c6212b009418926d78a3cd3e8804cf0e30a7b86680c16a988483eaeed23`
+- Treatment: ImageGen preserved the warm-paper/dark-graph split while changing
+  the chip to `v0.5.0` and the headline to `Build a semantic twin before the
+  agent edits.` The result was resampled once to the exact Open Graph size,
+  then inspected at native resolution.
 
 ## Icons
 
@@ -40,7 +48,7 @@ The public icon set is Tabler Icons v3.46.0, vendored under
 `LICENSE-tabler.txt`. `site-icon.svg` is an unchanged copy of the official
 `hierarchy-2.svg` asset.
 
-## Rendered implementation
+## Historical rendered implementation
 
 The implementation was captured from `http://127.0.0.1:4173/` on 2026-08-22
 with isolated Playwright and headed Chrome. The Browser plugin was not
@@ -69,13 +77,15 @@ confirmed that the rows after physical `y=16384` do not repeat the page prefix.
 | `rendered-390-hidpi.png` | 390 by 844 | 780 by 25752 | `ba3910320d0230cb756370e505cc6b61ef14e8d4d635296315144e8a01283040` |
 | `rendered-320-hidpi.png` | 320 by 720 | 640 by 27402 | `b6ae1e36bdd6fd538f0c572dd00dd6ae3a16663a5b4f79189ec6dd10561bd456` |
 
-The native files were inspected directly and at their intended CSS sizes.
-They remain the accepted implementation evidence.
+The native files were inspected directly and at their intended CSS sizes for
+the earlier `INSTALL-UX-001` candidate. They do not accept the current
+`SEMANTIC-TWIN-STORY-001` implementation.
 
-## Comparison derivatives
+## Historical comparison derivatives
 
-These PNGs place source and implementation evidence in one image for visual
-analysis. They are not production assets or accepted native captures.
+These PNGs place the source and the earlier implementation evidence in one
+image for visual analysis. They are not production assets, and they are not
+current semantic-twin-story acceptance evidence.
 
 - `comparison-full.png`: the full 863 by 1822 target followed by the full
   desktop render reduced from 2560 by 14744 to 863 by 4970; output 863 by

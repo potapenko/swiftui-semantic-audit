@@ -2,7 +2,7 @@
 
 - Node type: leaf
 - Status: Active
-- Contract revision: `spec-6`
+- Contract revision: `spec-7`
 - Authority: [Product contract](../product-contract.md)
 - Read when: selecting the product goal, invariants, supported operations, scope, or release boundary.
 - Do not read when: a narrower linked domain contract fully governs the task.
@@ -16,6 +16,8 @@
 **PC-GOAL-002 — Primary consumer.** Optimize the interface for coding agents. Present state, ownership, dependencies, reads, writes, bindings, effects, derivation, and synchronization paths before full source.
 
 **PC-GOAL-003 — Practical outcome.** Enable an agent to detect imperative SwiftUI state-flow patterns, prove duplicated/manual synchronization and selected component-boundary leaks, adjudicate intent, and verify a behavior-preserving move toward canonical declarative data architecture.
+
+**PC-GOAL-004 — Semantic twin.** The product-facing name for the compact graph, evidence, slices, and compatible snapshots is a semantic twin: a deterministic, simplified representation of supported Swift/SwiftUI program facts built from source and, for agent workflows, fresh compiler-index evidence. It preserves ownership, state, Bindings, reads, writes, derivations, dependencies, component boundaries, lifecycle, effects, identity, confidence, and source provenance while discarding nonessential syntax. It is not an LLM summary, model-written pseudocode, source authority, runtime simulation, or complete behavioral model.
 
 ## Semantic-first architecture
 

@@ -1,6 +1,26 @@
 # Landing page design QA
 
-**Findings**
+## Current semantic-twin candidate
+
+- Contract epoch: `tz-v18`, `SEMANTIC-TWIN-STORY-001`.
+- Static acceptance is complete: 20 website/publisher tests, deterministic
+  build, documentation links and anchors, JavaScript syntax, semantic HTML,
+  CSS structure, and the 1200 by 630 social asset passed their local checks.
+- Publication state: local implementation candidate only. No deployment,
+  release, or public-site mutation was performed.
+- The existing rendered and comparison PNGs are from the previous
+  `INSTALL-UX-001` page. They cannot accept the new layout.
+
+`WEB-QA-002` still requires an authorized local browser pass at 1280, 1024,
+768, 390, and 320 CSS pixels; a same-input comparison of the selected visual
+target and current desktop render; and interaction, no-JavaScript, focus,
+reduced-motion, overflow, zoom/wrapping, and console checks. The Product Design
+workflow requires explicit user permission before direct Playwright use. That
+permission has not been received, so visual acceptance is not claimed.
+
+## Historical `INSTALL-UX-001` evidence
+
+**Findings at the prior epoch**
 
 - No actionable P0, P1, or P2 findings remain. The installation area now has
   one dominant agent prompt and one compact, clearly secondary CLI-only row.
@@ -97,4 +117,4 @@
 - Reduced the root README installation copy to the prompt, one CLI-only line,
   and one detailed-guide link.
 
-final result: passed
+final result: pending — browser authorization required
