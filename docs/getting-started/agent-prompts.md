@@ -28,42 +28,18 @@ ownership and transaction behavior cannot be established.
 For the underlying procedure, see [Installation](installation.md),
 [Run a first audit](first-audit.md), and the [workflow index](../workflows/README.md).
 
-## Install the agent skills
+<a id="install-the-agent-skills"></a>
 
-Run this after installing the CLI with Homebrew. Homebrew owns the executable;
-the agent installs only the four separate skill directories.
+## Install the CLI and agent skills
 
 ```text
-Install exactly the four SwiftUI Semantic Audit agent skills for release 0.5.0:
-swiftui-semantic, swiftui-semantic-audit, swiftui-dataflow-refactor, and
-swiftui-change-review.
-
-The swiftui-audit CLI is already managed by Homebrew. Do not reinstall,
-upgrade, or replace it. First verify that `swiftui-audit --version` reports
-exactly 0.5.0. Then read the tagged installation guide at
-https://github.com/potapenko/swiftui-semantic-audit/blob/0.5.0/docs/getting-started/installation.md.
-
-Clone only the immutable 0.5.0 tag from
-https://github.com/potapenko/swiftui-semantic-audit.git into a stable,
-user-owned directory. Verify the origin, tag, and exact tag commit before
-installing anything.
-
-Detect whether this session is Codex or Claude Code. Use only that host's
-documented personal skill directory. Preflight all four destinations, then
-symlink all four sibling directories from the verified clone as one operation.
-Do not copy only the router. Do not delete, overwrite, repoint, or move an
-existing file, directory, or symlink.
-
-Verify that each installed path resolves to a SKILL.md, run
-`swiftui-audit --help`, and run `swiftui-audit doctor . --format json`. Stop on
-any CLI version mismatch, clone or destination conflict, tag or commit
-mismatch, uncertain host directory, broken link, nonzero command status, or
-invalid JSON.
-
-Return a receipt with the host, repository origin, tag, exact commit, CLI
-version, four installed paths, link targets, and doctor status. Make no project
-source or configuration changes.
+Install SwiftUI Semantic Audit from this GitHub guide. Install Homebrew first if needed, then the CLI and all four agent skills:
+https://github.com/potapenko/swiftui-semantic-audit/blob/master/docs/getting-started/installation.md
 ```
+
+The GitHub installation guide is the canonical detailed procedure. It pins
+artifacts to release `0.5.0` and keeps Homebrew's CLI ownership separate from
+the agent-owned installation of all four skills.
 
 ## Add a bounded project instruction
 

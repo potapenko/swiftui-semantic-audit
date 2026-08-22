@@ -22,23 +22,16 @@ itself or ask a model to invent compiler facts.
 
 ## Quick start
 
-The normal setup has two separate parts.
+Give this prompt to a local Codex or Claude Code agent:
 
-1. Install the released evidence engine from the upstream Homebrew tap:
+```text
+Install SwiftUI Semantic Audit from this GitHub guide. Install Homebrew first if needed, then the CLI and all four agent skills:
+https://github.com/potapenko/swiftui-semantic-audit/blob/master/docs/getting-started/installation.md
+```
 
-   ```bash
-   brew install potapenko/tap/swiftui-semantic-audit
-   swiftui-audit --version
-   ```
-
-2. Add the `swiftui-semantic` router and its three internal specialist skills
-   from the same immutable release tag. Use the
-   [two-step website setup](https://swiftui-audit.dev/#install) or the
-   [tagged installation guide](https://github.com/potapenko/swiftui-semantic-audit/blob/0.5.0/docs/getting-started/installation.md).
-
-Homebrew installs only `swiftui-audit`; it never modifies an agent host. In
-Codex, invoke the installed skill as `$swiftui-semantic`. In Claude Code, use
-`/swiftui-semantic`.
+CLI only: `brew install potapenko/tap/swiftui-semantic-audit`. Homebrew owns
+only `swiftui-audit`; the [installation guide](docs/getting-started/installation.md)
+keeps the four agent skills separate and covers verification and removal.
 
 Then ask for the SwiftUI outcome you already need:
 

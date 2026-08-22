@@ -1,25 +1,30 @@
 # Getting started
 
-The normal setup has two parts:
-
-- `swiftui-audit`, the deterministic CLI;
-- `swiftui-semantic`, the user-facing router skill, plus its three specialist skills.
-
-Release 0.5.0 separates Homebrew CLI installation from optional agent-skill installation. Both remain pinned to the same immutable tag.
-
 ## Recommended route
 
-1. Install the CLI with `brew install potapenko/tap/swiftui-semantic-audit`.
-2. Copy the [skill-installation recipe](agent-prompts.md#install-the-agent-skills) into a local Codex or Claude Code session.
-3. Confirm the installation receipt: release tag, exact commit, CLI version, four skill paths, and successful `doctor` output.
-4. Open the SwiftUI project you want to inspect and invoke the router:
+Give this prompt to a local Codex or Claude Code agent:
+
+```text
+Install SwiftUI Semantic Audit from this GitHub guide. Install Homebrew first if needed, then the CLI and all four agent skills:
+https://github.com/potapenko/swiftui-semantic-audit/blob/master/docs/getting-started/installation.md
+```
+
+The GitHub guide pins installation artifacts to the immutable `0.5.0` release.
+Homebrew installs only the CLI; the agent installs all four skills separately.
+
+After the agent returns the installation receipt:
+
+1. Open the SwiftUI project you want to inspect and invoke the router:
 
    - Codex: `$swiftui-semantic`
    - Claude Code: `/swiftui-semantic`
 
-5. Ask for an audit, refactor, or review in ordinary language. The router selects the matching specialist workflow.
+2. Ask for an audit, refactor, or review in ordinary language. The router selects the matching specialist workflow.
 
-The [installation guide](installation.md) also covers manual setup and the reason all four skill directories must be installed together.
+The [installation guide](installation.md) covers verification, conflicts, manual
+setup, updates, removal, and why all four skill directories remain siblings.
+The [agent prompt library](agent-prompts.md#install-the-cli-and-agent-skills)
+keeps the same copy-paste prompt with the workflow recipes.
 
 ## Before the first agent audit
 

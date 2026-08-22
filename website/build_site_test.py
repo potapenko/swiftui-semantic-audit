@@ -13,6 +13,15 @@ from website import build_site
 
 SITE_URL = "https://example.ondigitalocean.app/"
 BUILD_MARKER = "0123456789abcdef"
+INSTALL_GUIDE_URL = (
+    "https://github.com/potapenko/swiftui-semantic-audit/"
+    "blob/master/docs/getting-started/installation.md"
+)
+SETUP_PROMPT = (
+    "Install SwiftUI Semantic Audit from this GitHub guide. Install Homebrew "
+    "first if needed, then the CLI and all four agent skills:\n"
+    f"{INSTALL_GUIDE_URL}"
+)
 
 
 def png(width: int, height: int) -> bytes:
@@ -236,15 +245,35 @@ class ProductionPageContractTests(unittest.TestCase):
                     f"missing local page reference: {reference}",
                 )
 
-        self.assertEqual(len(probe.copy_controls), 2)
+        self.assertEqual(
+            probe.copy_controls,
+            [("agent-setup-prompt", "agent-setup-status")],
+        )
         for target, status in probe.copy_controls:
             self.assertIn(target, known_ids)
             self.assertIn(status, known_ids)
 
         self.assertIn('<main id="main-content">', source)
         self.assertIn('<section id="install"', source)
-        self.assertIn("brew install potapenko/tap/swiftui-semantic-audit", source)
-        self.assertIn("the user-facing\nswiftui-semantic skill", source)
+        install = source.split('<section id="install"', 1)[1].split("</section>", 1)[0]
+        self.assertIn(
+            '<h2 id="install-title">Install with one prompt</h2>',
+            install,
+        )
+        self.assertNotIn('class="step-number"', install)
+        self.assertIn(
+            f'<pre id="agent-setup-prompt" tabindex="0"><code>{SETUP_PROMPT}</code></pre>',
+            install,
+        )
+        self.assertIn(
+            '<pre id="install-cli-command" tabindex="0"><code>'
+            "brew install potapenko/tap/swiftui-semantic-audit</code></pre>",
+            install,
+        )
+        self.assertIn('<h3 id="install-cli-title">CLI only</h3>', install)
+        self.assertIn(f'href="{INSTALL_GUIDE_URL}"', install)
+        self.assertNotIn('class="install-next"', install)
+        self.assertNotIn("189dc44c928f7f61b393f6e4ca7d8f6f5d183a48", source)
         self.assertIn("One skill to invoke", source)
         self.assertIn("Which skill should I use?", source)
         self.assertNotIn("$swiftui-semantic-audit", source)

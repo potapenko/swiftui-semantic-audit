@@ -633,69 +633,45 @@ selection: <span class="syntax-type">Binding</span>(
         <div class="section-heading split-heading">
           <div>
             <p class="eyebrow">Installation</p>
-            <h2 id="install-title">Add the skill to Codex or Claude Code</h2>
+            <h2 id="install-title">Install with one prompt</h2>
           </div>
-          <p>The skill is the interface. It uses a local evidence engine installed through Homebrew.</p>
+          <p>Paste one short setup request into Codex or Claude Code. The agent can install Homebrew if needed, then the CLI and all four skills.</p>
         </div>
 
         <div class="install-grid">
-          <article class="install-step">
+          <article class="install-step install-primary">
             <header>
-              <span class="step-number">1</span>
-              <div><h3>Install the local evidence engine</h3><p>macOS 13 or later, Homebrew, and Xcode 26.6.</p></div>
-            </header>
-            <div class="copy-block">
-              <button class="copy-button" type="button" data-copy-target="install-cli-command" aria-describedby="install-cli-status">
-                <img src="assets/icons/copy.svg" alt="" aria-hidden="true">
-                <span>Copy</span>
-              </button>
-              <pre id="install-cli-command" tabindex="0"><code>brew install potapenko/tap/swiftui-semantic-audit
-swiftui-audit --version</code></pre>
-            </div>
-            <p id="install-cli-status" class="copy-status" aria-live="polite"></p>
-            <p class="install-note">The formula builds the tagged package from source and installs only <code>swiftui-audit</code>.</p>
-          </article>
-
-          <article class="install-step">
-            <header>
-              <span class="step-number">2</span>
-              <div><h3>Add <code>swiftui-semantic</code> to the agent</h3><p>Paste this bounded setup request into Codex or Claude Code.</p></div>
+              <h3>Paste into Codex or Claude Code</h3>
+              <div class="install-primary-actions">
+                <button class="copy-button" type="button" data-copy-target="agent-setup-prompt" aria-describedby="agent-setup-status">
+                  <img src="assets/icons/copy.svg" alt="" aria-hidden="true">
+                  <span>Copy setup prompt</span>
+                </button>
+                <a class="install-guide-link" href="https://github.com/potapenko/swiftui-semantic-audit/blob/master/docs/getting-started/installation.md">
+                  Full guide
+                  <img src="assets/icons/external-link.svg" alt="" aria-hidden="true">
+                </a>
+              </div>
             </header>
             <div class="copy-block copy-block-prompt">
-              <button class="copy-button" type="button" data-copy-target="agent-setup-prompt" aria-describedby="agent-setup-status">
-                <img src="assets/icons/copy.svg" alt="" aria-hidden="true">
-                <span>Copy prompt</span>
-              </button>
-              <pre id="agent-setup-prompt" tabindex="0"><code>Install the SwiftUI Semantic workflow for release 0.5.0: the user-facing
-swiftui-semantic skill and its three internal specialists.
-The CLI is already managed by Homebrew; verify `swiftui-audit --version` first.
-Read and follow the tagged installation guide:
-https://github.com/potapenko/swiftui-semantic-audit/blob/0.5.0/docs/getting-started/installation.md
-Clone only tag 0.5.0 from
-https://github.com/potapenko/swiftui-semantic-audit.git into a stable user-owned path.
-Before linking anything, verify the origin, tag, and exact commit
-189dc44c928f7f61b393f6e4ca7d8f6f5d183a48.
-Detect this agent host and link the router and its three sibling specialist skill
-directories into its documented personal skill directory. Do not overwrite,
-delete, move, or repoint
-an existing path. Finish with the tag, commit, CLI version, installed paths,
-host, and verification receipt.</code></pre>
+              <pre id="agent-setup-prompt" tabindex="0"><code>Install SwiftUI Semantic Audit from this GitHub guide. Install Homebrew first if needed, then the CLI and all four agent skills:
+https://github.com/potapenko/swiftui-semantic-audit/blob/master/docs/getting-started/installation.md</code></pre>
             </div>
             <p id="agent-setup-status" class="copy-status" aria-live="polite"></p>
-            <p class="install-note">You invoke one skill. Setup keeps its internal workflows available and stops on version, source, or destination conflicts.</p>
           </article>
+
+          <aside class="install-cli-row" aria-labelledby="install-cli-title">
+            <div class="install-cli-copy">
+              <img src="assets/icons/terminal-2.svg" alt="" aria-hidden="true">
+              <div>
+                <h3 id="install-cli-title">CLI only</h3>
+                <p>Homebrew installs just the local <code>swiftui-audit</code> evidence engine.</p>
+              </div>
+            </div>
+            <pre id="install-cli-command" tabindex="0"><code>brew install potapenko/tap/swiftui-semantic-audit</code></pre>
+          </aside>
         </div>
 
-        <div class="install-next">
-          <div>
-            <img src="assets/icons/terminal-2.svg" alt="" aria-hidden="true">
-            <p><strong>Then ask normally.</strong> Start an explanation, refactor, or review with <code>$swiftui-semantic</code> in Codex or <code>/swiftui-semantic</code> in Claude Code. The skill handles the workflow.</p>
-          </div>
-          <a class="button button-secondary" href="https://github.com/potapenko/swiftui-semantic-audit/blob/0.5.0/docs/getting-started/first-audit.md">
-            Run the first audit
-            <img src="assets/icons/external-link.svg" alt="" aria-hidden="true">
-          </a>
-        </div>
       </div>
     </section>
 

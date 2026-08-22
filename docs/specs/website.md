@@ -2,9 +2,9 @@
 
 - Node type: hybrid
 - Status: Active
-- Contract revision: `spec-6`
-- Authority: user-authorized website addenda on 2026-08-19 plus `RELEASE-0.5.0-001` on 2026-08-20
-- Stability: released at the canonical domain
+- Contract revision: `spec-7`
+- Authority: user-authorized website addenda through `INSTALL-UX-001` on 2026-08-22
+- Stability: released baseline; `INSTALL-UX-001` evolving until publication
 - Read when: designing, implementing, publishing, or verifying the product website.
 - Do not read when: work is limited to the Swift package, CLI, rules, or agent skills.
 - Maximum size: 100 physical lines.
@@ -46,6 +46,13 @@ details; product and installation semantics do not change.
 version, tagged links, thirty-rule count, and installation prompt after the
 GitHub/Homebrew release is terminal. It does not change layout, narrative,
 examples, interaction, assets, accessibility, or deployment mechanics.
+
+**WEB-DELTA-007 — One-prompt installation.** `INSTALL-UX-001` replaces the
+prior public setup with one short agent prompt that reads the GitHub guide.
+The agent installs Homebrew first when absent, the CLI through Homebrew, and
+then all four skills as a separately owned phase. The guide pins installation
+artifacts to release 0.5.0. The formula remains CLI-only and must never modify
+agent-host directories.
 
 ## Choose the governing child
 

@@ -1,6 +1,6 @@
 # Installation
 
-SwiftUI Semantic Audit 0.5.0 installs the CLI through the upstream Homebrew tap. Agent skills are optional, remain a separate operator-owned step, and are pinned to the same immutable release tag.
+SwiftUI Semantic Audit 0.5.0 installs the CLI through the upstream Homebrew tap. A local Codex or Claude Code agent can follow this page end to end. Homebrew and the four agent skills remain separately owned and are pinned to the same immutable release.
 
 ## Requirements
 
@@ -19,6 +19,10 @@ swift --version
 xcode-select -p
 git --version
 ```
+
+If `brew --version` fails, install Homebrew by following the current official
+instructions at [brew.sh](https://brew.sh/), then verify `brew --version`
+before continuing.
 
 ## Homebrew CLI installation
 
@@ -39,53 +43,26 @@ brew upgrade potapenko/tap/swiftui-semantic-audit
 brew uninstall potapenko/tap/swiftui-semantic-audit
 ```
 
-## Agent-assisted skill installation
+## Agent skill installation
 
-The recommended skill installer is the [copy-paste recipe in the agent prompt library](agent-prompts.md#install-the-agent-skills). It tells the current agent to:
-
-- clone the immutable `0.5.0` tag into a stable user-owned location;
-- verify the exact tag and commit;
-- verify the Homebrew-installed CLI version;
-- detect Codex or Claude Code and use its documented personal skill directory;
-- symlink all four skills without overwriting anything;
-- verify the binary, router links, and `doctor` output.
-
-The prompt stops on conflicts. This protects an existing install from being silently replaced.
-
-## Locked source fallback
-
-Choose an empty stable source directory and a user-owned bin directory. This block runs in a subshell and exits before cloning or installing when either destination already exists:
+Homebrew does not contain the skills. After the CLI passes, clone the immutable
+release into a stable user-owned directory. This step does not build or install
+another CLI. It stops if the destination exists and verifies the release commit:
 
 ```bash
 (
   set -euo pipefail
   install_root="$HOME/.local/share/swiftui-semantic-audit/0.5.0"
-  bin_dir="$HOME/.local/bin"
+  repository="https://github.com/potapenko/swiftui-semantic-audit.git"
+  expected_commit="e460237d1175a0007c6cf91af34898637fdeedb2"
 
   test ! -e "$install_root" && test ! -L "$install_root"
-  test ! -e "$bin_dir/swiftui-audit" && test ! -L "$bin_dir/swiftui-audit"
-
-  git clone --branch 0.5.0 --depth 1 \
-    https://github.com/potapenko/swiftui-semantic-audit.git "$install_root"
+  git clone --branch 0.5.0 --depth 1 "$repository" "$install_root"
   cd "$install_root"
-  git rev-parse HEAD
-  git remote get-url origin
-  swift build -c release --disable-automatic-resolution
-
-  mkdir -p "$bin_dir"
-  install -m 0755 .build/release/swiftui-audit "$bin_dir/swiftui-audit"
+  test "$(git remote get-url origin)" = "$repository"
+  test "$(git rev-parse HEAD)" = "$expected_commit"
 )
 ```
-
-If that directory is not already on `PATH`, add it for the current shell before verification:
-
-```bash
-export PATH="$HOME/.local/bin:$PATH"
-```
-
-Decide separately whether to persist that line in the appropriate shell configuration file.
-
-## Manual skill installation
 
 The repository contains one router and three specialists:
 
@@ -130,6 +107,39 @@ Preflight every target before creating any link, then create all four as one ope
 ```
 
 Both [Codex](https://learn.chatgpt.com/docs/build-skills) and [Claude Code](https://code.claude.com/docs/en/skills) document symlinked personal skill directories. Restart the host only if the new top-level skill directory is not detected in the current session.
+
+## Locked source fallback
+
+Use this only when the Homebrew CLI path is unavailable. It builds the CLI from
+the same verified release clone without changing the four skill links. Choose a
+user-owned bin directory and stop if the executable destination already exists:
+
+```bash
+(
+  set -euo pipefail
+  install_root="$HOME/.local/share/swiftui-semantic-audit/0.5.0"
+  bin_dir="$HOME/.local/bin"
+
+  test -d "$install_root/.git"
+  test "$(git -C "$install_root" rev-parse HEAD)" = \
+    "e460237d1175a0007c6cf91af34898637fdeedb2"
+  test ! -e "$bin_dir/swiftui-audit" && test ! -L "$bin_dir/swiftui-audit"
+
+  swift build --package-path "$install_root" -c release \
+    --disable-automatic-resolution
+  mkdir -p "$bin_dir"
+  install -m 0755 "$install_root/.build/release/swiftui-audit" \
+    "$bin_dir/swiftui-audit"
+)
+```
+
+If that directory is not already on `PATH`, add it for the current shell before verification:
+
+```bash
+export PATH="$HOME/.local/bin:$PATH"
+```
+
+Decide separately whether to persist that line in the appropriate shell configuration file.
 
 ## Verify
 

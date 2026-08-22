@@ -2,7 +2,7 @@
 
 - Node type: leaf
 - Status: Active
-- Contract revision: `spec-4`
+- Contract revision: `spec-5`
 - Authority: [Website contract](../website.md)
 - Maximum size: 100 physical lines.
 
@@ -15,13 +15,13 @@ changes, not a linter score, automatic correctness, or the number of rules.
 
 **WEB-GOAL-002.** A visitor should understand the product, see one concrete
 problem/evidence/safer-shape chain, understand the agent workflow and limits,
-and reach the exact two-step installation path without reading the full README.
+and reach one short agent setup prompt without reading the full README.
 
 ## Narrative and examples
 
 **WEB-STORY-001.** Preserve this order: paper hero; full-bleed semantic X-ray;
 three compact annotated examples; one protected case; audit/refactor/review;
-semantic diff proof; grouped rule map; trust and limits; two-step install; FAQ.
+semantic diff proof; grouped rule map; trust and limits; one-prompt install; FAQ.
 
 **WEB-STORY-002.** The X-ray uses the accepted duplicate-owner topology:
 external Binding, local State, lifecycle copy, reciprocal synchronization,
@@ -42,6 +42,12 @@ through installation as the product's primary interface. Show concrete SwiftUI
 requests a visitor can give that one skill; do not present the CLI, router, or
 specialist workflows as co-equal user choices. Tagged setup may disclose its
 dependencies, but no automatic-understanding claim is allowed.
+
+**WEB-INSTALL-001.** Lead with one short prompt that tells the local agent to
+read the GitHub guide, install Homebrew first if absent, install the CLI through
+Homebrew, and then install all four skills pinned to release 0.5.0. Keep those
+phases separately owned: Homebrew installs only the CLI and must never modify an
+agent host directory. A compact CLI-only command and the full guide remain secondary.
 
 ## Visual and interaction contract
 

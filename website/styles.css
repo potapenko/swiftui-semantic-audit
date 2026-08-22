@@ -1232,43 +1232,50 @@ tbody td {
 }
 
 .install {
+  padding: clamp(3.25rem, 5vw, 4.5rem) 0;
   border-top: 1px solid var(--line-strong);
   background: var(--surface);
 }
 
-.install-grid {
+.install .section-heading {
+  margin-bottom: clamp(1.5rem, 3vw, 2.25rem);
+}
+
+.install .install-grid {
   display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.75rem;
+}
+
+.install .install-step {
+  min-width: 0;
+  padding: clamp(1.25rem, 2.2vw, 1.75rem);
+  border: 1px solid var(--line-strong);
+  border-left: 3px solid var(--blue);
+  background: var(--paper);
+  box-shadow: var(--shadow-small);
+}
+
+.install .install-step > header {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.8rem 1.5rem;
+  margin-bottom: 1rem;
+}
+
+.install .install-step header h3 {
+  margin-bottom: 0;
+  font-size: clamp(1.25rem, 2.4vw, 1.75rem);
+}
+
+.install .install-primary-actions {
+  display: flex;
+  align-items: center;
   gap: 1rem;
 }
 
-.install-step {
-  min-width: 0;
-  padding: clamp(1.25rem, 3vw, 2rem);
-  border: 1px solid var(--line);
-  background: var(--paper);
-}
-
-.install-step > header {
-  display: grid;
-  grid-template-columns: auto 1fr;
-  gap: 0.8rem;
-  align-items: start;
-  margin-bottom: 1.2rem;
-}
-
-.install-step header h3 {
-  margin-bottom: 0.25rem;
-  font-size: 1rem;
-}
-
-.install-step header p {
-  margin-bottom: 0;
-  color: var(--muted);
-  font-size: 0.78rem;
-}
-
-.copy-block {
+.install .copy-block {
   position: relative;
   overflow: hidden;
   border: 1px solid var(--analysis-line);
@@ -1276,31 +1283,24 @@ tbody td {
   background: var(--analysis);
 }
 
-.copy-block pre {
-  padding: 1.1rem;
+.install .copy-block pre {
+  padding: clamp(1rem, 2vw, 1.3rem);
   color: var(--analysis-text);
-  font-size: 0.76rem;
-  line-height: 1.62;
+  font-size: clamp(0.72rem, 1.25vw, 0.86rem);
+  line-height: 1.7;
+  overflow-wrap: anywhere;
+  white-space: pre-wrap;
 }
 
-.copy-block-prompt pre {
-  max-height: 17.5rem;
-  padding-top: 3.4rem;
-}
-
-.copy-button {
+.install .copy-button {
   display: none;
 }
 
-.js .copy-button {
-  position: absolute;
-  z-index: 2;
-  top: 0.6rem;
-  right: 0.6rem;
+.js .install .copy-button {
   display: inline-flex;
   align-items: center;
   gap: 0.4rem;
-  padding: 0.42rem 0.58rem;
+  padding: 0.5rem 0.68rem;
   border: 1px solid var(--analysis-line);
   border-radius: 3px;
   background: var(--analysis-panel-2);
@@ -1310,57 +1310,91 @@ tbody td {
   cursor: pointer;
 }
 
-.copy-button:hover {
+.install .copy-button:hover {
   border-color: var(--analysis-blue);
 }
 
-.copy-button img {
+.install .copy-button img {
   width: 0.95rem;
   height: 0.95rem;
   filter: brightness(0) invert(1);
 }
 
-.copy-status {
-  min-height: 1.4rem;
-  margin: 0.4rem 0 0;
+.install .copy-status {
+  min-height: 1rem;
+  margin: 0.3rem 0 0;
   color: var(--green);
   font-size: 0.72rem;
   font-weight: 700;
 }
 
-.install-note {
-  margin-bottom: 0;
-  color: var(--muted);
+.install .install-guide-link {
+  display: inline-flex;
+  flex: 0 0 auto;
+  align-items: center;
+  gap: 0.35rem;
+  color: var(--blue-dark);
   font-size: 0.76rem;
+  font-weight: 750;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 0.18em;
 }
 
-.install-next {
-  display: flex;
+.install .install-guide-link img {
+  width: 0.95rem;
+  height: 0.95rem;
+  filter: invert(28%) sepia(95%) saturate(2782%) hue-rotate(212deg) brightness(91%) contrast(97%);
+}
+
+.install .install-cli-row {
+  min-width: 0;
+  display: grid;
+  grid-template-columns: minmax(15rem, 0.72fr) minmax(0, 1.28fr);
+  gap: 1rem;
   align-items: center;
-  justify-content: space-between;
-  gap: 1.5rem;
-  margin-top: 1rem;
-  padding: 1.2rem;
+  padding: 0.85rem 1rem;
   border: 1px solid var(--line);
   background: var(--canvas);
 }
 
-.install-next > div {
+.install .install-cli-copy {
   display: flex;
-  gap: 0.7rem;
+  gap: 0.75rem;
   align-items: flex-start;
 }
 
-.install-next > div img {
-  width: 1.35rem;
-  height: 1.35rem;
+.install .install-cli-copy > img {
+  width: 1.3rem;
+  height: 1.3rem;
+  flex: 0 0 auto;
   filter: invert(28%) sepia(95%) saturate(2782%) hue-rotate(212deg) brightness(91%) contrast(97%);
 }
 
-.install-next p {
+.install .install-cli-copy h3 {
+  margin-bottom: 0.25rem;
+  font-size: 0.9rem;
+  letter-spacing: -0.02em;
+  line-height: 1.2;
+}
+
+.install .install-cli-copy p {
   margin-bottom: 0;
-  color: var(--ink-soft);
-  font-size: 0.82rem;
+  color: var(--muted);
+  font-size: 0.75rem;
+  line-height: 1.45;
+}
+
+.install .install-cli-row pre {
+  min-width: 0;
+  padding: 0.78rem 0.9rem;
+  border: 1px solid var(--analysis-line);
+  border-radius: 3px;
+  background: var(--analysis);
+  color: var(--analysis-text);
+  font-size: clamp(0.65rem, 1.1vw, 0.76rem);
+  line-height: 1.55;
+  overflow-wrap: anywhere;
+  white-space: pre-wrap;
 }
 
 .faq {
@@ -1606,8 +1640,7 @@ tbody td {
   }
 
   .protected-panel,
-  .workflow-list,
-  .install-grid {
+  .workflow-list {
     grid-template-columns: 1fr;
   }
 
@@ -1629,9 +1662,17 @@ tbody td {
     grid-template-columns: repeat(2, 1fr);
   }
 
-  .install-next {
+  .install .install-cli-row {
+    grid-template-columns: 1fr;
+  }
+
+  .install .install-step > header {
     align-items: flex-start;
     flex-direction: column;
+  }
+
+  .install .install-primary-actions {
+    width: 100%;
   }
 
   .footer-grid {
@@ -1729,12 +1770,16 @@ tbody td {
     border-bottom: 0;
   }
 
-  .install-step {
+  .install .install-step {
     padding: 1rem;
   }
 
-  .copy-block pre {
+  .install .copy-block pre {
     font-size: 0.69rem;
+  }
+
+  .install .install-cli-row {
+    padding: 0.9rem 1rem;
   }
 
   .footer-meta {
