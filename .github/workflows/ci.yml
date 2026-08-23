@@ -432,6 +432,14 @@ jobs:
             echo "persisted snapshot slice unexpectedly accepted live-source options" >&2
             exit 1
           fi
+          if swift run --disable-automatic-resolution swiftui-audit slice \
+            "$RUNNER_TEMP/rule-snapshot-first" --finding "$finding_id" \
+            --syntax-only --format llm-json \
+            > "$RUNNER_TEMP/invalid-persisted-slice-resolution.out" \
+            2> "$RUNNER_TEMP/invalid-persisted-slice-resolution.err"; then
+            echo "persisted snapshot slice unexpectedly accepted a live resolution option" >&2
+            exit 1
+          fi
           python3 - <<'PY'
           import json
           import os
@@ -448,7 +456,10 @@ jobs:
 
           doctor_help = (root / "doctor-help.txt").read_text()
           diff_help = (root / "diff-help.txt").read_text()
-          live_options = ("--index-store", "--config", "--cache-directory", "--no-cache", "--jobs")
+          live_options = (
+              "--index-store", "--syntax-only", "--config",
+              "--cache-directory", "--no-cache", "--jobs",
+          )
           for option in live_options:
               assert option not in doctor_help
           for command in ("scan", "audit", "snapshot", "slice", "check"):
@@ -464,9 +475,13 @@ jobs:
           invalid_doctor = (root / "invalid-doctor.err").read_text()
           invalid_doctor_config = (root / "invalid-doctor-config.err").read_text()
           invalid_persisted_slice = (root / "invalid-persisted-slice.err").read_text()
+          invalid_persisted_resolution = (
+              root / "invalid-persisted-slice-resolution.err"
+          ).read_text()
           assert "Unknown option '--index-store'" in invalid_doctor
           assert "Unknown option '--config'" in invalid_doctor_config
           assert "apply only when slicing live source" in invalid_persisted_slice
+          assert "apply only when slicing live source" in invalid_persisted_resolution
           PY
 
       - name: Validate skills, YAML, and relative links

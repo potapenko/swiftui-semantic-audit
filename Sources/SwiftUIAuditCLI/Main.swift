@@ -125,9 +125,12 @@ struct Slice: ParsableCommand {
         let report: AuditReport
         switch resolved {
         case .snapshot(let url):
-            if resolution.indexStore != nil || resolution.config != nil || resolution.cacheDirectory != nil ||
+            if resolution.syntaxOnly || resolution.indexStore != nil || resolution.config != nil ||
+                resolution.cacheDirectory != nil ||
                 resolution.noCache || resolution.jobs != nil {
-                throw ValidationError("index, config, cache, and jobs options apply only when slicing live source")
+                throw ValidationError(
+                    "resolution, index, config, cache, and jobs options apply only when slicing live source"
+                )
             }
             let snapshot = try SnapshotReader().read(from: url)
             graph = snapshot.graph

@@ -461,6 +461,19 @@ final class SymbolResolutionTests: XCTestCase {
         XCTAssertTrue(mixedDiff.standardOutput.isEmpty)
         XCTAssertTrue(mixedDiff.errorString.contains("resolution mismatch"))
 
+        let snapshotSymbol = try XCTUnwrap(syntax.nodes.first?.id)
+        let persistedSliceWithLiveResolution = try runner.run(
+            executable.path,
+            arguments: [
+                "slice", syntaxSnapshot.path, "--symbol", snapshotSymbol,
+                "--syntax-only", "--format", "llm-json",
+            ],
+            timeout: 30
+        )
+        XCTAssertEqual(persistedSliceWithLiveResolution.status, 64)
+        XCTAssertTrue(persistedSliceWithLiveResolution.standardOutput.isEmpty)
+        XCTAssertTrue(persistedSliceWithLiveResolution.errorString.contains("apply only when slicing live source"))
+
         let revisionRepository = fixture.container.appendingPathComponent("Revision", isDirectory: true)
         try FileManager.default.createDirectory(at: revisionRepository, withIntermediateDirectories: true)
         try "struct Baseline {}\n".write(
