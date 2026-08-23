@@ -2,7 +2,7 @@
 
 - Node type: leaf
 - Status: Active
-- Contract revision: `spec-13`
+- Contract revision: `spec-14`
 - Authority: [Release and publication baseline](../release-baseline.md)
 - Read when: checking realized behavior, canonical evidence hashes, or accepted product limits.
 - Do not read when: only dependency history, milestones, or addendum acceptance evidence is needed.
@@ -26,11 +26,11 @@
 | `edges.jsonl` | `e1ba91905742c9a088790b35e18a46ae5a566254af7728484738ed8ad13a6bf2` |
 | `findings.jsonl` | `9d9305389503bffcaa70651fa233ebb372ef0d4f7edd2bf1901c353a0391c7b3` |
 | `summary.json` | `b37146210fbf1a690985d89c2f617ef892727d8f4597087abaed1739dbc15177` |
-| `manifest.json` | `f1609cc0c0a6d78be4c10fea8a10275ea68b420dfd2594eec97409750dfc189a` |
+| `manifest.json` | `31d8339578f51c5494f9e09c57c7bfa74837772dfcb15b56c7a54e818208ed60` |
 
 **BASE-CAP-006.** The current P1 extraction fixture contains 42 nodes and 83 edges (SHA-256 `ae2f86326085816ee62f9d3fcf8a1531f007df80d2f60a895d2a9f1ea7241ceb`). Schema v2 adds bounded typed/value-flow facts while preserving accepted lexical behavior: identity for an unshadowed nested `onChange` parameter capture, a same-name nested parameter as a shadow barrier, and derivation for transformed captures.
 
-**BASE-CAP-007.** Current syntax-only Sources dogfood produces 4,470 nodes and 11,674 edges (SHA-256 `4f6ebc0ec9e18a5f102bde459bf02a7b5cf7691f45c12b8811f485ccda22c03e`). Its audit has zero findings and SHA-256 `2a43115910dfa518a16d8f28eedd0d098c416fdc4669eaca50fe499ccce36300`.
+**BASE-CAP-007.** Candidate 0.6.1 syntax-only Sources dogfood at `2c07df251390cbda3fc3a277ce3d61fc897d4a44` produces 5,212 nodes and 13,782 edges (SHA-256 `da64dfdd976ceb232fcd6e9d12dade29f8aeb76c9d1958007a21281c79ab9a52`). Its audit reports tool version 0.6.1, has zero findings, and has SHA-256 `831144153a62e73ae9623adbf34774f134812c3c39112267300c511015f7215b`.
 
 **BASE-CAP-008.** The accepted value-setter evidence repair leaves counts and metrics unchanged while retaining each matching event-trigger edge in its finding. `LabeledSetter` is `finding:871672afc5e64d2` with `edge:df78fa011860918b`; `ValueSetterPair` is `finding:c988942f3dcf8158` with `edge:fec6154e7fee5d1f`. This records current evidence completeness and does not add another rule.
 

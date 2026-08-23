@@ -2,7 +2,7 @@
 
 - Node type: root
 - Status: Active
-- Contract revision: `spec-29`
+- Contract revision: `spec-30`
 - Authority: epoch `tz-v24` and pinned digest declared below
 - Read when: starting any product, behavior, compatibility, QA, release, or specification task in this repository.
 - Do not read when: the task is proven behavior-neutral and outside the specification system.
@@ -10,7 +10,7 @@
 
 Status: active  
 Contract epoch: `tz-v24`
-Local specification revision: `spec-29`
+Local specification revision: `spec-30`
 Pinned authority digest: `sha256:68f8a43d924659024b7d29fabb9ad302817c271838a7919b24bd942626927cac`  
 Router addendum: user-authorized `ROUTER-001` on 2026-08-18
 Indexed-skills addendum: user-authorized `INDEXED-SKILLS-001` on 2026-08-18
@@ -30,7 +30,7 @@ Artifact-hygiene addendum: user-authorized [`ARTIFACT-HYGIENE-001`](../coordinat
 Project-watcher addendum: user-authorized [`PROJECT-WATCHER-001`](../coordination/project-watcher-001.md) on 2026-08-22; advances the combined contract to `tz-v17`
 Semantic-twin story addenda: user-authorized [`SEMANTIC-TWIN-STORY-001`](../coordination/semantic-twin-story-001.md) and capability-preservation correction [`SEMANTIC-TWIN-CAPABILITIES-001`](../coordination/semantic-twin-capabilities-001.md) on 2026-08-22; advance the combined contract to `tz-v19`
 Release addendum: user-authorized [`RELEASE-0.6.0-001`](../coordination/release-0.6.0.md) on 2026-08-23; advances the combined contract to `tz-v20`; copy-control addenda: user-authorized `COPY-CONTROLS-001` and placement correction `COPY-CONTROLS-RIGHT-001` on 2026-08-23; advance the website contract through `tz-v22`; compatible source repair: user-authorized [`PROJECT-WATCHER-INTEGRATION-001`](../coordination/project-watcher-integration-001.md) on 2026-08-23; advances the combined contract to `tz-v23`; patch-candidate addendum: user-authorized [`RELEASE-0.6.1-001`](../coordination/release-0.6.1.md) on 2026-08-23; advances the combined contract to `tz-v24` without publishing or changing website behavior
-Release baseline: `0.6.0 current public`; immutable release artifacts: `0.4.0`, `0.5.0`, and `0.6.0`; current source: unpublished 0.6.1 patch candidate; website baseline: canonical domain carries verified 0.6.0 release facts; project-watcher 0.6.0 is Released through `BASE-REL-015`; semantic-twin story candidate remains separately evolving
+Release baseline: `0.6.0 current public`; immutable release artifacts: `0.4.0`, `0.5.0`, and `0.6.0`; current source: locally accepted unpublished 0.6.1 patch candidate at `2c07df251390cbda3fc3a277ce3d61fc897d4a44`; website baseline: canonical domain carries verified 0.6.0 release facts; project-watcher 0.6.0 is Released through `BASE-REL-015`; semantic-twin story candidate remains separately evolving
 
 This directory is the self-contained active specification package for SwiftUI Semantic Audit. It faithfully restates the user-approved Russian ТЗ without expanding product semantics. Clause IDs are stable references for implementation, review, and QA.
 
@@ -57,9 +57,9 @@ A local spec edit cannot authorize a semantic change. Any semantic delta require
 | [`project-runtime.md`](project-runtime.md) | Project bootstrap, watcher freshness, lifecycle, runtime state, and baseline promotion | `PROJECT-WATCHER-001` plus `PROJECT-WATCHER-INTEGRATION-001` | active / Released schema 1 plus 0.6.1 repair candidate | Continuous project analysis | 0.6.0 public / 0.6.1 candidate |
 | [`rules.md`](rules.md) | Thirty rules, severities, exclusions, adjudication | Normative restatement plus boundary, architecture, and component addenda | active / released rule set | Auditing, classifying, refactoring | 0.5.0 |
 | [`cli.md`](cli.md) | Commands, flags, resolution, stdout/status, path/failure policy | Normative restatement plus authorized addenda | active / CLI 0.6.0 public plus 0.6.1 source candidate | Running or documenting commands | seven analysis commands plus project namespace |
-| [`acceptance.md`](acceptance.md) | Fixtures, determinism, skills, CI, Definition of Done | Normative acceptance map for ТЗ §§44–51 plus authorized addenda through `RELEASE-0.6.1-001` | active | Implementing or verifying | 93 XCTest plus 15 Swift Testing candidate cases; public receipts remain `BASE-REL-015` |
+| [`acceptance.md`](acceptance.md) | Fixtures, determinism, skills, CI, Definition of Done | Normative acceptance map for ТЗ §§44–51 plus authorized addenda through `RELEASE-0.6.1-001` | active | Implementing or verifying | 93 XCTest plus 15 Swift Testing candidate cases locally terminal; public receipts remain `BASE-REL-015` |
 | [`evidence-map.md`](evidence-map.md) | Clause ownership and all-54-section plus authorized-addendum coverage | Governance map | active | Tracing authority to evidence | P1–P18 map |
-| [`release-baseline.md`](release-baseline.md) | Current realization, dependency pins, residuals | Descriptive evidence; never higher than normative contracts | active / 0.6.0 released plus 0.6.1 candidate | Release/readiness/status work | 0.6.0 public tool/site; local candidate evidence separate |
+| [`release-baseline.md`](release-baseline.md) | Current realization, dependency pins, residuals | Descriptive evidence; never higher than normative contracts | active / 0.6.0 released plus locally accepted 0.6.1 candidate | Release/readiness/status work | 0.6.0 public tool/site; hosted and publication candidate evidence pending |
 | [`website.md`](website.md) | English landing-page experience, claims, semantic-twin story, build, deployment, and QA | Website addenda through `RELEASE-0.6.0-001` | active / verified 0.6.0 release facts; corrected semantic-twin story evolving | Designing, implementing, publishing, or reviewing the website | canonical domain at `BASE-REL-015` |
 
 ## Domain ownership

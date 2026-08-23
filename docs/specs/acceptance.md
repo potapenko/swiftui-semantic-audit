@@ -2,14 +2,14 @@
 
 - Node type: branch
 - Status: Active
-- Contract revision: `spec-17`
+- Contract revision: `spec-18`
 - Read when: selecting fixture, build, determinism, safety, dogfood, skill, CI, or completion obligations.
 - Do not read when: the task does not implement or verify accepted behavior.
 - Maximum size: 100 physical lines.
 
-Revision: `spec-17`
+Revision: `spec-18`
 Status: active  
-Release state: 0.6.0 is the current public release and 0.4.0/0.5.0/0.6.0 artifacts are immutable; 0.6.1 is an unpublished local candidate whose public/hosted gates remain nonterminal
+Release state: 0.6.0 is the current public release and 0.4.0/0.5.0/0.6.0 artifacts are immutable; 0.6.1 is a locally accepted unpublished candidate at `2c07df251390cbda3fc3a277ce3d61fc897d4a44`, while hosted and public gates remain nonterminal
 
 ## Choose the governing child
 

@@ -2,12 +2,12 @@
 
 - Node type: hybrid
 - Status: Active
-- Contract revision: `spec-20`
+- Contract revision: `spec-21`
 - Read when: checking the current 0.6.0 release, immutable earlier releases, dependencies, milestones, capabilities, residuals, or acceptance evidence.
 - Do not read when: the task concerns intended behavior without realization or release evidence.
 - Maximum size: 100 physical lines.
 
-Revision: `spec-20`
+Revision: `spec-21`
 Baseline state: `0.6.0 released and immutable; 0.6.1 is an unpublished local candidate; canonical website carries verified 0.6.0 release facts`
 Contract epoch: `tz-v24`
 Website contract epoch: `tz-v22`
@@ -42,7 +42,7 @@ Website contract epoch: `tz-v22`
 
 **BASE-REL-015 — 0.6.0 publication receipt.** Immutable annotated tag `0.6.0` peels to release commit `25f88c17ece5014666103be60045a7097e9a308c`; [tag CI `32626212999`](https://github.com/potapenko/swiftui-semantic-audit/actions/runs/32626212999) and [published-master CI `32627491920`](https://github.com/potapenko/swiftui-semantic-audit/actions/runs/32627491920) passed. The public [GitHub Release](https://github.com/potapenko/swiftui-semantic-audit/releases/tag/0.6.0) asset `swiftui-semantic-audit-0.6.0.tar.gz` has SHA-256 `159eec10916643bc14594c10d3b801bfe892500cadd7060607494064cb947210`; clean extraction Release build/version passed, and full tests passed after initializing Git metadata in the otherwise unchanged extracted tree. Tap commit `0f85f4b0186086c54047e03b0f2f81e36a240ae2` is public; [tap push CI `32626814680`](https://github.com/potapenko/homebrew-tap/actions/runs/32626814680) passed and [hosted source-install run `32626885853`](https://github.com/potapenko/homebrew-tap/actions/runs/32626885853) installed from source, ran `brew test`, and verified `0.6.0`. On macOS 26.6 arm64 with Xcode 26.6, local Homebrew source upgrade, functional test, `--version`, help, and healthy doctor passed; all four active Codex skill links resolve to the immutable clone at `~/.local/share/swiftui-semantic-audit/0.6.0/skills`, with tag-CI `quick_validate.py` and local YAML/link/invocation validation terminal. DigitalOcean deployment `6edd8e96-301f-483d-81a5-24662e8c0874` reached ACTIVE from the release commit; the canonical root returned that exact marker, 0.6.0 release/watcher facts, healthy metadata routes and 404, a path-preserving permanent `www` redirect, and version-neutral social preview SHA-256 `aa6238f4219b3385f1959c41a3163ffe0f319d7e91f173c2512514700f1d68ee`. The direct command remains `brew install potapenko/tap/swiftui-semantic-audit`; no bottles or automatic skill installation are claimed.
 
-**BASE-REL-016 — 0.6.1 local candidate.** User-authorized `RELEASE-0.6.1-001` advances the combined contract to `tz-v24` and assigns the compatible repair at master integration checkpoint `695038f1c76786c03d2751d7f3bc33315b070dcb` an unpublished 0.6.1 candidate identity. Version gates, canonical baselines, router guidance, and local acceptance evidence belong to the candidate checkpoint; hosted CI and every tag/archive/tap/install/skill-activation/site/publication receipt remain absent and must not be inferred.
+**BASE-REL-016 — 0.6.1 local candidate.** User-authorized `RELEASE-0.6.1-001` advances the combined contract to `tz-v24`; integration checkpoint `695038f1c76786c03d2751d7f3bc33315b070dcb` is contained in candidate checkpoint `2c07df251390cbda3fc3a277ce3d61fc897d4a44` on the operator-selected `master`. Local acceptance is terminal: 93 XCTest plus 15 Swift Testing cases, focused ProjectWorkspace/WatcherRuntime suites (8/7), locked Debug tests, Release build/version/help, safe setup preview, fresh 6,286-node/24,551-edge indexed watcher output with zero findings and empty baseline diff, RuleTests determinism/check/doctor, four skill validators plus repository YAML/link checks, 21 protected website tests plus build/deployment dry-run, and `git diff --check` passed. Hosted CI and every tag/archive/tap/install/skill-activation/site/publication receipt remain absent and must not be inferred.
 
 **BASE-WEB-001 — Initial website deployment receipt.** On 2026-08-19,
 DigitalOcean app `ed5742fe-8bca-444f-a55b-abb8d005ff55` reached ACTIVE deployment
