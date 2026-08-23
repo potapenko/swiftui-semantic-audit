@@ -2,8 +2,8 @@
 
 - Node type: hybrid
 - Status: Active
-- Contract revision: `spec-12`
-- Authority: user-authorized website addenda through `RELEASE-0.6.0-001` on 2026-08-23
+- Contract revision: `spec-13`
+- Authority: user-authorized website addenda through `COPY-CONTROLS-001` on 2026-08-23
 - Stability: verified 0.6.0 release facts; semantic-twin story separately evolving
 - Read when: designing, implementing, publishing, or verifying the product website.
 - Do not read when: work is limited to the Swift package, CLI, rules, or agent skills.
@@ -83,6 +83,13 @@ installation boundary remain unchanged.
 decision removes the release badge from the social preview. Public metadata may
 carry the current release version, but the image itself remains reusable across
 releases; its layout, headline, graph, dimensions, and visual system stay fixed.
+
+**WEB-DELTA-012 — Compact actionable copy controls.** `COPY-CONTROLS-001`
+replaces the large setup-prompt action with one shared small, translucent gray
+icon control at the upper-left of each user-applicable block: the three task
+prompts, the setup prompt, and the CLI-only command. Copy success remains
+visually and accessibly reported. Demonstration code, inline terminology,
+prompt text, commands, installation ownership, and release facts stay unchanged.
 
 ## Choose the governing child
 

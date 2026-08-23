@@ -253,7 +253,13 @@ class ProductionPageContractTests(unittest.TestCase):
 
         self.assertEqual(
             probe.copy_controls,
-            [("agent-setup-prompt", "agent-setup-status")],
+            [
+                ("workflow-understand-prompt", "workflow-understand-status"),
+                ("workflow-refactor-prompt", "workflow-refactor-status"),
+                ("workflow-review-prompt", "workflow-review-status"),
+                ("agent-setup-prompt", "agent-setup-status"),
+                ("install-cli-command", "install-cli-status"),
+            ],
         )
         for target, status in probe.copy_controls:
             self.assertIn(target, known_ids)
@@ -293,6 +299,8 @@ class ProductionPageContractTests(unittest.TestCase):
             "brew install potapenko/tap/swiftui-semantic-audit</code></pre>",
             install,
         )
+        self.assertNotIn("<span>Copy setup prompt</span>", install)
+        self.assertEqual(source.count('class="copy-button"'), 5)
         self.assertIn('<h3 id="install-cli-title">CLI only</h3>', install)
         self.assertIn(f'href="{INSTALL_GUIDE_URL}"', install)
         self.assertNotIn('class="install-next"', install)

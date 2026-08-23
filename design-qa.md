@@ -1,5 +1,55 @@
 # Landing page design QA
 
+## Compact actionable copy controls
+
+- Contract epoch: `tz-v21`, user-authorized `COPY-CONTROLS-001`.
+- Target flow: `/` loads → a visitor reaches a use-case prompt or installation
+  command → the compact upper-left icon copies the exact visible text → the
+  icon changes to a check and the live region announces success.
+- Scope: the three task prompts, setup prompt, and CLI-only command. Explanatory
+  SwiftUI samples and inline terminology remain unchanged.
+- The former large `Copy setup prompt` header action is absent. `Full guide`,
+  prompt text, command text, installation ownership, and release facts remain
+  unchanged.
+
+**Visual evidence**
+
+- Browser plugin classification: absent. The frontend QA fallback used an
+  isolated headed Playwright CLI session against the generated local artifact
+  at `http://127.0.0.1:4173/`.
+- A 1280 by 720 CSS-pixel full-page capture was inspected against the selected
+  Annotated X-Ray direction and the previously accepted capability-preserving
+  implementation. It is 1280 by 7643 pixels with SHA-256
+  `da798d6e246f4afb1941df427725ced2a0ac93320da113d2f819305dba32a2af`.
+- Focused desktop evidence: use cases, 1280 by 758,
+  `9d783e73b523e5ef15a7271ad1abafc575b80b842f50a9008f0a2505ddb235c7`;
+  installation, 1280 by 527,
+  `55cf9036e253d85f544041b47ddb90d3d7e85e9fe143b5b417b2aeba0ec4ca9f`.
+- Focused 390-pixel evidence: use cases, 390 by 1307,
+  `c9e2369a244b99b99160b7da1047c6986c7d499db11d0cb03fbad093c7735f69`;
+  installation, 390 by 778,
+  `84c4050737dcd128c39ebc2f198145f911d15baa6a376828a1b40708549f3d64`.
+- The screenshots remain in the task-scoped `/tmp` QA directory only until
+  handoff; no generated browser artifact is committed.
+
+**Responsive, interaction, and accessibility evidence**
+
+- At 1280, 1024, 768, 390, and 320 CSS pixels, client width equals scroll
+  width. All five controls remain fully contained by their copy surfaces.
+- Every control copied text byte-for-byte from its target. Each displayed the
+  check icon through the existing icon swap and announced
+  `Copied to the clipboard.`
+- Keyboard activation copied the CLI command. Keyboard modality produced the
+  existing 3-pixel amber focus ring.
+- Reduced motion resolved transition and animation duration to `0.00001s` and
+  document scrolling to `auto`.
+- With JavaScript disabled at 390 CSS pixels, the setup prompt and CLI command
+  remain visible, no copy controls are exposed, the document has no horizontal
+  overflow, and the main content remains complete.
+- Page identity, meaningful DOM, framework-overlay absence, screenshot
+  evidence, copy interaction, focus, responsive layout, no-JavaScript content,
+  and console health passed. Console errors and warnings: none.
+
 ## Current capability-preserving semantic-twin candidate
 
 - Contract epoch: `tz-v19`, `SEMANTIC-TWIN-STORY-001` corrected by

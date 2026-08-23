@@ -430,21 +430,42 @@ selection: <span class="syntax-type">Binding</span>(
             <span class="step-number">1</span>
             <h3>Understand unfamiliar state flow</h3>
             <p>Ask who owns a value, why it is synchronized, or where a model crosses component boundaries.</p>
-            <code>Explain who owns this state and why it is synchronized.</code>
+            <div class="copy-surface workflow-prompt">
+              <button class="copy-button" type="button" data-copy-target="workflow-understand-prompt" aria-describedby="workflow-understand-status" title="Copy prompt">
+                <img src="assets/icons/copy.svg" alt="" aria-hidden="true">
+                <span class="sr-only">Copy prompt</span>
+              </button>
+              <code id="workflow-understand-prompt">Explain who owns this state and why it is synchronized.</code>
+              <p id="workflow-understand-status" class="copy-status sr-only" aria-live="polite"></p>
+            </div>
           </li>
           <li>
             <div class="workflow-icon"><img src="assets/icons/pencil.svg" alt="" aria-hidden="true"></div>
             <span class="step-number">2</span>
             <h3>Fix a data-flow problem</h3>
             <p>Ask to remove duplicated state, callback plumbing, or a suspicious Binding without changing behavior.</p>
-            <code>Remove this duplicated state without changing behavior.</code>
+            <div class="copy-surface workflow-prompt">
+              <button class="copy-button" type="button" data-copy-target="workflow-refactor-prompt" aria-describedby="workflow-refactor-status" title="Copy prompt">
+                <img src="assets/icons/copy.svg" alt="" aria-hidden="true">
+                <span class="sr-only">Copy prompt</span>
+              </button>
+              <code id="workflow-refactor-prompt">Remove this duplicated state without changing behavior.</code>
+              <p id="workflow-refactor-status" class="copy-status sr-only" aria-live="polite"></p>
+            </div>
           </li>
           <li>
             <div class="workflow-icon"><img src="assets/icons/shield-check.svg" alt="" aria-hidden="true"></div>
             <span class="step-number">3</span>
             <h3>Review an agent-authored change</h3>
             <p>Ask whether an existing diff changed ownership, write paths, or dependencies in ways that may affect transaction semantics.</p>
-            <code>Review these SwiftUI changes for ownership regressions.</code>
+            <div class="copy-surface workflow-prompt">
+              <button class="copy-button" type="button" data-copy-target="workflow-review-prompt" aria-describedby="workflow-review-status" title="Copy prompt">
+                <img src="assets/icons/copy.svg" alt="" aria-hidden="true">
+                <span class="sr-only">Copy prompt</span>
+              </button>
+              <code id="workflow-review-prompt">Review these SwiftUI changes for ownership regressions.</code>
+              <p id="workflow-review-status" class="copy-status sr-only" aria-live="polite"></p>
+            </div>
           </li>
         </ol>
       </div>
@@ -643,22 +664,20 @@ selection: <span class="syntax-type">Binding</span>(
           <article class="install-step install-primary">
             <header>
               <h3>Paste into Codex or Claude Code</h3>
-              <div class="install-primary-actions">
-                <button class="copy-button" type="button" data-copy-target="agent-setup-prompt" aria-describedby="agent-setup-status">
-                  <img src="assets/icons/copy.svg" alt="" aria-hidden="true">
-                  <span>Copy setup prompt</span>
-                </button>
-                <a class="install-guide-link" href="https://github.com/potapenko/swiftui-semantic-audit/blob/0.6.0/docs/getting-started/installation.md">
-                  Full guide
-                  <img src="assets/icons/external-link.svg" alt="" aria-hidden="true">
-                </a>
-              </div>
+              <a class="install-guide-link" href="https://github.com/potapenko/swiftui-semantic-audit/blob/0.6.0/docs/getting-started/installation.md">
+                Full guide
+                <img src="assets/icons/external-link.svg" alt="" aria-hidden="true">
+              </a>
             </header>
-            <div class="copy-block copy-block-prompt">
+            <div class="copy-block copy-block-prompt copy-surface copy-surface-dark">
+              <button class="copy-button" type="button" data-copy-target="agent-setup-prompt" aria-describedby="agent-setup-status" title="Copy setup prompt">
+                <img src="assets/icons/copy.svg" alt="" aria-hidden="true">
+                <span class="sr-only">Copy setup prompt</span>
+              </button>
               <pre id="agent-setup-prompt" tabindex="0"><code>Install SwiftUI Semantic Audit from this GitHub guide. Install Homebrew first if needed, then the CLI and all four agent skills:
 https://github.com/potapenko/swiftui-semantic-audit/blob/0.6.0/docs/getting-started/installation.md</code></pre>
+              <p id="agent-setup-status" class="copy-status sr-only" aria-live="polite"></p>
             </div>
-            <p id="agent-setup-status" class="copy-status" aria-live="polite"></p>
           </article>
 
           <aside class="install-cli-row" aria-labelledby="install-cli-title">
@@ -669,7 +688,14 @@ https://github.com/potapenko/swiftui-semantic-audit/blob/0.6.0/docs/getting-star
                 <p>Homebrew installs just the local <code>swiftui-audit</code> evidence engine.</p>
               </div>
             </div>
-            <pre id="install-cli-command" tabindex="0"><code>brew install potapenko/tap/swiftui-semantic-audit</code></pre>
+            <div class="copy-surface copy-surface-dark install-cli-command">
+              <button class="copy-button" type="button" data-copy-target="install-cli-command" aria-describedby="install-cli-status" title="Copy command">
+                <img src="assets/icons/copy.svg" alt="" aria-hidden="true">
+                <span class="sr-only">Copy command</span>
+              </button>
+              <pre id="install-cli-command" tabindex="0"><code>brew install potapenko/tap/swiftui-semantic-audit</code></pre>
+              <p id="install-cli-status" class="copy-status sr-only" aria-live="polite"></p>
+            </div>
           </aside>
         </div>
 

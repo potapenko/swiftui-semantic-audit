@@ -112,6 +112,58 @@ button {
   border: 0;
 }
 
+.copy-surface {
+  position: relative;
+}
+
+.copy-button {
+  display: none;
+}
+
+.js .copy-surface .copy-button {
+  position: absolute;
+  z-index: 2;
+  top: 0.45rem;
+  left: 0.45rem;
+  width: 1.85rem;
+  height: 1.85rem;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  border: 1px solid rgb(82 96 113 / 28%);
+  border-radius: 4px;
+  background: rgb(82 96 113 / 11%);
+  opacity: 0.72;
+  cursor: pointer;
+}
+
+.copy-button:hover {
+  border-color: rgb(82 96 113 / 48%);
+  background: rgb(82 96 113 / 18%);
+  opacity: 1;
+}
+
+.copy-button img {
+  width: 0.95rem;
+  height: 0.95rem;
+  opacity: 0.8;
+}
+
+.copy-surface-dark .copy-button {
+  border-color: rgb(207 214 223 / 24%);
+  background: rgb(207 214 223 / 10%);
+}
+
+.copy-surface-dark .copy-button:hover {
+  border-color: rgb(207 214 223 / 48%);
+  background: rgb(207 214 223 / 16%);
+}
+
+.copy-surface-dark .copy-button img {
+  filter: brightness(0) invert(1);
+}
+
 .shell {
   width: min(100% - (2 * var(--gutter)), var(--shell));
   margin-inline: auto;
@@ -941,26 +993,32 @@ pre {
   margin-bottom: 0.65rem;
 }
 
-.workflow-list p,
-.workflow-list > li > code {
+.workflow-list > li > p,
+.workflow-prompt {
   grid-column: 1 / -1;
 }
 
-.workflow-list p {
+.workflow-list > li > p {
   min-height: 6rem;
   margin: 1.15rem 0 1.2rem;
   color: var(--muted);
   font-size: 0.86rem;
 }
 
-.workflow-list > li > code {
+.workflow-prompt {
   width: fit-content;
   max-width: 100%;
-  overflow-wrap: anywhere;
-  padding: 0.36rem 0.5rem;
+  min-height: 2.75rem;
+  display: flex;
+  align-items: center;
+  padding: 0.42rem 0.55rem 0.42rem 2.75rem;
   border: 1px solid var(--line);
   border-radius: 3px;
   background: var(--surface);
+}
+
+.workflow-prompt code {
+  overflow-wrap: anywhere;
   color: var(--blue-dark);
   font-size: 0.7rem;
 }
@@ -1269,12 +1327,6 @@ tbody td {
   font-size: clamp(1.25rem, 2.4vw, 1.75rem);
 }
 
-.install .install-primary-actions {
-  display: flex;
-  align-items: center;
-  gap: 1rem;
-}
-
 .install .copy-block {
   position: relative;
   overflow: hidden;
@@ -1285,47 +1337,12 @@ tbody td {
 
 .install .copy-block pre {
   padding: clamp(1rem, 2vw, 1.3rem);
+  padding-left: 3.45rem;
   color: var(--analysis-text);
   font-size: clamp(0.72rem, 1.25vw, 0.86rem);
   line-height: 1.7;
   overflow-wrap: anywhere;
   white-space: pre-wrap;
-}
-
-.install .copy-button {
-  display: none;
-}
-
-.js .install .copy-button {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.4rem;
-  padding: 0.5rem 0.68rem;
-  border: 1px solid var(--analysis-line);
-  border-radius: 3px;
-  background: var(--analysis-panel-2);
-  color: var(--analysis-text);
-  font-size: 0.7rem;
-  font-weight: 700;
-  cursor: pointer;
-}
-
-.install .copy-button:hover {
-  border-color: var(--analysis-blue);
-}
-
-.install .copy-button img {
-  width: 0.95rem;
-  height: 0.95rem;
-  filter: brightness(0) invert(1);
-}
-
-.install .copy-status {
-  min-height: 1rem;
-  margin: 0.3rem 0 0;
-  color: var(--green);
-  font-size: 0.72rem;
-  font-weight: 700;
 }
 
 .install .install-guide-link {
@@ -1384,12 +1401,17 @@ tbody td {
   line-height: 1.45;
 }
 
-.install .install-cli-row pre {
+.install .install-cli-command {
   min-width: 0;
-  padding: 0.78rem 0.9rem;
+  overflow: hidden;
   border: 1px solid var(--analysis-line);
   border-radius: 3px;
   background: var(--analysis);
+}
+
+.install .install-cli-command pre {
+  min-width: 0;
+  padding: 0.78rem 0.9rem 0.78rem 3.2rem;
   color: var(--analysis-text);
   font-size: clamp(0.65rem, 1.1vw, 0.76rem);
   line-height: 1.55;
@@ -1654,7 +1676,7 @@ tbody td {
     border-left: 0;
   }
 
-  .workflow-list p {
+  .workflow-list > li > p {
     min-height: 0;
   }
 
@@ -1669,10 +1691,6 @@ tbody td {
   .install .install-step > header {
     align-items: flex-start;
     flex-direction: column;
-  }
-
-  .install .install-primary-actions {
-    width: 100%;
   }
 
   .footer-grid {

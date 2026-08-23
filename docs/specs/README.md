@@ -2,15 +2,15 @@
 
 - Node type: root
 - Status: Active
-- Contract revision: `spec-25`
-- Authority: epoch `tz-v20` and pinned digest declared below
+- Contract revision: `spec-26`
+- Authority: epoch `tz-v21` and pinned digest declared below
 - Read when: starting any product, behavior, compatibility, QA, release, or specification task in this repository.
 - Do not read when: the task is proven behavior-neutral and outside the specification system.
 - Maximum size: 100 physical lines.
 
 Status: active  
-Contract epoch: `tz-v20`
-Local specification revision: `spec-25`
+Contract epoch: `tz-v21`
+Local specification revision: `spec-26`
 Pinned authority digest: `sha256:68f8a43d924659024b7d29fabb9ad302817c271838a7919b24bd942626927cac`  
 Router addendum: user-authorized `ROUTER-001` on 2026-08-18
 Indexed-skills addendum: user-authorized `INDEXED-SKILLS-001` on 2026-08-18
@@ -29,7 +29,7 @@ Installation UX addendum: user-authorized `INSTALL-UX-001` on 2026-08-22; advanc
 Artifact-hygiene addendum: user-authorized [`ARTIFACT-HYGIENE-001`](../coordination/artifact-hygiene-001.md) on 2026-08-22; advances the combined contract to `tz-v16`
 Project-watcher addendum: user-authorized [`PROJECT-WATCHER-001`](../coordination/project-watcher-001.md) on 2026-08-22; advances the combined contract to `tz-v17`
 Semantic-twin story addenda: user-authorized [`SEMANTIC-TWIN-STORY-001`](../coordination/semantic-twin-story-001.md) and capability-preservation correction [`SEMANTIC-TWIN-CAPABILITIES-001`](../coordination/semantic-twin-capabilities-001.md) on 2026-08-22; advance the combined contract to `tz-v19`
-Release addendum: user-authorized [`RELEASE-0.6.0-001`](../coordination/release-0.6.0.md) on 2026-08-23; advances the combined contract to `tz-v20`
+Release addendum: user-authorized [`RELEASE-0.6.0-001`](../coordination/release-0.6.0.md) on 2026-08-23; advances the combined contract to `tz-v20`; copy-control addendum: user-authorized `COPY-CONTROLS-001` on 2026-08-23; advances the website contract to `tz-v21` without changing installation content or release facts
 Release baseline: `0.6.0 current public`; immutable release artifacts: `0.4.0`, `0.5.0`, and `0.6.0`; website baseline: canonical domain carries verified 0.6.0 release facts; project-watcher 0.6.0 is Released through `BASE-REL-015`; semantic-twin story candidate remains separately evolving
 
 This directory is the self-contained active specification package for SwiftUI Semantic Audit. It faithfully restates the user-approved Russian ТЗ without expanding product semantics. Clause IDs are stable references for implementation, review, and QA.
@@ -91,7 +91,7 @@ The pinned base plus authorized addenda authorizes a Swift package and `swiftui-
 
 `WEBSITE-AUTHOR-001` adds one HoldType-shaped personal Twitter link to the site header. It authorizes `https://x.com/potapenko`, an accessible English label, and the existing local Tabler icon system; it does not open adjacent navigation, content, analytics, localization, or footer scope.
 
-`INSTALL-UX-001` replaces the prior public setup presentation with one short agent prompt linked to the GitHub installation guide. `RELEASE-0.6.0-001` and `BASE-REL-015` advance the guide's pinned artifacts to release 0.6.0. The agent installs Homebrew first when absent, the CLI through Homebrew, and then all four skills as a separately owned phase. Homebrew remains CLI-only and must never modify agent-host directories.
+`INSTALL-UX-001` replaces the prior public setup presentation with one short agent prompt linked to the GitHub installation guide. `RELEASE-0.6.0-001` and `BASE-REL-015` advance the guide's pinned artifacts to release 0.6.0. The agent installs Homebrew first when absent, the CLI through Homebrew, and then all four skills as a separately owned phase. Homebrew remains CLI-only and must never modify agent-host directories. `COPY-CONTROLS-001` standardizes compact copy controls on the three task prompts, setup prompt, and CLI command without changing their text or meaning.
 
 `SEMANTIC-TWIN-STORY-001` makes the deterministic semantic twin the primary public product object and moves skills to the consumer/router role; its original 0.5.0-versus-candidate split is superseded only for release state by `RELEASE-0.6.0-001` and `BASE-REL-015`. `SEMANTIC-TWIN-CAPABILITIES-001` restores the accepted landing capability surface and marketing hierarchy: semantic twin unifies the existing examples, tasks, diff, rule groups, and trust story; it does not replace them. Versions remain supporting release truth rather than the primary promise.
 
