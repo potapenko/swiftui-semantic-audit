@@ -2,7 +2,7 @@
 
 - Node type: leaf
 - Status: Active
-- Contract revision: `spec-3`
+- Contract revision: `spec-4`
 - Authority: [Website contract](../website.md)
 - Maximum size: 100 physical lines.
 
@@ -29,7 +29,7 @@ navigation. Copy controls report success without replacing the visible command;
 the page remains complete and navigable when scripts fail or are disabled.
 
 **WEB-INTERACT-002.** Use one compact, translucent gray icon button at the
-upper-left of every actionable prompt or command block: the three task prompts,
+upper-right of every actionable prompt or command block: the three task prompts,
 the setup prompt, and the CLI-only command. Give every control an accessible
 purpose, keyboard focus, and success/failure announcement. Do not add copy
 controls to explanatory SwiftUI samples or inline terminology.

@@ -124,7 +124,7 @@ button {
   position: absolute;
   z-index: 2;
   top: 0.45rem;
-  left: 0.45rem;
+  right: 0.45rem;
   width: 1.85rem;
   height: 1.85rem;
   display: inline-flex;
@@ -1011,7 +1011,7 @@ pre {
   min-height: 2.75rem;
   display: flex;
   align-items: center;
-  padding: 0.42rem 0.55rem 0.42rem 2.75rem;
+  padding: 0.42rem 2.75rem 0.42rem 0.55rem;
   border: 1px solid var(--line);
   border-radius: 3px;
   background: var(--surface);
@@ -1337,7 +1337,7 @@ tbody td {
 
 .install .copy-block pre {
   padding: clamp(1rem, 2vw, 1.3rem);
-  padding-left: 3.45rem;
+  padding-right: 3.45rem;
   color: var(--analysis-text);
   font-size: clamp(0.72rem, 1.25vw, 0.86rem);
   line-height: 1.7;
@@ -1411,7 +1411,7 @@ tbody td {
 
 .install .install-cli-command pre {
   min-width: 0;
-  padding: 0.78rem 0.9rem 0.78rem 3.2rem;
+  padding: 0.78rem 3.2rem 0.78rem 0.9rem;
   color: var(--analysis-text);
   font-size: clamp(0.65rem, 1.1vw, 0.76rem);
   line-height: 1.55;

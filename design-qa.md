@@ -2,9 +2,10 @@
 
 ## Compact actionable copy controls
 
-- Contract epoch: `tz-v21`, user-authorized `COPY-CONTROLS-001`.
+- Contract epoch: `tz-v22`, user-authorized `COPY-CONTROLS-001` with placement
+  correction `COPY-CONTROLS-RIGHT-001`.
 - Target flow: `/` loads → a visitor reaches a use-case prompt or installation
-  command → the compact upper-left icon copies the exact visible text → the
+  command → the compact upper-right icon copies the exact visible text → the
   icon changes to a check and the live region announces success.
 - Scope: the three task prompts, setup prompt, and CLI-only command. Explanatory
   SwiftUI samples and inline terminology remain unchanged.
@@ -20,22 +21,23 @@
 - A 1280 by 720 CSS-pixel full-page capture was inspected against the selected
   Annotated X-Ray direction and the previously accepted capability-preserving
   implementation. It is 1280 by 7643 pixels with SHA-256
-  `da798d6e246f4afb1941df427725ced2a0ac93320da113d2f819305dba32a2af`.
+  `4556e39e812a09c24ea38368241e59ff6002f6833787f3484d6bca7a37b56e36`.
 - Focused desktop evidence: use cases, 1280 by 758,
-  `9d783e73b523e5ef15a7271ad1abafc575b80b842f50a9008f0a2505ddb235c7`;
+  `28a6492253e194d11d09da04049f7af2ed5ff2ed0dd1fa7ac65750d25d532005`;
   installation, 1280 by 527,
-  `55cf9036e253d85f544041b47ddb90d3d7e85e9fe143b5b417b2aeba0ec4ca9f`.
+  `0c0b77c252572686bb11d8c1e36fb8c868f5ad319147a636865bbfba695e127c`.
 - Focused 390-pixel evidence: use cases, 390 by 1307,
-  `c9e2369a244b99b99160b7da1047c6986c7d499db11d0cb03fbad093c7735f69`;
+  `6310c21d59768de9b1046abb772966501557262e6378c169bce360491ce104dd`;
   installation, 390 by 778,
-  `84c4050737dcd128c39ebc2f198145f911d15baa6a376828a1b40708549f3d64`.
+  `32d150b0d7737aa368d8e51d94c8787cd1b81fdda1fd253c74ccfc328e642cab`.
 - The screenshots remain in the task-scoped `/tmp` QA directory only until
   handoff; no generated browser artifact is committed.
 
 **Responsive, interaction, and accessibility evidence**
 
 - At 1280, 1024, 768, 390, and 320 CSS pixels, client width equals scroll
-  width. All five controls remain fully contained by their copy surfaces.
+  width. All five controls remain fully contained at the upper-right of their
+  copy surfaces with a computed 7.2-pixel right inset.
 - Every control copied text byte-for-byte from its target. Each displayed the
   check icon through the existing icon swap and announced
   `Copied to the clipboard.`
