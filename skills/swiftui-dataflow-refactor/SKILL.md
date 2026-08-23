@@ -7,13 +7,21 @@ description: Refactor SwiftUI state ownership and data flow with snapshot, audit
 
 ## Fix one semantic-value cluster
 
+Read the shared [CLI invocation matrix](../swiftui-semantic/references/cli-invocation-matrix.md)
+before forming commands. `--index-store`, configuration, cache, and job options
+belong only to the live-source commands listed there; persisted `diff` and
+`slice` inputs do not accept them.
+
 When the project contains `.swiftui-audit/project.json`, first read and follow [project watcher freshness](../swiftui-semantic/references/project-watcher.md). A fresh watcher baseline/live pair may satisfy snapshot generation only when its status receipt proves the exact indexed workspace and configuration identities. Never auto-promote the post-edit state.
 
 1. Use an installed `swiftui-audit`, or use `swift run --disable-automatic-resolution swiftui-audit` in this repository.
-2. Build the project to produce a fresh compiler Index Store, validate that it covers the requested source, and record its exact path. Pass `--index-store <path>` explicitly to every live-source command; never rely on automatic discovery. Require `resolution: "indexed"` throughout baseline, current snapshot, audit, slice, diff, and check.
+2. Build the project to produce a fresh compiler Index Store, identify its exact raw path from build output, and validate it through an explicit live-source command. Pass `--index-store <path>` explicitly to every matrix-designated live-source analysis command; never rely on automatic discovery. Require `resolution: "indexed"` throughout baseline, current snapshot, audit, slice, diff, and check. Use `doctor <project-root> --format json` only for environment readiness; it does not accept the selected path as an option.
 3. When the cluster depends on product roles, View roles, features, or composition roots, validate the exact `.swiftui-audit.json`, pass `--config <path>` to every live-source command, and preserve its digest across both snapshots. Schema 2 may distinguish screens, containers, reusable components, and component models. Never infer missing roles from names.
 
-Reuse the CLI's content-addressed cache across repeated live-source commands. Treat it only as an execution optimization. When the default user cache is not persistent, pass one stable `--cache-directory <path>` throughout the workflow. If cache correctness is in doubt, rerun the same command with `--no-cache` and require byte-equivalent JSON.
+In the live-source examples below, omit the `--config <path>` pair when the
+workflow is explicitly topology-only.
+
+Reuse the CLI's content-addressed cache across repeated live-source commands. Treat it only as an execution optimization. When the default user cache is not persistent, pass one stable `--cache-directory <path>` to the matrix-designated live-source commands. Never carry cache options into `doctor`, persisted-input `slice`, `diff`, or `project`. If cache correctness is in doubt, rerun the same live-source command with `--no-cache` and require byte-equivalent JSON.
 
 Before emitting command output or snapshots, read and apply [run artifact hygiene](../swiftui-semantic/references/artifact-hygiene.md). Baseline and current snapshots may use deliberately selected destinations; unrelated command receipts remain temporary by default.
 

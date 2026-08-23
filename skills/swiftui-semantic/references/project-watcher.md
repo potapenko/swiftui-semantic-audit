@@ -1,5 +1,10 @@
 # Project watcher setup and freshness
 
+Read [the CLI invocation matrix](cli-invocation-matrix.md) before forming a
+command. No `project` subcommand accepts `--index-store` or `--config`; the
+watcher owns the typed build and reports the selected identities through fresh
+status.
+
 ## Verify the candidate capability
 
 Run both commands before any project operation:
@@ -16,7 +21,9 @@ or tell the user that continuous setup needs the unreleased candidate.
 
 ## Set up one project
 
-1. Run `swiftui-audit doctor <project-root> --format json` with the verified candidate binary.
+1. Run `swiftui-audit doctor <project-root> --format json` with the verified
+   candidate binary. It diagnoses readiness without selecting a store. The
+   command accepts neither `--index-store` nor `--config`.
 2. Preview without mutation:
 
    ```bash

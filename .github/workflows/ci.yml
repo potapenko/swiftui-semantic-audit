@@ -223,6 +223,9 @@ jobs:
           assert status["fresh"] is True
           assert status["resolution"] == "indexed"
           assert status["workspaceDigest"] == status["indexedWorkspaceDigest"]
+          assert isinstance(status["indexStorePath"], str) and status["indexStorePath"]
+          assert isinstance(status["configurationDigest"], str) and status["configurationDigest"]
+          assert status["generation"] > 0
           live = Path(status["liveSnapshotPath"])
           assert {path.name for path in live.iterdir()} == {
               "manifest.json", "nodes.jsonl", "edges.jsonl", "findings.jsonl", "summary.json"
@@ -369,6 +372,66 @@ jobs:
           perl -e 'alarm shift; exec @ARGV' 180 \
             swift run --disable-automatic-resolution swiftui-audit doctor . --format json \
               > "$RUNNER_TEMP/doctor.json"
+          perl -e 'alarm shift; exec @ARGV' 60 \
+            swift run --disable-automatic-resolution swiftui-audit doctor --help \
+              > "$RUNNER_TEMP/doctor-help.txt"
+          perl -e 'alarm shift; exec @ARGV' 60 \
+            swift run --disable-automatic-resolution swiftui-audit audit --help \
+              > "$RUNNER_TEMP/audit-help.txt"
+          perl -e 'alarm shift; exec @ARGV' 60 \
+            swift run --disable-automatic-resolution swiftui-audit scan --help \
+              > "$RUNNER_TEMP/scan-help.txt"
+          perl -e 'alarm shift; exec @ARGV' 60 \
+            swift run --disable-automatic-resolution swiftui-audit snapshot --help \
+              > "$RUNNER_TEMP/snapshot-help.txt"
+          perl -e 'alarm shift; exec @ARGV' 60 \
+            swift run --disable-automatic-resolution swiftui-audit slice --help \
+              > "$RUNNER_TEMP/slice-help.txt"
+          perl -e 'alarm shift; exec @ARGV' 60 \
+            swift run --disable-automatic-resolution swiftui-audit check --help \
+              > "$RUNNER_TEMP/check-help.txt"
+          perl -e 'alarm shift; exec @ARGV' 60 \
+            swift run --disable-automatic-resolution swiftui-audit diff --help \
+              > "$RUNNER_TEMP/diff-help.txt"
+          perl -e 'alarm shift; exec @ARGV' 60 \
+            swift run --disable-automatic-resolution swiftui-audit project status --help \
+              > "$RUNNER_TEMP/project-status-help.txt"
+          perl -e 'alarm shift; exec @ARGV' 60 \
+            swift run --disable-automatic-resolution swiftui-audit project setup --help \
+              > "$RUNNER_TEMP/project-setup-help.txt"
+          perl -e 'alarm shift; exec @ARGV' 60 \
+            swift run --disable-automatic-resolution swiftui-audit project watch --help \
+              > "$RUNNER_TEMP/project-watch-help.txt"
+          perl -e 'alarm shift; exec @ARGV' 60 \
+            swift run --disable-automatic-resolution swiftui-audit project start --help \
+              > "$RUNNER_TEMP/project-start-help.txt"
+          perl -e 'alarm shift; exec @ARGV' 60 \
+            swift run --disable-automatic-resolution swiftui-audit project stop --help \
+              > "$RUNNER_TEMP/project-stop-help.txt"
+          perl -e 'alarm shift; exec @ARGV' 60 \
+            swift run --disable-automatic-resolution swiftui-audit project baseline update --help \
+              > "$RUNNER_TEMP/project-baseline-update-help.txt"
+          if swift run --disable-automatic-resolution swiftui-audit doctor . \
+            --index-store "$RUNNER_TEMP/not-a-doctor-option" --format json \
+            > "$RUNNER_TEMP/invalid-doctor.out" 2> "$RUNNER_TEMP/invalid-doctor.err"; then
+            echo "doctor unexpectedly accepted --index-store" >&2
+            exit 1
+          fi
+          if swift run --disable-automatic-resolution swiftui-audit doctor . \
+            --config "$RUNNER_TEMP/not-a-doctor-option" --format json \
+            > "$RUNNER_TEMP/invalid-doctor-config.out" \
+            2> "$RUNNER_TEMP/invalid-doctor-config.err"; then
+            echo "doctor unexpectedly accepted --config" >&2
+            exit 1
+          fi
+          if swift run --disable-automatic-resolution swiftui-audit slice \
+            "$RUNNER_TEMP/rule-snapshot-first" --finding "$finding_id" \
+            --index-store "$RUNNER_TEMP/not-a-live-source" --format llm-json \
+            > "$RUNNER_TEMP/invalid-persisted-slice.out" \
+            2> "$RUNNER_TEMP/invalid-persisted-slice.err"; then
+            echo "persisted snapshot slice unexpectedly accepted live-source options" >&2
+            exit 1
+          fi
           python3 - <<'PY'
           import json
           import os
@@ -382,6 +445,28 @@ jobs:
           assert slice_data["metadata"]["estimatedTokens"] <= 10000
           assert doctor["schemaVersion"] == 2
           assert doctor["overallStatus"] != "error"
+
+          doctor_help = (root / "doctor-help.txt").read_text()
+          diff_help = (root / "diff-help.txt").read_text()
+          live_options = ("--index-store", "--config", "--cache-directory", "--no-cache", "--jobs")
+          for option in live_options:
+              assert option not in doctor_help
+          for command in ("scan", "audit", "snapshot", "slice", "check"):
+              live_help = (root / f"{command}-help.txt").read_text()
+              for option in live_options:
+                  assert option in live_help
+          for option in live_options:
+              assert option not in diff_help
+          for command in ("setup", "watch", "start", "status", "stop", "baseline-update"):
+              project_help = (root / f"project-{command}-help.txt").read_text()
+              for option in live_options:
+                  assert option not in project_help
+          invalid_doctor = (root / "invalid-doctor.err").read_text()
+          invalid_doctor_config = (root / "invalid-doctor-config.err").read_text()
+          invalid_persisted_slice = (root / "invalid-persisted-slice.err").read_text()
+          assert "Unknown option '--index-store'" in invalid_doctor
+          assert "Unknown option '--config'" in invalid_doctor_config
+          assert "apply only when slicing live source" in invalid_persisted_slice
           PY
 
       - name: Validate skills, YAML, and relative links
@@ -407,6 +492,20 @@ jobs:
 
           artifact_policy = Pathname("skills/swiftui-semantic/references/artifact-hygiene.md").expand_path
           abort("missing shared artifact policy") unless artifact_policy.file?
+          invocation_matrix = Pathname("skills/swiftui-semantic/references/cli-invocation-matrix.md").expand_path
+          abort("missing shared CLI invocation matrix") unless invocation_matrix.file?
+
+          Pathname("skills").glob("**/*.md").each do |path|
+            content = path.read(encoding: "UTF-8")
+            if content.match?(/swiftui-audit\s+doctor[^\n]*(?:--index-store|--config)/i)
+              abort("invalid doctor invocation in #{path}")
+            end
+            content.scan(/\[[^\]]+\]\(([^)]+)\)/).flatten.each do |target|
+              next if target.match?(/\A(?:https?:|#)/)
+              resolved = path.dirname / target.split("#", 2).first
+              abort("broken link #{target} in #{path}") unless resolved.exist?
+            end
+          end
 
           expected.each do |name|
             root = Pathname("skills") / name
@@ -439,6 +538,7 @@ jobs:
               (root / target.split("#", 2).first).expand_path
             end
             abort("#{skill} does not link shared artifact policy") unless resolved_links.include?(artifact_policy)
+            abort("#{skill} does not link shared CLI invocation matrix") unless resolved_links.include?(invocation_matrix)
             links.each do |target|
               next if target.match?(/\A(?:https?:|#)/)
               path = root / target.split("#", 2).first

@@ -7,14 +7,22 @@ description: Audit Swift and SwiftUI state/data-flow architecture with swiftui-a
 
 ## Establish indexed analysis
 
+Read the shared [CLI invocation matrix](../swiftui-semantic/references/cli-invocation-matrix.md)
+before forming commands. In particular, `doctor` never accepts `--index-store`
+or `--config`; it diagnoses environment readiness rather than validating one
+explicitly selected store.
+
 When the project contains `.swiftui-audit/project.json`, first read and follow [project watcher freshness](../swiftui-semantic/references/project-watcher.md). Accept its live snapshot only with a matching fresh indexed status receipt; otherwise continue with the explicit Index Store workflow below.
 
 1. Use an installed `swiftui-audit` binary when available. In this repository, use `swift run --disable-automatic-resolution swiftui-audit`.
-2. Build the project when needed to produce a fresh compiler Index Store that covers the requested source. Validate its readiness and exact path with project build output and `swiftui-audit doctor <source-path> --format json`.
-3. Pass `--index-store <path>` explicitly to every live-source audit or slice command. Do not omit it in reliance on automatic discovery.
+2. Build the project when needed to produce a fresh compiler Index Store that covers the requested source. Identify its exact raw path from build output. Use `swiftui-audit doctor <project-root> --format json` only to diagnose environment and automatically discoverable readiness.
+3. Validate the selected store by passing `--index-store <path>` explicitly to the first live-source audit or slice command and requiring indexed resolution. Continue passing it to every live-source analysis command; do not omit it in reliance on automatic discovery.
 4. Parse the result and require `resolution: "indexed"`. Treat any other resolution as insufficient evidence and stop.
 5. Treat the CLI as provider-independent. Do not assume or add an OpenAI, Anthropic, or other model API call.
 6. For owner-, View-role-, feature-, or composition-root-aware analysis, locate and validate the exact project `.swiftui-audit.json`, pass it with `--config <path>`, and retain its digest. Schema 2 may classify `screen`, `container`, `reusable-component`, and `component-model`; schema 1 remains valid. If authoritative classification is absent, report that role-aware conclusions are unavailable; never infer roles from names.
+
+In the live-source examples below, omit the `--config <path>` pair when the
+workflow is explicitly topology-only.
 
 The CLI reuses content-addressed frontend and indexed facts automatically. Treat the cache only as an execution optimization: it never supplies intent or changes deterministic facts. Use one explicit `--cache-directory <path>` when the environment does not preserve the default user cache. If cache correctness is in doubt, repeat the same command with `--no-cache` and require byte-equivalent JSON before continuing.
 

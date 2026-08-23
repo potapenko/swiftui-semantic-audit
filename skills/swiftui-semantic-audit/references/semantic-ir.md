@@ -28,7 +28,7 @@ An LLM slice contains `finding`, `semanticValues`, `nodes`, `edges`, `sourceEvid
 
 - Accept only `indexed` results in this agent workflow.
 - `indexed` adds compiler IndexStoreDB symbol/use facts on macOS and is required for cross-file ownership, propagation, callback, and computed-binding analysis.
-- Pass a fresh validated Index Store explicitly for live-source commands; automatic discovery or fallback is not sufficient evidence for this workflow.
+- Pass a fresh validated Index Store explicitly for matrix-designated live-source analysis commands; automatic discovery or fallback is not sufficient evidence for this workflow.
 - Explicit index selection fails when the store, library, helper, or project coverage is invalid.
 - Stable node, edge, semantic-value, finding, and change IDs do not use line number as primary identity.
 - Compare snapshots only when graph and report resolution match on both sides, both are indexed, and their configuration digests match.

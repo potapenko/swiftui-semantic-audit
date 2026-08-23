@@ -10,6 +10,11 @@ It preserves supported ownership and data-flow facts, evidence, compatible
 snapshots, and bounded slices. It is not an LLM summary; the selected specialist
 and surrounding agent supply judgment without rewriting those facts.
 
+Before forming any CLI command, read and follow the shared
+[CLI invocation matrix](references/cli-invocation-matrix.md). It assigns
+resolution and configuration flags by command and input kind; do not transfer a
+flag between commands merely because they belong to one workflow.
+
 ## Choose the workflow
 
 Classify the requested outcome before reading broad Swift source:

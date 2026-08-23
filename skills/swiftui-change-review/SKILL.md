@@ -7,13 +7,18 @@ description: Review AI-generated or human SwiftUI changes through semantic diff 
 
 ## Review semantic change first
 
+Read the shared [CLI invocation matrix](../swiftui-semantic/references/cli-invocation-matrix.md)
+before forming commands. Snapshot-backed `diff` and `slice` commands consume
+the indexed identity already persisted in those snapshots and never accept a
+live Index Store or analysis configuration option.
+
 When the project contains `.swiftui-audit/project.json`, first read and follow [project watcher freshness](../swiftui-semantic/references/project-watcher.md). Accept the tracked baseline and live snapshot only when the current status receipt proves fresh indexed state and matching configuration; otherwise require the explicit compatible snapshots below.
 
 1. Use an installed `swiftui-audit`, or use `swift run --disable-automatic-resolution swiftui-audit` in this repository.
 2. Require compatible indexed snapshots for both sides. Each snapshot must have been created from a fresh validated compiler Index Store while that exact source state was built. Do not use Git-revision operands for semantic review because they cannot preserve indexed resolution.
 3. Require matching configuration digests. For role-aware review, confirm both snapshots used the same authoritative `.swiftui-audit.json`, including schema-2 View/component roles when applicable; never infer roles from names or compare differently classified graphs.
 
-Snapshot creation may reuse the CLI's content-addressed cache, but cache state is never review evidence. Use one explicit `--cache-directory <path>` when the default user cache is not persistent. If cache correctness is in doubt, regenerate the affected snapshot with `--no-cache` and require byte-equivalent semantic files.
+Live-source snapshot creation may reuse the CLI's content-addressed cache, but cache state is never review evidence. Use one explicit `--cache-directory <path>` for that live-source command when the default user cache is not persistent. Never carry cache options into persisted `diff` or `slice`. If cache correctness is in doubt, regenerate the affected snapshot with `--no-cache` and require byte-equivalent semantic files.
 
 Before emitting command output or snapshots, read and apply [run artifact hygiene](../swiftui-semantic/references/artifact-hygiene.md). Persist only deliberately selected snapshots or approved cross-handoff evidence.
 
@@ -24,7 +29,7 @@ Before emitting command output or snapshots, read and apply [run artifact hygien
      swiftui-audit diff <base-indexed-snapshot> <current-indexed-snapshot> --format json
      ```
 
-   - For a changed worktree, build it, validate the current Index Store, and create the current snapshot with `--index-store <path>`. Require the caller to provide a compatible indexed baseline snapshot; if it does not exist, report that semantic comparison is blocked.
+   - For a changed worktree, build it, validate the current Index Store, and create the current snapshot with `--index-store <path>`. When the baseline configuration digest is not `none`, also use the same authoritative `--config <path>`; otherwise omit it. Require the caller to provide a compatible indexed baseline snapshot; if it does not exist, report that semantic comparison is blocked.
 5. Parse JSON only from stdout. Keep stderr, command metadata, and exit status separate.
 6. Read [references/review-contract.md](references/review-contract.md) when interpreting change kinds and deciding review priority.
 7. Review ownership changes, new mutable representations, added write/call paths, removed invariants, Binding additions/removals, custom setter effects, model-boundary depth, broad observable inputs, reusable-owner candidates, manual synchronization, derivation, logical source counts, instance multiplicity, and state lifetime.
