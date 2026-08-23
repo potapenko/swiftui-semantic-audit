@@ -56,6 +56,52 @@ final class SemanticDiffTests: XCTestCase {
         XCTAssertEqual(try report.jsonData(), try report.jsonData())
     }
 
+    func testLargeNearEqualSnapshotFallbackHasExactSingleChange() {
+        let valueCount = 5_000
+        var nodes: [SemanticNode] = []
+        var edges: [SemanticEdge] = []
+        var values: [NormalizedSemanticValue] = []
+        nodes.reserveCapacity(valueCount * 2)
+        edges.reserveCapacity(valueCount)
+        values.reserveCapacity(valueCount)
+
+        for index in 0..<valueCount {
+            let owner = node("M.Owner\(index)", .view)
+            let state = node("M.Owner\(index).value", .state)
+            nodes.append(contentsOf: [owner, state])
+            edges.append(edge(.owns, owner, state, "owner-\(index)"))
+            values.append(value(state))
+        }
+
+        let added = node("M.Added", .property)
+        let base = snapshot(
+            graph: SemanticGraph(nodes: nodes, edges: edges),
+            values: values,
+            findings: [],
+            duplicated: 0
+        )
+        let current = snapshot(
+            graph: SemanticGraph(nodes: nodes + [added], edges: edges),
+            values: values,
+            findings: [],
+            duplicated: 0
+        )
+
+        let report = SemanticDiffEngine().compare(base: base, current: current)
+        let expected = SemanticDiffReport(
+            baseIdentity: "test-revision",
+            currentIdentity: "test-revision",
+            beforeMetrics: base.report.metrics,
+            afterMetrics: current.report.metrics,
+            changes: [SemanticChange(kind: .nodeAdded, nodes: [added.id])],
+            newFindings: [],
+            resolvedFindings: [],
+            affectedSemanticValues: []
+        )
+
+        XCTAssertEqual(report, expected)
+    }
+
     func testExactMinimumChangeKindMatrix() {
         let pair = syntheticPair()
         let report = SemanticDiffEngine().compare(base: pair.base, current: pair.current)
@@ -144,8 +190,12 @@ final class SemanticDiffTests: XCTestCase {
             edge(.copiesTo, state, middle, "local-to-borrowed"),
         ])
 
-        XCTAssertEqual(LogicalSourceCounter.count(for: value, in: focusedGraph), 1)
-        XCTAssertEqual(LogicalSourceCounter.count(for: value, in: mirroredGraph), 2)
+        let focusedContext = LogicalSourceCounter.Context(graph: focusedGraph)
+        let mirroredContext = LogicalSourceCounter.Context(graph: mirroredGraph)
+        XCTAssertEqual(focusedContext.count(for: value), 1)
+        XCTAssertEqual(mirroredContext.count(for: value), 2)
+        XCTAssertEqual(LogicalSourceCounter.count(for: value, in: focusedGraph), focusedContext.count(for: value))
+        XCTAssertEqual(LogicalSourceCounter.count(for: value, in: mirroredGraph), mirroredContext.count(for: value))
 
         let base = snapshot(graph: focusedGraph, values: [value], findings: [], duplicated: 0)
         let current = snapshot(graph: mirroredGraph, values: [value], findings: [], duplicated: 1)

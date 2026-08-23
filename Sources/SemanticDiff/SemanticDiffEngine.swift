@@ -22,14 +22,12 @@ public struct SemanticDiffEngine: Sendable {
                 affectedSemanticValues: []
             )
         }
-        let baseNodes = Dictionary(uniqueKeysWithValues: base.graph.nodes.map { ($0.id, $0) })
-        let currentNodes = Dictionary(uniqueKeysWithValues: current.graph.nodes.map { ($0.id, $0) })
-        let baseEdges = Dictionary(uniqueKeysWithValues: base.graph.edges.map { ($0.id, $0) })
-        let currentEdges = Dictionary(uniqueKeysWithValues: current.graph.edges.map { ($0.id, $0) })
-        let baseNodeIDs = Set(baseNodes.keys)
-        let currentNodeIDs = Set(currentNodes.keys)
-        let baseEdgeIDs = Set(baseEdges.keys)
-        let currentEdgeIDs = Set(currentEdges.keys)
+        let baseContext = SemanticDiffContext(graph: base.graph)
+        let currentContext = SemanticDiffContext(graph: current.graph)
+        let baseNodeIDs = baseContext.nodeIDs
+        let currentNodeIDs = currentContext.nodeIDs
+        let baseEdgeIDs = baseContext.edgeIDs
+        let currentEdgeIDs = currentContext.edgeIDs
         let continuity = NodeContinuity(base: base.graph.nodes, current: current.graph.nodes)
         var changes: [SemanticChange] = []
 
@@ -40,15 +38,14 @@ public struct SemanticDiffEngine: Sendable {
             changes.append(SemanticChange(kind: .nodeRemoved, nodes: [id]))
         }
 
-        let ownershipKinds: Set<EdgeKind> = [.owns, .binds, .injects, .observes]
         for (baseID, currentID) in continuity.pairs.sorted(by: { $0.key < $1.key }) {
-            let before = base.graph.edges.filter { $0.to == baseID && ownershipKinds.contains($0.kind) }
-            let after = current.graph.edges.filter { $0.to == currentID && ownershipKinds.contains($0.kind) }
+            let before = baseContext.ownershipEdges(to: baseID)
+            let after = currentContext.ownershipEdges(to: currentID)
             let beforeDescription = ownershipDescription(
-                node: baseNodes[baseID]!, edges: before, canonicalNode: { $0 }
+                node: baseContext.nodesByID[baseID]!, edges: before, canonicalNode: { $0 }
             )
             let afterDescription = ownershipDescription(
-                node: currentNodes[currentID]!, edges: after, canonicalNode: continuity.canonicalCurrentID
+                node: currentContext.nodesByID[currentID]!, edges: after, canonicalNode: continuity.canonicalCurrentID
             )
             if beforeDescription != afterDescription {
                 changes.append(SemanticChange(
@@ -62,8 +59,8 @@ public struct SemanticDiffEngine: Sendable {
             }
         }
 
-        let removedEdges = baseEdgeIDs.subtracting(currentEdgeIDs).compactMap { baseEdges[$0] }
-        let addedEdges = currentEdgeIDs.subtracting(baseEdgeIDs).compactMap { currentEdges[$0] }
+        let removedEdges = baseEdgeIDs.subtracting(currentEdgeIDs).compactMap { baseContext.edgesByID[$0] }
+        let addedEdges = currentEdgeIDs.subtracting(baseEdgeIDs).compactMap { currentContext.edgesByID[$0] }
         appendPathChanges(edges: removedEdges, added: false, to: &changes)
         appendPathChanges(edges: addedEdges, added: true, to: &changes)
 
@@ -71,8 +68,8 @@ public struct SemanticDiffEngine: Sendable {
             (removedEdges + addedEdges).filter { $0.kind == .derivesFrom }.map(\.from)
         )
         for nodeID in changedDerivationNodes.sorted() {
-            let before = base.graph.edges.filter { $0.kind == .derivesFrom && $0.from == nodeID }
-            let after = current.graph.edges.filter { $0.kind == .derivesFrom && $0.from == nodeID }
+            let before = baseContext.derivationEdges(from: nodeID)
+            let after = currentContext.derivationEdges(from: nodeID)
             changes.append(SemanticChange(
                 kind: .derivationChanged,
                 nodes: [nodeID] + before.map(\.to) + after.map(\.to),
@@ -109,7 +106,9 @@ public struct SemanticDiffEngine: Sendable {
             changedNodes: baseNodeIDs.symmetricDifference(currentNodeIDs),
             changedEdges: baseEdgeIDs.symmetricDifference(currentEdgeIDs),
             findings: newFindings + resolvedFindings,
-            continuity: continuity
+            continuity: continuity,
+            baseSourceCounter: baseContext.sourceCounter,
+            currentSourceCounter: currentContext.sourceCounter
         )
         for delta in valueDeltas where isSourceCountChange(delta) {
             changes.append(SemanticChange(
@@ -188,7 +187,9 @@ public struct SemanticDiffEngine: Sendable {
         changedNodes: Set<String>,
         changedEdges: Set<String>,
         findings: [AuditFinding],
-        continuity: NodeContinuity
+        continuity: NodeContinuity,
+        baseSourceCounter: LogicalSourceCounter.Context,
+        currentSourceCounter: LogicalSourceCounter.Context
     ) -> [SemanticValueDelta] {
         let findingNodes = Set(findings.flatMap(\.nodes))
         let findingEdges = Set(findings.flatMap(\.edges))
@@ -202,8 +203,8 @@ public struct SemanticDiffEngine: Sendable {
             let rhs = match.after
             let representations = Set((lhs?.representations ?? []) + (rhs?.representations ?? []))
             let relations = Set((lhs?.relationEdges ?? []) + (rhs?.relationEdges ?? []))
-            let beforeCount = lhs.map { sourceCount($0, graph: base.graph) }
-            let afterCount = rhs.map { sourceCount($0, graph: current.graph) }
+            let beforeCount = lhs.map { baseSourceCounter.count(for: $0) }
+            let afterCount = rhs.map { currentSourceCounter.count(for: $0) }
             let affected = lhs == nil || rhs == nil || beforeCount != afterCount ||
                 !representations.isDisjoint(with: changedNodes) ||
                 !relations.isDisjoint(with: changedEdges) ||
@@ -332,15 +333,47 @@ public struct SemanticDiffEngine: Sendable {
         "representations=\(representations);sources=\(sources)"
     }
 
-    private func sourceCount(_ value: NormalizedSemanticValue, graph: SemanticGraph) -> Int {
-        LogicalSourceCounter.count(for: value, in: graph)
-    }
-
     private func identity(for manifest: SnapshotManifest) -> String {
         manifest.repositoryRevision == "unavailable"
             ? "snapshot:\(manifest.generatedFrom)"
             : manifest.repositoryRevision
     }
+}
+
+private struct SemanticDiffContext {
+    let nodesByID: [String: SemanticNode]
+    let edgesByID: [String: SemanticEdge]
+    let nodeIDs: Set<String>
+    let edgeIDs: Set<String>
+    let sourceCounter: LogicalSourceCounter.Context
+    private let ownershipEdgesByTarget: [String: [SemanticEdge]]
+    private let derivationEdgesBySource: [String: [SemanticEdge]]
+
+    init(graph: SemanticGraph) {
+        self.nodesByID = Dictionary(uniqueKeysWithValues: graph.nodes.map { ($0.id, $0) })
+        self.edgesByID = Dictionary(uniqueKeysWithValues: graph.edges.map { ($0.id, $0) })
+        self.nodeIDs = Set(nodesByID.keys)
+        self.edgeIDs = Set(edgesByID.keys)
+        self.sourceCounter = LogicalSourceCounter.Context(graph: graph)
+        self.ownershipEdgesByTarget = Dictionary(
+            grouping: graph.edges.filter { Self.ownershipKinds.contains($0.kind) },
+            by: \.to
+        )
+        self.derivationEdgesBySource = Dictionary(
+            grouping: graph.edges.filter { $0.kind == .derivesFrom },
+            by: \.from
+        )
+    }
+
+    func ownershipEdges(to nodeID: String) -> [SemanticEdge] {
+        ownershipEdgesByTarget[nodeID] ?? []
+    }
+
+    func derivationEdges(from nodeID: String) -> [SemanticEdge] {
+        derivationEdgesBySource[nodeID] ?? []
+    }
+
+    private static let ownershipKinds: Set<EdgeKind> = [.owns, .binds, .injects, .observes]
 }
 
 private struct SemanticValueMatch {
