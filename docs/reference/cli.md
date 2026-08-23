@@ -1,6 +1,6 @@
 # CLI reference
 
-Release 0.5.0 exposes seven analysis subcommands. The checked-out unreleased 0.6.0 candidate adds the `project` namespace without changing those commands. JSON written to stdout is the machine contract. Diagnostics belong on stderr, and callers must always inspect process status.
+Version 0.6.0 exposes the seven analysis subcommands carried forward unchanged from 0.5.0 and adds the `project` namespace. JSON written to stdout is the machine contract. Diagnostics belong on stderr, and callers must always inspect process status.
 
 Run the executable help for the checked-out build:
 
@@ -10,7 +10,7 @@ swiftui-audit --version
 swiftui-audit <command> --help
 ```
 
-`--version` prints the tool version embedded in reports and snapshots and does not inspect the current project. The candidate reports `0.6.0`; the current published release reports `0.5.0`.
+`--version` prints the tool version embedded in reports and snapshots and does not inspect the current project. A 0.6.0 build reports `0.6.0`.
 
 When developing inside this repository, replace `swiftui-audit` with:
 
@@ -106,20 +106,31 @@ Default path: `.`. The command inspects without mutation:
 - IndexStoreDB, compiler library, raw store, and coverage readiness on macOS;
 - Git version and worktree membership.
 
-Swift, Git, or SwiftSyntax incompatibility can make the overall result an error. Treat Xcode and index-readiness warnings as blockers before an agent workflow.
+Swift, Git, or SwiftSyntax incompatibility can make the overall result an error.
+Required doctor errors block the workflow. An index-readiness warning means
+readiness was not proved automatically; validate the selected store with the
+first explicit live-source command or use a matching fresh watcher receipt.
+
+`doctor` accepts only the optional path and `--format json`; it does not accept `--index-store` or `--config`. It diagnoses prerequisites but is not a watcher freshness receipt. Agent use of watcher state still requires a matching fresh indexed receipt from `project status --wait indexed`.
 
 ### `project`
 
 ```text
-swiftui-audit project setup [<path>] [--apply] [--start] [--create-baseline] [--format json]
-swiftui-audit project watch [<path>] [--once] [--format json]
+swiftui-audit project setup [<path>] [--apply] [--start] [--create-baseline]
+                            [--source-root <path>] [--container <path>]
+                            [--scheme <name>] [--platform <name>] [--format json]
+swiftui-audit project watch [<path>] [--once] [--timeout <seconds>] [--format json]
 swiftui-audit project start [<path>] [--format json]
 swiftui-audit project status [<path>] [--wait indexed] [--timeout <seconds>] [--format json]
 swiftui-audit project stop [<path>] [--format json]
 swiftui-audit project baseline update [<path>] [--format json]
 ```
 
-Setup previews by default and requires `--apply` for writes. The watcher reuses the normal deterministic pipeline and publishes a live snapshot only after explicit indexed coverage succeeds. Runtime state is external; `.swiftui-audit/project.json` and `.swiftui-audit/baseline` are the project-owned Git surface. See [Project watcher setup](../getting-started/project-watcher.md).
+Setup previews by default and requires `--apply` for writes. The watcher reuses the normal deterministic pipeline and publishes a live snapshot only after explicit indexed coverage succeeds. Agent workflows may consume that state only with a matching fresh indexed status receipt; stale or syntax-preview state never qualifies. Runtime state is external; `.swiftui-audit/project.json` and `.swiftui-audit/baseline` are the project-owned Git surface. See [Project watcher setup](../getting-started/project-watcher.md).
+
+Project subcommands do not accept `--index-store`, `--config`,
+`--cache-directory`, `--no-cache`, or `--jobs`; the manifest and watcher own
+those inputs and the resulting freshness identity.
 
 ## Indexed analysis
 

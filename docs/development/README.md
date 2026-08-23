@@ -1,6 +1,6 @@
 # Development
 
-SwiftUI Semantic Audit is a Swift Package with reusable libraries and one executable product. Release evidence is tied to the active specification, immutable tag, archive checksum, and tap formula revision.
+SwiftUI Semantic Audit is a Swift Package with reusable libraries and one executable product. Evidence for each published release is tied to the active specification, immutable tag, archive checksum, tap formula revision, and terminal publication receipts.
 
 ## Toolchain
 
@@ -112,7 +112,11 @@ skills/swiftui-dataflow-refactor
 skills/swiftui-change-review
 ```
 
-The router is the public entry point. Specialists retain their own evidence and acceptance gates. Agent-facing and public documentation must require explicit indexed analysis; frontend-only flags belong only to internal development, tests, and CI.
+The router is the public entry point. Specialists retain their own evidence and
+acceptance gates. Agent-facing and public documentation must require either a
+watcher snapshot with its matching fresh indexed receipt or an explicit
+validated Index Store from a fresh build. Frontend-only flags belong only to
+internal development, tests, and CI.
 
 ## Continuous integration
 
@@ -150,7 +154,7 @@ Before committing documentation:
 
 - check every relative file and anchor link;
 - compare command examples with executable help;
-- ensure the root README truthfully distinguishes an in-progress candidate from a tagged release;
+- ensure the root README identifies the current tagged release and separates any unreleased candidate;
 - run the prose lint as a heuristic, not an authority;
 - run `git diff --check` and the relevant build/tests.
 

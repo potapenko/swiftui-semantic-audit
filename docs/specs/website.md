@@ -2,9 +2,9 @@
 
 - Node type: hybrid
 - Status: Active
-- Contract revision: `spec-9`
-- Authority: user-authorized website addenda through `SEMANTIC-TWIN-CAPABILITIES-001` on 2026-08-22
-- Stability: released prior-story baseline; `SEMANTIC-TWIN-STORY-001` evolving until publication
+- Contract revision: `spec-11`
+- Authority: user-authorized website addenda through `RELEASE-0.6.0-001` on 2026-08-23
+- Stability: released prior-story baseline; semantic-twin story evolving; 0.6.0 facts terminal-receipt gated
 - Read when: designing, implementing, publishing, or verifying the product website.
 - Do not read when: work is limited to the Swift package, CLI, rules, or agent skills.
 - Maximum size: 100 physical lines.
@@ -69,6 +69,20 @@ unifying explanation, not a substitute for the X-Ray, detailed patterns,
 task-shaped workflows, semantic diff, thirty-rule surface, trust, installation,
 or FAQ. Release versions remain supporting truth and must not dominate the
 hero, CTA, or section narrative.
+
+**WEB-DELTA-010 — Receipt-gated 0.6.0 facts.** `RELEASE-0.6.0-001` authorizes
+the landing's version, immutable links, installation prompt, and watcher copy
+to advance together only after the terminal 0.6.0 publication receipt. Until
+then 0.5.0 remains the only public release and the watcher remains a candidate.
+Afterward the site may describe only a freshness-qualified indexed live twin
+with explicit stale-state rejection; layout, capability breadth, interaction,
+accessibility, deployment mechanics, and the no-bottles/no-automatic-skill-
+installation boundary remain unchanged.
+
+**WEB-DELTA-011 — Version-neutral social preview.** The user's 2026-08-23
+decision removes the release badge from the social preview. Public metadata may
+carry the current release version, but the image itself remains reusable across
+releases; its layout, headline, graph, dimensions, and visual system stay fixed.
 
 ## Choose the governing child
 

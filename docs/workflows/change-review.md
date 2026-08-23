@@ -14,11 +14,17 @@ The router selects `swiftui-change-review` directly.
 Semantic review requires two compatible indexed snapshots:
 
 - the baseline snapshot was created after building the exact baseline source;
-- the current snapshot was created after building the exact changed source;
+- the current snapshot was either created after building the exact changed
+  source or returned as `liveSnapshotPath` by a matching fresh indexed watcher
+  receipt for that source state;
 - both record `resolution: "indexed"`;
 - both use the same schema and analysis-configuration digest.
 
-Git-revision operands do not preserve compiler-index evidence and therefore do not satisfy this workflow. If a compatible indexed baseline snapshot does not exist, report semantic comparison as blocked rather than calling the change clean.
+Git-revision operands do not preserve compiler-index evidence and therefore do
+not satisfy this workflow. A watcher snapshot without its matching current
+receipt is also insufficient. If a compatible indexed baseline or current
+snapshot does not exist, report semantic comparison as blocked rather than
+calling the change clean.
 
 ## 1. Compare semantic snapshots
 
@@ -84,6 +90,8 @@ Include:
 
 - baseline and current snapshot identities;
 - indexed resolution and matching configuration digest;
+- watcher generation, workspace identity, and status receipt when the current
+  snapshot came from the watcher;
 - new, resolved, and retained findings;
 - affected semantic values and source counts;
 - ownership, write-path, Binding, effect, derivation, and lifetime changes;
@@ -94,4 +102,8 @@ If there are no actionable findings, say which evidence was checked. Do not clai
 
 ## Stop conditions
 
-Stop on invalid JSON, missing or non-indexed snapshots, mixed resolution, different configuration digests, ambiguous selectors, insufficient slice budget, or stale current index coverage. An empty diff produced from incompatible evidence is not a review result.
+Stop on invalid JSON, missing or non-indexed snapshots, mixed resolution,
+different configuration digests, an absent, stale, or mismatched watcher
+receipt, ambiguous selectors, insufficient slice budget, or stale current index
+coverage. An empty diff produced from incompatible evidence is not a review
+result.

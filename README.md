@@ -15,26 +15,26 @@ change is appropriate.
 
 | Surface | Status | Capability |
 | --- | --- | --- |
-| Release `0.5.0` | Current public release | Build an indexed semantic twin for an exact source state on demand |
-| `master` / `0.6.0` | Unreleased candidate | Maintain freshness-qualified external live state with the project watcher |
+| Exact-state analysis | Available since `0.5.0` | Build an indexed semantic twin for one source state on demand |
+| Project watcher | Included in `0.6.0` | Keep external live state ready for agents, gated by a matching fresh indexed receipt |
 
 macOS 13 or later · MIT
 
-[Website](https://swiftui-audit.dev/) · [Install](#quick-start-with-release-050) ·
+[Website](https://swiftui-audit.dev/) · [Install](#quick-start) ·
 [Architecture](#how-the-semantic-twin-is-built) ·
 [Documentation](docs/README.md) ·
-[Release 0.5.0](https://github.com/potapenko/swiftui-semantic-audit/releases/tag/0.5.0)
+[Release 0.6.0](https://github.com/potapenko/swiftui-semantic-audit/releases/tag/0.6.0)
 
-## Quick start with release 0.5.0
+## Quick start
 
 Give this prompt to a local Codex or Claude Code agent:
 
 ```text
 Install SwiftUI Semantic Audit from this GitHub guide. Install Homebrew first if needed, then the CLI and all four agent skills:
-https://github.com/potapenko/swiftui-semantic-audit/blob/8c156128f56f01a295e510f73e6a97bdaceea0a5/docs/getting-started/installation.md
+https://github.com/potapenko/swiftui-semantic-audit/blob/0.6.0/docs/getting-started/installation.md
 ```
 
-The immutable guide installs the released `0.5.0` CLI through Homebrew, then
+The immutable guide targets the `0.6.0` CLI through Homebrew, then
 installs the four tagged skills as a separate phase. Homebrew owns only the
 `swiftui-audit` executable.
 
@@ -45,6 +45,10 @@ brew install potapenko/tap/swiftui-semantic-audit
 swiftui-audit --version
 swiftui-audit doctor . --format json
 ```
+
+`doctor` checks environment readiness. It accepts neither `--index-store` nor
+`--config`, and it does not prove watcher freshness. For watcher-backed agent
+work, freshness comes from the matching `project status --wait indexed` receipt.
 
 Then ask for the SwiftUI outcome:
 
@@ -89,10 +93,10 @@ flowchart LR
     I --> J[Semantic diff and check]
 ```
 
-Release `0.5.0` builds this twin for the exact source and Index Store supplied to
-one invocation. Agent workflows require an explicit project-covering Index Store,
-valid JSON, `resolution: "indexed"`, and the expected configuration digest. They
-stop instead of treating an unindexed fallback as equivalent evidence.
+Release `0.5.0` introduced the exact-state path: build the target source, pass its
+project-covering Index Store to one invocation, and require valid JSON,
+`resolution: "indexed"`, and the expected configuration digest. That path remains
+the explicit fallback when no matching fresh watcher receipt is available.
 
 The deterministic layer owns identities, topology, confidence, and source
 locations. The agent may classify intent, explain risk, and propose a conditional
@@ -134,23 +138,22 @@ These artifacts have different jobs:
 | Artifact | Role | Repository status |
 | --- | --- | --- |
 | Analysis cache | Reuses deterministic frontend and indexed facts; never semantic evidence by itself | External user cache |
-| Live state | Watcher-owned status, preview, and indexed snapshot for the unreleased `0.6.0` candidate | External application state |
+| Live state | Watcher-owned status, preview, and indexed snapshot in `0.6.0` | External application state |
 | Snapshot | Canonical five-file serialization of one semantic twin | Explicit destination |
 | Baseline | Optional snapshot deliberately promoted for semantic diff/check | May be tracked in Git |
 
-### Release 0.5.0: exact-state workflow
+### 0.5.0 compatibility: exact-state workflow
 
 Build the exact target state, pass its raw Index Store explicitly, verify indexed
 resolution and configuration identity, and consume the result during that task.
-There is no released watcher receipt in this path.
+This compatibility path does not use a watcher receipt.
 
-### Unreleased 0.6.0: watcher preview
+### Project watcher in 0.6.0
 
-The checked-out `master` branch also contains a project-watcher candidate. It is
-not part of the public `0.5.0` Homebrew formula, released skills, or released
-landing capability path.
+Version `0.6.0` adds the project watcher to the CLI and tagged agent skills while
+preserving the exact-state workflow from `0.5.0`.
 
-The candidate keeps live state outside the repository. A coding agent may use a
+The watcher keeps live state outside the repository. A coding agent may use a
 live snapshot only when `project status --wait indexed` returns `fresh: true`,
 indexed resolution, equal workspace and indexed-workspace digests, and the
 expected configuration digest. Any later source change invalidates that receipt
@@ -166,11 +169,11 @@ Setup previews its writes. The tracked project manifest and optional promoted
 five-file baseline remain separate from external runtime state. Baseline
 promotion is deliberate and never stages or commits files.
 
-[Read the unreleased watcher guide](docs/getting-started/project-watcher.md).
+[Set up the project watcher](docs/getting-started/project-watcher.md).
 
 ## Commands and agent consumers
 
-Release `0.5.0` provides seven analysis commands:
+The CLI keeps seven one-shot analysis commands:
 
 | Command | Purpose |
 | --- | --- |
@@ -182,8 +185,8 @@ Release `0.5.0` provides seven analysis commands:
 | `check` | Fail only for new findings at or above a threshold |
 | `doctor` | Inspect toolchain, project, Index Store, and Git readiness without mutation |
 
-The unreleased candidate adds the `project` namespace for setup, watch, status,
-service lifecycle, and deliberate baseline promotion.
+Version `0.6.0` adds the `project` namespace for setup, watch, status, service
+lifecycle, and deliberate baseline promotion.
 
 | Agent surface | How it consumes the twin |
 | --- | --- |
@@ -194,8 +197,9 @@ service lifecycle, and deliberate baseline promotion.
 
 ## Boundaries
 
-- Agent workflows require fresh project-covering indexed evidence and stop when
-  it is unavailable.
+- Agent workflows require either a live snapshot paired with its matching fresh
+  indexed status receipt or an explicit fresh project-covering Index Store. They
+  stop when neither evidence path is available.
 - Role-aware findings require exact project configuration; names such as
   `Repository`, `Service`, or `Model` do not establish authority.
 - The 30 rules cover bounded SwiftUI topology, not every runtime, concurrency,
@@ -208,11 +212,11 @@ service lifecycle, and deliberate baseline promotion.
 
 ## Documentation
 
-- [Install release 0.5.0](docs/getting-started/installation.md)
+- [Install release 0.6.0](docs/getting-started/installation.md)
 - [Run the first indexed audit](docs/getting-started/first-audit.md)
 - [Understand deterministic facts and agent judgment](docs/concepts/deterministic-facts-and-agent-judgment.md)
 - [Operate snapshots and semantic diff](docs/reference/outputs-snapshots-and-diff.md)
-- [Preview the unreleased project watcher](docs/getting-started/project-watcher.md)
+- [Set up the project watcher](docs/getting-started/project-watcher.md)
 - [Browse the complete documentation map](docs/README.md)
 
 Maintainers can trace normative behavior through the

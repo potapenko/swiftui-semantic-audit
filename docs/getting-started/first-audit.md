@@ -1,6 +1,10 @@
 # Run a first audit
 
-The first pass uses compiler-backed indexed analysis. Build the exact source state, pass its project-covering Index Store explicitly, and reject any lower-resolution result.
+This page covers the explicit Index Store path retained from `0.5.0`. Release
+`0.6.0` can instead supply a watcher snapshot, but only together with its
+matching fresh indexed status receipt. Without that receipt, build the exact
+source state, pass its project-covering Index Store explicitly, and reject any
+lower-resolution result.
 
 ## 1. Check the environment
 
@@ -10,7 +14,7 @@ From the target repository:
 swiftui-audit doctor . --format json
 ```
 
-`doctor` is non-mutating. It reports Swift, Xcode, project type, SwiftSyntax compatibility, Index Store readiness, and Git state. Required Swift or Git failures produce an error. Treat Xcode or index-readiness warnings as blockers for the agent workflow.
+`doctor` is non-mutating. It reports Swift, Xcode, project type, SwiftSyntax compatibility, Index Store readiness, and Git state. It accepts neither `--index-store` nor `--config`, and it does not prove watcher freshness; `project status --wait indexed` supplies that receipt. Required doctor errors block the workflow. An index-readiness warning means automatic readiness was not proved; validate the selected store with the first explicit live-source command or use a matching fresh watcher receipt.
 
 ## 2. Build the exact source state
 
@@ -81,6 +85,7 @@ The router selects the audit specialist, checks indexed evidence, and separates 
 Stop rather than filling gaps with guesses when:
 
 - indexed coverage is stale or incomplete;
+- a watcher snapshot lacks its matching fresh indexed status receipt;
 - output is not valid JSON or the command exits nonzero;
 - a finding or symbol selector is ambiguous;
 - compared inputs use different resolution or configuration digests;

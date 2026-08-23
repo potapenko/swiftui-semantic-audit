@@ -101,9 +101,13 @@ snapshots as a semantic twin without replacing the accepted marketing surface.
 It retains the annotated X-Ray, three detailed code cases,
 protected transaction, audit/refactor/review tasks, semantic diff, and all six
 groups of the thirty-rule surface. Version numbers remain supporting release
-truth; the hero and primary CTA sell the product outcome. The FAQ labels the
-watcher on `master` as an unreleased `0.6.0` candidate.
+truth; the hero and primary CTA sell the product outcome. The FAQ describes the
+watcher in `0.6.0`. Agent workflows use its live twin only
+when `swiftui-audit project status --wait indexed --format json` returns a fresh
+indexed status receipt matching the current workspace and analysis configuration.
+Syntax previews, failed generations, and stale receipts are diagnostics, not
+current evidence.
 
-The stable setup prompt links to an immutable revision of the `0.5.0`
+The stable setup prompt links to the immutable `0.6.0`
 installation guide. That guide keeps Homebrew's CLI installation separate from
 the four agent-skill installations.

@@ -13,13 +13,29 @@ The router should select `swiftui-semantic-audit` unless the request already aut
 
 ## 1. Establish indexed evidence
 
-Build the exact source state and record the compiler Index Store that covers it. Then check the environment:
+Use one of two indexed routes. If the project watcher is configured, wait
+boundedly for its current indexed generation:
+
+```bash
+swiftui-audit project status . --wait indexed --timeout 120 --format json
+```
+
+Use the returned `liveSnapshotPath` only when the receipt matches the selected
+project, current workspace digest, configuration identity, and indexed
+generation. A later workspace event makes that receipt stale. Otherwise, build
+the exact source state and record an explicit validated compiler Index Store
+that covers it.
+
+For either route, check the environment without mutation:
 
 ```bash
 swiftui-audit doctor . --format json
 ```
 
-Every live-source audit and slice command must receive the Index Store explicitly. Require `resolution: "indexed"`; do not rely on automatic discovery or accept a lower-resolution result.
+Every live-source audit and slice command must receive the Index Store
+explicitly. The watcher route consumes the persisted report and snapshot named
+by the fresh receipt. Require `resolution: "indexed"`; do not rely on automatic
+discovery or accept a lower-resolution result.
 
 ## 2. Establish project classification
 
@@ -28,6 +44,9 @@ If the question depends on application roles, feature boundaries, services, repo
 Without authoritative classification, topology-only rules still run. The report must state that role-aware conclusions are unavailable rather than infer roles from type names.
 
 ## 3. Audit before reading broad source
+
+For the watcher route, inspect the manifest, summary, and findings under the
+receipt's `liveSnapshotPath`. For the explicit Index Store route, run:
 
 ```bash
 swiftui-audit audit Sources \
@@ -40,12 +59,24 @@ Keep stderr and exit status separate from JSON stdout. Validate:
 
 - schema and tool version;
 - `resolution: "indexed"`;
+- matching watcher receipt and snapshot identity, or the exact Index Store path;
 - configuration digest, or the explicit topology-only state;
 - findings, semantic values, and referenced node/edge IDs.
 
 Group overlapping findings by semantic value and evidence instead of treating every finding as an independent defect.
 
 ## 4. Slice one relevant cluster
+
+For watcher evidence, slice the persisted snapshot and omit live-source flags:
+
+```bash
+swiftui-audit slice /absolute/path/from/status/live-snapshot \
+  --finding finding:0123456789abcdef \
+  --format llm-json \
+  --token-budget 10000 > slice.json
+```
+
+For the explicit Index Store route, run:
 
 ```bash
 swiftui-audit slice Sources \
@@ -80,7 +111,8 @@ The classification must follow evidence about ownership, identity copies, reads,
 A complete audit report includes:
 
 - question and source scope;
-- indexed resolution and exact Index Store path;
+- indexed resolution and either the fresh watcher receipt/live snapshot
+  identity or the exact Index Store path;
 - configuration digest or topology-only limitation;
 - semantic value and canonical owner, if established;
 - representations and logical source count;
@@ -95,6 +127,10 @@ Do not edit merely because a candidate exists. If the user later authorizes a ch
 
 ## Stop conditions
 
-Stop and report the exact command, status, stderr, and missing evidence when indexed coverage is unavailable, JSON is invalid, a selector is ambiguous, configuration differs or is required but absent, the slice is too small, or ownership and transaction behavior remain unresolved.
+Stop and report the exact command, status, stderr, and missing evidence when
+indexed coverage is unavailable, a watcher wait times out, its receipt is stale
+or mismatched, JSON is invalid, a selector is ambiguous, configuration differs
+or is required but absent, the slice is too small, or ownership and transaction
+behavior remain unresolved.
 
 An empty result after a failed command is not a clean audit.

@@ -2,14 +2,14 @@
 
 - Node type: branch
 - Status: Active
-- Contract revision: `spec-13`
+- Contract revision: `spec-14`
 - Read when: selecting the product goal, invariants, supported operations, scope, or release boundary.
 - Do not read when: a narrower linked domain contract fully governs the task.
 - Maximum size: 100 physical lines.
 
-Revision: `spec-13`
-Authority: epoch `tz-v18`, pinned base digest and authorized addenda in the [registry](README.md)
-Status: active; 0.5.0 released, 0.4.0 immutable; 0.6.0 project-watcher candidate unreleased
+Revision: `spec-14`
+Authority: epoch `tz-v20`, pinned base digest and authorized addenda in the [registry](README.md)
+Status: active; 0.5.0 is the current public release and 0.4.0/0.5.0 artifacts are immutable; 0.6.0 is publication-authorized with its terminal receipt pending
 
 ## Choose the governing child
 

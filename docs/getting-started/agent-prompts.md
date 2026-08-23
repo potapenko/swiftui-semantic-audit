@@ -1,10 +1,11 @@
 # Agent prompts
 
-These prompts use the released SwiftUI Semantic Audit 0.5.0 router and its
+These prompts use the SwiftUI Semantic Audit 0.6.0 router and its
 three specialist skills. They do not add another skill, a migration command,
 or automatic source rewriting.
 
-The project-watcher prompt below targets the unreleased 0.6.0 candidate in the checked-out repository; it is not part of the published 0.5.0 installation.
+The project-watcher prompt below uses the 0.6.0 `project` namespace. The
+exact-state workflow from `0.5.0` remains available as an explicit fallback.
 
 In Codex, invoke the router as `$swiftui-semantic`. In Claude Code, replace that
 spelling with `/swiftui-semantic`. For the final long-running prompt, keep the
@@ -15,11 +16,13 @@ project task brief.
 
 The audit, refactor, review, and migration prompts require:
 
-- `swiftui-audit --version` to report `0.5.0`;
-- a normal build of the exact source state being analyzed;
-- a fresh compiler Index Store that covers the project scope;
-- the raw Index Store path passed explicitly to live-source commands;
-- `resolution: "indexed"` in every resulting report or snapshot;
+- `swiftui-audit --version` to report `0.6.0`;
+- either a live snapshot paired with the matching fresh indexed
+  `project status --wait indexed` receipt, or a normal exact-state build with a
+  fresh project-covering compiler Index Store passed explicitly;
+- `resolution: "indexed"`, matching workspace identity, and the expected
+  configuration digest in watcher-backed evidence;
+- `resolution: "indexed"` in every explicit-index report or snapshot;
 - a validated `.swiftui-audit.json` when a conclusion depends on project roles.
 
 Stop instead of continuing with weaker evidence when the index is missing,
@@ -36,18 +39,21 @@ For the underlying procedure, see [Installation](installation.md),
 
 ```text
 Install SwiftUI Semantic Audit from this GitHub guide. Install Homebrew first if needed, then the CLI and all four agent skills:
-https://github.com/potapenko/swiftui-semantic-audit/blob/master/docs/getting-started/installation.md
+https://github.com/potapenko/swiftui-semantic-audit/blob/0.6.0/docs/getting-started/installation.md
 ```
 
 The GitHub installation guide is the canonical detailed procedure. It pins
-artifacts to release `0.5.0` and keeps Homebrew's CLI ownership separate from
+artifacts to release `0.6.0` and keeps Homebrew's CLI ownership separate from
 the agent-owned installation of all four skills.
 
 ## Set up continuous project analysis
 
 ```text
-Use $swiftui-semantic to set up continuous semantic analysis for this project. Preview all project writes first, apply the project manifest and initial indexed baseline, start the watcher, and return only after project status proves a fresh indexed generation. Do not infer product roles from names, store runtime artifacts in the repository, stage files, or commit.
+Use $swiftui-semantic to set up continuous semantic analysis for this project. Preview all project writes first, apply the project manifest and initial indexed baseline, and start the watcher. Return only after `swiftui-audit project status . --wait indexed --format json` returns the matching receipt with `fresh: true`, `resolution: "indexed"`, equal `workspaceDigest` and `indexedWorkspaceDigest`, and the expected `configurationDigest`. Never use a provisional preview or stale snapshot as agent evidence. Do not infer product roles from names, store runtime artifacts in the repository, stage files, or commit.
 ```
+
+`doctor` checks readiness only. It accepts neither `--index-store` nor `--config`;
+the matching project-status receipt proves watcher freshness.
 
 ## Add a bounded project instruction
 
@@ -255,7 +261,7 @@ regression remains, and the final review reports the remaining limitations.
 
 ## Related workflows
 
-- [Install and verify release 0.5.0](installation.md)
+- [Install and verify release 0.6.0](installation.md)
 - [Run a first indexed audit](first-audit.md)
 - [Audit](../workflows/audit.md)
 - [Refactor](../workflows/refactor.md)

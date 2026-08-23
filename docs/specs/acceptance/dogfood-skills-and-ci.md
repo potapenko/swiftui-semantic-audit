@@ -2,7 +2,7 @@
 
 - Node type: leaf
 - Status: Active
-- Contract revision: `spec-11`
+- Contract revision: `spec-12`
 - Authority: [Acceptance and QA contract](../acceptance.md)
 - Read when: selecting fixture, build, determinism, safety, dogfood, skill, CI, or completion obligations.
 - Do not read when: the task does not implement or verify accepted behavior.
@@ -25,7 +25,7 @@
 
 **ACC-DOG-003.** Dogfood does not require zero legacy findings. CI policy is no new high-severity finding relative to the compatible baseline.
 
-**ACC-DOG-004.** The 0.6.0 candidate previews the repository's project setup without writes, runs one indexed watcher generation, validates the fresh status receipt and five-file live snapshot, and compares it with the tracked `.swiftui-audit/baseline`.
+**ACC-DOG-004.** The publication-authorized but unreleased 0.6.0 candidate previews the repository's project setup without writes, runs one indexed watcher generation, validates the fresh status receipt and five-file live snapshot, and compares it with the tracked `.swiftui-audit/baseline`.
 
 ## Skills
 
@@ -77,10 +77,10 @@
 
 ## Homebrew release
 
-**ACC-BREW-001.** The formula source is an immutable `0.5.0` release archive with SHA-256 verification and the committed `Package.resolved`. Its install step builds only the `swiftui-audit` product with automatic dependency resolution disabled and installs the resulting executable in Homebrew's `bin`.
+**ACC-BREW-001.** The formula source is an immutable `0.6.0` release archive with SHA-256 verification and the committed `Package.resolved`. Its install step builds only the `swiftui-audit` product with automatic dependency resolution disabled and installs the resulting executable in Homebrew's `bin`.
 
 **ACC-BREW-002.** Before publication, `brew style`, strict new-formula audit, source installation, and `brew test` pass. The functional test analyzes a real Swift file in syntax-only JSON mode and validates schema version, tool version, and resolution rather than checking only executable presence or help text.
 
-**ACC-BREW-003.** The installed CLI reports `0.5.0` through `--version`, preserves the seven-command help surface, and runs without a repository clone. Indexed analysis continues to use the selected user toolchain through `xcrun`; the formula does not embed or hard-code one user's Index Store path.
+**ACC-BREW-003.** The installed CLI reports `0.6.0` through `--version`, preserves the semantics and help entries of the seven existing analysis commands, exposes the additive `project` namespace, and runs without a repository clone. Indexed analysis continues to use the selected user toolchain through `xcrun`; the formula does not embed or hard-code one user's Index Store path.
 
 **ACC-BREW-004.** The published receipt pins upstream tag and commit, release archive checksum, tap formula commit, tested Homebrew/macOS/architecture, source-install result, and the exact direct install command. Unsupported bottle platforms remain source builds or explicit residuals rather than unverified release claims.

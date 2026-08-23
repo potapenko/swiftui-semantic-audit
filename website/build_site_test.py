@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import binascii
+import hashlib
 import re
 import struct
 import tempfile
@@ -14,9 +15,12 @@ from website import build_site
 
 SITE_URL = "https://example.ondigitalocean.app/"
 BUILD_MARKER = "0123456789abcdef"
+SOCIAL_PREVIEW_SHA256 = (
+    "aa6238f4219b3385f1959c41a3163ffe0f319d7e91f173c2512514700f1d68ee"
+)
 INSTALL_GUIDE_URL = (
     "https://github.com/potapenko/swiftui-semantic-audit/"
-    "blob/8c156128f56f01a295e510f73e6a97bdaceea0a5/"
+    "blob/0.6.0/"
     "docs/getting-started/installation.md"
 )
 SETUP_PROMPT = (
@@ -270,7 +274,7 @@ class ProductionPageContractTests(unittest.TestCase):
         )
         hero = source.split('<section id="top"', 1)[1].split("</section>", 1)[0]
         self.assertIn("deterministic semantic twin", hero)
-        self.assertNotIn("0.5.0", hero)
+        self.assertIsNone(re.search(r"\bv?\d+\.\d+\.\d+\b", hero))
         for removed_explainer_id in ("problem", "twin", "loop", "use-cases"):
             self.assertNotIn(removed_explainer_id, known_ids)
         self.assertIn('<section id="install"', source)
@@ -321,10 +325,36 @@ class ProductionPageContractTests(unittest.TestCase):
         self.assertEqual(len(set(listed_rules)), 30)
         self.assertIn("reusable-component-owner-dependency", listed_rules)
         self.assertIn("Thirty bounded rules", source)
-        self.assertIn("The current public release builds an exact-state twin on demand.", source)
+        self.assertIn('"softwareVersion": "0.6.0"', source)
+        self.assertIn(
+            '"downloadUrl": "https://github.com/potapenko/swiftui-semantic-audit/'
+            'releases/tag/0.6.0"',
+            source,
+        )
+        self.assertIn('<span class="version-chip">v0.6.0</span>', source)
+        for release_link in (
+            "https://github.com/potapenko/swiftui-semantic-audit/tree/0.6.0/docs",
+            "https://github.com/potapenko/swiftui-semantic-audit/blob/0.6.0/"
+            "docs/reference/rules.md",
+            "https://github.com/potapenko/swiftui-semantic-audit/releases/tag/0.6.0",
+            "https://github.com/potapenko/swiftui-semantic-audit/blob/0.6.0/LICENSE",
+        ):
+            self.assertIn(f'href="{release_link}"', source)
+        self.assertNotIn("0.5.0", source)
+        self.assertIn("Release 0.6.0 adds the project watcher.", source)
+        self.assertIn(
+            "returns a fresh indexed status receipt matching the current workspace "
+            "and analysis configuration",
+            source,
+        )
+        self.assertIn(
+            "Syntax previews, failed generations, and stale receipts are diagnostics, "
+            "not current evidence.",
+            source,
+        )
         self.assertIn("matching analysis configuration", source)
         self.assertNotIn("Facts are canonical", source)
-        self.assertIn("unreleased 0.6.0 candidate", source)
+        self.assertNotIn("unreleased 0.6.0 candidate", source)
         self.assertIn("Which skill should I use?", source)
         self.assertNotIn("$swiftui-semantic-audit", source)
         self.assertNotIn("$swiftui-dataflow-refactor", source)
@@ -332,7 +362,9 @@ class ProductionPageContractTests(unittest.TestCase):
         self.assertIn('href="https://x.com/potapenko"', source)
         self.assertIn('aria-label="Follow @potapenko on Twitter"', source)
         self.assertIn('src="assets/icons/brand-twitter.svg"', source)
-        self.assertNotIn("swiftui-audit project ", source)
+        status_command = "swiftui-audit project status --wait indexed --format json"
+        self.assertIn(status_command, source)
+        self.assertEqual(source.count("swiftui-audit project "), 1)
 
         lowered = source.lower()
         for forbidden in (
@@ -369,6 +401,13 @@ class ProductionPageContractTests(unittest.TestCase):
                     site_url=SITE_URL,
                     build_marker=BUILD_MARKER,
                 )
+
+    def test_release_social_preview_checksum(self) -> None:
+        preview = Path(__file__).resolve().parent / build_site.SOCIAL_PREVIEW
+        self.assertEqual(
+            hashlib.sha256(preview.read_bytes()).hexdigest(),
+            SOCIAL_PREVIEW_SHA256,
+        )
 
     def test_rejects_missing_required_metadata(self) -> None:
         with tempfile.TemporaryDirectory() as temporary:

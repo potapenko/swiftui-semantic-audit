@@ -2,7 +2,7 @@
 
 - Node type: leaf
 - Status: Active
-- Contract revision: `spec-7`
+- Contract revision: `spec-9`
 - Authority: [Website contract](../website.md)
 - Maximum size: 100 physical lines.
 ## Audience and outcome
@@ -44,19 +44,20 @@ visitor sees concrete product value.
 **WEB-LOOP-001.** Explain the exact-state workflow through the existing task
 and semantic-diff proof. Keep build/index/configuration requirements in concise
 supporting copy; do not turn internal pipeline steps into the main sales story
-or imply a released watcher receipt.
+or imply a released watcher receipt before that receipt is terminal.
 
 **WEB-INSTALL-001.** Lead with one short prompt that tells the local agent to
 read the GitHub guide, install Homebrew first if absent, install the CLI through
-Homebrew, and then install all four skills pinned to release 0.5.0. Keep those
-phases separately owned: Homebrew installs only the CLI and must never modify an
-agent host directory. A compact CLI-only command and the full guide remain secondary.
+Homebrew, and then install all four skills. Pin 0.5.0 until the terminal 0.6.0
+receipt, then advance the CLI and all four skills together to 0.6.0. Homebrew installs
+only the CLI and must never modify agent-host directories; compact CLI commands and the full guide remain secondary.
 
 **WEB-FRESH-001.** Before public 0.6.0, describe the twin as built on demand for an exact source state and keep watcher details out of the released capability path. After a terminal 0.6.0 publication receipt, the landing may lead with a freshness-qualified live twin only alongside its indexed receipt and stale-state rejection. `Always-fresh` is never unconditional.
 
 **WEB-VERSION-001.** Version numbers belong in metadata, immutable links,
 installation detail, and the public-versus-candidate clarification. They are
-not the hero promise, primary CTA, section theme, or repeated value claim.
+not the hero promise, primary CTA, section theme, repeated value claim, or
+social-preview artwork. The social preview contains no release badge.
 
 ## Visual and interaction contract
 
@@ -84,17 +85,16 @@ tracking, a new route, or a second author surface elsewhere on the page.
 `de-ai-writing` landing rules. Ban rhetorical questions, urgency, fake empathy,
 vague authority, lifestyle theater, and unsupported qualitative outcomes.
 
-**WEB-CLAIM-001.** Supported claims include release 0.5.0, an on-demand
-deterministic semantic twin, 30 bounded rules, seven public CLI commands,
-semantic snapshots/diff, separate agent judgment, provider independence, and
-the documented Homebrew plus agent-skill installation boundary.
+**WEB-CLAIM-001.** Before the terminal receipt, supported claims remain release
+0.5.0, an on-demand deterministic twin, 30 bounded rules, and seven analysis commands.
+Afterward they may advance to release 0.6.0 and its receipt-qualified project
+watcher while preserving snapshots/diff, separate judgment, provider independence,
+and the Homebrew-versus-agent-skill installation boundary.
 
 **WEB-CLAIM-002.** Never claim automatic rewriting, guaranteed correctness,
 zero configuration, complete SwiftUI bug coverage, fully deterministic
 recommendations, or that audit/diff replaces builds, tests, source review, or
 the surrounding agent host's data policy.
-
 **WEB-A11Y-001.** Critical content works without JavaScript. Provide semantic
 landmarks, heading order, skip navigation, keyboard-visible focus, labelled
-controls, non-color status cues, AA contrast, reduced-motion support, and
-responsive reading from 320 CSS pixels upward.
+controls, non-color status cues, AA contrast, reduced-motion support, and responsive reading from 320 CSS pixels upward.

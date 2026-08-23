@@ -6,10 +6,12 @@ SwiftUI Semantic Audit keeps extraction separate from interpretation. This bound
 
 The semantic twin is a deterministic, simplified representation of supported
 Swift/SwiftUI program facts. It is built from source and, for agent workflows,
-fresh compiler Index Store evidence. It preserves ownership, state, Bindings,
-reads, writes, derivations, dependencies, component boundaries, lifecycle,
-effects, identity, confidence, and source provenance while leaving unrelated
-syntax in the source.
+fresh indexed compiler evidence. That evidence comes either from a watcher live
+snapshot paired with its matching fresh indexed status receipt or from a fresh
+build with an explicit validated Index Store. The twin preserves ownership,
+state, Bindings, reads, writes, derivations, dependencies, component boundaries,
+lifecycle, effects, identity, confidence, and source provenance while leaving
+unrelated syntax in the source.
 
 The twin is not an LLM summary, model-written pseudocode, a source replacement,
 a runtime simulation, or a complete account of program behavior. The CLI owns
@@ -88,10 +90,16 @@ Indexed mode enriches the graph with project-covering compiler identity and use 
 
 The bundled agent workflows therefore require:
 
-- a fresh build of the exact source state;
-- an explicit validated Index Store path;
-- `resolution: "indexed"` in every live-source result;
+- the exact source state being evaluated;
+- either a watcher live snapshot with a matching fresh indexed status receipt
+  for the current workspace and configuration, or a fresh build with an
+  explicit validated Index Store path;
+- `resolution: "indexed"` in every accepted snapshot or live-source result;
 - compatible indexed snapshots for semantic review.
+
+Without a matching watcher receipt, the workflow waits boundedly for fresh
+indexed status or uses the explicit Index Store route. It never treats a stale
+snapshot or lower-resolution result as current indexed evidence.
 
 Results from a lower resolution must not be substituted for, compared with, or described as indexed workflow evidence.
 

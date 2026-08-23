@@ -37,11 +37,20 @@ prompt and one secondary Homebrew CLI row.
 - Source dimensions: 1731 by 909 pixels
 - Source SHA-256: `df81f41ec3483f45aa8d43b9e37b8b601d4d90cfd7d3edd6cf946963ced3d210`
 - Published dimensions: 1200 by 630 pixels
-- Published SHA-256: `00f88c6212b009418926d78a3cd3e8804cf0e30a7b86680c16a988483eaeed23`
+- Original 0.5.0 published SHA-256: `00f88c6212b009418926d78a3cd3e8804cf0e30a7b86680c16a988483eaeed23`
 - Treatment: ImageGen preserved the warm-paper/dark-graph split while changing
   the chip to `v0.5.0` and the headline to `Build a semantic twin before the
   agent edits.` The result was resampled once to the exact Open Graph size,
   then inspected at native resolution.
+- Version-neutral release correction: two built-in ImageGen edits were rejected
+  because they changed the composition. After the user's decision that social
+  artwork must not carry a product version, the accepted deterministic AppKit
+  correction removed the complete chip and reconstructed only its local paper
+  background. Relative to the original published asset, 4,659 pixels changed
+  inside `(398, 145)` through `(498, 191)`; every pixel outside that region,
+  the 1200 by 630 dimensions, title, headline, graph, split, and color profile
+  remain unchanged.
+- Current published SHA-256: `aa6238f4219b3385f1959c41a3163ffe0f319d7e91f173c2512514700f1d68ee`
 
 ## Icons
 

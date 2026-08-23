@@ -7,9 +7,9 @@ operational paths for audit, refactor, and review.
 
 [Project website](https://swiftui-audit.dev/) · [Back to the project README](../README.md)
 
-Release `0.5.0` builds an exact-state twin on demand. The project-watcher guide
-is explicitly for the unreleased `0.6.0` candidate; it is not part of the
-current Homebrew release.
+Version `0.6.0` keeps the exact-state workflow from `0.5.0` and adds the project
+watcher. A watcher snapshot is agent-usable only with its matching fresh indexed
+status receipt; the explicit fresh Index Store path remains available.
 
 ## Start here
 
@@ -38,7 +38,7 @@ docs/
 │   ├── installation.md               # agent and manual installation
 │   ├── agent-prompts.md              # copy-paste tasks for coding agents
 │   ├── first-audit.md                # indexed and standalone first passes
-│   └── project-watcher.md            # unreleased 0.6.0 continuous state
+│   └── project-watcher.md            # 0.6.0 continuous state
 ├── concepts/
 │   ├── README.md
 │   ├── why-semantic-audit.md
@@ -77,7 +77,8 @@ When a public guide and a specification appear to disagree, the active specifica
 The tool produces the deterministic facts in the semantic twin. It does not
 rewrite Swift, call a model API, replace behavior tests, or prove product
 intent from syntax alone. The installed agent skill consumes bounded graph
-slices, classifies the evidence, and must stop when ownership or behavior
-cannot be established.
+slices backed by a matching fresh indexed watcher receipt or an explicit fresh
+project-covering Index Store. It must stop when ownership or behavior cannot be
+established.
 
 That split is the central design constraint, not an implementation detail. Read [Deterministic facts and agent judgment](concepts/deterministic-facts-and-agent-judgment.md) before integrating the output into another automated workflow.

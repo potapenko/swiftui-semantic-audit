@@ -2,13 +2,13 @@
 
 - Node type: hybrid
 - Status: Active
-- Contract revision: `spec-15`
+- Contract revision: `spec-16`
 - Read when: tracing original sections or authorized addenda to stable clauses and evidence ownership.
 - Do not read when: the governing contract is already selected and traceability is not in question.
 - Maximum size: 100 physical lines.
 
-Revision: `spec-15`
-Authority: ТЗ epoch `tz-v1` plus user-authorized addenda through `SEMANTIC-TWIN-CAPABILITIES-001`, combined epoch `tz-v19`
+Revision: `spec-16`
+Authority: ТЗ epoch `tz-v1` plus user-authorized addenda through `RELEASE-0.6.0-001`, combined epoch `tz-v20`
 Purpose: route every source section to stable local clauses and evidence owners
 
 This map proves coverage; it does not create new requirements. Source and tests establish realization only after the normative contract is fixed.
@@ -79,6 +79,8 @@ This map proves coverage; it does not create new requirements. Source and tests 
 `SEMANTIC-TWIN-STORY-001` maps to `PC-GOAL-004`, `WEB-DELTA-008`, `WEB-GOAL-*`, `WEB-STORY-*`, `WEB-TWIN-001`, `WEB-SKILL-001`, `WEB-LOOP-001`, and `WEB-FRESH-001`; realization owners are the landing, README, public semantic-state docs, router-skill framing, metadata artwork, and local website QA.
 
 `SEMANTIC-TWIN-CAPABILITIES-001` maps to `WEB-DELTA-009`, `WEB-STORY-001/003`, `WEB-TWIN-001`, `WEB-LOOP-001`, and `WEB-VERSION-001`; realization owners are the restored landing capability blocks, version hierarchy, release-claim tests, and browser QA.
+
+`RELEASE-0.6.0-001` maps to `PC-REL-002..005`, `CLI-GEN-005`, `ACC-BREW-001..004`, `ACC-DOD-016..017`, `WEB-DELTA-010`, `WEB-FRESH-001`, and `WEB-CLAIM-001`; realization owners are the accepted watcher/diff/CLI-hardening chain, immutable tag/archive, tagged four-skill bundle, `potapenko/homebrew-tap`, local installation, conditional website facts, and the still-pending terminal publication receipt.
 
 ## Choose the supporting map
 

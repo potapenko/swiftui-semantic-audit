@@ -34,9 +34,9 @@
       "description": "A deterministic semantic twin for explaining, refactoring, and reviewing SwiftUI ownership and data flow.",
       "applicationCategory": "DeveloperApplication",
       "operatingSystem": "macOS 13 or later",
-      "softwareVersion": "0.5.0",
+      "softwareVersion": "0.6.0",
       "url": "{{SITE_URL}}",
-      "downloadUrl": "https://github.com/potapenko/swiftui-semantic-audit/releases/tag/0.5.0",
+      "downloadUrl": "https://github.com/potapenko/swiftui-semantic-audit/releases/tag/0.6.0",
       "license": "https://opensource.org/license/mit",
       "codeRepository": "https://github.com/potapenko/swiftui-semantic-audit"
     }
@@ -49,7 +49,7 @@
     <div class="shell header-inner">
       <a class="wordmark" href="#top" aria-label="SwiftUI Semantic Audit home">
         <span>SwiftUI Semantic Audit</span>
-        <span class="version-chip">v0.5.0</span>
+        <span class="version-chip">v0.6.0</span>
       </a>
 
       <button class="menu-toggle" type="button" aria-expanded="false" aria-controls="site-navigation">
@@ -62,7 +62,7 @@
         <a href="#workflow">Use cases</a>
         <a href="#rules">Rules</a>
         <a href="#examples">Examples</a>
-        <a href="https://github.com/potapenko/swiftui-semantic-audit/tree/0.5.0/docs">Docs</a>
+        <a href="https://github.com/potapenko/swiftui-semantic-audit/tree/0.6.0/docs">Docs</a>
         <a class="twitter-link" href="https://x.com/potapenko" aria-label="Follow @potapenko on Twitter">
           <img src="assets/icons/brand-twitter.svg" alt="" aria-hidden="true">
           <span class="twitter-link-text">Follow @potapenko on Twitter</span>
@@ -516,7 +516,7 @@ selection: <span class="syntax-type">Binding</span>(
           <p class="eyebrow">Semantic surface</p>
           <h2 id="rules-title">What the twin can inspect</h2>
           <p>Thirty bounded rules cover ownership, writes, Bindings, component boundaries, interaction, layout, and environment. A finding is evidence for review, not a command to edit.</p>
-          <a class="text-link" href="https://github.com/potapenko/swiftui-semantic-audit/blob/0.5.0/docs/reference/rules.md">
+          <a class="text-link" href="https://github.com/potapenko/swiftui-semantic-audit/blob/0.6.0/docs/reference/rules.md">
             Read the rule reference
             <img src="assets/icons/external-link.svg" alt="" aria-hidden="true">
           </a>
@@ -648,7 +648,7 @@ selection: <span class="syntax-type">Binding</span>(
                   <img src="assets/icons/copy.svg" alt="" aria-hidden="true">
                   <span>Copy setup prompt</span>
                 </button>
-                <a class="install-guide-link" href="https://github.com/potapenko/swiftui-semantic-audit/blob/8c156128f56f01a295e510f73e6a97bdaceea0a5/docs/getting-started/installation.md">
+                <a class="install-guide-link" href="https://github.com/potapenko/swiftui-semantic-audit/blob/0.6.0/docs/getting-started/installation.md">
                   Full guide
                   <img src="assets/icons/external-link.svg" alt="" aria-hidden="true">
                 </a>
@@ -656,7 +656,7 @@ selection: <span class="syntax-type">Binding</span>(
             </header>
             <div class="copy-block copy-block-prompt">
               <pre id="agent-setup-prompt" tabindex="0"><code>Install SwiftUI Semantic Audit from this GitHub guide. Install Homebrew first if needed, then the CLI and all four agent skills:
-https://github.com/potapenko/swiftui-semantic-audit/blob/8c156128f56f01a295e510f73e6a97bdaceea0a5/docs/getting-started/installation.md</code></pre>
+https://github.com/potapenko/swiftui-semantic-audit/blob/0.6.0/docs/getting-started/installation.md</code></pre>
             </div>
             <p id="agent-setup-status" class="copy-status" aria-live="polite"></p>
           </article>
@@ -681,7 +681,7 @@ https://github.com/potapenko/swiftui-semantic-audit/blob/8c156128f56f01a295e510f
         <div class="faq-heading">
           <p class="eyebrow">FAQ</p>
           <h2 id="faq-title">Using the skill safely</h2>
-          <a class="text-link" href="https://github.com/potapenko/swiftui-semantic-audit/tree/0.5.0/docs">
+          <a class="text-link" href="https://github.com/potapenko/swiftui-semantic-audit/tree/0.6.0/docs">
             Read the documentation
             <img src="assets/icons/external-link.svg" alt="" aria-hidden="true">
           </a>
@@ -710,7 +710,7 @@ https://github.com/potapenko/swiftui-semantic-audit/blob/8c156128f56f01a295e510f
           </details>
           <details>
             <summary>Does the semantic twin update continuously?</summary>
-            <p>The current public release builds an exact-state twin on demand. The project watcher on <code>master</code> is an unreleased 0.6.0 candidate.</p>
+            <p>Release 0.6.0 adds the project watcher. Agent workflows use its live twin only when <code>swiftui-audit project status --wait indexed --format json</code> returns a fresh indexed status receipt matching the current workspace and analysis configuration. Syntax previews, failed generations, and stale receipts are diagnostics, not current evidence.</p>
           </details>
           <details>
             <summary>Are local drafts reported as duplicate state?</summary>
@@ -743,9 +743,9 @@ https://github.com/potapenko/swiftui-semantic-audit/blob/8c156128f56f01a295e510f
       </nav>
       <nav aria-label="Resource links">
         <span>Resources</span>
-        <a href="https://github.com/potapenko/swiftui-semantic-audit/tree/0.5.0/docs">Documentation</a>
-        <a href="https://github.com/potapenko/swiftui-semantic-audit/releases/tag/0.5.0">Release</a>
-        <a href="https://github.com/potapenko/swiftui-semantic-audit/blob/0.5.0/LICENSE">MIT License</a>
+        <a href="https://github.com/potapenko/swiftui-semantic-audit/tree/0.6.0/docs">Documentation</a>
+        <a href="https://github.com/potapenko/swiftui-semantic-audit/releases/tag/0.6.0">Release</a>
+        <a href="https://github.com/potapenko/swiftui-semantic-audit/blob/0.6.0/LICENSE">MIT License</a>
       </nav>
       <div class="footer-meta">
         <p>Built for SwiftUI projects.<br>Static site. No analytics.</p>

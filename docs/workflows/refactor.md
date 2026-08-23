@@ -11,9 +11,22 @@ For a direct change request, the router selects `swiftui-dataflow-refactor`. Tha
 
 ## 1. Pin the baseline
 
-Build the exact pre-edit source and validate its project-covering Index Store. If role-aware analysis is needed, validate the exact `.swiftui-audit.json`.
+Choose one indexed route before editing. With a configured watcher, wait for a
+matching fresh indexed receipt and deliberately promote the current fresh
+generation to the project's baseline:
 
-Create an indexed snapshot before editing:
+```bash
+swiftui-audit project status . --wait indexed --timeout 120 --format json
+swiftui-audit project baseline update . --format json
+```
+
+Treat the successful baseline-update result as the matching receipt for the
+promoted generation. Record its generation, workspace and configuration
+identities, `liveSnapshotPath`, and baseline path. With the explicit route,
+build the exact pre-edit source and validate its project-covering Index Store.
+If role-aware analysis is needed, validate the exact `.swiftui-audit.json`.
+
+For the explicit route, create an indexed snapshot before editing:
 
 ```bash
 swiftui-audit snapshot Sources \
@@ -27,7 +40,9 @@ Store the snapshot outside the source path when needed to avoid source/output ov
 
 ## 2. Select one cluster
 
-Run an indexed audit and slice the target finding:
+With watcher evidence, read the promoted baseline report and slice the recorded
+baseline snapshot path. With the explicit route, run an indexed audit and slice
+the target finding:
 
 ```bash
 swiftui-audit audit Sources \
@@ -81,9 +96,19 @@ When narrowing a model input or command-shaped Binding, do not hide the same com
 
 ## 6. Verify behavior and refresh indexed evidence
 
-Build the edited source and run the relevant behavior tests. The edit changes compiler facts, so create a fresh Index Store for the current state.
+Run the relevant behavior tests. With the watcher route, wait for a later fresh
+indexed generation after the edit:
 
-Audit again and create a compatible current snapshot:
+```bash
+swiftui-audit project status . --wait indexed --timeout 120 --format json
+```
+
+Require a generation later than the baseline receipt with the current workspace
+and matching configuration identity, then use its `liveSnapshotPath` as the
+current snapshot. With the explicit route, build the edited source and create a
+fresh Index Store for the current state.
+
+For the explicit route, audit again and create a compatible current snapshot:
 
 ```bash
 swiftui-audit audit Sources \
@@ -101,6 +126,11 @@ swiftui-audit snapshot Sources \
 Both snapshots must be indexed and carry the same configuration digest.
 
 ## 7. Diff and enforce policy
+
+For the watcher route, diff the recorded project baseline against the fresh
+`liveSnapshotPath`. `check` still evaluates live source, so pass the fresh
+receipt's `indexStorePath` explicitly and stop using it as soon as the receipt
+becomes stale. The following commands show the explicit snapshot route:
 
 ```bash
 swiftui-audit diff .semantic/baseline .semantic/current --format json > semantic-diff.json

@@ -1,6 +1,6 @@
 # Installation
 
-SwiftUI Semantic Audit 0.5.0 installs the CLI through the upstream Homebrew tap. A local Codex or Claude Code agent can follow this page end to end. Homebrew and the four agent skills remain separately owned and are pinned to the same immutable release.
+SwiftUI Semantic Audit 0.6.0 installs the CLI through the upstream Homebrew tap. A local Codex or Claude Code agent can follow this page end to end. Homebrew and the four agent skills remain separately owned and are pinned to the same immutable release.
 
 ## Requirements
 
@@ -34,6 +34,10 @@ swiftui-audit --version
 swiftui-audit doctor . --format json
 ```
 
+The version command must report `0.6.0`. `doctor` checks environment readiness;
+it accepts neither `--index-store` nor `--config`, and it does not prove that a
+watcher snapshot is fresh. `project status --wait indexed` provides that receipt.
+
 The formula owns only the CLI under Homebrew's prefix. It does not install the four agent skills or edit user configuration.
 
 Update or remove the CLI through the same fully qualified formula:
@@ -52,15 +56,15 @@ another CLI. It stops if the destination exists and verifies the release commit:
 ```bash
 (
   set -euo pipefail
-  install_root="$HOME/.local/share/swiftui-semantic-audit/0.5.0"
+  install_root="$HOME/.local/share/swiftui-semantic-audit/0.6.0"
   repository="https://github.com/potapenko/swiftui-semantic-audit.git"
-  expected_commit="e460237d1175a0007c6cf91af34898637fdeedb2"
 
   test ! -e "$install_root" && test ! -L "$install_root"
-  git clone --branch 0.5.0 --depth 1 "$repository" "$install_root"
+  git clone --branch 0.6.0 --depth 1 "$repository" "$install_root"
   cd "$install_root"
   test "$(git remote get-url origin)" = "$repository"
-  test "$(git rev-parse HEAD)" = "$expected_commit"
+  test "$(git describe --tags --exact-match HEAD)" = "0.6.0"
+  test "$(git rev-parse HEAD)" = "$(git rev-list -n 1 0.6.0)"
 )
 ```
 
@@ -92,7 +96,7 @@ Preflight every target before creating any link, then create all four as one ope
 ```bash
 (
   set -euo pipefail
-  install_root="$HOME/.local/share/swiftui-semantic-audit/0.5.0"
+  install_root="$HOME/.local/share/swiftui-semantic-audit/0.6.0"
   skill_root="$HOME/.agents/skills"
 
   for skill in swiftui-semantic swiftui-semantic-audit swiftui-dataflow-refactor swiftui-change-review; do
@@ -117,12 +121,13 @@ user-owned bin directory and stop if the executable destination already exists:
 ```bash
 (
   set -euo pipefail
-  install_root="$HOME/.local/share/swiftui-semantic-audit/0.5.0"
+  install_root="$HOME/.local/share/swiftui-semantic-audit/0.6.0"
   bin_dir="$HOME/.local/bin"
 
   test -d "$install_root/.git"
+  test "$(git -C "$install_root" describe --tags --exact-match HEAD)" = "0.6.0"
   test "$(git -C "$install_root" rev-parse HEAD)" = \
-    "e460237d1175a0007c6cf91af34898637fdeedb2"
+    "$(git -C "$install_root" rev-list -n 1 0.6.0)"
   test ! -e "$bin_dir/swiftui-audit" && test ! -L "$bin_dir/swiftui-audit"
 
   swift build --package-path "$install_root" -c release \
@@ -144,6 +149,8 @@ Decide separately whether to persist that line in the appropriate shell configur
 ## Verify
 
 ```bash
+skill_root="$HOME/.agents/skills" # Use "$HOME/.claude/skills" for Claude Code.
+test "$(swiftui-audit --version)" = "0.6.0"
 swiftui-audit --help
 swiftui-audit doctor . --format json
 ```
@@ -151,6 +158,7 @@ swiftui-audit doctor . --format json
 Confirm each link resolves:
 
 ```bash
+skill_root="$HOME/.agents/skills" # Use "$HOME/.claude/skills" for Claude Code.
 for skill in swiftui-semantic swiftui-semantic-audit swiftui-dataflow-refactor swiftui-change-review; do
   test -f "$skill_root/$skill/SKILL.md"
 done

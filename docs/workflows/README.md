@@ -10,6 +10,9 @@ The `swiftui-semantic` router selects one of three specialist workflows. Each wo
 
 Mixed work should use the smallest valid sequence. An ambiguous change may need audit before refactor. A refactor normally ends with review. A direct review request should not add an unnecessary investigation phase.
 
-All agent workflows require indexed evidence and stop when a fresh project-covering compiler Index Store is unavailable.
+All agent workflows require indexed evidence. They may consume a watcher live
+snapshot only with its matching fresh indexed status receipt. Otherwise they
+wait boundedly for indexed status or use a fresh explicit validated Index Store;
+they never downgrade to lower-resolution evidence.
 
 [Back to documentation](../README.md)
