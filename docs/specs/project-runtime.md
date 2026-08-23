@@ -2,22 +2,24 @@
 
 - Node type: leaf
 - Status: Active
-- Contract revision: `spec-2`
-- Authority: `PROJECT-WATCHER-001`, epoch `tz-v17`
-- Stability: Released in 0.6.0 through `BASE-REL-015`
+- Contract revision: `spec-3`
+- Authority: `PROJECT-WATCHER-001` plus `PROJECT-WATCHER-INTEGRATION-001`, epoch `tz-v23`
+- Stability: Released in 0.6.0 through `BASE-REL-015`; compatible integration repair evolving in source
 - Read when: setting up, starting, querying, stopping, or integrating continuous project analysis.
 - Do not read when: using only the existing one-shot analysis commands.
 - Maximum size: 100 physical lines.
 
 ## Project manifest and setup
 
-**PRJ-CFG-001.** Discover only `.swiftui-audit/project.json` at the selected project root. Schema 1 stores one relative source root, an optional relative `.swiftui-audit.json` path, one typed build adapter, watcher timing, and a relative canonical baseline path. Multi-root workspaces remain a later compatible schema extension.
+**PRJ-CFG-001.** Discover only `.swiftui-audit/project.json` at the selected project root. Schema 1 stores one relative source root, an optional relative `.swiftui-audit.json` path, one typed build adapter, watcher timing including a positive `buildAndAnalysisTimeoutSeconds`, and a relative canonical baseline path. The timeout is additive: a schema-1 manifest without it decodes to the released 300-second default. Multi-root workspaces remain a later compatible schema extension.
 
 **PRJ-CFG-002.** Paths reject emptiness, absolutes, traversal, symlink escapes, source/baseline overlap, and roots outside the project. Setup never infers product roles or writes `.swiftui-audit.json` from names.
 
 **PRJ-SETUP-001.** `project setup` is preview-only without `--apply`. Preview and apply expose the same canonical plan. Apply creates only absent planned files/directories, accepts byte-identical existing files, and rejects unknown or conflicting contents.
 
 **PRJ-SETUP-002.** Discovery may select SwiftPM or one unambiguous Xcode container/scheme. Ambiguity is a machine-readable blocker, not permission to guess. Typed adapters own exact bounded arguments; tracked manifests do not execute arbitrary shell strings.
+
+**PRJ-SETUP-003.** Setup never changes an existing manifest. For a new manifest, a regular root `.swiftui-audit.json` has precedence. Only when it is absent may setup select the regular `.swiftui-audit.json` directly inside the selected source root and store its normalized repository-relative path. It does not search descendants or infer configuration content.
 
 ## Runtime state and freshness
 
@@ -35,7 +37,7 @@
 
 **PRJ-LIFE-001.** `project watch` runs in the foreground. `start`, `status`, and `stop` manage one bounded per-project background worker. A runtime lock rejects a second writer. Login autostart is not part of schema 1.
 
-**PRJ-LIFE-002.** External builds, service operations, and waits have positive timeouts. Default logs are concise; verbose tracing is opt-in. Stop affects only the selected project service.
+**PRJ-LIFE-002.** External builds, service operations, and waits have positive timeouts. A foreground `project watch --timeout` explicitly overrides the manifest; otherwise watcher execution uses `watch.buildAndAnalysisTimeoutSeconds`. Managed registration records the manifest value in its `project watch --timeout` arguments, so an already registered service must be stopped and started after that value changes. Default logs are concise; verbose tracing is opt-in. Stop affects only the selected project service.
 
 **PRJ-BASE-001.** Baseline promotion requires a fresh indexed live snapshot and atomically writes the existing exact five-file format to the manifest's repository-relative baseline destination. It never stages or commits Git changes.
 

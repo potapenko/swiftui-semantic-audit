@@ -118,7 +118,8 @@ first explicit live-source command or use a matching fresh watcher receipt.
 ```text
 swiftui-audit project setup [<path>] [--apply] [--start] [--create-baseline]
                             [--source-root <path>] [--container <path>]
-                            [--scheme <name>] [--platform <name>] [--format json]
+                            [--scheme <name>] [--platform <name>]
+                            [--watch-timeout <seconds>] [--format json]
 swiftui-audit project watch [<path>] [--once] [--timeout <seconds>] [--format json]
 swiftui-audit project start [<path>] [--format json]
 swiftui-audit project status [<path>] [--wait indexed] [--timeout <seconds>] [--format json]
@@ -126,7 +127,9 @@ swiftui-audit project stop [<path>] [--format json]
 swiftui-audit project baseline update [<path>] [--format json]
 ```
 
-Setup previews by default and requires `--apply` for writes. The watcher reuses the normal deterministic pipeline and publishes a live snapshot only after explicit indexed coverage succeeds. Agent workflows may consume that state only with a matching fresh indexed status receipt; stale or syntax-preview state never qualifies. Runtime state is external; `.swiftui-audit/project.json` and `.swiftui-audit/baseline` are the project-owned Git surface. See [Project watcher setup](../getting-started/project-watcher.md).
+Setup previews by default and requires `--apply` for writes. For a new manifest, positive `--watch-timeout` writes `watch.buildAndAnalysisTimeoutSeconds`; omission writes 300 seconds. A legacy schema-1 manifest without the member also resolves to 300 seconds. Setup never rewrites an existing manifest. Root `.swiftui-audit.json` has precedence; only when absent is the file directly inside the selected source root recorded as repository-relative `analysisConfiguration`.
+
+The watcher reuses the normal deterministic pipeline and publishes a live snapshot only after explicit indexed coverage succeeds. Explicit foreground `project watch --timeout` overrides the manifest; omission uses it. `project start` registers the manifest timeout in managed service arguments, so stop/start is required after changing an already registered service. Agent workflows may consume state only with a matching fresh indexed status receipt; stale or syntax-preview state never qualifies. Runtime state is external; `.swiftui-audit/project.json` and `.swiftui-audit/baseline` are the project-owned Git surface. See [Project watcher setup](../getting-started/project-watcher.md).
 
 Project subcommands do not accept `--index-store`, `--config`,
 `--cache-directory`, `--no-cache`, or `--jobs`; the manifest and watcher own

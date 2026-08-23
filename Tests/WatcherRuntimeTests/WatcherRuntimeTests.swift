@@ -3,7 +3,7 @@ import Foundation
 import ProjectWorkspace
 import SnapshotStore
 import Testing
-import WatcherRuntime
+@testable import WatcherRuntime
 
 @Suite("Watcher runtime primitives")
 struct WatcherRuntimeTests {
@@ -67,7 +67,7 @@ struct WatcherRuntimeTests {
 
     @Test("managed service start and stop are idempotent")
     func serviceLifecycle() throws {
-        let fixture = try Fixture()
+        let fixture = try Fixture(watchTimeout: 900)
         defer { try? FileManager.default.removeItem(at: fixture.root) }
         let support = fixture.root.appendingPathComponent("ApplicationSupport", isDirectory: true)
         let runner = ServiceRunner()
@@ -79,6 +79,20 @@ struct WatcherRuntimeTests {
             applicationSupportRoot: support
         )
         #expect(started.running && started.changed)
+        let servicePlist = ProjectRuntimeLocations(
+            projectRoot: fixture.project,
+            applicationSupportRoot: support
+        ).servicePlist
+        let plist = try PropertyListSerialization.propertyList(
+            from: Data(contentsOf: servicePlist),
+            options: [],
+            format: nil
+        ) as? [String: Any]
+        #expect(plist?["ProgramArguments"] as? [String] == [
+            "/usr/bin/true",
+            "project", "watch", fixture.project.path,
+            "--timeout", "900.0",
+        ])
         let repeated = try controller.start(
             projectRoot: fixture.project,
             executable: URL(fileURLWithPath: "/usr/bin/true"),
@@ -95,6 +109,19 @@ struct WatcherRuntimeTests {
             applicationSupportRoot: support
         )
         #expect(!repeatedStop.running && !repeatedStop.changed)
+    }
+
+    @Test("watcher uses the manifest timeout unless foreground execution overrides it")
+    func watcherTimeoutPrecedence() throws {
+        let fixture = try Fixture(watchTimeout: 900)
+        defer { try? FileManager.default.removeItem(at: fixture.root) }
+        #expect(
+            try WatcherCoordinator().resolvedBuildAndAnalysisTimeout(for: fixture.manifest) == 900
+        )
+        #expect(
+            try WatcherCoordinator(timeout: 1200)
+                .resolvedBuildAndAnalysisTimeout(for: fixture.manifest) == 1200
+        )
     }
 
     @Test("one-shot watcher publishes and promotes fresh indexed state")
@@ -269,7 +296,7 @@ private struct Fixture {
     let source: URL
     let manifest: ProjectManifest
 
-    init(validPackage: Bool = false) throws {
+    init(validPackage: Bool = false, watchTimeout: TimeInterval = 300) throws {
         root = FileManager.default.temporaryDirectory
             .appendingPathComponent("watcher-runtime-tests-\(UUID().uuidString)", isDirectory: true)
         project = root.appendingPathComponent("Project", isDirectory: true)
@@ -287,7 +314,8 @@ private struct Fixture {
         }
         manifest = ProjectManifest(
             sourceRoot: "Sources",
-            build: ProjectBuildConfiguration(kind: .swiftPM)
+            build: ProjectBuildConfiguration(kind: .swiftPM),
+            watch: ProjectWatchConfiguration(buildAndAnalysisTimeoutSeconds: watchTimeout)
         )
         let manifestURL = project.appendingPathComponent(".swiftui-audit/project.json")
         try FileManager.default.createDirectory(

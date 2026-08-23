@@ -63,9 +63,9 @@ public struct ProjectManifest: Codable, Equatable, Sendable {
             throw ProjectWorkspaceError.invalidManifest("sourceRoot does not exist: \(sourceRoot)")
         }
         if let configuration = configurationURL(projectRoot: projectRoot) {
-            var configurationIsDirectory: ObjCBool = false
-            guard FileManager.default.fileExists(atPath: configuration.path, isDirectory: &configurationIsDirectory),
-                  !configurationIsDirectory.boolValue else {
+            let canonicalConfiguration = configuration.resolvingSymlinksInPath()
+            let values = try? canonicalConfiguration.resourceValues(forKeys: [.isRegularFileKey])
+            guard values?.isRegularFile == true else {
                 throw ProjectWorkspaceError.invalidManifest("analysisConfiguration is not a regular file")
             }
         }
@@ -79,6 +79,12 @@ public struct ProjectManifest: Codable, Equatable, Sendable {
         }
         guard watch.debounceMilliseconds > 0, watch.indexQuiescenceMilliseconds > 0 else {
             throw ProjectWorkspaceError.invalidManifest("watch delays must be positive")
+        }
+        guard watch.buildAndAnalysisTimeoutSeconds.isFinite,
+              watch.buildAndAnalysisTimeoutSeconds > 0 else {
+            throw ProjectWorkspaceError.invalidManifest(
+                "watch buildAndAnalysisTimeoutSeconds must be finite and positive"
+            )
         }
         try build.validate(projectRoot: projectRoot)
     }
@@ -145,12 +151,42 @@ public struct ProjectBuildConfiguration: Codable, Equatable, Sendable {
 }
 
 public struct ProjectWatchConfiguration: Codable, Equatable, Sendable {
+    public static let defaultBuildAndAnalysisTimeoutSeconds: TimeInterval = 300
+
+    public let buildAndAnalysisTimeoutSeconds: TimeInterval
     public let debounceMilliseconds: Int
     public let indexQuiescenceMilliseconds: Int
 
-    public init(debounceMilliseconds: Int = 250, indexQuiescenceMilliseconds: Int = 1000) {
+    public init(
+        buildAndAnalysisTimeoutSeconds: TimeInterval = Self.defaultBuildAndAnalysisTimeoutSeconds,
+        debounceMilliseconds: Int = 250,
+        indexQuiescenceMilliseconds: Int = 1000
+    ) {
+        self.buildAndAnalysisTimeoutSeconds = buildAndAnalysisTimeoutSeconds
         self.debounceMilliseconds = debounceMilliseconds
         self.indexQuiescenceMilliseconds = indexQuiescenceMilliseconds
+    }
+
+    private enum CodingKeys: String, CodingKey {
+        case buildAndAnalysisTimeoutSeconds
+        case debounceMilliseconds
+        case indexQuiescenceMilliseconds
+    }
+
+    public init(from decoder: Decoder) throws {
+        let values = try decoder.container(keyedBy: CodingKeys.self)
+        buildAndAnalysisTimeoutSeconds = try values.decodeIfPresent(
+            TimeInterval.self, forKey: .buildAndAnalysisTimeoutSeconds
+        ) ?? Self.defaultBuildAndAnalysisTimeoutSeconds
+        debounceMilliseconds = try values.decode(Int.self, forKey: .debounceMilliseconds)
+        indexQuiescenceMilliseconds = try values.decode(Int.self, forKey: .indexQuiescenceMilliseconds)
+    }
+
+    public func encode(to encoder: Encoder) throws {
+        var values = encoder.container(keyedBy: CodingKeys.self)
+        try values.encode(buildAndAnalysisTimeoutSeconds, forKey: .buildAndAnalysisTimeoutSeconds)
+        try values.encode(debounceMilliseconds, forKey: .debounceMilliseconds)
+        try values.encode(indexQuiescenceMilliseconds, forKey: .indexQuiescenceMilliseconds)
     }
 }
 

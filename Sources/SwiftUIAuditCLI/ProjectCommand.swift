@@ -28,11 +28,16 @@ struct ProjectSetup: ParsableCommand {
     @Option(name: .long, help: "Relative .xcodeproj or .xcworkspace override.") var container: String?
     @Option(name: .long, help: "Shared Xcode scheme override.") var scheme: String?
     @Option(name: .long, help: "Xcode destination platform, such as macOS or iOS Simulator.") var platform: String?
+    @Option(name: .long, help: "Managed watcher build and analysis timeout in seconds for a new manifest.")
+    var watchTimeout: Double?
     @Option(name: .long, help: "Output format.") var format: ProjectOutputFormat?
 
     mutating func validate() throws {
         if (start || createBaseline) && !apply {
             throw ValidationError("--start and --create-baseline require --apply")
+        }
+        if let watchTimeout, !watchTimeout.isFinite || watchTimeout <= 0 {
+            throw ValidationError("--watch-timeout must be finite and positive")
         }
     }
 
@@ -45,7 +50,8 @@ struct ProjectSetup: ParsableCommand {
                 sourceRoot: sourceRoot,
                 container: container,
                 scheme: scheme,
-                platform: platform
+                platform: platform,
+                watchTimeout: watchTimeout
             )
         )
         var response = plan
@@ -75,11 +81,14 @@ struct ProjectWatch: ParsableCommand {
 
     @Argument(help: "Project root.") var path: String = "."
     @Flag(name: .long, help: "Run one generation and exit.") var once = false
-    @Option(name: .long, help: "Build and analysis timeout in seconds.") var timeout: Double = 300
+    @Option(name: .long, help: "Build and analysis timeout override in seconds; defaults to the project manifest.")
+    var timeout: Double?
     @Option(name: .long, help: "Output format.") var format: ProjectOutputFormat?
 
     mutating func validate() throws {
-        guard timeout > 0 else { throw ValidationError("--timeout must be positive") }
+        if let timeout, !timeout.isFinite || timeout <= 0 {
+            throw ValidationError("--timeout must be finite and positive")
+        }
     }
 
     mutating func run() throws {

@@ -5,12 +5,20 @@ public struct ProjectSetupOptions: Sendable {
     public let container: String?
     public let scheme: String?
     public let platform: String?
+    public let watchTimeout: TimeInterval?
 
-    public init(sourceRoot: String? = nil, container: String? = nil, scheme: String? = nil, platform: String? = nil) {
+    public init(
+        sourceRoot: String? = nil,
+        container: String? = nil,
+        scheme: String? = nil,
+        platform: String? = nil,
+        watchTimeout: TimeInterval? = nil
+    ) {
         self.sourceRoot = sourceRoot
         self.container = container
         self.scheme = scheme
         self.platform = platform
+        self.watchTimeout = watchTimeout
     }
 }
 
@@ -74,8 +82,18 @@ public struct ProjectSetupPlanner: Sendable {
         let manifestURL = root.appendingPathComponent(".swiftui-audit/project.json")
         if FileManager.default.fileExists(atPath: manifestURL.path) {
             let manifest = try ProjectManifest.load(projectRoot: root)
-            let writes = FileManager.default.fileExists(atPath: locations.root.path)
-                ? [] : [locations.root.path]
+            let blockers: [String]
+            if let requestedTimeout = options.watchTimeout,
+               requestedTimeout != manifest.watch.buildAndAnalysisTimeoutSeconds {
+                blockers = [
+                    "project manifest already exists; edit watch.buildAndAnalysisTimeoutSeconds " +
+                        "instead of using --watch-timeout"
+                ]
+            } else {
+                blockers = []
+            }
+            let writes = blockers.isEmpty && !FileManager.default.fileExists(atPath: locations.root.path)
+                ? [locations.root.path] : []
             return ProjectSetupPlan(
                 projectRoot: root.path,
                 manifestPath: manifestURL.path,
@@ -83,13 +101,19 @@ public struct ProjectSetupPlanner: Sendable {
                 projectType: manifest.build.kind.rawValue,
                 manifest: manifest,
                 writes: writes,
-                blockers: []
+                blockers: blockers
             )
         }
 
         let sourceRoot = options.sourceRoot ?? defaultSourceRoot(root)
-        let config = FileManager.default.fileExists(atPath: root.appendingPathComponent(".swiftui-audit.json").path)
-            ? ".swiftui-audit.json" : nil
+        if let sourceRoot {
+            try ProjectManifest.validateRelative(sourceRoot, field: "sourceRoot", projectRoot: root)
+        }
+        let config = try discoverAnalysisConfiguration(root: root, sourceRoot: sourceRoot)
+        let watch = ProjectWatchConfiguration(
+            buildAndAnalysisTimeoutSeconds: options.watchTimeout
+                ?? ProjectWatchConfiguration.defaultBuildAndAnalysisTimeoutSeconds
+        )
         let proposed: ProjectManifest?
         var blockers: [String] = []
         if sourceRoot == nil { blockers.append("provide --source-root for the analyzed Swift sources") }
@@ -100,7 +124,8 @@ public struct ProjectSetupPlanner: Sendable {
                 ProjectManifest(
                     sourceRoot: $0,
                     analysisConfiguration: config,
-                    build: ProjectBuildConfiguration(kind: .swiftPM)
+                    build: ProjectBuildConfiguration(kind: .swiftPM),
+                    watch: watch
                 )
             }
         } else {
@@ -118,7 +143,8 @@ public struct ProjectSetupPlanner: Sendable {
                     analysisConfiguration: config,
                     build: ProjectBuildConfiguration(
                         kind: .xcode, container: container, scheme: scheme, platform: platform
-                    )
+                    ),
+                    watch: watch
                 )
             } else {
                 proposed = nil
@@ -145,10 +171,19 @@ public struct ProjectSetupPlanner: Sendable {
         let manifestURL = URL(fileURLWithPath: plan.manifestPath)
         let data = try manifest.canonicalData()
         if FileManager.default.fileExists(atPath: manifestURL.path) {
-            guard try Data(contentsOf: manifestURL) == data else {
-                throw ProjectWorkspaceError.conflictingFile(manifestURL.path)
+            if plan.writes.contains(manifestURL.path) {
+                guard try Data(contentsOf: manifestURL) == data else {
+                    throw ProjectWorkspaceError.conflictingFile(manifestURL.path)
+                }
+            } else {
+                guard try ProjectManifest.load(projectRoot: root) == manifest else {
+                    throw ProjectWorkspaceError.conflictingFile(manifestURL.path)
+                }
             }
         } else {
+            guard plan.writes.contains(manifestURL.path) else {
+                throw ProjectWorkspaceError.conflictingFile(manifestURL.path)
+            }
             try FileManager.default.createDirectory(
                 at: manifestURL.deletingLastPathComponent(), withIntermediateDirectories: true
             )
@@ -171,6 +206,31 @@ public struct ProjectSetupPlanner: Sendable {
 
     private func defaultSourceRoot(_ root: URL) -> String? {
         FileManager.default.fileExists(atPath: root.appendingPathComponent("Sources").path) ? "Sources" : nil
+    }
+
+    private func discoverAnalysisConfiguration(root: URL, sourceRoot: String?) throws -> String? {
+        let rootConfiguration = ".swiftui-audit.json"
+        if FileManager.default.fileExists(atPath: root.appendingPathComponent(rootConfiguration).path) {
+            try validateConfigurationCandidate(rootConfiguration, root: root)
+            return rootConfiguration
+        }
+        guard let sourceRoot else { return nil }
+        let components = sourceRoot.split(separator: "/").filter { $0 != "." }.map(String.init)
+        let sourceConfiguration = (components + [".swiftui-audit.json"]).joined(separator: "/")
+        guard FileManager.default.fileExists(atPath: root.appendingPathComponent(sourceConfiguration).path) else {
+            return nil
+        }
+        try validateConfigurationCandidate(sourceConfiguration, root: root)
+        return sourceConfiguration
+    }
+
+    private func validateConfigurationCandidate(_ path: String, root: URL) throws {
+        try ProjectManifest.validateRelative(path, field: "analysisConfiguration", projectRoot: root)
+        let candidate = root.appendingPathComponent(path).resolvingSymlinksInPath()
+        let values = try? candidate.resourceValues(forKeys: [.isRegularFileKey])
+        guard values?.isRegularFile == true else {
+            throw ProjectWorkspaceError.invalidManifest("analysisConfiguration is not a regular file")
+        }
     }
 
     private func discoverContainers(root: URL) -> [String] {

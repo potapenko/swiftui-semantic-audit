@@ -57,10 +57,26 @@ swiftui-audit project setup . \
   --scheme App \
   --platform "iOS Simulator" \
   --source-root App \
+  --watch-timeout 900 \
   --apply --start --format json
 ```
 
-The tracked manifest is `.swiftui-audit/project.json`. It stores relative paths and a typed SwiftPM or Xcode build adapter; it never stores an arbitrary shell command.
+The tracked manifest is `.swiftui-audit/project.json`. It stores relative paths and a typed SwiftPM or Xcode build adapter; it never stores an arbitrary shell command. `--watch-timeout` is positive seconds for build plus indexed analysis and is written only while creating a new manifest:
+
+```json
+{
+  "schemaVersion": 1,
+  "watch": {
+    "buildAndAnalysisTimeoutSeconds": 900,
+    "debounceMilliseconds": 250,
+    "indexQuiescenceMilliseconds": 1000
+  }
+}
+```
+
+The fragment omits the required source, build, and baseline members for brevity. Existing schema-1 manifests without `buildAndAnalysisTimeoutSeconds` retain the 300-second default. Setup never rewrites an existing manifest; edit its `watch` object deliberately when changing the value.
+
+For a new manifest, setup uses a regular repository-root `.swiftui-audit.json` when present. If it is absent, setup checks only `.swiftui-audit.json` directly inside the selected `--source-root` and records that repository-relative path, such as `PlayphrasemeApp/.swiftui-audit.json`. It does not search descendants or infer roles. An existing manifest and its `analysisConfiguration` remain authoritative.
 
 Add `--create-baseline` to the apply command only when an initial full-fidelity
 comparison baseline is wanted.
@@ -111,7 +127,11 @@ swiftui-audit project watch . --once --format json
 In `0.6.0`, `watch` is foreground. `start`, `status`, and
 `stop` manage one bounded per-project background worker. Agent readiness comes
 only from a fresh `status --wait indexed` receipt. `stop` affects only that
-project, and schema 1 does not enable login autostart.
+project, and schema 1 does not enable login autostart. Foreground
+`project watch --timeout <seconds>` overrides the manifest for that process;
+otherwise the manifest value is used. `project start` records the manifest
+timeout in the managed service arguments, so after changing it run `project
+stop` and then `project start` to register the new value.
 
 Runtime snapshots, status, locks, service metadata, and bounded logs are under
 `~/Library/Application Support/swiftui-audit/projects/<project-id>/`; reusable

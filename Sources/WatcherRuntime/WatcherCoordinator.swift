@@ -9,15 +9,15 @@ import SymbolResolution
 public struct WatcherCoordinator: Sendable {
     private let builder: ProjectBuilder
     private let statusStore: ProjectStatusStore
-    private let timeout: TimeInterval
+    private let timeoutOverride: TimeInterval?
 
     public init(
         runner: any ProcessRunning = BoundedProcessRunner(),
-        timeout: TimeInterval = 300
+        timeout: TimeInterval? = nil
     ) {
         builder = ProjectBuilder(runner: runner)
         statusStore = ProjectStatusStore()
-        self.timeout = timeout
+        timeoutOverride = timeout
     }
 
     @discardableResult
@@ -29,6 +29,7 @@ public struct WatcherCoordinator: Sendable {
     ) throws -> ProjectStatus {
         let root = requestedRoot.standardizedFileURL.resolvingSymlinksInPath()
         let manifest = try ProjectManifest.load(projectRoot: root)
+        let timeout = try resolvedBuildAndAnalysisTimeout(for: manifest)
         let locations = ProjectRuntimeLocations(projectRoot: root, applicationSupportRoot: applicationSupportRoot)
         let lock = acquireLock ? try ProjectLock(url: locations.lock) : nil
         defer { _ = lock }
@@ -49,7 +50,8 @@ public struct WatcherCoordinator: Sendable {
                 root: root,
                 manifest: manifest,
                 locations: locations,
-                helperExecutable: helperExecutable
+                helperExecutable: helperExecutable,
+                timeout: timeout
             )
             try saveStatus(
                 locations: locations,
@@ -251,7 +253,8 @@ public struct WatcherCoordinator: Sendable {
         root: URL,
         manifest: ProjectManifest,
         locations: ProjectRuntimeLocations,
-        helperExecutable: URL
+        helperExecutable: URL,
+        timeout: TimeInterval
     ) throws {
         let source = manifest.sourceURL(projectRoot: root)
         let loaded = try SemanticInputLoader(timeout: timeout).loadLive(
@@ -312,6 +315,14 @@ public struct WatcherCoordinator: Sendable {
 
     private func compact(_ value: String) -> String {
         String(value.split(whereSeparator: \.isWhitespace).joined(separator: " ").prefix(1000))
+    }
+
+    func resolvedBuildAndAnalysisTimeout(for manifest: ProjectManifest) throws -> TimeInterval {
+        let timeout = timeoutOverride ?? manifest.watch.buildAndAnalysisTimeoutSeconds
+        guard timeout.isFinite, timeout > 0 else {
+            throw BoundedProcessError.invalidTimeout(timeout)
+        }
+        return timeout
     }
 }
 

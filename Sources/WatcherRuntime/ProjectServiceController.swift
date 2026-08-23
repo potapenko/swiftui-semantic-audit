@@ -39,10 +39,15 @@ public struct ProjectServiceController: Sendable {
         if isRunning(label: label) {
             return ProjectServiceResult(projectID: locations.projectID, label: label, running: true, changed: false)
         }
+        let manifest = try ProjectManifest.load(projectRoot: projectRoot)
         try FileManager.default.createDirectory(at: locations.root, withIntermediateDirectories: true)
         let plist: [String: Any] = [
             "Label": label,
-            "ProgramArguments": [executable.path, "project", "watch", projectRoot.path],
+            "ProgramArguments": [
+                executable.path,
+                "project", "watch", projectRoot.path,
+                "--timeout", String(manifest.watch.buildAndAnalysisTimeoutSeconds),
+            ],
             "WorkingDirectory": projectRoot.path,
             "RunAtLoad": true,
             "KeepAlive": false,

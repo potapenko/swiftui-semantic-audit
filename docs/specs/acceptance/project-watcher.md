@@ -2,8 +2,8 @@
 
 - Node type: leaf
 - Status: Active
-- Contract revision: `spec-2`
-- Authority: `PROJECT-WATCHER-001`
+- Contract revision: `spec-3`
+- Authority: `PROJECT-WATCHER-001` plus `PROJECT-WATCHER-INTEGRATION-001`
 - Read when: implementing or verifying project setup and continuous analysis.
 - Maximum size: 100 physical lines.
 
@@ -24,3 +24,5 @@
 **ACC-WATCH-006.** The router handles explicit setup requests and all four skills consume watcher evidence only with a fresh receipt. Existing explicit-index workflows remain the fallback; validation still rejects syntax-only agent guidance.
 
 **ACC-WATCH-007.** Locked build, full tests, current dogfood, cache/no-cache equivalence, serial/parallel equivalence, snapshot determinism, skill validation, and hosted CI were terminal before the 0.6.0 candidate was accepted; `BASE-REL-015` records its later publication.
+
+**ACC-WATCH-008.** Focused tests prove legacy manifest timeout defaulting, canonical configured encoding, positive validation, setup propagation, explicit foreground override precedence, and managed service arguments. Root analysis config wins when both candidates exist; the selected source-root config is recorded only when root config is absent; setup leaves an existing manifest byte-identical.

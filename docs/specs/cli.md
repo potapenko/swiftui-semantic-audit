@@ -2,19 +2,19 @@
 
 - Node type: hybrid
 - Status: Active
-- Contract revision: `spec-11`
+- Contract revision: `spec-12`
 - Read when: selecting command syntax, flags, output, status, resolution, cache, failure, or timeout behavior.
 - Do not read when: the task does not invoke, document, or integrate the CLI.
 - Maximum size: 100 physical lines.
 
-Revision: `spec-11`
+Revision: `spec-12`
 Executable: `swiftui-audit`  
 Tool version in schema: `0.6.0`
 Status: active; 0.6.0 is the current public release and 0.4.0/0.5.0/0.6.0 artifacts are immutable; publication receipt `BASE-REL-015` is terminal
 
 Project-namespace syntax and option ownership were reconciled against the
-accepted executable help and CI-validated invocation matrix. Existing analysis
-command contracts use documented shorthand; executable help remains exhaustive.
+accepted executable help and CI-validated invocation matrix. The compatible
+source repair adds setup-owned `--watch-timeout`; executable help remains exhaustive.
 
 ## Choose the governing child
 
