@@ -1,5 +1,5 @@
 {
-  "edgeCount" : 24259,
+  "edgeCount" : 24277,
   "findingCount" : 0,
   "metrics" : {
     "bindingEdges" : 0,
@@ -1649,10 +1649,10 @@
       "confidence" : "deterministic",
       "evidence" : [
         {
-          "endLine" : 134,
+          "endLine" : 137,
           "file" : "SwiftUIAuditCLI/Main.swift",
           "kind" : "assignment",
-          "startLine" : 134
+          "startLine" : 137
         }
       ],
       "id" : "value:1b09bed830e4224",
@@ -12409,10 +12409,10 @@
       "confidence" : "deterministic",
       "evidence" : [
         {
-          "endLine" : 133,
+          "endLine" : 136,
           "file" : "SwiftUIAuditCLI/Main.swift",
           "kind" : "assignment",
-          "startLine" : 133
+          "startLine" : 136
         }
       ],
       "id" : "value:53d9d6e5b19eda61",
