@@ -2,14 +2,14 @@
 
 - Node type: branch
 - Status: Active
-- Contract revision: `spec-14`
+- Contract revision: `spec-15`
 - Read when: selecting fixture, build, determinism, safety, dogfood, skill, CI, or completion obligations.
 - Do not read when: the task does not implement or verify accepted behavior.
 - Maximum size: 100 physical lines.
 
-Revision: `spec-14`
+Revision: `spec-15`
 Status: active  
-Release state: 0.5.0 is the current public release and 0.4.0/0.5.0 artifacts are immutable; 0.6.0 is publication-authorized with its terminal receipt pending
+Release state: 0.6.0 is the current public release and 0.4.0/0.5.0/0.6.0 artifacts are immutable; `BASE-REL-015` records terminal publication acceptance
 
 ## Choose the governing child
 

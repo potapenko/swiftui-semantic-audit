@@ -2,15 +2,15 @@
 
 - Node type: hybrid
 - Status: Active
-- Contract revision: `spec-10`
+- Contract revision: `spec-11`
 - Read when: selecting command syntax, flags, output, status, resolution, cache, failure, or timeout behavior.
 - Do not read when: the task does not invoke, document, or integrate the CLI.
 - Maximum size: 100 physical lines.
 
-Revision: `spec-10`
+Revision: `spec-11`
 Executable: `swiftui-audit`  
 Tool version in schema: `0.6.0`
-Status: active; 0.5.0 is the current public release and 0.4.0/0.5.0 artifacts are immutable; 0.6.0 is publication-authorized with its terminal receipt pending
+Status: active; 0.6.0 is the current public release and 0.4.0/0.5.0/0.6.0 artifacts are immutable; publication receipt `BASE-REL-015` is terminal
 
 Project-namespace syntax and option ownership were reconciled against the
 accepted executable help and CI-validated invocation matrix. Existing analysis

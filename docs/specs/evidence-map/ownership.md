@@ -2,7 +2,7 @@
 
 - Node type: leaf
 - Status: Active
-- Contract revision: `spec-15`
+- Contract revision: `spec-16`
 - Authority: [Specification coverage and evidence map](../evidence-map.md)
 - Read when: identifying the owner of facts, findings, persistence, comparison, judgment, or acceptance.
 - Do not read when: only clause coverage or evidence precedence is needed.
@@ -21,6 +21,6 @@
 - Comparison/policy/doctor owner: SemanticDiff and CLI commands.
 - Project setup/runtime owner: ProjectWorkspace for manifest/setup identity and WatcherRuntime for freshness, typed builds, service lifecycle, live snapshots, and baseline promotion.
 - Agent judgment owner: surrounding agent skills, limited by the immutable fact boundary.
-- Public narrative owner: product and website contracts; the landing sells the accepted capability surface with the twin as the unifying explanation, README proves it, documentation operates it, skills consume it, and release-version facts remain gated by the terminal publication receipt.
+- Public narrative owner: product and website contracts; the landing sells the accepted capability surface with the twin as the unifying explanation, README proves it, documentation operates it, skills consume it, and 0.6.0 release-version facts are pinned by terminal receipt `BASE-REL-015`.
 - Acceptance owner: fixtures/tests, canonical baseline, dogfood commands, and CI.
-- Release-distribution owner: immutable upstream tag/archive plus the independently versioned `potapenko/homebrew-tap` formula, local CLI and tagged-skill installation, hosted source test, public-site verification, and the terminal receipt that alone advances 0.6.0 from authorized candidate to public release.
+- Release-distribution owner: immutable upstream tag/archive plus the independently versioned `potapenko/homebrew-tap` formula, local CLI and tagged-skill installation, hosted source test, public-site verification, and `BASE-REL-015`, which advances 0.6.0 from authorized candidate to public release.

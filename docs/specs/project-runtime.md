@@ -2,8 +2,9 @@
 
 - Node type: leaf
 - Status: Active
-- Contract revision: `spec-1`
+- Contract revision: `spec-2`
 - Authority: `PROJECT-WATCHER-001`, epoch `tz-v17`
+- Stability: Released in 0.6.0 through `BASE-REL-015`
 - Read when: setting up, starting, querying, stopping, or integrating continuous project analysis.
 - Do not read when: using only the existing one-shot analysis commands.
 - Maximum size: 100 physical lines.

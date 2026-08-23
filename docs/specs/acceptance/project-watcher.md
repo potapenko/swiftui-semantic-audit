@@ -2,7 +2,7 @@
 
 - Node type: leaf
 - Status: Active
-- Contract revision: `spec-1`
+- Contract revision: `spec-2`
 - Authority: `PROJECT-WATCHER-001`
 - Read when: implementing or verifying project setup and continuous analysis.
 - Maximum size: 100 physical lines.
@@ -23,4 +23,4 @@
 
 **ACC-WATCH-006.** The router handles explicit setup requests and all four skills consume watcher evidence only with a fresh receipt. Existing explicit-index workflows remain the fallback; validation still rejects syntax-only agent guidance.
 
-**ACC-WATCH-007.** Locked build, full tests, current dogfood, cache/no-cache equivalence, serial/parallel equivalence, snapshot determinism, skill validation, and hosted CI remain terminal before the 0.6.0 candidate is accepted.
+**ACC-WATCH-007.** Locked build, full tests, current dogfood, cache/no-cache equivalence, serial/parallel equivalence, snapshot determinism, skill validation, and hosted CI were terminal before the 0.6.0 candidate was accepted; `BASE-REL-015` records its later publication.

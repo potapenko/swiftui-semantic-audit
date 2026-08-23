@@ -2,7 +2,7 @@
 
 - Node type: leaf
 - Status: Active
-- Contract revision: `spec-12`
+- Contract revision: `spec-13`
 - Authority: [Acceptance and QA contract](../acceptance.md)
 - Read when: selecting fixture, build, determinism, safety, dogfood, skill, CI, or completion obligations.
 - Do not read when: the task does not implement or verify accepted behavior.
@@ -25,7 +25,7 @@
 
 **ACC-DOG-003.** Dogfood does not require zero legacy findings. CI policy is no new high-severity finding relative to the compatible baseline.
 
-**ACC-DOG-004.** The publication-authorized but unreleased 0.6.0 candidate previews the repository's project setup without writes, runs one indexed watcher generation, validates the fresh status receipt and five-file live snapshot, and compares it with the tracked `.swiftui-audit/baseline`.
+**ACC-DOG-004.** Released 0.6.0 previews the repository's project setup without writes, runs one indexed watcher generation, validates the fresh status receipt and five-file live snapshot, and compares it with the tracked `.swiftui-audit/baseline`.
 
 ## Skills
 

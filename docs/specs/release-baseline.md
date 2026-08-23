@@ -2,17 +2,17 @@
 
 - Node type: hybrid
 - Status: Active
-- Contract revision: `spec-18`
-- Read when: checking the current 0.5.0 release, the receipt-pending 0.6.0 publication, dependencies, milestones, capabilities, residuals, or acceptance evidence.
+- Contract revision: `spec-19`
+- Read when: checking the current 0.6.0 release, immutable earlier releases, dependencies, milestones, capabilities, residuals, or acceptance evidence.
 - Do not read when: the task concerns intended behavior without realization or release evidence.
 - Maximum size: 100 physical lines.
 
-Revision: `spec-18`
-Baseline state: `0.5.0 released; 0.4.0 immutable; website canonical domain released; 0.6.0 publication authorized pre-tag, terminal receipt pending`
+Revision: `spec-19`
+Baseline state: `0.6.0 released; 0.4.0/0.5.0/0.6.0 immutable; canonical website carries verified 0.6.0 release facts`
 Contract epoch: `tz-v20`
 Website contract epoch: `tz-v20`
 
-**BASE-REL-001 — Publication state.** Tool `0.5.0` is the current public release and `0.4.0` remains the immutable first release. Each is distributed from its own immutable Git tag and GitHub Release through the tested upstream tap formula; terminal receipts pin every external artifact.
+**BASE-REL-001 — Publication state.** Tool `0.6.0` is the current public release and `0.4.0`/`0.5.0` remain immutable earlier releases. Each is distributed from its own immutable Git tag and GitHub Release through the tested upstream tap formula; terminal receipts pin every external artifact.
 
 **BASE-REL-002 — Implementation revision.** P6 began on branch `master` at Git commit `f24751cd25781426ec2c1531243e498534165e60`. Accepted P1–P5 implementation changes, including indexed enrichment, are present in the working tree at that revision. Generated P6 baseline manifests therefore record that Git revision while representing the accepted working tree.
 
@@ -38,7 +38,9 @@ Website contract epoch: `tz-v20`
 
 **BASE-REL-013 — Final 0.6.0 candidate chain.** User-authorized `PROJECT-WATCHER-001` on 2026-08-22 advances the combined contract to `tz-v17` and authorizes the unreleased candidate implemented at `c392ed284fd4af849c7d6153eb2510b3d7efea2c`. The terminal hardening chain is scalable near-equal semantic diff `4342c269b53842fad279ed6bd6f3e5f940db6ea9`, exact CLI/skill invocation ownership `eea2bdff11f0d2db76ff51668c55477a7f24e1f9`, persisted-slice resolution rejection `91860a1ac132b5941b5ee8527d7da64c7f103815`, and accepted head/indexed-baseline alignment `9c8d5475fd6bace8d9ff607bd76250dcbfd1ff70`. [Hosted CI `32624693470`](https://github.com/potapenko/swiftui-semantic-audit/actions/runs/32624693470) passed at that exact head with 93 XCTest cases plus 10 Swift Testing cases, indexed self-dogfood at 6,234 nodes and 24,277 edges with zero findings, exact fresh live/baseline diff, watcher safety/lifecycle coverage, bounded CLI/parser failures, four-skill validation, docs, and website build. This evidence does not itself publish 0.6.0.
 
-**BASE-REL-014 — 0.6.0 publication authority.** User-authorized `RELEASE-0.6.0-001` on 2026-08-23 advances the combined contract to `tz-v20`. It authorizes one immutable annotated tag and deterministic release archive, a public GitHub Release, the source-built upstream Homebrew formula, local CLI upgrade, one immutable four-skill bundle, and receipt-gated 0.6.0 website facts while preserving analysis semantics, schemas, thirty rules, the seven existing analysis commands, immutable 0.4.0/0.5.0 artifacts, and the no-bottles/no-automatic-skill-installation boundary. At this pre-tag checkpoint 0.5.0 remains the current public release and every 0.6.0 release claim remains pending a later terminal publication receipt.
+**BASE-REL-014 — 0.6.0 publication authority.** User-authorized `RELEASE-0.6.0-001` on 2026-08-23 advances the combined contract to `tz-v20`. It authorizes one immutable annotated tag and deterministic release archive, a public GitHub Release, the source-built upstream Homebrew formula, local CLI upgrade, one immutable four-skill bundle, and receipt-gated 0.6.0 website facts while preserving analysis semantics, schemas, thirty rules, the seven existing analysis commands, immutable 0.4.0/0.5.0 artifacts, and the no-bottles/no-automatic-skill-installation boundary. That authority did not itself change released state before the terminal receipt.
+
+**BASE-REL-015 — 0.6.0 publication receipt.** Immutable annotated tag `0.6.0` peels to release commit `25f88c17ece5014666103be60045a7097e9a308c`; [tag CI `32626212999`](https://github.com/potapenko/swiftui-semantic-audit/actions/runs/32626212999) and [published-master CI `32627491920`](https://github.com/potapenko/swiftui-semantic-audit/actions/runs/32627491920) passed. The public [GitHub Release](https://github.com/potapenko/swiftui-semantic-audit/releases/tag/0.6.0) asset `swiftui-semantic-audit-0.6.0.tar.gz` has SHA-256 `159eec10916643bc14594c10d3b801bfe892500cadd7060607494064cb947210`; clean extraction Release build/version passed, and full tests passed after initializing Git metadata in the otherwise unchanged extracted tree. Tap commit `0f85f4b0186086c54047e03b0f2f81e36a240ae2` is public; [tap push CI `32626814680`](https://github.com/potapenko/homebrew-tap/actions/runs/32626814680) passed and [hosted source-install run `32626885853`](https://github.com/potapenko/homebrew-tap/actions/runs/32626885853) installed from source, ran `brew test`, and verified `0.6.0`. On macOS 26.6 arm64 with Xcode 26.6, local Homebrew source upgrade, functional test, `--version`, help, and healthy doctor passed; all four active Codex skill links resolve to the immutable clone at `~/.local/share/swiftui-semantic-audit/0.6.0/skills`, with tag-CI `quick_validate.py` and local YAML/link/invocation validation terminal. DigitalOcean deployment `6edd8e96-301f-483d-81a5-24662e8c0874` reached ACTIVE from the release commit; the canonical root returned that exact marker, 0.6.0 release/watcher facts, healthy metadata routes and 404, a path-preserving permanent `www` redirect, and version-neutral social preview SHA-256 `aa6238f4219b3385f1959c41a3163ffe0f319d7e91f173c2512514700f1d68ee`. The direct command remains `brew install potapenko/tap/swiftui-semantic-audit`; no bottles or automatic skill installation are claimed.
 
 **BASE-WEB-001 — Initial website deployment receipt.** On 2026-08-19,
 DigitalOcean app `ed5742fe-8bca-444f-a55b-abb8d005ff55` reached ACTIVE deployment

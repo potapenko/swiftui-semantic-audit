@@ -2,9 +2,9 @@
 
 - Node type: hybrid
 - Status: Active
-- Contract revision: `spec-11`
+- Contract revision: `spec-12`
 - Authority: user-authorized website addenda through `RELEASE-0.6.0-001` on 2026-08-23
-- Stability: released prior-story baseline; semantic-twin story evolving; 0.6.0 facts terminal-receipt gated
+- Stability: verified 0.6.0 release facts; semantic-twin story separately evolving
 - Read when: designing, implementing, publishing, or verifying the product website.
 - Do not read when: work is limited to the Swift package, CLI, rules, or agent skills.
 - Maximum size: 100 physical lines.
@@ -50,17 +50,17 @@ examples, interaction, assets, accessibility, or deployment mechanics.
 **WEB-DELTA-007 — One-prompt installation.** `INSTALL-UX-001` replaces the
 prior public setup with one short agent prompt that reads the GitHub guide.
 The agent installs Homebrew first when absent, the CLI through Homebrew, and
-then all four skills as a separately owned phase. The guide pins installation
-artifacts to release 0.5.0. The formula remains CLI-only and must never modify
-agent-host directories.
+then all four skills as a separately owned phase. `WEB-DELTA-010` and
+`BASE-REL-015` advance the guide's pinned artifacts to release 0.6.0. The
+formula remains CLI-only and must never modify agent-host directories.
 
 **WEB-DELTA-008 — Semantic-twin-first story.** `SEMANTIC-TWIN-STORY-001`
 supersedes only the product-priority rule in `WEB-DELTA-005`: the deterministic
 semantic twin is now the primary product object, while `swiftui-semantic` and
 the specialist skills are its agent-facing consumers. The landing leads with
 the problem, twin, exact-state agent loop, use cases, proof, limits, and stable
-installation. Release 0.5.0 remains the only public capability set; the watcher
-stays an unreleased 0.6.0 preview until a separate publication receipt.
+installation. Its original 0.5.0-versus-preview split is superseded only for
+release state by `WEB-DELTA-010` and terminal receipt `BASE-REL-015`.
 
 **WEB-DELTA-009 — Capability-preserving correction.**
 `SEMANTIC-TWIN-CAPABILITIES-001` restores the previously accepted landing
@@ -72,9 +72,9 @@ hero, CTA, or section narrative.
 
 **WEB-DELTA-010 — Receipt-gated 0.6.0 facts.** `RELEASE-0.6.0-001` authorizes
 the landing's version, immutable links, installation prompt, and watcher copy
-to advance together only after the terminal 0.6.0 publication receipt. Until
-then 0.5.0 remains the only public release and the watcher remains a candidate.
-Afterward the site may describe only a freshness-qualified indexed live twin
+to advance together only after the terminal 0.6.0 publication receipt.
+`BASE-REL-015` satisfies that gate, so the site describes only a
+freshness-qualified indexed live twin
 with explicit stale-state rejection; layout, capability breadth, interaction,
 accessibility, deployment mechanics, and the no-bottles/no-automatic-skill-
 installation boundary remain unchanged.

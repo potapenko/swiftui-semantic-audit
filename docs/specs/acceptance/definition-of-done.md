@@ -2,7 +2,7 @@
 
 - Node type: leaf
 - Status: Active
-- Contract revision: `spec-13`
+- Contract revision: `spec-14`
 - Authority: [Acceptance and QA contract](../acceptance.md)
 - Read when: selecting fixture, build, determinism, safety, dogfood, skill, CI, or completion obligations.
 - Do not read when: the task does not implement or verify accepted behavior.
@@ -41,6 +41,6 @@
 
 **ACC-DOD-015.** `ARTIFACT-HYGIENE-001` makes auxiliary agent evidence temporary by default, keeps required durable evidence outside repositories and installed packages with explicit retention, preserves canonical snapshot behavior, and prevents Codex configuration commits from collecting run output.
 
-**ACC-DOD-016.** `PROJECT-WATCHER-001` supplies safe project setup, project manifest schema 1, one-writer foreground/background lifecycle, freshness-qualified indexed live snapshots, deliberate baseline promotion, router integration, runtime-state isolation, and compatibility with the seven released analysis commands as an unreleased 0.6.0 candidate.
+**ACC-DOD-016.** `PROJECT-WATCHER-001` supplies safe project setup, project manifest schema 1, one-writer foreground/background lifecycle, freshness-qualified indexed live snapshots, deliberate baseline promotion, router integration, runtime-state isolation, and compatibility with the seven existing analysis commands in released 0.6.0.
 
-**ACC-DOD-017.** `RELEASE-0.6.0-001` is complete only when one immutable tag/archive, tag CI, a checksum-pinned source-built upstream formula, the same four validated separately installed tagged skills, local installation, and truthful public/website release facts have terminal receipts. It adds no bottles or automatic skill installation and preserves graph/config/cache/snapshot schemas, thirty rules and severities, semantics of the seven existing analysis commands, project manifest schema 1, and immutable 0.4.0/0.5.0 artifacts.
+**ACC-DOD-017.** `RELEASE-0.6.0-001` is complete through `BASE-REL-015`: one immutable tag/archive, tag CI, a checksum-pinned source-built upstream formula, the same four validated separately installed tagged skills, local installation, and truthful public/website release facts have terminal receipts. It adds no bottles or automatic skill installation and preserves graph/config/cache/snapshot schemas, thirty rules and severities, semantics of the seven existing analysis commands, project manifest schema 1, and immutable 0.4.0/0.5.0 artifacts.

@@ -2,7 +2,7 @@
 
 - Node type: leaf
 - Status: Active
-- Contract revision: `spec-12`
+- Contract revision: `spec-13`
 - Authority: [Product contract](../product-contract.md)
 - Read when: selecting the product goal, invariants, supported operations, scope, or release boundary.
 - Do not read when: a narrower linked domain contract fully governs the task.
@@ -32,7 +32,7 @@
 
 **PC-OPS-011 — Agent run artifact hygiene.** Stream separation is logical and does not require permanent per-command files. Auxiliary command output, status, timestamps, hashes, and receipts are temporary by default and stay outside source repositories, Codex configuration homes, and installed skill/package directories. Durable cross-handoff evidence requires an explicit non-repository state root, minimum necessary contents, and a retention owner or cleanup condition. Canonical snapshots may use an explicitly selected workflow path and retain their exact five-file contract.
 
-**PC-OPS-012 — Project watcher.** The publication-authorized but unreleased 0.6.0 candidate adds an opt-in `project` command namespace for safe setup, foreground/background watching, freshness-qualified indexed live snapshots, status/wait, stop, and deliberate baseline promotion under [`project-runtime.md`](../project-runtime.md). Existing one-shot commands remain independently usable.
+**PC-OPS-012 — Project watcher.** Released 0.6.0 adds an opt-in `project` command namespace for safe setup, foreground/background watching, freshness-qualified indexed live snapshots, status/wait, stop, and deliberate baseline promotion under [`project-runtime.md`](../project-runtime.md). Existing one-shot commands remain independently usable.
 
 ## Resolution and platform
 
@@ -97,4 +97,4 @@
 **PC-REL-003 — Distribution boundary.** The formula builds the locked Swift package from tagged source, installs only the CLI into Homebrew's prefix, and functionally tests syntax-only analysis. It must not write agent-host skill directories, shell startup files, project source, or user configuration. Agent skills retain their separate documented installation flow.
 
 **PC-REL-004 — Component release.** Tool `0.5.0` publishes the accepted `COMPONENT-SURFACE-001` behavior and updated four-skill workflow. It advances the current formula and documentation without replacing, retagging, republishing, or changing immutable 0.4.0 artifacts.
-**PC-REL-005 — Watcher release.** Tool `0.6.0` is authorized to publish the accepted `PROJECT-WATCHER-001` behavior, exact CLI option ownership, behavior-preserving diff fallback and persisted-slice parser repairs, and the same four separately installed tagged skills. It preserves graph/config/cache/snapshot schemas, thirty rules, semantics of the seven existing analysis commands, project manifest schema 1, and immutable 0.4.0/0.5.0 artifacts; it becomes Released only through its terminal publication receipt.
+**PC-REL-005 — Watcher release.** Tool `0.6.0` publishes the accepted `PROJECT-WATCHER-001` behavior, exact CLI option ownership, behavior-preserving diff fallback and persisted-slice parser repairs, and the same four separately installed tagged skills through terminal receipt `BASE-REL-015`. It preserves graph/config/cache/snapshot schemas, thirty rules, semantics of the seven existing analysis commands, project manifest schema 1, and immutable 0.4.0/0.5.0 artifacts.

@@ -3,7 +3,7 @@
 - Node type: leaf
 - Status: Active
 - Contract revision: `spec-11`
-- Authority: [Unreleased implementation baseline](../release-baseline.md)
+- Authority: [Release and publication baseline](../release-baseline.md)
 - Read when: checking acceptance evidence for an authorized addendum.
 - Do not read when: only platform, milestone, current-surface, or residual information is needed.
 - Maximum size: 100 physical lines.
