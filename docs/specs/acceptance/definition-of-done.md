@@ -2,7 +2,7 @@
 
 - Node type: leaf
 - Status: Active
-- Contract revision: `spec-14`
+- Contract revision: `spec-15`
 - Authority: [Acceptance and QA contract](../acceptance.md)
 - Read when: selecting fixture, build, determinism, safety, dogfood, skill, CI, or completion obligations.
 - Do not read when: the task does not implement or verify accepted behavior.
@@ -44,3 +44,5 @@
 **ACC-DOD-016.** `PROJECT-WATCHER-001` supplies safe project setup, project manifest schema 1, one-writer foreground/background lifecycle, freshness-qualified indexed live snapshots, deliberate baseline promotion, router integration, runtime-state isolation, and compatibility with the seven existing analysis commands in released 0.6.0.
 
 **ACC-DOD-017.** `RELEASE-0.6.0-001` is complete through `BASE-REL-015`: one immutable tag/archive, tag CI, a checksum-pinned source-built upstream formula, the same four validated separately installed tagged skills, local installation, and truthful public/website release facts have terminal receipts. It adds no bottles or automatic skill installation and preserves graph/config/cache/snapshot schemas, thirty rules and severities, semantics of the seven existing analysis commands, project manifest schema 1, and immutable 0.4.0/0.5.0 artifacts.
+
+**ACC-DOD-018.** `RELEASE-0.6.1-001` is a complete local candidate only when the integrated watcher repair, exact 0.6.1 version/CI gates, compatible canonical baselines, router guidance, focused/full tests, Release build, executable help, indexed watcher dogfood, skill/docs validation, and protected website regressions are locally terminal. Hosted CI, tag/archive, tap, installation, skills activation, website facts, and publication receipt remain explicitly nonterminal.

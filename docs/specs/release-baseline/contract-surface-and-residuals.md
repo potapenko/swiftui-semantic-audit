@@ -2,7 +2,7 @@
 
 - Node type: leaf
 - Status: Active
-- Contract revision: `spec-12`
+- Contract revision: `spec-13`
 - Authority: [Release and publication baseline](../release-baseline.md)
 - Read when: checking realized behavior, canonical evidence hashes, or accepted product limits.
 - Do not read when: only dependency history, milestones, or addendum acceptance evidence is needed.
@@ -12,7 +12,7 @@
 
 **BASE-CAP-001.** Public commands are `scan`, `audit`, `snapshot`, `slice`, `diff`, `check`, and `doctor`, with syntax/index flags documented in [`cli.md`](../cli.md).
 
-**BASE-CAP-002.** Graph/audit/snapshot/diff/check/slice schemas are version 2, the released tool version is `0.6.0`, and the non-authoritative analysis-cache schema is version 1. Public releases 0.4.0 and 0.5.0 remain immutable. Reports and snapshot manifests carry the canonical analysis-configuration digest or `none`.
+**BASE-CAP-002.** Graph/audit/snapshot/diff/check/slice schemas are version 2, the current public tool version is `0.6.0`, the unpublished source candidate reports `0.6.1`, and the non-authoritative analysis-cache schema is version 1. Public releases 0.4.0, 0.5.0, and 0.6.0 remain immutable. Reports and snapshot manifests carry the canonical analysis-configuration digest or `none`.
 
 **BASE-CAP-003.** The canonical RuleTests dogfood baseline is syntax-only and contains exactly five files under `Tests/Baselines/RuleTests`.
 
@@ -26,7 +26,7 @@
 | `edges.jsonl` | `e1ba91905742c9a088790b35e18a46ae5a566254af7728484738ed8ad13a6bf2` |
 | `findings.jsonl` | `9d9305389503bffcaa70651fa233ebb372ef0d4f7edd2bf1901c353a0391c7b3` |
 | `summary.json` | `b37146210fbf1a690985d89c2f617ef892727d8f4597087abaed1739dbc15177` |
-| `manifest.json` | `33a91e9abcf7b18cd0a8c0a1e703fb10739e2aae61c0f3024d68005919200f7a` |
+| `manifest.json` | `f1609cc0c0a6d78be4c10fea8a10275ea68b420dfd2594eec97409750dfc189a` |
 
 **BASE-CAP-006.** The current P1 extraction fixture contains 42 nodes and 83 edges (SHA-256 `ae2f86326085816ee62f9d3fcf8a1531f007df80d2f60a895d2a9f1ea7241ceb`). Schema v2 adds bounded typed/value-flow facts while preserving accepted lexical behavior: identity for an unshadowed nested `onChange` parameter capture, a same-name nested parameter as a shadow barrier, and derivation for transformed captures.
 
@@ -51,6 +51,8 @@
 **BASE-CAP-016.** Config schema 2 adds exact View roles and `component-model`; schema 1 remains accepted. The thirtieth reusable-owner candidate is configuration-only, uses existing graph roles, and preserves the realistic corpus total through finding dominance.
 
 **BASE-CAP-017.** Released 0.6.0 includes `PROJECT-WATCHER-001`: one `project` namespace, project manifest schema 1, external per-project runtime state, typed SwiftPM/Xcode builds, freshness-qualified indexed live snapshots, baseline promotion, foreground/background lifecycle, and router integration while preserving the released analysis and snapshot schemas.
+
+**BASE-CAP-018.** Unpublished candidate 0.6.1 adds the schema-1-compatible `watch.buildAndAnalysisTimeoutSeconds` contract, legacy 300-second decode behavior, manifest-driven managed registration, explicit foreground override precedence, and root-then-selected-source analysis-configuration discovery. It does not change analysis schemas, rules, one-shot commands, or public 0.6.0 artifacts.
 
 ## Accepted residuals and limits
 

@@ -2,13 +2,13 @@
 
 - Node type: hybrid
 - Status: Active
-- Contract revision: `spec-17`
+- Contract revision: `spec-18`
 - Read when: tracing original sections or authorized addenda to stable clauses and evidence ownership.
 - Do not read when: the governing contract is already selected and traceability is not in question.
 - Maximum size: 100 physical lines.
 
-Revision: `spec-17`
-Authority: ТЗ epoch `tz-v1` plus user-authorized addenda through `RELEASE-0.6.0-001`, combined epoch `tz-v20`
+Revision: `spec-18`
+Authority: ТЗ epoch `tz-v1` plus user-authorized addenda through `RELEASE-0.6.1-001`, combined epoch `tz-v24`
 Purpose: route every source section to stable local clauses and evidence owners
 
 This map proves coverage; it does not create new requirements. Source and tests establish realization only after the normative contract is fixed.
@@ -76,11 +76,15 @@ This map proves coverage; it does not create new requirements. Source and tests 
 
 `PROJECT-WATCHER-001` maps to `PC-OPS-012`, `PRJ-*`, `CLI-PRJ-*`, `ACC-PRJ-*`, `ACC-WATCH-*`, and `ACC-DOD-016`; realization owners are ProjectWorkspace, WatcherRuntime, the CLI project namespace, the four skills, the tracked dogfood manifest/baseline, tests, docs, and CI.
 
+`PROJECT-WATCHER-INTEGRATION-001` maps to `PC-OPS-012`, `PRJ-CFG-001`, `PRJ-SETUP-003`, `PRJ-LIFE-002`, `CLI-PRJ-003..004`, `ACC-WATCH-008`, and `BASE-CAP-018`; realization owners are ProjectWorkspace, WatcherRuntime, project CLI help, focused tests, the router watcher reference, and dogfood baselines.
+
 `SEMANTIC-TWIN-STORY-001` maps to `PC-GOAL-004`, `WEB-DELTA-008`, `WEB-GOAL-*`, `WEB-STORY-*`, `WEB-TWIN-001`, `WEB-SKILL-001`, `WEB-LOOP-001`, and `WEB-FRESH-001`; realization owners are the landing, README, public semantic-state docs, router-skill framing, metadata artwork, and local website QA.
 
 `SEMANTIC-TWIN-CAPABILITIES-001` maps to `WEB-DELTA-009`, `WEB-STORY-001/003`, `WEB-TWIN-001`, `WEB-LOOP-001`, and `WEB-VERSION-001`; realization owners are the restored landing capability blocks, version hierarchy, release-claim tests, and browser QA.
 
 `RELEASE-0.6.0-001` maps to `PC-REL-002..005`, `CLI-GEN-005`, `ACC-BREW-001..004`, `ACC-DOD-016..017`, `WEB-DELTA-010`, `WEB-FRESH-001`, and `WEB-CLAIM-001`; realization owners are the accepted watcher/diff/CLI-hardening chain, immutable tag/archive, tagged four-skill bundle, `potapenko/homebrew-tap`, local installation, verified website facts, and terminal publication receipt `BASE-REL-015`.
+
+`RELEASE-0.6.1-001` maps to `PC-REL-006`, `CLI-GEN-005`, `CLI-PRJ-003..004`, `ACC-WATCH-008..009`, `ACC-CI-005`, `ACC-DOD-018`, and `BASE-REL-016`; realization owners are the master integration checkpoint, candidate version/CI gates, canonical baselines, router guidance, local package/skill/docs verification, and the explicit absence of publication receipts.
 
 ## Choose the supporting map
 

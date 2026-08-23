@@ -2,7 +2,7 @@
 
 - Node type: leaf
 - Status: Active
-- Contract revision: `spec-11`
+- Contract revision: `spec-12`
 - Authority: [Release and publication baseline](../release-baseline.md)
 - Read when: checking platform/dependency compatibility or accepted milestone history.
 - Do not read when: only current capabilities, residuals, or addendum acceptance evidence is needed.
@@ -46,3 +46,4 @@
 | P15 | 0.5.0 publication | accepted: immutable tag/archive, tap source install, local CLI/skills, and public-site receipt are terminal in `BASE-REL-012` |
 | P16 | continuous project watcher candidate | accepted: tool 0.6.0; safe setup and typed builds; freshness-qualified indexed state; deliberate baseline promotion; 93 XCTest plus 10 Swift Testing cases; 6,234/24,277/0 indexed self-dogfood; hosted CI `32624693470` passed at `9c8d5475fd6bace8d9ff607bd76250dcbfd1ff70` |
 | P17 | 0.6.0 publication | accepted through `BASE-REL-015`: immutable tag/archive, tap source install, local CLI/tagged skills, hosted CI, and public-site verification are terminal |
+| P18 | 0.6.1 watcher integration patch candidate | local candidate: compatible managed timeout and selected-source config discovery integrated at `695038f`; exact version/baseline/skill/release gates are recorded by `RELEASE-0.6.1-001`; hosted and publication evidence remain pending |

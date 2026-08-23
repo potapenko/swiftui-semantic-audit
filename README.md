@@ -18,6 +18,11 @@ change is appropriate.
 | Exact-state analysis | Available since `0.5.0` | Build an indexed semantic twin for one source state on demand |
 | Project watcher | Included in `0.6.0` | Keep external live state ready for agents, gated by a matching fresh indexed receipt |
 
+Public installation remains pinned to immutable `0.6.0`. Current `master`
+prepares an unpublished `0.6.1` patch candidate that adds managed watcher
+timeout configuration and selected-source analysis-config discovery; it is not
+yet a Homebrew, tagged-skill, or website release.
+
 macOS 13 or later · MIT
 
 [Website](https://swiftui-audit.dev/) · [Install](#quick-start) ·

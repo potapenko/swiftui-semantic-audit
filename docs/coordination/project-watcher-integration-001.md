@@ -12,7 +12,7 @@
 - Service behavior: `project start` resolves the manifest value and records it explicitly in the managed `project watch --timeout` arguments. Changing an already registered service requires stop/start so launchd receives the new value.
 - Forbidden expansion: recursive config discovery, ancestor search, role inference, manifest migration or rewrite, arbitrary commands, service hot reload, release republication, website changes, or changes to the consumer project.
 - Required evidence: legacy decode/default and canonical encoding, positive/invalid timeout validation, setup preview/apply propagation, root/source precedence, existing-manifest preservation, managed plist arguments, watcher override precedence, CLI help, focused package tests, and full `swift test`.
-- Release state: source-level compatible remediation only. Public 0.6.0 artifacts and `BASE-REL-015` remain immutable; publication of another artifact requires separate authority.
+- Release state: `RELEASE-0.6.1-001` authorizes a locally verified unpublished 0.6.1 candidate containing this repair. Public 0.6.0 artifacts and `BASE-REL-015` remain immutable; publication still requires a separate external action and terminal receipt.
 
 ## Contract Delta
 

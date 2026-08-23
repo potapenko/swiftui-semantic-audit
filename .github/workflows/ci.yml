@@ -53,8 +53,8 @@ jobs:
           perl -e 'alarm shift; exec @ARGV' 900 swift test --disable-automatic-resolution
           version="$(perl -e 'alarm shift; exec @ARGV' 60 \
             swift run --disable-automatic-resolution swiftui-audit --version)"
-          test "$version" = "0.6.0" || {
-            echo "Expected swiftui-audit 0.6.0 candidate, received: $version" >&2
+          test "$version" = "0.6.1" || {
+            echo "Expected swiftui-audit 0.6.1 candidate, received: $version" >&2
             exit 1
           }
 
@@ -456,6 +456,11 @@ jobs:
 
           doctor_help = (root / "doctor-help.txt").read_text()
           diff_help = (root / "diff-help.txt").read_text()
+          project_setup_help = (root / "project-setup-help.txt").read_text()
+          project_watch_help = (root / "project-watch-help.txt").read_text()
+          assert "--watch-timeout" in project_setup_help
+          assert "--timeout" in project_watch_help
+          assert "--watch-timeout" not in project_watch_help
           live_options = (
               "--index-store", "--syntax-only", "--config",
               "--cache-directory", "--no-cache", "--jobs",

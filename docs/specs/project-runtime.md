@@ -2,9 +2,9 @@
 
 - Node type: leaf
 - Status: Active
-- Contract revision: `spec-3`
-- Authority: `PROJECT-WATCHER-001` plus `PROJECT-WATCHER-INTEGRATION-001`, epoch `tz-v23`
-- Stability: Released in 0.6.0 through `BASE-REL-015`; compatible integration repair evolving in source
+- Contract revision: `spec-4`
+- Authority: `PROJECT-WATCHER-001`, `PROJECT-WATCHER-INTEGRATION-001`, and `RELEASE-0.6.1-001`, epoch `tz-v24`
+- Stability: Released in 0.6.0 through `BASE-REL-015`; compatible integration repair is an unpublished 0.6.1 candidate
 - Read when: setting up, starting, querying, stopping, or integrating continuous project analysis.
 - Do not read when: using only the existing one-shot analysis commands.
 - Maximum size: 100 physical lines.

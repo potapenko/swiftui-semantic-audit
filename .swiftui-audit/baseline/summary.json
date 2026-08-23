@@ -1,5 +1,5 @@
 {
-  "edgeCount" : 24277,
+  "edgeCount" : 24551,
   "findingCount" : 0,
   "metrics" : {
     "bindingEdges" : 0,
@@ -11,7 +11,7 @@
     "ownershipViolations" : 0,
     "stateRepresentations" : 0
   },
-  "nodeCount" : 6234,
+  "nodeCount" : 6286,
   "resolution" : "indexed",
   "semanticValues" : [
     {
@@ -103,6 +103,19 @@
       ],
       "representations" : [
         "node:465886c3993777ba"
+      ]
+    },
+    {
+      "confidence" : "deterministic",
+      "evidence" : [
+
+      ],
+      "id" : "value:111ca63f87592cc7",
+      "relationEdges" : [
+
+      ],
+      "representations" : [
+        "node:65e2dc62c922a18e"
       ]
     },
     {
@@ -240,6 +253,19 @@
       "evidence" : [
 
       ],
+      "id" : "value:1209505a750d60c8",
+      "relationEdges" : [
+
+      ],
+      "representations" : [
+        "node:a31c24706cd9"
+      ]
+    },
+    {
+      "confidence" : "deterministic",
+      "evidence" : [
+
+      ],
       "id" : "value:120ffdb46921148a",
       "relationEdges" : [
 
@@ -285,6 +311,19 @@
       ],
       "representations" : [
         "node:b3e5dd4b3e6d38ba"
+      ]
+    },
+    {
+      "confidence" : "deterministic",
+      "evidence" : [
+
+      ],
+      "id" : "value:127f8b318dcb3ea3",
+      "relationEdges" : [
+
+      ],
+      "representations" : [
+        "node:2008932ef60aa74"
       ]
     },
     {
@@ -644,12 +683,12 @@
       "evidence" : [
 
       ],
-      "id" : "value:14740d38beff567c",
+      "id" : "value:14711f91f559d924",
       "relationEdges" : [
 
       ],
       "representations" : [
-        "node:1d015af8c80a1fc1"
+        "node:738719ed2a8280ae"
       ]
     },
     {
@@ -877,6 +916,25 @@
       ],
       "representations" : [
         "node:f7a81df5c4b5f8fa"
+      ]
+    },
+    {
+      "confidence" : "deterministic",
+      "evidence" : [
+        {
+          "endLine" : 145,
+          "file" : "ProjectWorkspace/ProjectSetup.swift",
+          "kind" : "initializer-argument",
+          "startLine" : 145
+        }
+      ],
+      "id" : "value:15f418b4747a2d15",
+      "relationEdges" : [
+        "edge:cabe81d92892ce09"
+      ],
+      "representations" : [
+        "node:23633c0da4d635d2",
+        "node:99fa3124a21a9c61"
       ]
     },
     {
@@ -1533,16 +1591,16 @@
       "confidence" : "deterministic",
       "evidence" : [
         {
-          "endLine" : 102,
+          "endLine" : 126,
           "file" : "ProjectWorkspace/ProjectSetup.swift",
           "kind" : "initializer-argument",
-          "startLine" : 102
+          "startLine" : 126
         },
         {
-          "endLine" : 118,
+          "endLine" : 143,
           "file" : "ProjectWorkspace/ProjectSetup.swift",
           "kind" : "initializer-argument",
-          "startLine" : 118
+          "startLine" : 143
         }
       ],
       "id" : "value:19c4ecf388f8e334",
@@ -2993,6 +3051,19 @@
       "evidence" : [
 
       ],
+      "id" : "value:21155506606d87e2",
+      "relationEdges" : [
+
+      ],
+      "representations" : [
+        "node:4b9c397b0c3879e5"
+      ]
+    },
+    {
+      "confidence" : "deterministic",
+      "evidence" : [
+
+      ],
       "id" : "value:211d62fe2d299961",
       "relationEdges" : [
 
@@ -3635,6 +3706,19 @@
       "evidence" : [
 
       ],
+      "id" : "value:248418d564376bf5",
+      "relationEdges" : [
+
+      ],
+      "representations" : [
+        "node:d667e78356f02f25"
+      ]
+    },
+    {
+      "confidence" : "deterministic",
+      "evidence" : [
+
+      ],
       "id" : "value:24a0a7e304b9956e",
       "relationEdges" : [
 
@@ -4040,19 +4124,6 @@
       "evidence" : [
 
       ],
-      "id" : "value:25e193690bb23fb7",
-      "relationEdges" : [
-
-      ],
-      "representations" : [
-        "node:128e5c42f7e2c71e"
-      ]
-    },
-    {
-      "confidence" : "deterministic",
-      "evidence" : [
-
-      ],
       "id" : "value:25e23cc3ae37dc0b",
       "relationEdges" : [
 
@@ -4085,6 +4156,19 @@
       ],
       "representations" : [
         "node:ab2640d9e0b169e9"
+      ]
+    },
+    {
+      "confidence" : "deterministic",
+      "evidence" : [
+
+      ],
+      "id" : "value:25fa5047ade0bb9c",
+      "relationEdges" : [
+
+      ],
+      "representations" : [
+        "node:b72c389f0c1f36a1"
       ]
     },
     {
@@ -4267,6 +4351,25 @@
       ],
       "representations" : [
         "node:ddf7def0902ac59c"
+      ]
+    },
+    {
+      "confidence" : "deterministic",
+      "evidence" : [
+        {
+          "endLine" : 145,
+          "file" : "ProjectWorkspace/ProjectSetup.swift",
+          "kind" : "initializer-argument",
+          "startLine" : 145
+        }
+      ],
+      "id" : "value:270becda0b2ee6e2",
+      "relationEdges" : [
+        "edge:b31df76b68e58476"
+      ],
+      "representations" : [
+        "node:278ea45007ffcf62",
+        "node:408f6ebce5fe9c1e"
       ]
     },
     {
@@ -4546,6 +4649,19 @@
       ],
       "representations" : [
         "node:9b3c002f991c64d8"
+      ]
+    },
+    {
+      "confidence" : "deterministic",
+      "evidence" : [
+
+      ],
+      "id" : "value:28736e6e25e675e8",
+      "relationEdges" : [
+
+      ],
+      "representations" : [
+        "node:a5ae9dcb001ac501"
       ]
     },
     {
@@ -5068,28 +5184,28 @@
       "confidence" : "deterministic",
       "evidence" : [
         {
-          "endLine" : 84,
+          "endLine" : 102,
           "file" : "ProjectWorkspace/ProjectSetup.swift",
           "kind" : "initializer-argument",
-          "startLine" : 84
+          "startLine" : 102
         },
         {
-          "endLine" : 85,
+          "endLine" : 103,
           "file" : "ProjectWorkspace/ProjectSetup.swift",
           "kind" : "initializer-argument",
-          "startLine" : 85
+          "startLine" : 103
         },
         {
-          "endLine" : 133,
+          "endLine" : 159,
           "file" : "ProjectWorkspace/ProjectSetup.swift",
           "kind" : "initializer-argument",
-          "startLine" : 133
+          "startLine" : 159
         },
         {
-          "endLine" : 134,
+          "endLine" : 160,
           "file" : "ProjectWorkspace/ProjectSetup.swift",
           "kind" : "initializer-argument",
-          "startLine" : 134
+          "startLine" : 160
         }
       ],
       "id" : "value:2ace534366dfbaa6",
@@ -6213,6 +6329,19 @@
       "evidence" : [
 
       ],
+      "id" : "value:31d1bac0e108a9a",
+      "relationEdges" : [
+
+      ],
+      "representations" : [
+        "node:b54899b9f250f71f"
+      ]
+    },
+    {
+      "confidence" : "deterministic",
+      "evidence" : [
+
+      ],
       "id" : "value:31daff4c50416188",
       "relationEdges" : [
 
@@ -6491,19 +6620,6 @@
       ],
       "representations" : [
         "node:8d7c1160e416d054"
-      ]
-    },
-    {
-      "confidence" : "deterministic",
-      "evidence" : [
-
-      ],
-      "id" : "value:33f1625e558c520a",
-      "relationEdges" : [
-
-      ],
-      "representations" : [
-        "node:6b3e9e5ae38824f5"
       ]
     },
     {
@@ -6862,19 +6978,6 @@
       "evidence" : [
 
       ],
-      "id" : "value:35c5c844a2c3061b",
-      "relationEdges" : [
-
-      ],
-      "representations" : [
-        "node:2429b513c96332e5"
-      ]
-    },
-    {
-      "confidence" : "deterministic",
-      "evidence" : [
-
-      ],
       "id" : "value:3606ef5836597595",
       "relationEdges" : [
 
@@ -7011,6 +7114,19 @@
       ],
       "representations" : [
         "node:c19e277462e00891"
+      ]
+    },
+    {
+      "confidence" : "deterministic",
+      "evidence" : [
+
+      ],
+      "id" : "value:373964c5ba5ec1f4",
+      "relationEdges" : [
+
+      ],
+      "representations" : [
+        "node:f4cb6f6e1c5d3421"
       ]
     },
     {
@@ -7411,19 +7527,6 @@
     {
       "confidence" : "deterministic",
       "evidence" : [
-
-      ],
-      "id" : "value:395b7c6d8c4a0c7b",
-      "relationEdges" : [
-
-      ],
-      "representations" : [
-        "node:d97b1325d1996fce"
-      ]
-    },
-    {
-      "confidence" : "deterministic",
-      "evidence" : [
         {
           "endLine" : 500,
           "file" : "SymbolResolution/IndexStoreDBResolver.swift",
@@ -7542,19 +7645,6 @@
       ],
       "representations" : [
         "node:e063d2580eba73c0"
-      ]
-    },
-    {
-      "confidence" : "deterministic",
-      "evidence" : [
-
-      ],
-      "id" : "value:3a4720697801011a",
-      "relationEdges" : [
-
-      ],
-      "representations" : [
-        "node:5cfb57fa1607e32b"
       ]
     },
     {
@@ -8436,6 +8526,19 @@
     {
       "confidence" : "deterministic",
       "evidence" : [
+
+      ],
+      "id" : "value:3f1b14ec93d4275d",
+      "relationEdges" : [
+
+      ],
+      "representations" : [
+        "node:1d787a6917fbe17f"
+      ]
+    },
+    {
+      "confidence" : "deterministic",
+      "evidence" : [
         {
           "endLine" : 23,
           "file" : "SnapshotStore/SnapshotPathPolicy.swift",
@@ -8696,10 +8799,10 @@
       "confidence" : "deterministic",
       "evidence" : [
         {
-          "endLine" : 117,
+          "endLine" : 142,
           "file" : "ProjectWorkspace/ProjectSetup.swift",
           "kind" : "initializer-argument",
-          "startLine" : 117
+          "startLine" : 142
         }
       ],
       "id" : "value:40d5ede9ff9b0088",
@@ -8865,25 +8968,6 @@
       ],
       "representations" : [
         "node:d49b27f3e7b3a351"
-      ]
-    },
-    {
-      "confidence" : "deterministic",
-      "evidence" : [
-        {
-          "endLine" : 135,
-          "file" : "ProjectWorkspace/ProjectSetup.swift",
-          "kind" : "initializer-argument",
-          "startLine" : 135
-        }
-      ],
-      "id" : "value:41da3c9cd22d7c82",
-      "relationEdges" : [
-        "edge:38c1d5a587a7f062"
-      ],
-      "representations" : [
-        "node:7c230e891114cf51",
-        "node:c444fe65e2cd0377"
       ]
     },
     {
@@ -9111,19 +9195,6 @@
       ],
       "representations" : [
         "node:48d50931ed4af22f"
-      ]
-    },
-    {
-      "confidence" : "deterministic",
-      "evidence" : [
-
-      ],
-      "id" : "value:42fb6c80239674f1",
-      "relationEdges" : [
-
-      ],
-      "representations" : [
-        "node:7d9ed451bedde0ab"
       ]
     },
     {
@@ -9808,40 +9879,40 @@
           "startLine" : 118
         },
         {
-          "endLine" : 80,
+          "endLine" : 98,
           "file" : "ProjectWorkspace/ProjectSetup.swift",
           "kind" : "initializer-argument",
-          "startLine" : 80
+          "startLine" : 98
         },
         {
-          "endLine" : 81,
+          "endLine" : 99,
           "file" : "ProjectWorkspace/ProjectSetup.swift",
           "kind" : "initializer-argument",
-          "startLine" : 81
+          "startLine" : 99
         },
         {
-          "endLine" : 82,
+          "endLine" : 100,
           "file" : "ProjectWorkspace/ProjectSetup.swift",
           "kind" : "initializer-argument",
-          "startLine" : 82
+          "startLine" : 100
         },
         {
-          "endLine" : 129,
+          "endLine" : 155,
           "file" : "ProjectWorkspace/ProjectSetup.swift",
           "kind" : "initializer-argument",
-          "startLine" : 129
+          "startLine" : 155
         },
         {
-          "endLine" : 130,
+          "endLine" : 156,
           "file" : "ProjectWorkspace/ProjectSetup.swift",
           "kind" : "initializer-argument",
-          "startLine" : 130
+          "startLine" : 156
         },
         {
-          "endLine" : 131,
+          "endLine" : 157,
           "file" : "ProjectWorkspace/ProjectSetup.swift",
           "kind" : "initializer-argument",
-          "startLine" : 131
+          "startLine" : 157
         },
         {
           "endLine" : 109,
@@ -9886,28 +9957,16 @@
           "startLine" : 212
         },
         {
-          "endLine" : 97,
+          "endLine" : 99,
           "file" : "WatcherRuntime/WatcherCoordinator.swift",
           "kind" : "initializer-argument",
-          "startLine" : 97
+          "startLine" : 99
         },
         {
-          "endLine" : 98,
+          "endLine" : 100,
           "file" : "WatcherRuntime/WatcherCoordinator.swift",
           "kind" : "initializer-argument",
-          "startLine" : 98
-        },
-        {
-          "endLine" : 101,
-          "file" : "WatcherRuntime/WatcherCoordinator.swift",
-          "kind" : "initializer-argument",
-          "startLine" : 101
-        },
-        {
-          "endLine" : 102,
-          "file" : "WatcherRuntime/WatcherCoordinator.swift",
-          "kind" : "initializer-argument",
-          "startLine" : 102
+          "startLine" : 100
         },
         {
           "endLine" : 103,
@@ -9916,40 +9975,40 @@
           "startLine" : 103
         },
         {
+          "endLine" : 104,
+          "file" : "WatcherRuntime/WatcherCoordinator.swift",
+          "kind" : "initializer-argument",
+          "startLine" : 104
+        },
+        {
           "endLine" : 105,
           "file" : "WatcherRuntime/WatcherCoordinator.swift",
           "kind" : "initializer-argument",
           "startLine" : 105
         },
         {
-          "endLine" : 106,
+          "endLine" : 107,
           "file" : "WatcherRuntime/WatcherCoordinator.swift",
           "kind" : "initializer-argument",
-          "startLine" : 106
+          "startLine" : 107
         },
         {
-          "endLine" : 115,
+          "endLine" : 108,
           "file" : "WatcherRuntime/WatcherCoordinator.swift",
           "kind" : "initializer-argument",
-          "startLine" : 115
+          "startLine" : 108
         },
         {
-          "endLine" : 116,
+          "endLine" : 117,
           "file" : "WatcherRuntime/WatcherCoordinator.swift",
           "kind" : "initializer-argument",
-          "startLine" : 116
+          "startLine" : 117
         },
         {
           "endLine" : 118,
           "file" : "WatcherRuntime/WatcherCoordinator.swift",
           "kind" : "initializer-argument",
           "startLine" : 118
-        },
-        {
-          "endLine" : 119,
-          "file" : "WatcherRuntime/WatcherCoordinator.swift",
-          "kind" : "initializer-argument",
-          "startLine" : 119
         },
         {
           "endLine" : 120,
@@ -9964,34 +10023,46 @@
           "startLine" : 121
         },
         {
+          "endLine" : 122,
+          "file" : "WatcherRuntime/WatcherCoordinator.swift",
+          "kind" : "initializer-argument",
+          "startLine" : 122
+        },
+        {
           "endLine" : 123,
           "file" : "WatcherRuntime/WatcherCoordinator.swift",
           "kind" : "initializer-argument",
           "startLine" : 123
         },
         {
-          "endLine" : 124,
+          "endLine" : 125,
           "file" : "WatcherRuntime/WatcherCoordinator.swift",
           "kind" : "initializer-argument",
-          "startLine" : 124
+          "startLine" : 125
         },
         {
-          "endLine" : 178,
+          "endLine" : 126,
           "file" : "WatcherRuntime/WatcherCoordinator.swift",
           "kind" : "initializer-argument",
-          "startLine" : 178
+          "startLine" : 126
         },
         {
-          "endLine" : 196,
+          "endLine" : 180,
           "file" : "WatcherRuntime/WatcherCoordinator.swift",
           "kind" : "initializer-argument",
-          "startLine" : 196
+          "startLine" : 180
         },
         {
-          "endLine" : 201,
+          "endLine" : 198,
           "file" : "WatcherRuntime/WatcherCoordinator.swift",
           "kind" : "initializer-argument",
-          "startLine" : 201
+          "startLine" : 198
+        },
+        {
+          "endLine" : 203,
+          "file" : "WatcherRuntime/WatcherCoordinator.swift",
+          "kind" : "initializer-argument",
+          "startLine" : 203
         }
       ],
       "id" : "value:46b89711d621296a",
@@ -10154,19 +10225,6 @@
       ],
       "representations" : [
         "node:fd58b91232017320"
-      ]
-    },
-    {
-      "confidence" : "deterministic",
-      "evidence" : [
-
-      ],
-      "id" : "value:47a0cde262a8be7f",
-      "relationEdges" : [
-
-      ],
-      "representations" : [
-        "node:7ac553885eb21fc4"
       ]
     },
     {
@@ -10718,6 +10776,33 @@
     {
       "confidence" : "deterministic",
       "evidence" : [
+        {
+          "endLine" : 115,
+          "file" : "ProjectWorkspace/ProjectSetup.swift",
+          "kind" : "initializer-argument",
+          "startLine" : 114
+        },
+        {
+          "endLine" : 54,
+          "file" : "SwiftUIAuditCLI/ProjectCommand.swift",
+          "kind" : "initializer-argument",
+          "startLine" : 54
+        }
+      ],
+      "id" : "value:4a0c17fccd238524",
+      "relationEdges" : [
+        "edge:5110e34f4efa9494",
+        "edge:f5119f1b09850f24"
+      ],
+      "representations" : [
+        "node:4743e23b17ff0548",
+        "node:5edbb6e8f017f7d6",
+        "node:d019010e8ab7a537"
+      ]
+    },
+    {
+      "confidence" : "deterministic",
+      "evidence" : [
 
       ],
       "id" : "value:4a2895761dfae4fe",
@@ -11063,6 +11148,19 @@
       ],
       "representations" : [
         "node:83ba2373bc91c7ca"
+      ]
+    },
+    {
+      "confidence" : "deterministic",
+      "evidence" : [
+
+      ],
+      "id" : "value:4c511282a534c848",
+      "relationEdges" : [
+
+      ],
+      "representations" : [
+        "node:3f87aa1e141010b2"
       ]
     },
     {
@@ -12788,6 +12886,19 @@
       "evidence" : [
 
       ],
+      "id" : "value:5687aeaced79e2b5",
+      "relationEdges" : [
+
+      ],
+      "representations" : [
+        "node:534447072a1da4e4"
+      ]
+    },
+    {
+      "confidence" : "deterministic",
+      "evidence" : [
+
+      ],
       "id" : "value:56925154088ea46c",
       "relationEdges" : [
 
@@ -13041,6 +13152,19 @@
       ],
       "representations" : [
         "node:96e104b239894733"
+      ]
+    },
+    {
+      "confidence" : "deterministic",
+      "evidence" : [
+
+      ],
+      "id" : "value:57e3936e61f9075d",
+      "relationEdges" : [
+
+      ],
+      "representations" : [
+        "node:e502a0b498013a50"
       ]
     },
     {
@@ -14152,6 +14276,19 @@
       "evidence" : [
 
       ],
+      "id" : "value:5dd4fc3a0356c24",
+      "relationEdges" : [
+
+      ],
+      "representations" : [
+        "node:3dbcc23eb4377d5f"
+      ]
+    },
+    {
+      "confidence" : "deterministic",
+      "evidence" : [
+
+      ],
       "id" : "value:5de2e705cd92bb59",
       "relationEdges" : [
 
@@ -14276,6 +14413,19 @@
       ],
       "representations" : [
         "node:f5106b8be0e29ebb"
+      ]
+    },
+    {
+      "confidence" : "deterministic",
+      "evidence" : [
+
+      ],
+      "id" : "value:5e9e5efc53157b6",
+      "relationEdges" : [
+
+      ],
+      "representations" : [
+        "node:6556fa7cd6edccf3"
       ]
     },
     {
@@ -14523,19 +14673,6 @@
       ],
       "representations" : [
         "node:ce175faf08457493"
-      ]
-    },
-    {
-      "confidence" : "deterministic",
-      "evidence" : [
-
-      ],
-      "id" : "value:608b6ff597a2b0a0",
-      "relationEdges" : [
-
-      ],
-      "representations" : [
-        "node:880f8582294d5e69"
       ]
     },
     {
@@ -15548,19 +15685,6 @@
       ],
       "representations" : [
         "node:4ed8621af72011f2"
-      ]
-    },
-    {
-      "confidence" : "deterministic",
-      "evidence" : [
-
-      ],
-      "id" : "value:656f0dbbcc00ca0a",
-      "relationEdges" : [
-
-      ],
-      "representations" : [
-        "node:16ef6ba10de06da5"
       ]
     },
     {
@@ -16755,19 +16879,6 @@
       "evidence" : [
 
       ],
-      "id" : "value:6d2955b53ab61c27",
-      "relationEdges" : [
-
-      ],
-      "representations" : [
-        "node:2fbe9e75b1d4a3"
-      ]
-    },
-    {
-      "confidence" : "deterministic",
-      "evidence" : [
-
-      ],
       "id" : "value:6d34014f9c7f7e5d",
       "relationEdges" : [
 
@@ -17410,6 +17521,32 @@
       ],
       "representations" : [
         "node:3c345cdac41ee38"
+      ]
+    },
+    {
+      "confidence" : "deterministic",
+      "evidence" : [
+
+      ],
+      "id" : "value:7146394eaae08d6c",
+      "relationEdges" : [
+
+      ],
+      "representations" : [
+        "node:c45fd2f98852dd58"
+      ]
+    },
+    {
+      "confidence" : "deterministic",
+      "evidence" : [
+
+      ],
+      "id" : "value:716f1c87ab5d9eff",
+      "relationEdges" : [
+
+      ],
+      "representations" : [
+        "node:d88d2e2bb744b4e1"
       ]
     },
     {
@@ -18354,6 +18491,19 @@
       "evidence" : [
 
       ],
+      "id" : "value:7649410e630caae6",
+      "relationEdges" : [
+
+      ],
+      "representations" : [
+        "node:44805bf34ef5eaf3"
+      ]
+    },
+    {
+      "confidence" : "deterministic",
+      "evidence" : [
+
+      ],
       "id" : "value:7654a6f85e3a96f1",
       "relationEdges" : [
 
@@ -18425,6 +18575,19 @@
       ],
       "representations" : [
         "node:8e99bdd57d5dd17d"
+      ]
+    },
+    {
+      "confidence" : "deterministic",
+      "evidence" : [
+
+      ],
+      "id" : "value:76df827c7527a2bd",
+      "relationEdges" : [
+
+      ],
+      "representations" : [
+        "node:f548c91efdd4501c"
       ]
     },
     {
@@ -18581,6 +18744,19 @@
       ],
       "representations" : [
         "node:bde8d6c9313abc00"
+      ]
+    },
+    {
+      "confidence" : "deterministic",
+      "evidence" : [
+
+      ],
+      "id" : "value:7809174402e500fb",
+      "relationEdges" : [
+
+      ],
+      "representations" : [
+        "node:4edfb98c4acf2d92"
       ]
     },
     {
@@ -18783,6 +18959,19 @@
       "evidence" : [
 
       ],
+      "id" : "value:79648f27fad69bf2",
+      "relationEdges" : [
+
+      ],
+      "representations" : [
+        "node:7ee7b2ef4cbf501c"
+      ]
+    },
+    {
+      "confidence" : "deterministic",
+      "evidence" : [
+
+      ],
       "id" : "value:7974910cc64b4c6d",
       "relationEdges" : [
 
@@ -18802,6 +18991,19 @@
       ],
       "representations" : [
         "node:e4e866d83ca3d09c"
+      ]
+    },
+    {
+      "confidence" : "deterministic",
+      "evidence" : [
+
+      ],
+      "id" : "value:7984a3a698555f8a",
+      "relationEdges" : [
+
+      ],
+      "representations" : [
+        "node:1c0b1d311f738ee5"
       ]
     },
     {
@@ -19714,12 +19916,12 @@
       "evidence" : [
 
       ],
-      "id" : "value:7f040ba8b04f3bc6",
+      "id" : "value:7f04fea6185b5aac",
       "relationEdges" : [
 
       ],
       "representations" : [
-        "node:de0346203835afd3"
+        "node:a8a487fea78e7e68"
       ]
     },
     {
@@ -19765,6 +19967,19 @@
       ],
       "representations" : [
         "node:10803c9eca4fadd9"
+      ]
+    },
+    {
+      "confidence" : "deterministic",
+      "evidence" : [
+
+      ],
+      "id" : "value:7f634e4007a6eee7",
+      "relationEdges" : [
+
+      ],
+      "representations" : [
+        "node:4ce278fd15a1c35b"
       ]
     },
     {
@@ -20440,6 +20655,31 @@
       ],
       "representations" : [
         "node:ef46afec3d89441"
+      ]
+    },
+    {
+      "confidence" : "deterministic",
+      "evidence" : [
+        {
+          "endLine" : 128,
+          "file" : "ProjectWorkspace/ProjectSetup.swift",
+          "kind" : "initializer-argument",
+          "startLine" : 128
+        },
+        {
+          "endLine" : 147,
+          "file" : "ProjectWorkspace/ProjectSetup.swift",
+          "kind" : "initializer-argument",
+          "startLine" : 147
+        }
+      ],
+      "id" : "value:828948a0a016d771",
+      "relationEdges" : [
+        "edge:f2d38ad125f3a4c8"
+      ],
+      "representations" : [
+        "node:50a1d33b4dd61255",
+        "node:a81d80c158639951"
       ]
     },
     {
@@ -22056,25 +22296,6 @@
     {
       "confidence" : "deterministic",
       "evidence" : [
-        {
-          "endLine" : 120,
-          "file" : "ProjectWorkspace/ProjectSetup.swift",
-          "kind" : "initializer-argument",
-          "startLine" : 120
-        }
-      ],
-      "id" : "value:8bec8b700d22c932",
-      "relationEdges" : [
-        "edge:d4d1eedf3a0d695f"
-      ],
-      "representations" : [
-        "node:408f6ebce5fe9c1e",
-        "node:b49729c044257068"
-      ]
-    },
-    {
-      "confidence" : "deterministic",
-      "evidence" : [
 
       ],
       "id" : "value:8c18536afa4946d7",
@@ -22310,10 +22531,10 @@
       "confidence" : "deterministic",
       "evidence" : [
         {
-          "endLine" : 48,
+          "endLine" : 53,
           "file" : "SwiftUIAuditCLI/ProjectCommand.swift",
           "kind" : "initializer-argument",
-          "startLine" : 48
+          "startLine" : 53
         }
       ],
       "id" : "value:8ddcde72ef6d6c89",
@@ -22622,19 +22843,6 @@
       ],
       "representations" : [
         "node:14337c1215c61f03"
-      ]
-    },
-    {
-      "confidence" : "deterministic",
-      "evidence" : [
-
-      ],
-      "id" : "value:8f6599f3d3dec871",
-      "relationEdges" : [
-
-      ],
-      "representations" : [
-        "node:41b49024cede42d1"
       ]
     },
     {
@@ -23194,12 +23402,38 @@
       "evidence" : [
 
       ],
+      "id" : "value:928f0bbc977515a",
+      "relationEdges" : [
+
+      ],
+      "representations" : [
+        "node:d28194156a05fb78"
+      ]
+    },
+    {
+      "confidence" : "deterministic",
+      "evidence" : [
+
+      ],
       "id" : "value:92b921542c0bf57c",
       "relationEdges" : [
 
       ],
       "representations" : [
         "node:d9210de464d194f0"
+      ]
+    },
+    {
+      "confidence" : "deterministic",
+      "evidence" : [
+
+      ],
+      "id" : "value:92b93ed24b95f452",
+      "relationEdges" : [
+
+      ],
+      "representations" : [
+        "node:ba9ff61251eaebf5"
       ]
     },
     {
@@ -23271,16 +23505,16 @@
       "confidence" : "deterministic",
       "evidence" : [
         {
-          "endLine" : 96,
+          "endLine" : 98,
           "file" : "WatcherRuntime/WatcherCoordinator.swift",
           "kind" : "initializer-argument",
-          "startLine" : 96
+          "startLine" : 98
         },
         {
-          "endLine" : 114,
+          "endLine" : 116,
           "file" : "WatcherRuntime/WatcherCoordinator.swift",
           "kind" : "initializer-argument",
-          "startLine" : 114
+          "startLine" : 116
         }
       ],
       "id" : "value:934d6ecbaadff05d",
@@ -23894,6 +24128,19 @@
       "evidence" : [
 
       ],
+      "id" : "value:971490a8b6674ae5",
+      "relationEdges" : [
+
+      ],
+      "representations" : [
+        "node:1c256da43370f1a5"
+      ]
+    },
+    {
+      "confidence" : "deterministic",
+      "evidence" : [
+
+      ],
       "id" : "value:9717d1eff447e19",
       "relationEdges" : [
 
@@ -24294,25 +24541,6 @@
     {
       "confidence" : "deterministic",
       "evidence" : [
-        {
-          "endLine" : 120,
-          "file" : "ProjectWorkspace/ProjectSetup.swift",
-          "kind" : "initializer-argument",
-          "startLine" : 120
-        }
-      ],
-      "id" : "value:98de6e0616a03d1f",
-      "relationEdges" : [
-        "edge:a7229872d194971e"
-      ],
-      "representations" : [
-        "node:7a502bcce2ee568",
-        "node:99fa3124a21a9c61"
-      ]
-    },
-    {
-      "confidence" : "deterministic",
-      "evidence" : [
 
       ],
       "id" : "value:98e2ddb54d32225",
@@ -24412,6 +24640,32 @@
       ],
       "representations" : [
         "node:9606ac5906aa8090"
+      ]
+    },
+    {
+      "confidence" : "deterministic",
+      "evidence" : [
+
+      ],
+      "id" : "value:99783a709a096ef6",
+      "relationEdges" : [
+
+      ],
+      "representations" : [
+        "node:44d4a2de6299333"
+      ]
+    },
+    {
+      "confidence" : "deterministic",
+      "evidence" : [
+
+      ],
+      "id" : "value:9980224aea19653d",
+      "relationEdges" : [
+
+      ],
+      "representations" : [
+        "node:36159e799329d77"
       ]
     },
     {
@@ -24581,6 +24835,19 @@
       ],
       "representations" : [
         "node:75dd72be7f508592"
+      ]
+    },
+    {
+      "confidence" : "deterministic",
+      "evidence" : [
+
+      ],
+      "id" : "value:9ad638a7f94d4fa4",
+      "relationEdges" : [
+
+      ],
+      "representations" : [
+        "node:d83df05dd1aff940"
       ]
     },
     {
@@ -25102,6 +25369,19 @@
       "evidence" : [
 
       ],
+      "id" : "value:9e13703e8c33a29",
+      "relationEdges" : [
+
+      ],
+      "representations" : [
+        "node:59971f0653c0a6c8"
+      ]
+    },
+    {
+      "confidence" : "deterministic",
+      "evidence" : [
+
+      ],
       "id" : "value:9e18eb3944f599c0",
       "relationEdges" : [
 
@@ -25360,39 +25640,6 @@
     {
       "confidence" : "deterministic",
       "evidence" : [
-        {
-          "endLine" : 87,
-          "file" : "SwiftUIAuditCLI/ProjectCommand.swift",
-          "kind" : "initializer-argument",
-          "startLine" : 87
-        },
-        {
-          "endLine" : 67,
-          "file" : "WatcherRuntime/WatcherCoordinator.swift",
-          "kind" : "initializer-argument",
-          "startLine" : 67
-        },
-        {
-          "endLine" : 257,
-          "file" : "WatcherRuntime/WatcherCoordinator.swift",
-          "kind" : "initializer-argument",
-          "startLine" : 257
-        }
-      ],
-      "id" : "value:9fce8801c1ae9336",
-      "relationEdges" : [
-        "edge:29c6fb71f0d15eb1",
-        "edge:dbec5c3fbca9d937"
-      ],
-      "representations" : [
-        "node:4f7666c7188a9656",
-        "node:9d62b8da95ae40c9",
-        "node:fe44b2af3f6fa187"
-      ]
-    },
-    {
-      "confidence" : "deterministic",
-      "evidence" : [
 
       ],
       "id" : "value:9fe0db2658933512",
@@ -25641,10 +25888,10 @@
       "confidence" : "deterministic",
       "evidence" : [
         {
-          "endLine" : 45,
+          "endLine" : 50,
           "file" : "SwiftUIAuditCLI/ProjectCommand.swift",
           "kind" : "initializer-argument",
-          "startLine" : 45
+          "startLine" : 50
         }
       ],
       "id" : "value:a1b73a58ed6ea8e6",
@@ -25757,22 +26004,22 @@
           "startLine" : 40
         },
         {
-          "endLine" : 67,
+          "endLine" : 72,
           "file" : "WatcherRuntime/ProjectServiceController.swift",
           "kind" : "initializer-argument",
-          "startLine" : 67
+          "startLine" : 72
         },
         {
-          "endLine" : 79,
+          "endLine" : 84,
           "file" : "WatcherRuntime/ProjectServiceController.swift",
           "kind" : "initializer-argument",
-          "startLine" : 79
+          "startLine" : 84
         },
         {
-          "endLine" : 93,
+          "endLine" : 98,
           "file" : "WatcherRuntime/ProjectServiceController.swift",
           "kind" : "initializer-argument",
-          "startLine" : 93
+          "startLine" : 98
         }
       ],
       "id" : "value:a206281e80b32dd9",
@@ -25927,6 +26174,19 @@
       ],
       "representations" : [
         "node:a96263a2b603434"
+      ]
+    },
+    {
+      "confidence" : "deterministic",
+      "evidence" : [
+
+      ],
+      "id" : "value:a31f1eec20e88b54",
+      "relationEdges" : [
+
+      ],
+      "representations" : [
+        "node:39e65df3bdc567b9"
       ]
     },
     {
@@ -26233,12 +26493,12 @@
       "evidence" : [
 
       ],
-      "id" : "value:a4e7f6bdd723eaae",
+      "id" : "value:a4d2d048c5452438",
       "relationEdges" : [
 
       ],
       "representations" : [
-        "node:b7ededd4c592b05"
+        "node:56a638b0972b4f33"
       ]
     },
     {
@@ -26246,12 +26506,12 @@
       "evidence" : [
 
       ],
-      "id" : "value:a5037963fa399910",
+      "id" : "value:a4e7f6bdd723eaae",
       "relationEdges" : [
 
       ],
       "representations" : [
-        "node:94aac0639821453b"
+        "node:b7ededd4c592b05"
       ]
     },
     {
@@ -26863,19 +27123,6 @@
       "evidence" : [
 
       ],
-      "id" : "value:a94c29121005eb9c",
-      "relationEdges" : [
-
-      ],
-      "representations" : [
-        "node:8887c7dc9219c087"
-      ]
-    },
-    {
-      "confidence" : "deterministic",
-      "evidence" : [
-
-      ],
       "id" : "value:a96e164ebe3a152d",
       "relationEdges" : [
 
@@ -26960,6 +27207,19 @@
       ],
       "representations" : [
         "node:ae67ca3a108e3d3f"
+      ]
+    },
+    {
+      "confidence" : "deterministic",
+      "evidence" : [
+
+      ],
+      "id" : "value:a9be45750eda29cb",
+      "relationEdges" : [
+
+      ],
+      "representations" : [
+        "node:3ee74103380748aa"
       ]
     },
     {
@@ -28422,16 +28682,16 @@
       "confidence" : "deterministic",
       "evidence" : [
         {
-          "endLine" : 83,
+          "endLine" : 101,
           "file" : "ProjectWorkspace/ProjectSetup.swift",
           "kind" : "initializer-argument",
-          "startLine" : 83
+          "startLine" : 101
         },
         {
-          "endLine" : 132,
+          "endLine" : 158,
           "file" : "ProjectWorkspace/ProjectSetup.swift",
           "kind" : "initializer-argument",
-          "startLine" : 132
+          "startLine" : 158
         }
       ],
       "id" : "value:b1ce8abcd8201272",
@@ -28578,6 +28838,19 @@
     {
       "confidence" : "deterministic",
       "evidence" : [
+
+      ],
+      "id" : "value:b2c52fd4472161d5",
+      "relationEdges" : [
+
+      ],
+      "representations" : [
+        "node:c8ba04df1e6a55f9"
+      ]
+    },
+    {
+      "confidence" : "deterministic",
+      "evidence" : [
         {
           "endLine" : 83,
           "file" : "AuditCore/BoundedProcessRunner.swift",
@@ -28592,6 +28865,19 @@
       "representations" : [
         "node:8f540460e996257e",
         "node:f73833e489c11569"
+      ]
+    },
+    {
+      "confidence" : "deterministic",
+      "evidence" : [
+
+      ],
+      "id" : "value:b2fc6012c73dc7c1",
+      "relationEdges" : [
+
+      ],
+      "representations" : [
+        "node:9715b8936c2cb62"
       ]
     },
     {
@@ -28697,6 +28983,19 @@
       ],
       "representations" : [
         "node:1a6d9ece3616b319"
+      ]
+    },
+    {
+      "confidence" : "deterministic",
+      "evidence" : [
+
+      ],
+      "id" : "value:b3b6d9e9a40e547",
+      "relationEdges" : [
+
+      ],
+      "representations" : [
+        "node:9d6363b0e09fb32"
       ]
     },
     {
@@ -28969,12 +29268,12 @@
       "evidence" : [
 
       ],
-      "id" : "value:b535ef5296e18d49",
+      "id" : "value:b51746f386b0d218",
       "relationEdges" : [
 
       ],
       "representations" : [
-        "node:daa336736ca84392"
+        "node:d953598135aea718"
       ]
     },
     {
@@ -28982,12 +29281,12 @@
       "evidence" : [
 
       ],
-      "id" : "value:b55c140abe815c9e",
+      "id" : "value:b535ef5296e18d49",
       "relationEdges" : [
 
       ],
       "representations" : [
-        "node:6e19928281c4c2ca"
+        "node:daa336736ca84392"
       ]
     },
     {
@@ -29957,19 +30256,6 @@
       "evidence" : [
 
       ],
-      "id" : "value:bbdee63591cbfbe1",
-      "relationEdges" : [
-
-      ],
-      "representations" : [
-        "node:50a1d33b4dd61255"
-      ]
-    },
-    {
-      "confidence" : "deterministic",
-      "evidence" : [
-
-      ],
       "id" : "value:bbe5abd213b4cf1a",
       "relationEdges" : [
 
@@ -30171,6 +30457,19 @@
       ],
       "representations" : [
         "node:b6304c43898560f5"
+      ]
+    },
+    {
+      "confidence" : "deterministic",
+      "evidence" : [
+
+      ],
+      "id" : "value:bcf8eff6fb781a6b",
+      "relationEdges" : [
+
+      ],
+      "representations" : [
+        "node:f1a9544a1b5f9cbc"
       ]
     },
     {
@@ -30853,6 +31152,19 @@
       "evidence" : [
 
       ],
+      "id" : "value:c0f400ae0849dcf0",
+      "relationEdges" : [
+
+      ],
+      "representations" : [
+        "node:c135faabe1ec7ae4"
+      ]
+    },
+    {
+      "confidence" : "deterministic",
+      "evidence" : [
+
+      ],
       "id" : "value:c0fb5ce5a2db3214",
       "relationEdges" : [
 
@@ -31192,12 +31504,12 @@
       "evidence" : [
 
       ],
-      "id" : "value:c2905565de97bf03",
+      "id" : "value:c2999e9d5e1d37cd",
       "relationEdges" : [
 
       ],
       "representations" : [
-        "node:3c0755911d99d53"
+        "node:cd40d7e280ffd2c0"
       ]
     },
     {
@@ -31205,12 +31517,12 @@
       "evidence" : [
 
       ],
-      "id" : "value:c2999e9d5e1d37cd",
+      "id" : "value:c29c39586395d674",
       "relationEdges" : [
 
       ],
       "representations" : [
-        "node:cd40d7e280ffd2c0"
+        "node:d98c90cf6d2339db"
       ]
     },
     {
@@ -31562,6 +31874,19 @@
       ],
       "representations" : [
         "node:feeac3fec1994a65"
+      ]
+    },
+    {
+      "confidence" : "deterministic",
+      "evidence" : [
+
+      ],
+      "id" : "value:c42c9258245945d7",
+      "relationEdges" : [
+
+      ],
+      "representations" : [
+        "node:baf907296ce878ab"
       ]
     },
     {
@@ -32056,6 +32381,19 @@
       "evidence" : [
 
       ],
+      "id" : "value:c7947f60d8223dbc",
+      "relationEdges" : [
+
+      ],
+      "representations" : [
+        "node:f17e14cde5e2945a"
+      ]
+    },
+    {
+      "confidence" : "deterministic",
+      "evidence" : [
+
+      ],
       "id" : "value:c79868a53c2a5467",
       "relationEdges" : [
 
@@ -32205,6 +32543,19 @@
       ],
       "representations" : [
         "node:79e643d7cc87113e"
+      ]
+    },
+    {
+      "confidence" : "deterministic",
+      "evidence" : [
+
+      ],
+      "id" : "value:c85948f8300b3f8d",
+      "relationEdges" : [
+
+      ],
+      "representations" : [
+        "node:691934425f719945"
       ]
     },
     {
@@ -32420,6 +32771,19 @@
       "evidence" : [
 
       ],
+      "id" : "value:c9777a2e288204a7",
+      "relationEdges" : [
+
+      ],
+      "representations" : [
+        "node:6fc6816d3f6b5dee"
+      ]
+    },
+    {
+      "confidence" : "deterministic",
+      "evidence" : [
+
+      ],
       "id" : "value:c9a78d28e4cedc00",
       "relationEdges" : [
 
@@ -32601,6 +32965,19 @@
       ],
       "representations" : [
         "node:fddc05f8854b5125"
+      ]
+    },
+    {
+      "confidence" : "deterministic",
+      "evidence" : [
+
+      ],
+      "id" : "value:ca29cdcc4aae713b",
+      "relationEdges" : [
+
+      ],
+      "representations" : [
+        "node:2b6a1dc2740fb769"
       ]
     },
     {
@@ -33042,16 +33419,16 @@
       "confidence" : "deterministic",
       "evidence" : [
         {
-          "endLine" : 104,
+          "endLine" : 106,
           "file" : "WatcherRuntime/WatcherCoordinator.swift",
           "kind" : "initializer-argument",
-          "startLine" : 104
+          "startLine" : 106
         },
         {
-          "endLine" : 122,
+          "endLine" : 124,
           "file" : "WatcherRuntime/WatcherCoordinator.swift",
           "kind" : "initializer-argument",
-          "startLine" : 122
+          "startLine" : 124
         }
       ],
       "id" : "value:cca47aa12c350dc1",
@@ -33243,6 +33620,19 @@
       "evidence" : [
 
       ],
+      "id" : "value:cdcf38e975870146",
+      "relationEdges" : [
+
+      ],
+      "representations" : [
+        "node:6f2aa3be828ea706"
+      ]
+    },
+    {
+      "confidence" : "deterministic",
+      "evidence" : [
+
+      ],
       "id" : "value:cdd6ce17b8f177b5",
       "relationEdges" : [
 
@@ -33381,19 +33771,6 @@
       ],
       "representations" : [
         "node:c01c286317ea5272"
-      ]
-    },
-    {
-      "confidence" : "deterministic",
-      "evidence" : [
-
-      ],
-      "id" : "value:ce77505951faa85",
-      "relationEdges" : [
-
-      ],
-      "representations" : [
-        "node:a6efb55817e805c7"
       ]
     },
     {
@@ -33595,10 +33972,10 @@
       "confidence" : "deterministic",
       "evidence" : [
         {
-          "endLine" : 47,
+          "endLine" : 52,
           "file" : "SwiftUIAuditCLI/ProjectCommand.swift",
           "kind" : "initializer-argument",
-          "startLine" : 47
+          "startLine" : 52
         }
       ],
       "id" : "value:cf6785ed5cb7af16",
@@ -33783,6 +34160,25 @@
     {
       "confidence" : "deterministic",
       "evidence" : [
+        {
+          "endLine" : 69,
+          "file" : "WatcherRuntime/WatcherCoordinator.swift",
+          "kind" : "initializer-argument",
+          "startLine" : 69
+        }
+      ],
+      "id" : "value:d0cd228ae68166e3",
+      "relationEdges" : [
+        "edge:abf0652dbd6ed7ce"
+      ],
+      "representations" : [
+        "node:5885a7dfdfc94cbc",
+        "node:9d62b8da95ae40c9"
+      ]
+    },
+    {
+      "confidence" : "deterministic",
+      "evidence" : [
 
       ],
       "id" : "value:d0f2e545e586825b",
@@ -33856,6 +34252,19 @@
       ],
       "representations" : [
         "node:a0e1bee412df0de5"
+      ]
+    },
+    {
+      "confidence" : "deterministic",
+      "evidence" : [
+
+      ],
+      "id" : "value:d1a0e27ef02ab2fb",
+      "relationEdges" : [
+
+      ],
+      "representations" : [
+        "node:c2831e829916e172"
       ]
     },
     {
@@ -34025,6 +34434,19 @@
       ],
       "representations" : [
         "node:de8c30ce2fc801ca"
+      ]
+    },
+    {
+      "confidence" : "deterministic",
+      "evidence" : [
+
+      ],
+      "id" : "value:d2ec9090e5d8e6b3",
+      "relationEdges" : [
+
+      ],
+      "representations" : [
+        "node:95d6c8779f4f6b73"
       ]
     },
     {
@@ -34856,19 +35278,6 @@
       "evidence" : [
 
       ],
-      "id" : "value:d75e383e1f883ab3",
-      "relationEdges" : [
-
-      ],
-      "representations" : [
-        "node:e3645b3f001d20a8"
-      ]
-    },
-    {
-      "confidence" : "deterministic",
-      "evidence" : [
-
-      ],
       "id" : "value:d75eb233d7098277",
       "relationEdges" : [
 
@@ -35141,19 +35550,6 @@
       "evidence" : [
 
       ],
-      "id" : "value:d89f6759d0a0580d",
-      "relationEdges" : [
-
-      ],
-      "representations" : [
-        "node:6cec1a9877a54bfd"
-      ]
-    },
-    {
-      "confidence" : "deterministic",
-      "evidence" : [
-
-      ],
       "id" : "value:d8adb279ed1cd343",
       "relationEdges" : [
 
@@ -35212,19 +35608,6 @@
       ],
       "representations" : [
         "node:2f0000362bd61a64"
-      ]
-    },
-    {
-      "confidence" : "deterministic",
-      "evidence" : [
-
-      ],
-      "id" : "value:d954b723cbd11406",
-      "relationEdges" : [
-
-      ],
-      "representations" : [
-        "node:5e8b12be0407f187"
       ]
     },
     {
@@ -35407,19 +35790,6 @@
       ],
       "representations" : [
         "node:789aac3a0d34682d"
-      ]
-    },
-    {
-      "confidence" : "deterministic",
-      "evidence" : [
-
-      ],
-      "id" : "value:dae255c0106050b2",
-      "relationEdges" : [
-
-      ],
-      "representations" : [
-        "node:713ebdb49cc37e18"
       ]
     },
     {
@@ -35836,6 +36206,19 @@
       "evidence" : [
 
       ],
+      "id" : "value:dc5fc02693a4d9a4",
+      "relationEdges" : [
+
+      ],
+      "representations" : [
+        "node:1077785817c45064"
+      ]
+    },
+    {
+      "confidence" : "deterministic",
+      "evidence" : [
+
+      ],
       "id" : "value:dc735d3fc272e33b",
       "relationEdges" : [
 
@@ -36031,19 +36414,6 @@
       "evidence" : [
 
       ],
-      "id" : "value:ddb3f157c6115d8e",
-      "relationEdges" : [
-
-      ],
-      "representations" : [
-        "node:e845a3293d7db1a0"
-      ]
-    },
-    {
-      "confidence" : "deterministic",
-      "evidence" : [
-
-      ],
       "id" : "value:dde2884e3d0f5803",
       "relationEdges" : [
 
@@ -36205,46 +36575,46 @@
           "startLine" : 40
         },
         {
-          "endLine" : 67,
+          "endLine" : 72,
           "file" : "WatcherRuntime/ProjectServiceController.swift",
           "kind" : "initializer-argument",
-          "startLine" : 67
+          "startLine" : 72
         },
         {
-          "endLine" : 79,
+          "endLine" : 84,
           "file" : "WatcherRuntime/ProjectServiceController.swift",
           "kind" : "initializer-argument",
-          "startLine" : 79
+          "startLine" : 84
         },
         {
-          "endLine" : 93,
+          "endLine" : 98,
           "file" : "WatcherRuntime/ProjectServiceController.swift",
           "kind" : "initializer-argument",
-          "startLine" : 93
+          "startLine" : 98
         },
         {
-          "endLine" : 94,
+          "endLine" : 96,
           "file" : "WatcherRuntime/WatcherCoordinator.swift",
           "kind" : "initializer-argument",
-          "startLine" : 94
+          "startLine" : 96
         },
         {
-          "endLine" : 112,
+          "endLine" : 114,
           "file" : "WatcherRuntime/WatcherCoordinator.swift",
           "kind" : "initializer-argument",
-          "startLine" : 112
+          "startLine" : 114
         },
         {
-          "endLine" : 175,
+          "endLine" : 177,
           "file" : "WatcherRuntime/WatcherCoordinator.swift",
           "kind" : "initializer-argument",
-          "startLine" : 175
+          "startLine" : 177
         },
         {
-          "endLine" : 283,
+          "endLine" : 286,
           "file" : "WatcherRuntime/WatcherCoordinator.swift",
           "kind" : "initializer-argument",
-          "startLine" : 283
+          "startLine" : 286
         }
       ],
       "id" : "value:dec70ae1e6a240b1",
@@ -36633,22 +37003,22 @@
           "startLine" : 244
         },
         {
-          "endLine" : 306,
+          "endLine" : 309,
           "file" : "WatcherRuntime/WatcherCoordinator.swift",
           "kind" : "initializer-argument",
-          "startLine" : 306
+          "startLine" : 309
         },
         {
-          "endLine" : 307,
+          "endLine" : 310,
           "file" : "WatcherRuntime/WatcherCoordinator.swift",
           "kind" : "initializer-argument",
-          "startLine" : 307
+          "startLine" : 310
         },
         {
-          "endLine" : 308,
+          "endLine" : 311,
           "file" : "WatcherRuntime/WatcherCoordinator.swift",
           "kind" : "initializer-argument",
-          "startLine" : 308
+          "startLine" : 311
         }
       ],
       "id" : "value:e08fe246ef390b41",
@@ -36997,6 +37367,32 @@
     {
       "confidence" : "deterministic",
       "evidence" : [
+
+      ],
+      "id" : "value:e20f623791cb843",
+      "relationEdges" : [
+
+      ],
+      "representations" : [
+        "node:efef362c6211e38"
+      ]
+    },
+    {
+      "confidence" : "deterministic",
+      "evidence" : [
+
+      ],
+      "id" : "value:e21f410a4b306beb",
+      "relationEdges" : [
+
+      ],
+      "representations" : [
+        "node:91cc58d7a56562a8"
+      ]
+    },
+    {
+      "confidence" : "deterministic",
+      "evidence" : [
         {
           "endLine" : 1555,
           "file" : "SwiftSyntaxFrontend/GraphScanner.swift",
@@ -37262,6 +37658,19 @@
       ],
       "representations" : [
         "node:f0b302eec914a684"
+      ]
+    },
+    {
+      "confidence" : "deterministic",
+      "evidence" : [
+
+      ],
+      "id" : "value:e37c8808ba54cf20",
+      "relationEdges" : [
+
+      ],
+      "representations" : [
+        "node:49867560c4626311"
       ]
     },
     {
@@ -37593,6 +38002,32 @@
       ],
       "representations" : [
         "node:ff6dac23f7979352"
+      ]
+    },
+    {
+      "confidence" : "deterministic",
+      "evidence" : [
+
+      ],
+      "id" : "value:e58e59462c93088a",
+      "relationEdges" : [
+
+      ],
+      "representations" : [
+        "node:a6abc000f6f29151"
+      ]
+    },
+    {
+      "confidence" : "deterministic",
+      "evidence" : [
+
+      ],
+      "id" : "value:e590d5c69b9ac02a",
+      "relationEdges" : [
+
+      ],
+      "representations" : [
+        "node:45a16fb5acc253df"
       ]
     },
     {
@@ -38419,10 +38854,10 @@
       "confidence" : "deterministic",
       "evidence" : [
         {
-          "endLine" : 46,
+          "endLine" : 51,
           "file" : "SwiftUIAuditCLI/ProjectCommand.swift",
           "kind" : "initializer-argument",
-          "startLine" : 46
+          "startLine" : 51
         }
       ],
       "id" : "value:ea99b9b8a1698e92",
@@ -38581,6 +39016,19 @@
       ],
       "representations" : [
         "node:e08c55bf1a127f44"
+      ]
+    },
+    {
+      "confidence" : "deterministic",
+      "evidence" : [
+
+      ],
+      "id" : "value:ebc14652b4c39df9",
+      "relationEdges" : [
+
+      ],
+      "representations" : [
+        "node:5af77c7c428cce9a"
       ]
     },
     {
@@ -40161,6 +40609,33 @@
     {
       "confidence" : "deterministic",
       "evidence" : [
+        {
+          "endLine" : 104,
+          "file" : "ProjectWorkspace/ProjectSetup.swift",
+          "kind" : "initializer-argument",
+          "startLine" : 104
+        },
+        {
+          "endLine" : 161,
+          "file" : "ProjectWorkspace/ProjectSetup.swift",
+          "kind" : "initializer-argument",
+          "startLine" : 161
+        }
+      ],
+      "id" : "value:f3ff37524ed3078e",
+      "relationEdges" : [
+        "edge:38c1d5a587a7f062",
+        "edge:590e46298003ea60"
+      ],
+      "representations" : [
+        "node:7c230e891114cf51",
+        "node:c0e6008179404ecc",
+        "node:c444fe65e2cd0377"
+      ]
+    },
+    {
+      "confidence" : "deterministic",
+      "evidence" : [
 
       ],
       "id" : "value:f41893e6ef8ea701",
@@ -40512,19 +40987,6 @@
       ],
       "representations" : [
         "node:180aa18349cdd429"
-      ]
-    },
-    {
-      "confidence" : "deterministic",
-      "evidence" : [
-
-      ],
-      "id" : "value:f55b80f0569dc747",
-      "relationEdges" : [
-
-      ],
-      "representations" : [
-        "node:3783d39e9c11fb80"
       ]
     },
     {
@@ -40909,6 +41371,19 @@
       "evidence" : [
 
       ],
+      "id" : "value:f7c3813fcec6225b",
+      "relationEdges" : [
+
+      ],
+      "representations" : [
+        "node:dbcf64348eedf466"
+      ]
+    },
+    {
+      "confidence" : "deterministic",
+      "evidence" : [
+
+      ],
       "id" : "value:f7cc217117e3435e",
       "relationEdges" : [
 
@@ -40986,10 +41461,10 @@
       "confidence" : "deterministic",
       "evidence" : [
         {
-          "endLine" : 158,
+          "endLine" : 160,
           "file" : "WatcherRuntime/WatcherCoordinator.swift",
           "kind" : "assignment",
-          "startLine" : 158
+          "startLine" : 160
         }
       ],
       "id" : "value:f847c4b86441aae7",
@@ -41680,19 +42155,6 @@
       ],
       "representations" : [
         "node:a98c91c653dd9487"
-      ]
-    },
-    {
-      "confidence" : "deterministic",
-      "evidence" : [
-
-      ],
-      "id" : "value:fc9adf34c0f12051",
-      "relationEdges" : [
-
-      ],
-      "representations" : [
-        "node:cb383cbba7327114"
       ]
     },
     {

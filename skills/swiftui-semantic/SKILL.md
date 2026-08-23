@@ -1,6 +1,6 @@
 ---
 name: swiftui-semantic
-description: Route SwiftUI semantic-twin evidence to audit, refactor, or change-review workflows, and set up continuous project state when the unreleased 0.6.0 capability is present. Use when Codex needs one entry point for ownership investigation, synchronization or Binding fixes, semantic change review, or project-watcher setup.
+description: Route SwiftUI semantic-twin evidence to audit, refactor, or change-review workflows, and set up continuous project state when the compatible watcher capability is present. Use when Codex needs one entry point for ownership investigation, synchronization or Binding fixes, semantic change review, or project-watcher setup.
 ---
 
 # SwiftUI Semantic Twin Router
@@ -19,7 +19,7 @@ flag between commands merely because they belong to one workflow.
 
 Classify the requested outcome before reading broad Swift source:
 
-- Read and follow [project watcher setup](references/project-watcher.md) when the user asks to configure, bootstrap, start, stop, or inspect continuous semantic analysis for a project. That route requires an unreleased `0.6.0` candidate capability preflight.
+- Read and follow [project watcher setup](references/project-watcher.md) when the user asks to configure, bootstrap, start, stop, or inspect continuous semantic analysis for a project. That route requires a watcher capability preflight; the managed-timeout and selected-source configuration repair requires the unpublished `0.6.1` candidate or a later compatible release.
 - Read and follow [swiftui-semantic-audit](../swiftui-semantic-audit/SKILL.md) for investigation, diagnosis, architecture explanation, ownership or component-boundary analysis, or an ambiguous state/data-flow problem.
 - Read and follow [swiftui-dataflow-refactor](../swiftui-dataflow-refactor/SKILL.md) when the user asks to change SwiftUI state ownership, remove manual synchronization, replace callback plumbing, or correct Binding, Observation, derived-state, or lifetime architecture.
 - Read and follow [swiftui-change-review](../swiftui-change-review/SKILL.md) when changes, commits, snapshots, or a diff already exist and the user asks whether they are safe or architecturally correct.

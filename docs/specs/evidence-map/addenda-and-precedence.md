@@ -2,7 +2,7 @@
 
 - Node type: leaf
 - Status: Active
-- Contract revision: `spec-16`
+- Contract revision: `spec-17`
 - Authority: [Specification coverage and evidence map](../evidence-map.md)
 - Read when: tracing an authorized addendum or selecting evidence for a product decision.
 - Do not read when: only source-section coverage or ownership is needed.
@@ -24,9 +24,11 @@
 | `RELEASE-0.5.0-001` | Stable publication of the accepted component candidate and tagged skills | `PC-REL-002..004`, `CLI-GEN-005`, `ACC-BREW-*`, `ACC-DOD-013..014`, `WEB-CLAIM-001` | immutable 0.5.0 tag/archive, release docs/site facts, `potapenko/homebrew-tap`, local and hosted receipts |
 | `ARTIFACT-HYGIENE-001` | Temporary-by-default auxiliary agent evidence, explicit non-repository durable state, and bounded retention | `PC-OPS-011`, `ACC-SKILL-008`, `ACC-DOD-015` | shared skill policy, four direct links, CI validation, Codex ignore/runtime-evidence policy |
 | `PROJECT-WATCHER-001` | Safe project bootstrap, freshness-qualified continuous indexed state, managed lifecycle, and baseline promotion | `PC-OPS-012`, `PRJ-*`, `CLI-PRJ-*`, `ACC-PRJ-*`, `ACC-WATCH-*`, `ACC-DOD-016` | ProjectWorkspace, WatcherRuntime, CLI, four skills, dogfood baseline, tests, CI |
+| `PROJECT-WATCHER-INTEGRATION-001` | Compatible managed timeout and selected-source analysis-config setup precedence | `PC-OPS-012`, `PRJ-CFG-001`, `PRJ-SETUP-003`, `PRJ-LIFE-002`, `CLI-PRJ-003..004`, `ACC-WATCH-008` | ProjectWorkspace, WatcherRuntime, project CLI/help, focused tests, router reference, baselines |
 | `SEMANTIC-TWIN-STORY-001` | Semantic-twin-first landing, README, docs, and skill-consumer narrative with a strict 0.5/0.6 release split | `PC-GOAL-004`, `WEB-DELTA-008`, `WEB-TWIN-001`, `WEB-LOOP-001`, `WEB-FRESH-001` | landing, README, public docs, router skill, metadata artwork, local website QA |
 | `SEMANTIC-TWIN-CAPABILITIES-001` | Restore accepted landing breadth and keep versions subordinate to the product promise | `WEB-DELTA-009`, `WEB-STORY-001/003`, `WEB-TWIN-001`, `WEB-LOOP-001`, `WEB-VERSION-001` | landing capability blocks, release-claim tests, local browser QA |
 | `RELEASE-0.6.0-001` | Receipt-gated publication of the accepted watcher, diff/CLI hardening, and same four-skill workflow | `PC-REL-002..005`, `CLI-GEN-005`, `CLI-PRJ-*`, `ACC-BREW-*`, `ACC-DOD-016..017`, `WEB-DELTA-010`, `WEB-FRESH-001`, `WEB-CLAIM-001` | immutable 0.6.0 tag/archive, GitHub Release, `potapenko/homebrew-tap`, local CLI/tagged skills, hosted CI, and terminal public-site receipt |
+| `RELEASE-0.6.1-001` | Unpublished compatible patch candidate for the watcher integration repair | `PC-REL-006`, `CLI-GEN-005`, `CLI-PRJ-003..004`, `ACC-WATCH-008..009`, `ACC-CI-005`, `ACC-DOD-018` | candidate version/CI, canonical baselines, router guidance, local verification, explicit publication absence |
 
 ## Evidence precedence by decision
 

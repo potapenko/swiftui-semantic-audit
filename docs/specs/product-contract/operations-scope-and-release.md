@@ -2,12 +2,11 @@
 
 - Node type: leaf
 - Status: Active
-- Contract revision: `spec-14`
+- Contract revision: `spec-15`
 - Authority: [Product contract](../product-contract.md)
 - Read when: selecting the product goal, invariants, supported operations, scope, or release boundary.
 - Do not read when: a narrower linked domain contract fully governs the task.
 - Maximum size: 100 physical lines.
-
 ## Supported operations
 
 **PC-OPS-001 — Graph and findings.** Provide `scan` and `audit` over a Swift file or directory, including a build-free syntax-only path.
@@ -98,3 +97,4 @@
 
 **PC-REL-004 — Component release.** Tool `0.5.0` publishes the accepted `COMPONENT-SURFACE-001` behavior and updated four-skill workflow. It advances the current formula and documentation without replacing, retagging, republishing, or changing immutable 0.4.0 artifacts.
 **PC-REL-005 — Watcher release.** Tool `0.6.0` publishes the accepted `PROJECT-WATCHER-001` behavior, exact CLI option ownership, behavior-preserving diff fallback and persisted-slice parser repairs, and the same four separately installed tagged skills through terminal receipt `BASE-REL-015`. `PROJECT-WATCHER-INTEGRATION-001` repairs current source compatibly without changing or republishing that release. It preserves graph/config/cache/snapshot schemas, thirty rules, semantics of the seven existing analysis commands, project manifest schema 1, and immutable 0.4.0/0.5.0/0.6.0 artifacts.
+**PC-REL-006 — Watcher repair candidate.** Tool `0.6.1` is an unpublished compatible patch candidate containing `PROJECT-WATCHER-INTEGRATION-001`. Candidate preparation may align version gates, baselines, skills, and documentation; it does not authorize a tag, archive, formula, installation, website update, or public-release claim.

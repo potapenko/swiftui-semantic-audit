@@ -1,6 +1,6 @@
 # CLI reference
 
-Version 0.6.0 exposes the seven analysis subcommands carried forward unchanged from 0.5.0 and adds the `project` namespace. JSON written to stdout is the machine contract. Diagnostics belong on stderr, and callers must always inspect process status.
+Public version 0.6.0 exposes the seven analysis subcommands carried forward unchanged from 0.5.0 and adds the `project` namespace. Current source is an unpublished 0.6.1 patch candidate containing the compatible watcher timeout/configuration repair. JSON written to stdout is the machine contract. Diagnostics belong on stderr, and callers must always inspect process status.
 
 Run the executable help for the checked-out build:
 
@@ -10,7 +10,7 @@ swiftui-audit --version
 swiftui-audit <command> --help
 ```
 
-`--version` prints the tool version embedded in reports and snapshots and does not inspect the current project. A 0.6.0 build reports `0.6.0`.
+`--version` prints the tool version embedded in reports and snapshots and does not inspect the current project. The current source candidate reports `0.6.1`; the immutable public release reports `0.6.0`.
 
 When developing inside this repository, replace `swiftui-audit` with:
 
@@ -127,7 +127,7 @@ swiftui-audit project stop [<path>] [--format json]
 swiftui-audit project baseline update [<path>] [--format json]
 ```
 
-Setup previews by default and requires `--apply` for writes. For a new manifest, positive `--watch-timeout` writes `watch.buildAndAnalysisTimeoutSeconds`; omission writes 300 seconds. A legacy schema-1 manifest without the member also resolves to 300 seconds. Setup never rewrites an existing manifest. Root `.swiftui-audit.json` has precedence; only when absent is the file directly inside the selected source root recorded as repository-relative `analysisConfiguration`.
+In candidate 0.6.1, setup previews by default and requires `--apply` for writes. For a new manifest, positive `--watch-timeout` writes `watch.buildAndAnalysisTimeoutSeconds`; omission writes 300 seconds. A legacy schema-1 manifest without the member also resolves to 300 seconds. Setup never rewrites an existing manifest. Root `.swiftui-audit.json` has precedence; only when absent is the file directly inside the selected source root recorded as repository-relative `analysisConfiguration`. Immutable 0.6.0 contains the base project namespace but not this repair.
 
 The watcher reuses the normal deterministic pipeline and publishes a live snapshot only after explicit indexed coverage succeeds. Explicit foreground `project watch --timeout` overrides the manifest; omission uses it. `project start` registers the manifest timeout in managed service arguments, so stop/start is required after changing an already registered service. Agent workflows may consume state only with a matching fresh indexed status receipt; stale or syntax-preview state never qualifies. Runtime state is external; `.swiftui-audit/project.json` and `.swiftui-audit/baseline` are the project-owned Git surface. See [Project watcher setup](../getting-started/project-watcher.md).
 

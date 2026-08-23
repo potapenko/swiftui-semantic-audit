@@ -2,7 +2,7 @@
 
 - Node type: leaf
 - Status: Active
-- Contract revision: `spec-13`
+- Contract revision: `spec-14`
 - Authority: [Acceptance and QA contract](../acceptance.md)
 - Read when: selecting fixture, build, determinism, safety, dogfood, skill, CI, or completion obligations.
 - Do not read when: the task does not implement or verify accepted behavior.
@@ -74,6 +74,8 @@
 12. validate all skills, their shared artifact-hygiene link, and their YAML metadata without repository or global-environment mutation, and reject frontend-only resolution guidance anywhere under `skills/`;
 13. parse JSON/YAML and check placeholders/links.
 14. preview project setup, run one indexed watcher generation, validate fresh status/live snapshot, and compare the tracked project baseline.
+
+**ACC-CI-005.** Current source candidate builds report exactly `0.6.1`, and CLI help exposes setup-owned `--watch-timeout` plus the foreground watch `--timeout` override. Candidate CI retains the legacy-field-omission project manifest, so real watcher dogfood also proves the 300-second decode default while focused tests cover configured propagation.
 
 ## Homebrew release
 
