@@ -1,5 +1,5 @@
 {
-  "edgeCount" : 24113,
+  "edgeCount" : 24259,
   "findingCount" : 0,
   "metrics" : {
     "bindingEdges" : 0,
@@ -11,7 +11,7 @@
     "ownershipViolations" : 0,
     "stateRepresentations" : 0
   },
-  "nodeCount" : 6196,
+  "nodeCount" : 6234,
   "resolution" : "indexed",
   "semanticValues" : [
     {
@@ -603,25 +603,6 @@
     {
       "confidence" : "deterministic",
       "evidence" : [
-        {
-          "endLine" : 60,
-          "file" : "SemanticDiff/SemanticDiffEngine.swift",
-          "kind" : "initializer-argument",
-          "startLine" : 60
-        }
-      ],
-      "id" : "value:13f508764d5599ea",
-      "relationEdges" : [
-        "edge:9616e181aa837756"
-      ],
-      "representations" : [
-        "node:b8232966399ca62b",
-        "node:dc4ec81eca801097"
-      ]
-    },
-    {
-      "confidence" : "deterministic",
-      "evidence" : [
 
       ],
       "id" : "value:140e61346c495353",
@@ -799,6 +780,19 @@
       "evidence" : [
 
       ],
+      "id" : "value:151e874b0fb37836",
+      "relationEdges" : [
+
+      ],
+      "representations" : [
+        "node:cf1e90bafa607de7"
+      ]
+    },
+    {
+      "confidence" : "deterministic",
+      "evidence" : [
+
+      ],
       "id" : "value:152ffdcdbf3a6512",
       "relationEdges" : [
 
@@ -870,19 +864,6 @@
       ],
       "representations" : [
         "node:72d9d6f907cbd790"
-      ]
-    },
-    {
-      "confidence" : "deterministic",
-      "evidence" : [
-
-      ],
-      "id" : "value:15cdba826e34a43d",
-      "relationEdges" : [
-
-      ],
-      "representations" : [
-        "node:bb1759893e62937b"
       ]
     },
     {
@@ -2510,40 +2491,40 @@
           "startLine" : 272
         },
         {
-          "endLine" : 57,
+          "endLine" : 54,
           "file" : "SemanticDiff/SemanticDiffEngine.swift",
           "kind" : "initializer-argument",
-          "startLine" : 57
+          "startLine" : 54
         },
         {
-          "endLine" : 58,
+          "endLine" : 55,
           "file" : "SemanticDiff/SemanticDiffEngine.swift",
           "kind" : "initializer-argument",
-          "startLine" : 58
+          "startLine" : 55
         },
         {
-          "endLine" : 79,
+          "endLine" : 76,
           "file" : "SemanticDiff/SemanticDiffEngine.swift",
           "kind" : "initializer-argument",
-          "startLine" : 79
+          "startLine" : 76
         },
         {
-          "endLine" : 80,
+          "endLine" : 77,
           "file" : "SemanticDiff/SemanticDiffEngine.swift",
           "kind" : "initializer-argument",
-          "startLine" : 80
+          "startLine" : 77
         },
         {
-          "endLine" : 95,
+          "endLine" : 92,
           "file" : "SemanticDiff/SemanticDiffEngine.swift",
           "kind" : "initializer-argument",
-          "startLine" : 95
+          "startLine" : 92
         },
         {
-          "endLine" : 102,
+          "endLine" : 99,
           "file" : "SemanticDiff/SemanticDiffEngine.swift",
           "kind" : "initializer-argument",
-          "startLine" : 102
+          "startLine" : 99
         },
         {
           "endLine" : 62,
@@ -2927,6 +2908,19 @@
       ],
       "representations" : [
         "node:8c2df0a03a4fd353"
+      ]
+    },
+    {
+      "confidence" : "deterministic",
+      "evidence" : [
+
+      ],
+      "id" : "value:204d4da799c7df52",
+      "relationEdges" : [
+
+      ],
+      "representations" : [
+        "node:fffb62d25d7bf755"
       ]
     },
     {
@@ -3570,19 +3564,6 @@
       "evidence" : [
 
       ],
-      "id" : "value:2436053ba390b380",
-      "relationEdges" : [
-
-      ],
-      "representations" : [
-        "node:4679a981f84a1bd8"
-      ]
-    },
-    {
-      "confidence" : "deterministic",
-      "evidence" : [
-
-      ],
       "id" : "value:2442e982f70578be",
       "relationEdges" : [
 
@@ -3784,22 +3765,22 @@
           "startLine" : 240
         },
         {
-          "endLine" : 94,
+          "endLine" : 91,
           "file" : "SemanticDiff/SemanticDiffEngine.swift",
           "kind" : "initializer-argument",
-          "startLine" : 94
+          "startLine" : 91
         },
         {
-          "endLine" : 101,
+          "endLine" : 98,
           "file" : "SemanticDiff/SemanticDiffEngine.swift",
           "kind" : "initializer-argument",
-          "startLine" : 101
+          "startLine" : 98
         },
         {
-          "endLine" : 178,
+          "endLine" : 177,
           "file" : "SemanticDiff/SemanticDiffEngine.swift",
           "kind" : "initializer-argument",
-          "startLine" : 178
+          "startLine" : 177
         },
         {
           "endLine" : 388,
@@ -4104,6 +4085,19 @@
       ],
       "representations" : [
         "node:ab2640d9e0b169e9"
+      ]
+    },
+    {
+      "confidence" : "deterministic",
+      "evidence" : [
+
+      ],
+      "id" : "value:2612b83a06777d64",
+      "relationEdges" : [
+
+      ],
+      "representations" : [
+        "node:2ae69bbf5b37cfff"
       ]
     },
     {
@@ -4449,19 +4443,6 @@
       "evidence" : [
 
       ],
-      "id" : "value:27dce588229a8f8c",
-      "relationEdges" : [
-
-      ],
-      "representations" : [
-        "node:8e023db8856184de"
-      ]
-    },
-    {
-      "confidence" : "deterministic",
-      "evidence" : [
-
-      ],
       "id" : "value:27dda457e375779c",
       "relationEdges" : [
 
@@ -4565,25 +4546,6 @@
       ],
       "representations" : [
         "node:9b3c002f991c64d8"
-      ]
-    },
-    {
-      "confidence" : "deterministic",
-      "evidence" : [
-        {
-          "endLine" : 219,
-          "file" : "SemanticDiff/SemanticDiffEngine.swift",
-          "kind" : "initializer-argument",
-          "startLine" : 219
-        }
-      ],
-      "id" : "value:28a1cfa287c70014",
-      "relationEdges" : [
-        "edge:4463e26b3eee6fc"
-      ],
-      "representations" : [
-        "node:276ddad2ad278855",
-        "node:b4eafd3cc9d1b33"
       ]
     },
     {
@@ -5163,6 +5125,19 @@
       "evidence" : [
 
       ],
+      "id" : "value:2adbc8f6e0205a97",
+      "relationEdges" : [
+
+      ],
+      "representations" : [
+        "node:30695d633070c344"
+      ]
+    },
+    {
+      "confidence" : "deterministic",
+      "evidence" : [
+
+      ],
       "id" : "value:2ae85bf2ec736dda",
       "relationEdges" : [
 
@@ -5273,19 +5248,6 @@
       ],
       "representations" : [
         "node:32accaa63140747f"
-      ]
-    },
-    {
-      "confidence" : "deterministic",
-      "evidence" : [
-
-      ],
-      "id" : "value:2b48f206e137a8be",
-      "relationEdges" : [
-
-      ],
-      "representations" : [
-        "node:c5b505ba0710768c"
       ]
     },
     {
@@ -5559,6 +5521,19 @@
       "evidence" : [
 
       ],
+      "id" : "value:2d65d59fd112e62c",
+      "relationEdges" : [
+
+      ],
+      "representations" : [
+        "node:18f8d1f8e27ec777"
+      ]
+    },
+    {
+      "confidence" : "deterministic",
+      "evidence" : [
+
+      ],
       "id" : "value:2d89113b9820ed09",
       "relationEdges" : [
 
@@ -5708,6 +5683,19 @@
       ],
       "representations" : [
         "node:7315d6530da1918"
+      ]
+    },
+    {
+      "confidence" : "deterministic",
+      "evidence" : [
+
+      ],
+      "id" : "value:2e73dd3543ea251c",
+      "relationEdges" : [
+
+      ],
+      "representations" : [
+        "node:a4ae88c3e12964e0"
       ]
     },
     {
@@ -6006,16 +5994,10 @@
       "confidence" : "deterministic",
       "evidence" : [
         {
-          "endLine" : 235,
+          "endLine" : 236,
           "file" : "SemanticDiff/SemanticDiffEngine.swift",
           "kind" : "initializer-argument",
-          "startLine" : 235
-        },
-        {
-          "endLine" : 255,
-          "file" : "SemanticDiff/SemanticDiffEngine.swift",
-          "kind" : "initializer-argument",
-          "startLine" : 255
+          "startLine" : 236
         },
         {
           "endLine" : 256,
@@ -6024,16 +6006,22 @@
           "startLine" : 256
         },
         {
-          "endLine" : 260,
+          "endLine" : 257,
           "file" : "SemanticDiff/SemanticDiffEngine.swift",
           "kind" : "initializer-argument",
-          "startLine" : 260
+          "startLine" : 257
         },
         {
-          "endLine" : 263,
+          "endLine" : 261,
           "file" : "SemanticDiff/SemanticDiffEngine.swift",
           "kind" : "initializer-argument",
-          "startLine" : 263
+          "startLine" : 261
+        },
+        {
+          "endLine" : 264,
+          "file" : "SemanticDiff/SemanticDiffEngine.swift",
+          "kind" : "initializer-argument",
+          "startLine" : 264
         }
       ],
       "id" : "value:308c0c9348c4221d",
@@ -6179,19 +6167,6 @@
       ],
       "representations" : [
         "node:3cce4320edc00484"
-      ]
-    },
-    {
-      "confidence" : "deterministic",
-      "evidence" : [
-
-      ],
-      "id" : "value:31a910587c239621",
-      "relationEdges" : [
-
-      ],
-      "representations" : [
-        "node:8a691cb6b993af1c"
       ]
     },
     {
@@ -6633,19 +6608,6 @@
       ],
       "representations" : [
         "node:69d9ef13ae1a6401"
-      ]
-    },
-    {
-      "confidence" : "deterministic",
-      "evidence" : [
-
-      ],
-      "id" : "value:345a8584105cd90",
-      "relationEdges" : [
-
-      ],
-      "representations" : [
-        "node:659d5676a6fc6c9c"
       ]
     },
     {
@@ -7147,19 +7109,6 @@
       "evidence" : [
 
       ],
-      "id" : "value:37a0b903fd1e651e",
-      "relationEdges" : [
-
-      ],
-      "representations" : [
-        "node:9ccacbc04159f5cb"
-      ]
-    },
-    {
-      "confidence" : "deterministic",
-      "evidence" : [
-
-      ],
       "id" : "value:37a87b2ac8e7155b",
       "relationEdges" : [
 
@@ -7290,6 +7239,19 @@
       "evidence" : [
 
       ],
+      "id" : "value:3858a348a3c9975e",
+      "relationEdges" : [
+
+      ],
+      "representations" : [
+        "node:9f23eb621b0bbf9"
+      ]
+    },
+    {
+      "confidence" : "deterministic",
+      "evidence" : [
+
+      ],
       "id" : "value:388356fdd87374b2",
       "relationEdges" : [
 
@@ -7365,6 +7327,25 @@
     {
       "confidence" : "deterministic",
       "evidence" : [
+        {
+          "endLine" : 56,
+          "file" : "SemanticDiff/SemanticDiffEngine.swift",
+          "kind" : "initializer-argument",
+          "startLine" : 56
+        }
+      ],
+      "id" : "value:3902d82b2d73b33d",
+      "relationEdges" : [
+        "edge:844b47e41275cd94"
+      ],
+      "representations" : [
+        "node:2b37a0db57dc2e5d",
+        "node:793d333d8a4f56a1"
+      ]
+    },
+    {
+      "confidence" : "deterministic",
+      "evidence" : [
 
       ],
       "id" : "value:390d2372eded10e8",
@@ -7399,19 +7380,6 @@
       ],
       "representations" : [
         "node:80353ea4482099a0"
-      ]
-    },
-    {
-      "confidence" : "deterministic",
-      "evidence" : [
-
-      ],
-      "id" : "value:3939297df4026959",
-      "relationEdges" : [
-
-      ],
-      "representations" : [
-        "node:d3b633f3a326690c"
       ]
     },
     {
@@ -8437,10 +8405,10 @@
       "confidence" : "deterministic",
       "evidence" : [
         {
-          "endLine" : 177,
+          "endLine" : 176,
           "file" : "SemanticDiff/SemanticDiffEngine.swift",
           "kind" : "initializer-argument",
-          "startLine" : 177
+          "startLine" : 176
         }
       ],
       "id" : "value:3ed32a4f4c6edccd",
@@ -8709,6 +8677,19 @@
       ],
       "representations" : [
         "node:712790301990b49b"
+      ]
+    },
+    {
+      "confidence" : "deterministic",
+      "evidence" : [
+
+      ],
+      "id" : "value:40b21dc9a8f9c3de",
+      "relationEdges" : [
+
+      ],
+      "representations" : [
+        "node:dfddd96cab4b1366"
       ]
     },
     {
@@ -9608,6 +9589,19 @@
       ],
       "representations" : [
         "node:3f7b41514f56bbd9"
+      ]
+    },
+    {
+      "confidence" : "deterministic",
+      "evidence" : [
+
+      ],
+      "id" : "value:456a1199d64a2e55",
+      "relationEdges" : [
+
+      ],
+      "representations" : [
+        "node:482792d46f3e60e9"
       ]
     },
     {
@@ -10998,6 +10992,19 @@
       "evidence" : [
 
       ],
+      "id" : "value:4beaf3536286ccf",
+      "relationEdges" : [
+
+      ],
+      "representations" : [
+        "node:17caa1853b18b568"
+      ]
+    },
+    {
+      "confidence" : "deterministic",
+      "evidence" : [
+
+      ],
       "id" : "value:4bed2dede51a3061",
       "relationEdges" : [
 
@@ -11310,12 +11317,12 @@
       "evidence" : [
 
       ],
-      "id" : "value:4dd97a7a41d9faaa",
+      "id" : "value:4ddab2574d2e9d94",
       "relationEdges" : [
 
       ],
       "representations" : [
-        "node:2187f1aef0dd6ff8"
+        "node:119ad10519ca86e4"
       ]
     },
     {
@@ -11903,6 +11910,19 @@
       "evidence" : [
 
       ],
+      "id" : "value:509ce7f6d37ddc2c",
+      "relationEdges" : [
+
+      ],
+      "representations" : [
+        "node:3f5e519d6d1fe6da"
+      ]
+    },
+    {
+      "confidence" : "deterministic",
+      "evidence" : [
+
+      ],
       "id" : "value:50a511f71b0325e9",
       "relationEdges" : [
 
@@ -12331,19 +12351,6 @@
       ],
       "representations" : [
         "node:98da81c02fa894d5"
-      ]
-    },
-    {
-      "confidence" : "deterministic",
-      "evidence" : [
-
-      ],
-      "id" : "value:53590f687abba7fa",
-      "relationEdges" : [
-
-      ],
-      "representations" : [
-        "node:bfd74b4da0e9cb91"
       ]
     },
     {
@@ -13450,19 +13457,6 @@
       "evidence" : [
 
       ],
-      "id" : "value:59cee2ce868422e4",
-      "relationEdges" : [
-
-      ],
-      "representations" : [
-        "node:fb404ec282e22206"
-      ]
-    },
-    {
-      "confidence" : "deterministic",
-      "evidence" : [
-
-      ],
       "id" : "value:59e762369705a545",
       "relationEdges" : [
 
@@ -14549,6 +14543,19 @@
       "evidence" : [
 
       ],
+      "id" : "value:609121c124b51c90",
+      "relationEdges" : [
+
+      ],
+      "representations" : [
+        "node:81e653895eadbab2"
+      ]
+    },
+    {
+      "confidence" : "deterministic",
+      "evidence" : [
+
+      ],
       "id" : "value:60a011f8270a8e4",
       "relationEdges" : [
 
@@ -15067,10 +15074,10 @@
       "confidence" : "deterministic",
       "evidence" : [
         {
-          "endLine" : 136,
+          "endLine" : 135,
           "file" : "SemanticDiff/SemanticDiffEngine.swift",
           "kind" : "initializer-argument",
-          "startLine" : 136
+          "startLine" : 135
         }
       ],
       "id" : "value:62dd5afb09411dc4",
@@ -15814,6 +15821,19 @@
       "evidence" : [
 
       ],
+      "id" : "value:66e5ab099e3849c2",
+      "relationEdges" : [
+
+      ],
+      "representations" : [
+        "node:3ac40ceb5caafae0"
+      ]
+    },
+    {
+      "confidence" : "deterministic",
+      "evidence" : [
+
+      ],
       "id" : "value:67145e333e9ac98b",
       "relationEdges" : [
 
@@ -16346,19 +16366,6 @@
       "evidence" : [
 
       ],
-      "id" : "value:6a85906bc17115c7",
-      "relationEdges" : [
-
-      ],
-      "representations" : [
-        "node:e9ee2353a1563e97"
-      ]
-    },
-    {
-      "confidence" : "deterministic",
-      "evidence" : [
-
-      ],
       "id" : "value:6ab9f2102d031a6d",
       "relationEdges" : [
 
@@ -16644,19 +16651,6 @@
       ],
       "representations" : [
         "node:84fc4910dc6400c1"
-      ]
-    },
-    {
-      "confidence" : "deterministic",
-      "evidence" : [
-
-      ],
-      "id" : "value:6cc0205445bc206f",
-      "relationEdges" : [
-
-      ],
-      "representations" : [
-        "node:c45b0a02ee949f74"
       ]
     },
     {
@@ -17085,6 +17079,25 @@
       "confidence" : "deterministic",
       "evidence" : [
         {
+          "endLine" : 221,
+          "file" : "SemanticDiff/SemanticDiffEngine.swift",
+          "kind" : "initializer-argument",
+          "startLine" : 221
+        }
+      ],
+      "id" : "value:6f615f39c2868ac8",
+      "relationEdges" : [
+        "edge:4fbe445981f0f653"
+      ],
+      "representations" : [
+        "node:3fbd28556ec6cc35",
+        "node:acf9f510fce5ec86"
+      ]
+    },
+    {
+      "confidence" : "deterministic",
+      "evidence" : [
+        {
           "endLine" : 424,
           "file" : "SwiftSyntaxFrontend/GraphScanner.swift",
           "kind" : "initializer-argument",
@@ -17144,6 +17157,19 @@
       "evidence" : [
 
       ],
+      "id" : "value:6fa4fdd03e99af20",
+      "relationEdges" : [
+
+      ],
+      "representations" : [
+        "node:caf98cdb30422fc3"
+      ]
+    },
+    {
+      "confidence" : "deterministic",
+      "evidence" : [
+
+      ],
       "id" : "value:6fdbeb52eec76460",
       "relationEdges" : [
 
@@ -17189,6 +17215,19 @@
       ],
       "representations" : [
         "node:a959c92eb0d5a088"
+      ]
+    },
+    {
+      "confidence" : "deterministic",
+      "evidence" : [
+
+      ],
+      "id" : "value:7040a0b486703a43",
+      "relationEdges" : [
+
+      ],
+      "representations" : [
+        "node:6f8e0ac378b671a6"
       ]
     },
     {
@@ -17442,6 +17481,19 @@
       "representations" : [
         "node:56886e6dd4e44ef7",
         "node:b609fcbd55b9c139"
+      ]
+    },
+    {
+      "confidence" : "deterministic",
+      "evidence" : [
+
+      ],
+      "id" : "value:7210724158cb2976",
+      "relationEdges" : [
+
+      ],
+      "representations" : [
+        "node:5823698acc0a40cc"
       ]
     },
     {
@@ -17715,6 +17767,19 @@
       ],
       "representations" : [
         "node:aa3f07236fc52744"
+      ]
+    },
+    {
+      "confidence" : "deterministic",
+      "evidence" : [
+
+      ],
+      "id" : "value:732ce757228418d9",
+      "relationEdges" : [
+
+      ],
+      "representations" : [
+        "node:922bb0947e55659b"
       ]
     },
     {
@@ -19282,19 +19347,6 @@
       "evidence" : [
 
       ],
-      "id" : "value:7d7498f09f84408c",
-      "relationEdges" : [
-
-      ],
-      "representations" : [
-        "node:56f1ca39b558893e"
-      ]
-    },
-    {
-      "confidence" : "deterministic",
-      "evidence" : [
-
-      ],
       "id" : "value:7d8455805d6c149e",
       "relationEdges" : [
 
@@ -19633,6 +19685,33 @@
     {
       "confidence" : "deterministic",
       "evidence" : [
+        {
+          "endLine" : 217,
+          "file" : "SemanticDiff/SemanticDiffEngine.swift",
+          "kind" : "initializer-argument",
+          "startLine" : 217
+        },
+        {
+          "endLine" : 219,
+          "file" : "SemanticDiff/SemanticDiffEngine.swift",
+          "kind" : "initializer-argument",
+          "startLine" : 219
+        }
+      ],
+      "id" : "value:7efaf4c1f3164f9c",
+      "relationEdges" : [
+        "edge:75885ee51984e3c7",
+        "edge:969d0b0a9deaac0d"
+      ],
+      "representations" : [
+        "node:3e36d799d62ac0c0",
+        "node:9b6cfc3f0f27620e",
+        "node:b6c338a69059101c"
+      ]
+    },
+    {
+      "confidence" : "deterministic",
+      "evidence" : [
 
       ],
       "id" : "value:7f040ba8b04f3bc6",
@@ -19641,19 +19720,6 @@
       ],
       "representations" : [
         "node:de0346203835afd3"
-      ]
-    },
-    {
-      "confidence" : "deterministic",
-      "evidence" : [
-
-      ],
-      "id" : "value:7f141cc2fbbc59ac",
-      "relationEdges" : [
-
-      ],
-      "representations" : [
-        "node:6a78a11a518c87f5"
       ]
     },
     {
@@ -19816,19 +19882,6 @@
       ],
       "representations" : [
         "node:695d8ccea350aaef"
-      ]
-    },
-    {
-      "confidence" : "deterministic",
-      "evidence" : [
-
-      ],
-      "id" : "value:802795d46acaee35",
-      "relationEdges" : [
-
-      ],
-      "representations" : [
-        "node:755a38fe23a36fb3"
       ]
     },
     {
@@ -21362,19 +21415,6 @@
       "evidence" : [
 
       ],
-      "id" : "value:881951199797c2be",
-      "relationEdges" : [
-
-      ],
-      "representations" : [
-        "node:15c97c15ab67945c"
-      ]
-    },
-    {
-      "confidence" : "deterministic",
-      "evidence" : [
-
-      ],
       "id" : "value:881b187693ca9455",
       "relationEdges" : [
 
@@ -21524,6 +21564,19 @@
       ],
       "representations" : [
         "node:9cde407b1c78eb4f"
+      ]
+    },
+    {
+      "confidence" : "deterministic",
+      "evidence" : [
+
+      ],
+      "id" : "value:88f080b332a1a577",
+      "relationEdges" : [
+
+      ],
+      "representations" : [
+        "node:3b6f9b832ba08fea"
       ]
     },
     {
@@ -21933,6 +21986,19 @@
       ],
       "representations" : [
         "node:bc286fbffced1d5e"
+      ]
+    },
+    {
+      "confidence" : "deterministic",
+      "evidence" : [
+
+      ],
+      "id" : "value:8bcc354eb8d4fbe9",
+      "relationEdges" : [
+
+      ],
+      "representations" : [
+        "node:f4e01c507b5b2c38"
       ]
     },
     {
@@ -22587,6 +22653,25 @@
     {
       "confidence" : "deterministic",
       "evidence" : [
+        {
+          "endLine" : 220,
+          "file" : "SemanticDiff/SemanticDiffEngine.swift",
+          "kind" : "initializer-argument",
+          "startLine" : 220
+        }
+      ],
+      "id" : "value:8f7b4d701c3be58c",
+      "relationEdges" : [
+        "edge:bd172778ff974a3d"
+      ],
+      "representations" : [
+        "node:1b676d768d23f115",
+        "node:276ddad2ad278855"
+      ]
+    },
+    {
+      "confidence" : "deterministic",
+      "evidence" : [
 
       ],
       "id" : "value:8f9f602a85af3fb9",
@@ -23109,19 +23194,6 @@
       "evidence" : [
 
       ],
-      "id" : "value:92905f89aa4a4c49",
-      "relationEdges" : [
-
-      ],
-      "representations" : [
-        "node:33c7d7e5fe75dfa3"
-      ]
-    },
-    {
-      "confidence" : "deterministic",
-      "evidence" : [
-
-      ],
       "id" : "value:92b921542c0bf57c",
       "relationEdges" : [
 
@@ -23516,27 +23588,19 @@
       "confidence" : "deterministic",
       "evidence" : [
         {
-          "endLine" : 215,
+          "endLine" : 57,
           "file" : "SemanticDiff/SemanticDiffEngine.swift",
           "kind" : "initializer-argument",
-          "startLine" : 215
-        },
-        {
-          "endLine" : 217,
-          "file" : "SemanticDiff/SemanticDiffEngine.swift",
-          "kind" : "initializer-argument",
-          "startLine" : 217
+          "startLine" : 57
         }
       ],
-      "id" : "value:94feb22c5e1173b7",
+      "id" : "value:94c7ad2c9823212b",
       "relationEdges" : [
-        "edge:108824e6a79bfa9b",
-        "edge:b9930b68256d446"
+        "edge:e5a2f646486e81e2"
       ],
       "representations" : [
-        "node:7ab9b09616b35100",
-        "node:889345a772ed50e",
-        "node:9a40c7426dfdc3fc"
+        "node:29d6bb4d496f159c",
+        "node:dc4ec81eca801097"
       ]
     },
     {
@@ -24070,6 +24134,19 @@
       "evidence" : [
 
       ],
+      "id" : "value:9855e1324f093dcb",
+      "relationEdges" : [
+
+      ],
+      "representations" : [
+        "node:4ba909861cadea00"
+      ]
+    },
+    {
+      "confidence" : "deterministic",
+      "evidence" : [
+
+      ],
       "id" : "value:985b99985b4fcb38",
       "relationEdges" : [
 
@@ -24283,6 +24360,19 @@
       ],
       "representations" : [
         "node:37846abd5dbe774b"
+      ]
+    },
+    {
+      "confidence" : "deterministic",
+      "evidence" : [
+
+      ],
+      "id" : "value:9926bcc128465c2",
+      "relationEdges" : [
+
+      ],
+      "representations" : [
+        "node:f02825f8eb916c9e"
       ]
     },
     {
@@ -24504,6 +24594,33 @@
       ],
       "representations" : [
         "node:2103b0c3a31a00b6"
+      ]
+    },
+    {
+      "confidence" : "deterministic",
+      "evidence" : [
+        {
+          "endLine" : 216,
+          "file" : "SemanticDiff/SemanticDiffEngine.swift",
+          "kind" : "initializer-argument",
+          "startLine" : 216
+        },
+        {
+          "endLine" : 218,
+          "file" : "SemanticDiff/SemanticDiffEngine.swift",
+          "kind" : "initializer-argument",
+          "startLine" : 218
+        }
+      ],
+      "id" : "value:9ae17e5f8355e322",
+      "relationEdges" : [
+        "edge:14a4dce16b2466d1",
+        "edge:417a1ac44967115f"
+      ],
+      "representations" : [
+        "node:373f5ffeb16b294e",
+        "node:7ab9b09616b35100",
+        "node:889345a772ed50e"
       ]
     },
     {
@@ -24757,6 +24874,19 @@
       ],
       "representations" : [
         "node:f5ecb61c957dd473"
+      ]
+    },
+    {
+      "confidence" : "deterministic",
+      "evidence" : [
+
+      ],
+      "id" : "value:9ce5a7f6ac8668bc",
+      "relationEdges" : [
+
+      ],
+      "representations" : [
+        "node:379023b6b60c501d"
       ]
     },
     {
@@ -25698,25 +25828,6 @@
     {
       "confidence" : "deterministic",
       "evidence" : [
-        {
-          "endLine" : 220,
-          "file" : "SemanticDiff/SemanticDiffEngine.swift",
-          "kind" : "initializer-argument",
-          "startLine" : 220
-        }
-      ],
-      "id" : "value:a215646b3fc639ea",
-      "relationEdges" : [
-        "edge:6b125abb9bebf34a"
-      ],
-      "representations" : [
-        "node:3fbd28556ec6cc35",
-        "node:6e394eb535f6b498"
-      ]
-    },
-    {
-      "confidence" : "deterministic",
-      "evidence" : [
 
       ],
       "id" : "value:a240dfea19e09bd6",
@@ -26237,33 +26348,6 @@
     {
       "confidence" : "deterministic",
       "evidence" : [
-        {
-          "endLine" : 216,
-          "file" : "SemanticDiff/SemanticDiffEngine.swift",
-          "kind" : "initializer-argument",
-          "startLine" : 216
-        },
-        {
-          "endLine" : 218,
-          "file" : "SemanticDiff/SemanticDiffEngine.swift",
-          "kind" : "initializer-argument",
-          "startLine" : 218
-        }
-      ],
-      "id" : "value:a5977cf61b6d90e3",
-      "relationEdges" : [
-        "edge:276636603cb6c0c",
-        "edge:b2fccc95feeb7f3b"
-      ],
-      "representations" : [
-        "node:199396ef0e71672e",
-        "node:3e36d799d62ac0c0",
-        "node:9b6cfc3f0f27620e"
-      ]
-    },
-    {
-      "confidence" : "deterministic",
-      "evidence" : [
 
       ],
       "id" : "value:a59b655691193f07",
@@ -26506,19 +26590,6 @@
       "evidence" : [
 
       ],
-      "id" : "value:a7d3e8d97c89ca5f",
-      "relationEdges" : [
-
-      ],
-      "representations" : [
-        "node:912004dd4be8688a"
-      ]
-    },
-    {
-      "confidence" : "deterministic",
-      "evidence" : [
-
-      ],
       "id" : "value:a8002bdd3a4c94b3",
       "relationEdges" : [
 
@@ -26590,6 +26661,19 @@
       ],
       "representations" : [
         "node:4bcab3cdd1b8a78e"
+      ]
+    },
+    {
+      "confidence" : "deterministic",
+      "evidence" : [
+
+      ],
+      "id" : "value:a86c338ae9f8babc",
+      "relationEdges" : [
+
+      ],
+      "representations" : [
+        "node:cf1339d56b9bb14c"
       ]
     },
     {
@@ -27104,6 +27188,19 @@
       "evidence" : [
 
       ],
+      "id" : "value:aadc3f3e0ddda583",
+      "relationEdges" : [
+
+      ],
+      "representations" : [
+        "node:87f10f6e5741a09f"
+      ]
+    },
+    {
+      "confidence" : "deterministic",
+      "evidence" : [
+
+      ],
       "id" : "value:aafec49e3676e60a",
       "relationEdges" : [
 
@@ -27123,6 +27220,19 @@
       ],
       "representations" : [
         "node:55a0f25890217609"
+      ]
+    },
+    {
+      "confidence" : "deterministic",
+      "evidence" : [
+
+      ],
+      "id" : "value:ab382013abe2fa65",
+      "relationEdges" : [
+
+      ],
+      "representations" : [
+        "node:5704e6433a72211e"
       ]
     },
     {
@@ -27812,6 +27922,19 @@
       "evidence" : [
 
       ],
+      "id" : "value:afa12074b4b2728a",
+      "relationEdges" : [
+
+      ],
+      "representations" : [
+        "node:590fe77712bd6d28"
+      ]
+    },
+    {
+      "confidence" : "deterministic",
+      "evidence" : [
+
+      ],
       "id" : "value:afa6ef55dad7aa6f",
       "relationEdges" : [
 
@@ -27916,6 +28039,19 @@
       "evidence" : [
 
       ],
+      "id" : "value:b0119df86236dad8",
+      "relationEdges" : [
+
+      ],
+      "representations" : [
+        "node:ac2cb3e8a567b54d"
+      ]
+    },
+    {
+      "confidence" : "deterministic",
+      "evidence" : [
+
+      ],
       "id" : "value:b0189c9dcca5b830",
       "relationEdges" : [
 
@@ -27949,19 +28085,6 @@
         "node:4d8bf64cf45afb7e",
         "node:9347d690e5e43d5d",
         "node:c857ff8e73ccad26"
-      ]
-    },
-    {
-      "confidence" : "deterministic",
-      "evidence" : [
-
-      ],
-      "id" : "value:b029e0408ed99c3c",
-      "relationEdges" : [
-
-      ],
-      "representations" : [
-        "node:bde452780cd74efe"
       ]
     },
     {
@@ -29094,6 +29217,19 @@
       "evidence" : [
 
       ],
+      "id" : "value:b665769a51bc4acd",
+      "relationEdges" : [
+
+      ],
+      "representations" : [
+        "node:c6d41cf57ad50733"
+      ]
+    },
+    {
+      "confidence" : "deterministic",
+      "evidence" : [
+
+      ],
       "id" : "value:b6901eb94ea77d94",
       "relationEdges" : [
 
@@ -29912,6 +30048,19 @@
       "evidence" : [
 
       ],
+      "id" : "value:bc2bb94c4b298f8e",
+      "relationEdges" : [
+
+      ],
+      "representations" : [
+        "node:df7a3fa96801fdba"
+      ]
+    },
+    {
+      "confidence" : "deterministic",
+      "evidence" : [
+
+      ],
       "id" : "value:bc2c6fdff95659a7",
       "relationEdges" : [
 
@@ -30113,6 +30262,19 @@
       "evidence" : [
 
       ],
+      "id" : "value:bd825eadd70f775c",
+      "relationEdges" : [
+
+      ],
+      "representations" : [
+        "node:fcef8f3bdc6c4725"
+      ]
+    },
+    {
+      "confidence" : "deterministic",
+      "evidence" : [
+
+      ],
       "id" : "value:bd8695d8375b8f34",
       "relationEdges" : [
 
@@ -30145,6 +30307,19 @@
       ],
       "representations" : [
         "node:1043265afcd563a2"
+      ]
+    },
+    {
+      "confidence" : "deterministic",
+      "evidence" : [
+
+      ],
+      "id" : "value:bdc8cad52ab4250e",
+      "relationEdges" : [
+
+      ],
+      "representations" : [
+        "node:62ec2f45159651da"
       ]
     },
     {
@@ -30821,6 +30996,19 @@
       "evidence" : [
 
       ],
+      "id" : "value:c1ae1220b3503f83",
+      "relationEdges" : [
+
+      ],
+      "representations" : [
+        "node:801aa00260dad1a4"
+      ]
+    },
+    {
+      "confidence" : "deterministic",
+      "evidence" : [
+
+      ],
       "id" : "value:c1baa868d7fb560d",
       "relationEdges" : [
 
@@ -30963,16 +31151,16 @@
       "confidence" : "deterministic",
       "evidence" : [
         {
-          "endLine" : 117,
+          "endLine" : 116,
           "file" : "SemanticDiff/SemanticDiffEngine.swift",
           "kind" : "initializer-argument",
-          "startLine" : 117
+          "startLine" : 116
         },
         {
-          "endLine" : 214,
+          "endLine" : 215,
           "file" : "SemanticDiff/SemanticDiffEngine.swift",
           "kind" : "initializer-argument",
-          "startLine" : 214
+          "startLine" : 215
         }
       ],
       "id" : "value:c26c83503138cb96",
@@ -32024,19 +32212,6 @@
       "evidence" : [
 
       ],
-      "id" : "value:c833ed7b0503b1c5",
-      "relationEdges" : [
-
-      ],
-      "representations" : [
-        "node:c9717c2bce48b0e3"
-      ]
-    },
-    {
-      "confidence" : "deterministic",
-      "evidence" : [
-
-      ],
       "id" : "value:c88c3cbfdd152787",
       "relationEdges" : [
 
@@ -32983,10 +33158,10 @@
       "confidence" : "deterministic",
       "evidence" : [
         {
-          "endLine" : 137,
+          "endLine" : 136,
           "file" : "SemanticDiff/SemanticDiffEngine.swift",
           "kind" : "initializer-argument",
-          "startLine" : 137
+          "startLine" : 136
         }
       ],
       "id" : "value:cd218a07ba58c40",
@@ -33343,6 +33518,19 @@
       "evidence" : [
 
       ],
+      "id" : "value:cf03bffb9b08d4ab",
+      "relationEdges" : [
+
+      ],
+      "representations" : [
+        "node:2c5c19d87e344b77"
+      ]
+    },
+    {
+      "confidence" : "deterministic",
+      "evidence" : [
+
+      ],
       "id" : "value:cf08023098b85eb2",
       "relationEdges" : [
 
@@ -33571,6 +33759,19 @@
       "evidence" : [
 
       ],
+      "id" : "value:d0aad9279db0305a",
+      "relationEdges" : [
+
+      ],
+      "representations" : [
+        "node:326ce69ed6160999"
+      ]
+    },
+    {
+      "confidence" : "deterministic",
+      "evidence" : [
+
+      ],
       "id" : "value:d0b4c677f115e295",
       "relationEdges" : [
 
@@ -33688,6 +33889,19 @@
       "evidence" : [
 
       ],
+      "id" : "value:d2151d644b3ea294",
+      "relationEdges" : [
+
+      ],
+      "representations" : [
+        "node:21576dcd890c0fba"
+      ]
+    },
+    {
+      "confidence" : "deterministic",
+      "evidence" : [
+
+      ],
       "id" : "value:d2161284847708cb",
       "relationEdges" : [
 
@@ -33766,6 +33980,19 @@
       "evidence" : [
 
       ],
+      "id" : "value:d2c775c9e3176bbd",
+      "relationEdges" : [
+
+      ],
+      "representations" : [
+        "node:7285a819dad62334"
+      ]
+    },
+    {
+      "confidence" : "deterministic",
+      "evidence" : [
+
+      ],
       "id" : "value:d2cf2583848b1225",
       "relationEdges" : [
 
@@ -33837,19 +34064,6 @@
       ],
       "representations" : [
         "node:ecd0e2f361c9d46d"
-      ]
-    },
-    {
-      "confidence" : "deterministic",
-      "evidence" : [
-
-      ],
-      "id" : "value:d343b1d86dcd7acd",
-      "relationEdges" : [
-
-      ],
-      "representations" : [
-        "node:38d546d3f5fc03e7"
       ]
     },
     {
@@ -35413,10 +35627,10 @@
       "confidence" : "deterministic",
       "evidence" : [
         {
-          "endLine" : 135,
+          "endLine" : 134,
           "file" : "SemanticDiff/SemanticDiffEngine.swift",
           "kind" : "initializer-argument",
-          "startLine" : 135
+          "startLine" : 134
         }
       ],
       "id" : "value:db9cabd90d499e13",
@@ -35498,6 +35712,19 @@
       ],
       "representations" : [
         "node:ca7a50235fd1a66d"
+      ]
+    },
+    {
+      "confidence" : "deterministic",
+      "evidence" : [
+
+      ],
+      "id" : "value:dbf670516b5f6fca",
+      "relationEdges" : [
+
+      ],
+      "representations" : [
+        "node:d679ab71ff7b5518"
       ]
     },
     {
@@ -36188,19 +36415,6 @@
       "evidence" : [
 
       ],
-      "id" : "value:df7d4112bb77dadf",
-      "relationEdges" : [
-
-      ],
-      "representations" : [
-        "node:236ed5cd533e84ff"
-      ]
-    },
-    {
-      "confidence" : "deterministic",
-      "evidence" : [
-
-      ],
       "id" : "value:df928afd70cf22da",
       "relationEdges" : [
 
@@ -36292,19 +36506,6 @@
       "evidence" : [
 
       ],
-      "id" : "value:e02893d36a50eb6c",
-      "relationEdges" : [
-
-      ],
-      "representations" : [
-        "node:60dd4e8d78a32f63"
-      ]
-    },
-    {
-      "confidence" : "deterministic",
-      "evidence" : [
-
-      ],
       "id" : "value:e0322eecfc851553",
       "relationEdges" : [
 
@@ -36324,6 +36525,19 @@
       ],
       "representations" : [
         "node:94b69c86aeeba69a"
+      ]
+    },
+    {
+      "confidence" : "deterministic",
+      "evidence" : [
+
+      ],
+      "id" : "value:e03cb51b0c024b14",
+      "relationEdges" : [
+
+      ],
+      "representations" : [
+        "node:19b1aeee00c91c02"
       ]
     },
     {
@@ -36925,6 +37139,19 @@
       ],
       "representations" : [
         "node:d23f549c9966719a"
+      ]
+    },
+    {
+      "confidence" : "deterministic",
+      "evidence" : [
+
+      ],
+      "id" : "value:e2b944e5d0c63570",
+      "relationEdges" : [
+
+      ],
+      "representations" : [
+        "node:999df404b1187cfd"
       ]
     },
     {
@@ -37716,6 +37943,19 @@
       "evidence" : [
 
       ],
+      "id" : "value:e7b0572516ec1246",
+      "relationEdges" : [
+
+      ],
+      "representations" : [
+        "node:4e3362caea1145d7"
+      ]
+    },
+    {
+      "confidence" : "deterministic",
+      "evidence" : [
+
+      ],
       "id" : "value:e7b826b617a26e45",
       "relationEdges" : [
 
@@ -37792,6 +38032,19 @@
     {
       "confidence" : "deterministic",
       "evidence" : [
+
+      ],
+      "id" : "value:e83c795dba5b81e",
+      "relationEdges" : [
+
+      ],
+      "representations" : [
+        "node:401ebd1ae3f330e4"
+      ]
+    },
+    {
+      "confidence" : "deterministic",
+      "evidence" : [
         {
           "endLine" : 107,
           "file" : "SemanticDiff/SemanticInputLoader.swift",
@@ -37830,19 +38083,6 @@
         "node:8209562fb39963e",
         "node:a369d43ec8ad5ad2",
         "node:fef339fdb7d1218c"
-      ]
-    },
-    {
-      "confidence" : "deterministic",
-      "evidence" : [
-
-      ],
-      "id" : "value:e86dd711ed055f8a",
-      "relationEdges" : [
-
-      ],
-      "representations" : [
-        "node:11125277ba8542d5"
       ]
     },
     {
@@ -38199,19 +38439,6 @@
       "evidence" : [
 
       ],
-      "id" : "value:ea9c3d95bff9395b",
-      "relationEdges" : [
-
-      ],
-      "representations" : [
-        "node:f7ec9da44d777e6c"
-      ]
-    },
-    {
-      "confidence" : "deterministic",
-      "evidence" : [
-
-      ],
       "id" : "value:eaa345a6c934bbf3",
       "relationEdges" : [
 
@@ -38361,19 +38588,6 @@
       "evidence" : [
 
       ],
-      "id" : "value:ebaebd258768c416",
-      "relationEdges" : [
-
-      ],
-      "representations" : [
-        "node:cec050038ac46ed3"
-      ]
-    },
-    {
-      "confidence" : "deterministic",
-      "evidence" : [
-
-      ],
       "id" : "value:ebcb162b10c8935a",
       "relationEdges" : [
 
@@ -38458,25 +38672,6 @@
       ],
       "representations" : [
         "node:8cab71e7f1558671"
-      ]
-    },
-    {
-      "confidence" : "deterministic",
-      "evidence" : [
-        {
-          "endLine" : 59,
-          "file" : "SemanticDiff/SemanticDiffEngine.swift",
-          "kind" : "initializer-argument",
-          "startLine" : 59
-        }
-      ],
-      "id" : "value:ec02ecb82b8323b7",
-      "relationEdges" : [
-        "edge:6b71264e391da582"
-      ],
-      "representations" : [
-        "node:793d333d8a4f56a1",
-        "node:a107ff77202a5278"
       ]
     },
     {
@@ -38601,6 +38796,19 @@
       "evidence" : [
 
       ],
+      "id" : "value:ecc8f60882300b29",
+      "relationEdges" : [
+
+      ],
+      "representations" : [
+        "node:a8167839d4854415"
+      ]
+    },
+    {
+      "confidence" : "deterministic",
+      "evidence" : [
+
+      ],
       "id" : "value:ecec08e48c90e28e",
       "relationEdges" : [
 
@@ -38696,16 +38904,16 @@
           "startLine" : 18
         },
         {
+          "endLine" : 131,
+          "file" : "SemanticDiff/SemanticDiffEngine.swift",
+          "kind" : "initializer-argument",
+          "startLine" : 131
+        },
+        {
           "endLine" : 132,
           "file" : "SemanticDiff/SemanticDiffEngine.swift",
           "kind" : "initializer-argument",
           "startLine" : 132
-        },
-        {
-          "endLine" : 133,
-          "file" : "SemanticDiff/SemanticDiffEngine.swift",
-          "kind" : "initializer-argument",
-          "startLine" : 133
         },
         {
           "endLine" : 42,
@@ -38878,19 +39086,6 @@
       "evidence" : [
 
       ],
-      "id" : "value:ee29cbc4049624df",
-      "relationEdges" : [
-
-      ],
-      "representations" : [
-        "node:469216e2bc093dec"
-      ]
-    },
-    {
-      "confidence" : "deterministic",
-      "evidence" : [
-
-      ],
       "id" : "value:ee34a613c25d0c49",
       "relationEdges" : [
 
@@ -39033,10 +39228,10 @@
       "confidence" : "deterministic",
       "evidence" : [
         {
-          "endLine" : 134,
+          "endLine" : 133,
           "file" : "SemanticDiff/SemanticDiffEngine.swift",
           "kind" : "initializer-argument",
-          "startLine" : 134
+          "startLine" : 133
         }
       ],
       "id" : "value:ef3e858ef3b92901",
@@ -39117,6 +39312,19 @@
       "representations" : [
         "node:e925dbb8b17ba11c",
         "node:f59aac82b114d63c"
+      ]
+    },
+    {
+      "confidence" : "deterministic",
+      "evidence" : [
+
+      ],
+      "id" : "value:ef69b1cde6032f5a",
+      "relationEdges" : [
+
+      ],
+      "representations" : [
+        "node:c62d0cdc094a9072"
       ]
     },
     {
@@ -39416,6 +39624,19 @@
       ],
       "representations" : [
         "node:e8d6d24c0e41b7d9"
+      ]
+    },
+    {
+      "confidence" : "deterministic",
+      "evidence" : [
+
+      ],
+      "id" : "value:f144080206f5d4b",
+      "relationEdges" : [
+
+      ],
+      "representations" : [
+        "node:ddb0053c1ed8c11f"
       ]
     },
     {
@@ -40356,19 +40577,6 @@
       ],
       "representations" : [
         "node:3e6ef7c8301dc154"
-      ]
-    },
-    {
-      "confidence" : "deterministic",
-      "evidence" : [
-
-      ],
-      "id" : "value:f5ae088e54171ab1",
-      "relationEdges" : [
-
-      ],
-      "representations" : [
-        "node:b2debd3affa78e15"
       ]
     },
     {
@@ -41660,10 +41868,10 @@
       "confidence" : "deterministic",
       "evidence" : [
         {
-          "endLine" : 375,
+          "endLine" : 408,
           "file" : "SemanticDiff/SemanticDiffEngine.swift",
           "kind" : "assignment",
-          "startLine" : 375
+          "startLine" : 408
         }
       ],
       "id" : "value:fd94ed0a71e9fd8",
