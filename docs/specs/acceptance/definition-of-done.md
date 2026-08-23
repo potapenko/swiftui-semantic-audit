@@ -2,7 +2,7 @@
 
 - Node type: leaf
 - Status: Active
-- Contract revision: `spec-15`
+- Contract revision: `spec-16`
 - Authority: [Acceptance and QA contract](../acceptance.md)
 - Read when: selecting fixture, build, determinism, safety, dogfood, skill, CI, or completion obligations.
 - Do not read when: the task does not implement or verify accepted behavior.
@@ -45,4 +45,6 @@
 
 **ACC-DOD-017.** `RELEASE-0.6.0-001` is complete through `BASE-REL-015`: one immutable tag/archive, tag CI, a checksum-pinned source-built upstream formula, the same four validated separately installed tagged skills, local installation, and truthful public/website release facts have terminal receipts. It adds no bottles or automatic skill installation and preserves graph/config/cache/snapshot schemas, thirty rules and severities, semantics of the seven existing analysis commands, project manifest schema 1, and immutable 0.4.0/0.5.0 artifacts.
 
-**ACC-DOD-018.** `RELEASE-0.6.1-001` is a complete local candidate only when the integrated watcher repair, exact 0.6.1 version/CI gates, compatible canonical baselines, router guidance, focused/full tests, Release build, executable help, indexed watcher dogfood, skill/docs validation, and protected website regressions are locally terminal. Hosted CI, tag/archive, tap, installation, skills activation, website facts, and publication receipt remain explicitly nonterminal.
+**ACC-DOD-018.** `RELEASE-0.6.1-001` is a complete local candidate only when the integrated watcher repair, exact 0.6.1 version/CI gates, compatible canonical baselines, router guidance, focused/full tests, Release build, executable help, indexed watcher dogfood, skill/docs validation, and protected website regressions are locally terminal. Hosted CI, tag/archive, upstream tap, website facts, and publication receipt remain explicitly nonterminal; installation and skill activation require separate authority.
+
+**ACC-DOD-019.** `LOCAL-0.6.1-ACTIVATION-001` is complete only when a checksum-pinned archive of the accepted checkpoint builds and functionally tests as Homebrew keg 0.6.1, the active executable reports 0.6.1 and exposes candidate help, all four validated skills resolve to one clean commit-pinned candidate checkout, released 0.6.0 rollback assets remain, no external release or consumer state changes, and a local receipt is checkpointed.

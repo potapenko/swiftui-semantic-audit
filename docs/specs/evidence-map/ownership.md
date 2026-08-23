@@ -2,7 +2,7 @@
 
 - Node type: leaf
 - Status: Active
-- Contract revision: `spec-17`
+- Contract revision: `spec-18`
 - Authority: [Specification coverage and evidence map](../evidence-map.md)
 - Read when: identifying the owner of facts, findings, persistence, comparison, judgment, or acceptance.
 - Do not read when: only clause coverage or evidence precedence is needed.
@@ -10,7 +10,7 @@
 
 ## Ownership map
 
-- Product authority: user-approved base epoch `tz-v1` plus semantic and release addenda through `RELEASE-0.6.1-001`, combined as `tz-v24`; `REALISTIC-FIXTURES-001` remains acceptance/restore evidence without its own semantic epoch.
+- Product authority: user-approved base epoch `tz-v1` plus semantic, release, and local-activation addenda through `LOCAL-0.6.1-ACTIVATION-001`, combined as `tz-v25`; `REALISTIC-FIXTURES-001` remains acceptance/restore evidence without its own semantic epoch.
 - Semantic schema owner: `AuditCore` plus SnapshotStore transport.
 - Syntax fact owner: SwiftSyntaxFrontend and SwiftUISemantics vocabulary.
 - Compiler fact owner: SymbolResolution/IndexStoreDB on macOS.
@@ -21,6 +21,6 @@
 - Comparison/policy/doctor owner: SemanticDiff and CLI commands.
 - Project setup/runtime owner: ProjectWorkspace for manifest/setup identity, timeout/config precedence, and WatcherRuntime for freshness, typed builds, service lifecycle, live snapshots, and baseline promotion.
 - Agent judgment owner: surrounding agent skills, limited by the immutable fact boundary.
-- Public narrative owner: product and website contracts; 0.6.0 release/site facts remain pinned by `BASE-REL-015`, while README/reference candidate notes may distinguish unpublished 0.6.1 source behavior without changing installation or website claims.
+- Public narrative owner: product and website contracts; 0.6.0 release/site and public-installation facts remain pinned by `BASE-REL-015`, while README/reference candidate notes may record the locally active unpublished 0.6.1 without changing public website or release claims.
 - Acceptance owner: fixtures/tests, canonical baseline, dogfood commands, and CI.
-- Release-distribution owner: immutable upstream tag/archive plus the independently versioned `potapenko/homebrew-tap` formula, local CLI and tagged-skill installation, hosted source test, public-site verification, and `BASE-REL-015` for 0.6.0. `RELEASE-0.6.1-001` owns only local candidate identity/evidence; no 0.6.1 distribution owner or receipt exists yet.
+- Release-distribution owner: immutable upstream tag/archive plus the independently versioned `potapenko/homebrew-tap` formula, local CLI and tagged-skill installation, hosted source test, public-site verification, and `BASE-REL-015` for public 0.6.0. `BASE-REL-017` owns only the pinned local candidate archive, no-remote tap/keg, active CLI/skill links, and rollback receipt; no public 0.6.1 distribution owner or receipt exists.

@@ -2,7 +2,7 @@
 
 - Node type: leaf
 - Status: Active
-- Contract revision: `spec-15`
+- Contract revision: `spec-16`
 - Authority: [Product contract](../product-contract.md)
 - Read when: selecting the product goal, invariants, supported operations, scope, or release boundary.
 - Do not read when: a narrower linked domain contract fully governs the task.
@@ -90,7 +90,6 @@
 **PC-DOG-002 — Regression policy.** Prevent new high-severity findings relative to the committed compatible-resolution baseline; legacy findings need not all be zero.
 
 **PC-REL-001 — Release truth.** Until a public release is intentionally published, describe the product as `unreleased` and tie evidence to the current implementation revision and working tree.
-
 **PC-REL-002 — Homebrew release.** `RELEASE-0.6.0-001` authorizes publishing tool version `0.6.0` from an immutable Git tag and GitHub Release, then distributing the open-source CLI through the upstream `potapenko/homebrew-tap` formula `swiftui-semantic-audit`. The direct installation command remains `brew install potapenko/tap/swiftui-semantic-audit`; the installed executable remains `swiftui-audit`.
 
 **PC-REL-003 — Distribution boundary.** The formula builds the locked Swift package from tagged source, installs only the CLI into Homebrew's prefix, and functionally tests syntax-only analysis. It must not write agent-host skill directories, shell startup files, project source, or user configuration. Agent skills retain their separate documented installation flow.
@@ -98,3 +97,4 @@
 **PC-REL-004 — Component release.** Tool `0.5.0` publishes the accepted `COMPONENT-SURFACE-001` behavior and updated four-skill workflow. It advances the current formula and documentation without replacing, retagging, republishing, or changing immutable 0.4.0 artifacts.
 **PC-REL-005 — Watcher release.** Tool `0.6.0` publishes the accepted `PROJECT-WATCHER-001` behavior, exact CLI option ownership, behavior-preserving diff fallback and persisted-slice parser repairs, and the same four separately installed tagged skills through terminal receipt `BASE-REL-015`. `PROJECT-WATCHER-INTEGRATION-001` repairs current source compatibly without changing or republishing that release. It preserves graph/config/cache/snapshot schemas, thirty rules, semantics of the seven existing analysis commands, project manifest schema 1, and immutable 0.4.0/0.5.0/0.6.0 artifacts.
 **PC-REL-006 — Watcher repair candidate.** Tool `0.6.1` is an unpublished compatible patch candidate containing `PROJECT-WATCHER-INTEGRATION-001`. Candidate preparation may align version gates, baselines, skills, and documentation; it does not authorize a tag, archive, formula, installation, website update, or public-release claim.
+**PC-REL-007 — Local candidate activation.** `LOCAL-0.6.1-ACTIVATION-001` separately authorizes this machine to install the accepted source checkpoint through a no-remote local tap as a separately named source-built 0.6.1 Homebrew candidate keg and activate its commit-pinned four-skill bundle while retaining released 0.6.0 rollback assets. It does not authorize an upstream formula or tap edit, public tag or release archive, website change, consumer mutation, or public release claim.

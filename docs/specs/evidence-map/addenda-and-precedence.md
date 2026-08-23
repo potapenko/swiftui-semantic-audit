@@ -2,7 +2,7 @@
 
 - Node type: leaf
 - Status: Active
-- Contract revision: `spec-17`
+- Contract revision: `spec-18`
 - Authority: [Specification coverage and evidence map](../evidence-map.md)
 - Read when: tracing an authorized addendum or selecting evidence for a product decision.
 - Do not read when: only source-section coverage or ownership is needed.
@@ -29,6 +29,7 @@
 | `SEMANTIC-TWIN-CAPABILITIES-001` | Restore accepted landing breadth and keep versions subordinate to the product promise | `WEB-DELTA-009`, `WEB-STORY-001/003`, `WEB-TWIN-001`, `WEB-LOOP-001`, `WEB-VERSION-001` | landing capability blocks, release-claim tests, local browser QA |
 | `RELEASE-0.6.0-001` | Receipt-gated publication of the accepted watcher, diff/CLI hardening, and same four-skill workflow | `PC-REL-002..005`, `CLI-GEN-005`, `CLI-PRJ-*`, `ACC-BREW-*`, `ACC-DOD-016..017`, `WEB-DELTA-010`, `WEB-FRESH-001`, `WEB-CLAIM-001` | immutable 0.6.0 tag/archive, GitHub Release, `potapenko/homebrew-tap`, local CLI/tagged skills, hosted CI, and terminal public-site receipt |
 | `RELEASE-0.6.1-001` | Unpublished compatible patch candidate for the watcher integration repair | `PC-REL-006`, `CLI-GEN-005`, `CLI-PRJ-003..004`, `ACC-WATCH-008..009`, `ACC-CI-005`, `ACC-DOD-018` | candidate version/CI, canonical baselines, router guidance, local verification, explicit publication absence |
+| `LOCAL-0.6.1-ACTIVATION-001` | Pinned local candidate CLI and four-skill activation without publication | `PC-REL-007`, `ACC-DOD-019`, `BASE-CAP-019`, `BASE-REL-017` | retained source archive, no-remote local tap/candidate keg, active CLI and skill links, 0.6.0 rollback assets, explicit external-state exclusions |
 
 ## Evidence precedence by decision
 
