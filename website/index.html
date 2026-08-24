@@ -655,9 +655,9 @@ selection: <span class="syntax-type">Binding</span>(
         <div class="section-heading split-heading">
           <div>
             <p class="eyebrow">Installation</p>
-            <h2 id="install-title">Install with one prompt</h2>
+            <h2 id="install-title">Install or update with one prompt</h2>
           </div>
-          <p>Paste one short setup request into Codex or Claude Code. The agent can install Homebrew if needed, then the CLI and all four skills.</p>
+          <p>Paste the matching request into Codex or Claude Code. The agent follows the current release guide and verifies the result.</p>
         </div>
 
         <div class="install-grid">
@@ -669,14 +669,31 @@ selection: <span class="syntax-type">Binding</span>(
                 <img src="assets/icons/external-link.svg" alt="" aria-hidden="true">
               </a>
             </header>
-            <div class="copy-block copy-block-prompt copy-surface copy-surface-dark">
-              <button class="copy-button" type="button" data-copy-target="agent-setup-prompt" aria-describedby="agent-setup-status" title="Copy setup prompt">
-                <img src="assets/icons/copy.svg" alt="" aria-hidden="true">
-                <span class="sr-only">Copy setup prompt</span>
-              </button>
-              <pre id="agent-setup-prompt" tabindex="0"><code>Install SwiftUI Semantic Audit from this GitHub guide. Install Homebrew first if needed, then the CLI and all four agent skills:
+            <div class="install-prompts">
+              <section class="install-prompt" aria-labelledby="install-new-title">
+                <h4 id="install-new-title">New installation</h4>
+                <div class="copy-block copy-block-prompt copy-surface copy-surface-dark">
+                  <button class="copy-button" type="button" data-copy-target="agent-setup-prompt" aria-describedby="agent-setup-status" title="Copy install prompt">
+                    <img src="assets/icons/copy.svg" alt="" aria-hidden="true">
+                    <span class="sr-only">Copy install prompt</span>
+                  </button>
+                  <pre id="agent-setup-prompt" tabindex="0"><code>Install SwiftUI Semantic Audit from this GitHub guide. Install Homebrew first if needed, then the CLI and all four agent skills:
 https://github.com/potapenko/swiftui-semantic-audit/blob/0.6.0/docs/getting-started/installation.md</code></pre>
-              <p id="agent-setup-status" class="copy-status sr-only" aria-live="polite"></p>
+                  <p id="agent-setup-status" class="copy-status sr-only" aria-live="polite"></p>
+                </div>
+              </section>
+
+              <section class="install-prompt" aria-labelledby="install-update-title">
+                <h4 id="install-update-title">Existing installation</h4>
+                <div class="copy-block copy-block-prompt copy-surface copy-surface-dark">
+                  <button class="copy-button" type="button" data-copy-target="agent-update-prompt" aria-describedby="agent-update-status" title="Copy update prompt">
+                    <img src="assets/icons/copy.svg" alt="" aria-hidden="true">
+                    <span class="sr-only">Copy update prompt</span>
+                  </button>
+                  <pre id="agent-update-prompt" tabindex="0"><code>Update SwiftUI Semantic Audit to the latest stable release using the guide linked from https://swiftui-audit.dev/#install. Update the Homebrew CLI and all four agent skills separately, then verify that they use the same release.</code></pre>
+                  <p id="agent-update-status" class="copy-status sr-only" aria-live="polite"></p>
+                </div>
+              </section>
             </div>
           </article>
 

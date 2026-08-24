@@ -1,5 +1,45 @@
 # Landing page design QA
 
+## Install and update prompts
+
+- Contract epoch: `tz-v26`, user-authorized `UPDATE-UX-001`.
+- Target flow: `/` loads → a visitor reaches `Install or update` → the
+  existing-installation copy control copies the exact update request → the
+  icon changes to a check and the live region announces success.
+- The existing install prompt remains first. The update prompt follows it
+  vertically at every viewport width; the two prompts never form columns.
+- The CLI-only row remains secondary and unchanged in meaning.
+
+**Visual evidence**
+
+- Browser plugin classification: absent. The frontend QA fallback used an
+  isolated headed Playwright CLI session against the generated local artifact
+  at `http://127.0.0.1:4173/`.
+- Desktop installation section: 1280 by 755 pixels, SHA-256
+  `b9dfef983c12631baaa3959936d8b4a1c2e4ab65691040a260ba5a7af3c29a19`.
+- Mobile evidence: 390 by 1400 pixels, SHA-256
+  `89dacc585f895aed5352a64b15cf1364f3abbeed3183e816a8a8c2a77f14d27e`.
+- Both renders preserve the existing paper, ruled alignment, dark prompt
+  surfaces, compact upper-right copy controls, and mobile reading order. The
+  screenshots remain in the task-scoped `/tmp` directory until handoff; no
+  generated browser artifact is committed.
+
+**Responsive, interaction, and accessibility evidence**
+
+- At 1280, 1024, 768, 390, and 320 CSS pixels, client width equals scroll
+  width. Both prompts resolve as two vertical rows and one full-width column.
+- The update control copied the exact visible 228-character prompt, displayed
+  `Copied`, and announced `Copied to the clipboard.` Console errors and
+  warnings: none.
+- With JavaScript disabled at 390 CSS pixels, both prompts remain visible, the
+  enhancement-only update copy control is hidden, and the document has no
+  horizontal overflow.
+- The update copy passes the `de-ai-writing` landing heuristic with score 0,
+  verdict `clean`, and no reported issues.
+- Static website and publisher acceptance: 21 tests passed. JavaScript syntax,
+  deterministic build, and diff hygiene passed. No deployment or public-site
+  mutation was performed.
+
 ## Compact actionable copy controls
 
 - Contract epoch: `tz-v22`, user-authorized `COPY-CONTROLS-001` with placement

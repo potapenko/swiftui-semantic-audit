@@ -2,7 +2,7 @@
 
 - Node type: leaf
 - Status: Active
-- Contract revision: `spec-4`
+- Contract revision: `spec-5`
 - Authority: [Website contract](../website.md)
 - Maximum size: 100 physical lines.
 
@@ -30,7 +30,7 @@ the page remains complete and navigable when scripts fail or are disabled.
 
 **WEB-INTERACT-002.** Use one compact, translucent gray icon button at the
 upper-right of every actionable prompt or command block: the three task prompts,
-the setup prompt, and the CLI-only command. Give every control an accessible
+the install prompt, the update prompt, and the CLI-only command. Give every control an accessible
 purpose, keyboard focus, and success/failure announcement. Do not add copy
 controls to explanatory SwiftUI samples or inline terminology.
 

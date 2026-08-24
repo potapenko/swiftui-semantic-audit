@@ -8,9 +8,9 @@
 - Maximum size: 100 physical lines.
 
 Revision: `spec-22`
-Baseline state: `0.6.0 released and immutable; 0.6.1 is an unpublished candidate active on this machine only; canonical website carries verified 0.6.0 release facts`
-Contract epoch: `tz-v25`
-Website contract epoch: `tz-v22`
+Baseline state: `0.6.0 released and immutable; 0.6.1 is an unpublished candidate active on this machine only; canonical website carries verified 0.6.0 release facts; UPDATE-UX-001 is an unpublished local website candidate`
+Contract epoch: `tz-v26`
+Website contract epoch: `tz-v23`
 
 **BASE-REL-001 — Publication state.** Tool `0.6.0` is the current public release and `0.4.0`/`0.5.0` remain immutable earlier releases. Each is distributed from its own immutable Git tag and GitHub Release through the tested upstream tap formula; terminal receipts pin every external artifact.
 

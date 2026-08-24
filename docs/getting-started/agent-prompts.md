@@ -34,8 +34,11 @@ For the underlying procedure, see [Installation](installation.md),
 [Run a first audit](first-audit.md), and the [workflow index](../workflows/README.md).
 
 <a id="install-the-agent-skills"></a>
+<a id="install-or-update-the-cli-and-agent-skills"></a>
 
-## Install the CLI and agent skills
+## Install or update the CLI and agent skills
+
+For a new installation:
 
 ```text
 Install SwiftUI Semantic Audit from this GitHub guide. Install Homebrew first if needed, then the CLI and all four agent skills:
@@ -45,6 +48,16 @@ https://github.com/potapenko/swiftui-semantic-audit/blob/0.6.0/docs/getting-star
 The GitHub installation guide is the canonical detailed procedure. It pins
 artifacts to release `0.6.0` and keeps Homebrew's CLI ownership separate from
 the agent-owned installation of all four skills.
+
+For an existing installation:
+
+```text
+Update SwiftUI Semantic Audit to the latest stable release using the guide linked from https://swiftui-audit.dev/#install. Update the Homebrew CLI and all four agent skills separately, then verify that they use the same release.
+```
+
+The stable website entry point resolves the current immutable guide. The guide
+requires safe inspection before repointing the four sibling skill links and a
+same-release verification receipt after both ownership phases complete.
 
 ## Set up continuous project analysis
 

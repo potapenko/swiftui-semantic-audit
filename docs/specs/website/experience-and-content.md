@@ -2,7 +2,7 @@
 
 - Node type: leaf
 - Status: Active
-- Contract revision: `spec-9`
+- Contract revision: `spec-10`
 - Authority: [Website contract](../website.md)
 - Maximum size: 100 physical lines.
 ## Audience and outcome
@@ -14,7 +14,7 @@ not a linter score, automatic correctness, or the number of rules.
 
 **WEB-GOAL-002.** A visitor should understand the product outcome, see the accepted
 breadth of SwiftUI problems and agent tasks, understand the deterministic fact
-boundary, and reach one stable setup prompt without reading the full README.
+boundary, and reach stable install and update prompts without reading the full README.
 
 ## Narrative and examples
 
@@ -51,6 +51,8 @@ read the GitHub guide, install Homebrew first if absent, install the CLI through
 Homebrew, and then install all four skills. Pin 0.5.0 until the terminal 0.6.0
 receipt, then advance the CLI and all four skills together to 0.6.0. Homebrew installs
 only the CLI and must never modify agent-host directories; compact CLI commands and the full guide remain secondary.
+
+**WEB-INSTALL-002.** Present one short update prompt immediately after the install prompt for visitors with an existing installation. Link through the stable website installation anchor rather than pinning the prompt text to a release. The agent follows the current immutable guide, updates the Homebrew CLI and all four sibling skills as separate phases, and verifies that they use the same stable release. Keep both prompts visible without JavaScript and vertically stacked at every viewport width.
 
 **WEB-FRESH-001.** Before public 0.6.0, describe the twin as built on demand for an exact source state and keep watcher details out of the released capability path. After a terminal 0.6.0 publication receipt, the landing may lead with a freshness-qualified live twin only alongside its indexed receipt and stale-state rejection. `Always-fresh` is never unconditional.
 
@@ -95,6 +97,4 @@ and the Homebrew-versus-agent-skill installation boundary.
 zero configuration, complete SwiftUI bug coverage, fully deterministic
 recommendations, or that audit/diff replaces builds, tests, source review, or
 the surrounding agent host's data policy.
-**WEB-A11Y-001.** Critical content works without JavaScript. Provide semantic
-landmarks, heading order, skip navigation, keyboard-visible focus, labelled
-controls, non-color status cues, AA contrast, reduced-motion support, and responsive reading from 320 CSS pixels upward.
+**WEB-A11Y-001.** Critical content works without JavaScript. Provide semantic landmarks, heading order, skip navigation, keyboard-visible focus, labelled controls, non-color status cues, AA contrast, reduced-motion support, and responsive reading from 320 CSS pixels upward.

@@ -173,9 +173,105 @@ The specialists remain directly invocable for advanced use, but installing only 
 
 For project instructions, audits, focused refactors, change reviews, and staged migrations, continue with the [agent prompt library](agent-prompts.md).
 
-## Updating skills
+## Updating an existing installation
 
-Do not pull a skill clone across release tags or replace existing symlinks blindly. Inspect the current clone and destinations, clone the new immutable tag into a new stable path, validate it, then intentionally repoint all four sibling links as one operator action.
+This immutable guide updates an existing installation to `0.6.0`. Do not pull
+an existing skill clone across release tags or replace destinations blindly.
+The CLI and skills remain separate ownership phases even though the completed
+installation must resolve to one release.
+
+First select the agent host and inspect all current destinations. Use the
+Claude Code skill root instead when appropriate:
+
+```bash
+skill_root="$HOME/.agents/skills"
+printf 'CLI: '
+swiftui-audit --version
+for skill in swiftui-semantic swiftui-semantic-audit swiftui-dataflow-refactor swiftui-change-review; do
+  destination="$skill_root/$skill"
+  test -L "$destination"
+  printf '%s -> %s\n' "$skill" "$(readlink "$destination")"
+  test -f "$destination/SKILL.md"
+done
+```
+
+Stop if any destination is missing, is not a symlink, or does not contain the
+expected `SKILL.md`. Resolve that ownership conflict instead of overwriting it.
+
+Update and verify the Homebrew-owned CLI:
+
+```bash
+brew update
+brew upgrade potapenko/tap/swiftui-semantic-audit
+test "$(swiftui-audit --version)" = "0.6.0"
+```
+
+Prepare the new immutable skill source in its own versioned directory. An
+existing directory is accepted only when it is already the exact release:
+
+```bash
+(
+  set -euo pipefail
+  install_root="$HOME/.local/share/swiftui-semantic-audit/0.6.0"
+  repository="https://github.com/potapenko/swiftui-semantic-audit.git"
+
+  test ! -L "$install_root"
+  if test -e "$install_root"; then
+    test -d "$install_root/.git"
+  else
+    git clone --branch 0.6.0 --depth 1 "$repository" "$install_root"
+  fi
+
+  test "$(git -C "$install_root" remote get-url origin)" = "$repository"
+  test "$(git -C "$install_root" describe --tags --exact-match HEAD)" = "0.6.0"
+  test "$(git -C "$install_root" rev-parse HEAD)" = \
+    "$(git -C "$install_root" rev-list -n 1 0.6.0)"
+  for skill in swiftui-semantic swiftui-semantic-audit swiftui-dataflow-refactor swiftui-change-review; do
+    test -f "$install_root/skills/$skill/SKILL.md"
+  done
+)
+```
+
+Repoint all four sibling links in one guarded operation. The preflight accepts
+only links created by this versioned installation layout:
+
+```bash
+(
+  set -euo pipefail
+  install_root="$HOME/.local/share/swiftui-semantic-audit/0.6.0"
+  skill_root="$HOME/.agents/skills" # Use "$HOME/.claude/skills" for Claude Code.
+
+  for skill in swiftui-semantic swiftui-semantic-audit swiftui-dataflow-refactor swiftui-change-review; do
+    destination="$skill_root/$skill"
+    test -L "$destination"
+    case "$(readlink "$destination")" in
+      "$HOME/.local/share/swiftui-semantic-audit/"*/skills/"$skill") ;;
+      *) printf 'Unexpected skill owner: %s\n' "$destination" >&2; exit 1 ;;
+    esac
+    test -f "$install_root/skills/$skill/SKILL.md"
+  done
+
+  for skill in swiftui-semantic swiftui-semantic-audit swiftui-dataflow-refactor swiftui-change-review; do
+    ln -sfn "$install_root/skills/$skill" "$skill_root/$skill"
+  done
+)
+```
+
+Verify the shared release before reporting success:
+
+```bash
+install_root="$HOME/.local/share/swiftui-semantic-audit/0.6.0"
+skill_root="$HOME/.agents/skills" # Use "$HOME/.claude/skills" for Claude Code.
+test "$(swiftui-audit --version)" = "0.6.0"
+for skill in swiftui-semantic swiftui-semantic-audit swiftui-dataflow-refactor swiftui-change-review; do
+  test "$(readlink "$skill_root/$skill")" = "$install_root/skills/$skill"
+  test -f "$skill_root/$skill/SKILL.md"
+done
+```
+
+Keep the previous immutable clone until the updated CLI and all four links
+have passed verification. Remove it later only after confirming that no other
+host or link still uses it.
 
 ## Uninstalling
 

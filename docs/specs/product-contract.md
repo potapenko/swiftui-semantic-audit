@@ -8,7 +8,7 @@
 - Maximum size: 100 physical lines.
 
 Revision: `spec-18`
-Authority: epoch `tz-v25`, pinned base digest and authorized addenda in the [registry](README.md)
+Authority: epoch `tz-v26`, pinned base digest and authorized addenda in the [registry](README.md)
 Status: active; 0.6.0 is the current public release and 0.4.0/0.5.0/0.6.0 artifacts are immutable; the compatible watcher repair is an unpublished 0.6.1 candidate active on this machine only through `BASE-REL-017`
 
 ## Choose the governing child

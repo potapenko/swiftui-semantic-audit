@@ -108,6 +108,8 @@ indexed status receipt matching the current workspace and analysis configuration
 Syntax previews, failed generations, and stale receipts are diagnostics, not
 current evidence.
 
-The stable setup prompt links to the immutable `0.6.0`
-installation guide. That guide keeps Homebrew's CLI installation separate from
-the four agent-skill installations.
+The stable setup prompt links to the immutable `0.6.0` installation guide. A
+second prompt for existing installations uses the stable website installation
+anchor to resolve the current guide. Both keep Homebrew's CLI ownership
+separate from the four sibling agent-skill links and require same-release
+verification.

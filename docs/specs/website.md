@@ -2,9 +2,9 @@
 
 - Node type: hybrid
 - Status: Active
-- Contract revision: `spec-14`
-- Authority: user-authorized website addenda through `COPY-CONTROLS-RIGHT-001` on 2026-08-23
-- Stability: verified 0.6.0 release facts; semantic-twin story separately evolving
+- Contract revision: `spec-15`
+- Authority: user-authorized website addenda through `UPDATE-UX-001` on 2026-08-24
+- Stability: verified 0.6.0 release facts; update UX is an unpublished local candidate
 - Read when: designing, implementing, publishing, or verifying the product website.
 - Do not read when: work is limited to the Swift package, CLI, rules, or agent skills.
 - Maximum size: 100 physical lines.
@@ -86,15 +86,15 @@ releases; its layout, headline, graph, dimensions, and visual system stay fixed.
 
 **WEB-DELTA-012/013 — Compact actionable copy controls.** `COPY-CONTROLS-001`
 replaces the large setup-prompt action with one shared small, translucent gray
-icon control at each user-applicable block: the three task prompts, the setup prompt, and the CLI-only command. Copy success remains
+icon control at each user-applicable block: the three task prompts, the install prompt, and the CLI-only command. `UPDATE-UX-001` extends the same control to the added update prompt. Copy success remains
 visually and accessibly reported. Demonstration code, inline terminology,
 prompt text, commands, installation ownership, and release facts stay unchanged.
 `COPY-CONTROLS-RIGHT-001` corrects placement to the conventional upper-right
 corner while preserving the accepted size, styling, targets, and feedback.
 
+**WEB-DELTA-014 — One-prompt update.** `UPDATE-UX-001` adds a second compact agent prompt for an existing installation inside the established setup block. The prompt uses the stable `https://swiftui-audit.dev/#install` entry point, keeps the Homebrew CLI and four sibling skills as separate update phases, and requires verification that they resolve to the same stable release. The existing install prompt, CLI-only command, current public version, release artifacts, and no-blind-link-replacement boundary remain unchanged.
 ## Choose the governing child
 
-- [Experience and Content](website/experience-and-content.md) — audience,
-  narrative, examples, visual system, claims, and accessibility.
+- [Experience and Content](website/experience-and-content.md) — audience, narrative, examples, visual system, claims, and accessibility.
 - [Delivery and Acceptance](website/delivery-and-acceptance.md) — source/build
   boundaries, DigitalOcean deployment, metadata, interactions, and QA.

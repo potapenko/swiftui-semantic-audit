@@ -2,13 +2,13 @@
 
 - Node type: hybrid
 - Status: Active
-- Contract revision: `spec-19`
+- Contract revision: `spec-20`
 - Read when: tracing original sections or authorized addenda to stable clauses and evidence ownership.
 - Do not read when: the governing contract is already selected and traceability is not in question.
 - Maximum size: 100 physical lines.
 
-Revision: `spec-19`
-Authority: ТЗ epoch `tz-v1` plus user-authorized addenda through `LOCAL-0.6.1-ACTIVATION-001`, combined epoch `tz-v25`
+Revision: `spec-20`
+Authority: ТЗ epoch `tz-v1` plus user-authorized addenda through `UPDATE-UX-001`, combined epoch `tz-v26`
 Purpose: route every source section to stable local clauses and evidence owners
 
 This map proves coverage; it does not create new requirements. Source and tests establish realization only after the normative contract is fixed.
@@ -87,6 +87,12 @@ This map proves coverage; it does not create new requirements. Source and tests 
 `RELEASE-0.6.1-001` maps to `PC-REL-006`, `CLI-GEN-005`, `CLI-PRJ-003..004`, `ACC-WATCH-008..009`, `ACC-CI-005`, `ACC-DOD-018`, and `BASE-REL-016`; realization owners are the master integration checkpoint, candidate version/CI gates, canonical baselines, router guidance, local package/skill/docs verification, and the explicit absence of publication receipts.
 
 `LOCAL-0.6.1-ACTIVATION-001` maps to `PC-REL-007`, `ACC-DOD-019`, `BASE-CAP-019`, and `BASE-REL-017`; realization owners are the pinned local source archive, source-built Homebrew keg and active executable, commit-pinned four-skill checkout and Codex links, retained 0.6.0 rollback assets, and the explicit absence of external publication or consumer mutation.
+
+`UPDATE-UX-001` maps to `WEB-DELTA-014`, `WEB-INSTALL-002`,
+`WEB-INTERACT-001..002`, and `WEB-QA-001..002`; realization owners are the
+landing setup block, the stable website installation anchor, the immutable
+release guide's update procedure, public setup-copy mirrors, automated website
+acceptance, and local browser QA.
 
 ## Choose the supporting map
 

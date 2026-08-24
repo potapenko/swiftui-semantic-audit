@@ -2,11 +2,17 @@
 
 ## Recommended route
 
-Give this prompt to a local Codex or Claude Code agent:
+For a new installation, give this prompt to a local Codex or Claude Code agent:
 
 ```text
 Install SwiftUI Semantic Audit from this GitHub guide. Install Homebrew first if needed, then the CLI and all four agent skills:
 https://github.com/potapenko/swiftui-semantic-audit/blob/0.6.0/docs/getting-started/installation.md
+```
+
+For an existing installation:
+
+```text
+Update SwiftUI Semantic Audit to the latest stable release using the guide linked from https://swiftui-audit.dev/#install. Update the Homebrew CLI and all four agent skills separately, then verify that they use the same release.
 ```
 
 The GitHub guide pins installation artifacts to the immutable `0.6.0` release.
@@ -25,8 +31,8 @@ Version `0.6.0` can set up continuous semantic analysis first. The router previe
 
 The [installation guide](installation.md) covers verification, conflicts, manual
 setup, updates, removal, and why all four skill directories remain siblings.
-The [agent prompt library](agent-prompts.md#install-the-cli-and-agent-skills)
-keeps the same copy-paste prompt with the workflow recipes.
+The [agent prompt library](agent-prompts.md#install-or-update-the-cli-and-agent-skills)
+keeps both copy-paste prompts with the workflow recipes.
 
 ## Before the first agent audit
 

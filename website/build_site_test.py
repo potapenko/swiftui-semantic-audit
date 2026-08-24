@@ -28,6 +28,11 @@ SETUP_PROMPT = (
     "first if needed, then the CLI and all four agent skills:\n"
     f"{INSTALL_GUIDE_URL}"
 )
+UPDATE_PROMPT = (
+    "Update SwiftUI Semantic Audit to the latest stable release using the guide "
+    "linked from https://swiftui-audit.dev/#install. Update the Homebrew CLI and "
+    "all four agent skills separately, then verify that they use the same release."
+)
 
 
 def png(width: int, height: int) -> bytes:
@@ -230,6 +235,7 @@ class ProductionPageContractTests(unittest.TestCase):
     def test_internal_links_assets_copy_hooks_and_claims(self) -> None:
         source_root = Path(__file__).resolve().parent
         source = (source_root / "index.html").read_text(encoding="utf-8")
+        styles = (source_root / "styles.css").read_text(encoding="utf-8")
         probe = ProductionPageProbe()
         probe.feed(source)
         probe.close()
@@ -258,6 +264,7 @@ class ProductionPageContractTests(unittest.TestCase):
                 ("workflow-refactor-prompt", "workflow-refactor-status"),
                 ("workflow-review-prompt", "workflow-review-status"),
                 ("agent-setup-prompt", "agent-setup-status"),
+                ("agent-update-prompt", "agent-update-status"),
                 ("install-cli-command", "install-cli-status"),
             ],
         )
@@ -284,9 +291,11 @@ class ProductionPageContractTests(unittest.TestCase):
         for removed_explainer_id in ("problem", "twin", "loop", "use-cases"):
             self.assertNotIn(removed_explainer_id, known_ids)
         self.assertIn('<section id="install"', source)
-        install = source.split('<section id="install"', 1)[1].split("</section>", 1)[0]
+        install = source.split('<section id="install"', 1)[1].split(
+            '<section class="faq"', 1
+        )[0]
         self.assertIn(
-            '<h2 id="install-title">Install with one prompt</h2>',
+            '<h2 id="install-title">Install or update with one prompt</h2>',
             install,
         )
         self.assertNotIn('class="step-number"', install)
@@ -295,12 +304,23 @@ class ProductionPageContractTests(unittest.TestCase):
             install,
         )
         self.assertIn(
+            f'<pre id="agent-update-prompt" tabindex="0"><code>{UPDATE_PROMPT}</code></pre>',
+            install,
+        )
+        self.assertIn(
             '<pre id="install-cli-command" tabindex="0"><code>'
             "brew install potapenko/tap/swiftui-semantic-audit</code></pre>",
             install,
         )
         self.assertNotIn("<span>Copy setup prompt</span>", install)
-        self.assertEqual(source.count('class="copy-button"'), 5)
+        self.assertEqual(source.count('class="copy-button"'), 6)
+        self.assertIn('<h4 id="install-new-title">New installation</h4>', install)
+        self.assertIn('<h4 id="install-update-title">Existing installation</h4>', install)
+        self.assertLess(install.index("install-new-title"), install.index("install-update-title"))
+        prompt_layout = re.search(r"\.install \.install-prompts\s*\{([^}]*)\}", styles)
+        self.assertIsNotNone(prompt_layout)
+        self.assertNotIn("grid-template-columns", prompt_layout.group(1))
+        self.assertEqual(styles.count(".install .install-prompts"), 1)
         self.assertIn('<h3 id="install-cli-title">CLI only</h3>', install)
         self.assertIn(f'href="{INSTALL_GUIDE_URL}"', install)
         self.assertNotIn('class="install-next"', install)
