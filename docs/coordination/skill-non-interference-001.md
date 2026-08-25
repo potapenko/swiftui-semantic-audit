@@ -21,3 +21,12 @@
 2. Explicit `$swiftui-semantic` invocation selects exactly the requested watcher, audit, refactor, or review route.
 3. Explicit specialist invocation runs its complete indexed workflow without weakening existing gates.
 4. Missing indexed evidence stops only the explicitly requested semantic result, reports the smallest missing evidence, and does not become a claim about unrelated task progress.
+
+## Local acceptance receipt
+
+- Source checkpoint: `04c8fb84ecc1021cc22853277049222348e03da0` on the operator-selected `master`.
+- Built bundle: clean detached checkout `/Users/eugenepotapenko/.local/share/swiftui-semantic-audit/0.6.1-candidate-04c8fb8` at the exact source checkpoint.
+- Validation: all four `quick_validate.py` runs passed; repository YAML, policy, prompt, link, CLI-matrix, artifact-hygiene, Markdown-line-limit, and diff checks passed.
+- Activation: all four `/Users/eugenepotapenko/.codex/skills/swiftui-*` links resolve to the built bundle, each active metadata file reports `policy.allow_implicit_invocation: false`, and each active `SKILL.md` is byte-identical to the source checkpoint.
+- Rollback: the prior `0.6.1-candidate-fe50f87` checkout and released `0.6.0` skill bundle remain unchanged and available.
+- External state: no CLI, Homebrew formula, Git remote, tag, release, website, consumer project, watcher service, or public artifact changed.

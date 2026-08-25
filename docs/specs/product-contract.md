@@ -9,7 +9,7 @@
 
 Revision: `spec-19`
 Authority: epoch `tz-v27`, pinned base digest and authorized addenda in the [registry](README.md)
-Status: active; 0.6.0 is the current public release and 0.4.0/0.5.0/0.6.0 artifacts are immutable; the compatible watcher repair is an unpublished 0.6.1 candidate active on this machine only through `BASE-REL-017`
+Status: active; 0.6.0 is the current public release and 0.4.0/0.5.0/0.6.0 artifacts are immutable; the compatible watcher repair CLI is active locally through `BASE-REL-017` and the explicit-only skill bundle through `BASE-REL-018`
 
 ## Choose the governing child
 

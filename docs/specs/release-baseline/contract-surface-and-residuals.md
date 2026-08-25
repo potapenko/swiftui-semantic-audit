@@ -54,7 +54,7 @@
 
 **BASE-CAP-018.** Unpublished candidate 0.6.1 adds the schema-1-compatible `watch.buildAndAnalysisTimeoutSeconds` contract, legacy 300-second decode behavior, manifest-driven managed registration, explicit foreground override precedence, and root-then-selected-source analysis-configuration discovery. It does not change analysis schemas, rules, one-shot commands, or public 0.6.0 artifacts.
 
-**BASE-CAP-019.** On the operator machine only, active Homebrew command `swiftui-audit` and all four Codex skills resolve to the commit-pinned 0.6.1 candidate recorded by `BASE-REL-017`; released 0.6.0 CLI and skills remain retained rollback assets. This local activation is not an upstream Homebrew, tagged-skill, website, or public release state.
+**BASE-CAP-019.** On the operator machine only, active Homebrew command `swiftui-audit` remains the commit-pinned 0.6.1 candidate recorded by `BASE-REL-017`, while all four Codex skills resolve to the explicit-only checkpoint recorded by `BASE-REL-018`; released 0.6.0 CLI and skills remain retained rollback assets. This local activation is not an upstream Homebrew, tagged-skill, website, or public release state.
 
 ## Accepted residuals and limits
 

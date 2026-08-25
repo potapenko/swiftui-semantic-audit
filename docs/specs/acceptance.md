@@ -9,7 +9,7 @@
 
 Revision: `spec-20`
 Status: active  
-Release state: 0.6.0 is the current public release and 0.4.0/0.5.0/0.6.0 artifacts are immutable; 0.6.1 is a locally accepted and activated unpublished candidate pinned by `BASE-REL-017`, while hosted and public gates remain nonterminal
+Release state: 0.6.0 is the current public release and 0.4.0/0.5.0/0.6.0 artifacts are immutable; the 0.6.1 CLI remains locally active through `BASE-REL-017` and the explicit-only four-skill bundle through `BASE-REL-018`, while hosted and public gates remain nonterminal
 
 ## Choose the governing child
 
