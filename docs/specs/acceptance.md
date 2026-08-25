@@ -2,12 +2,12 @@
 
 - Node type: branch
 - Status: Active
-- Contract revision: `spec-19`
+- Contract revision: `spec-20`
 - Read when: selecting fixture, build, determinism, safety, dogfood, skill, CI, or completion obligations.
 - Do not read when: the task does not implement or verify accepted behavior.
 - Maximum size: 100 physical lines.
 
-Revision: `spec-19`
+Revision: `spec-20`
 Status: active  
 Release state: 0.6.0 is the current public release and 0.4.0/0.5.0/0.6.0 artifacts are immutable; 0.6.1 is a locally accepted and activated unpublished candidate pinned by `BASE-REL-017`, while hosted and public gates remain nonterminal
 

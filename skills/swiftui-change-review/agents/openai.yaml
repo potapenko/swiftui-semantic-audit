@@ -1,4 +1,6 @@
 interface:
   display_name: "SwiftUI Change Review"
-  short_description: "Review SwiftUI semantic data-flow changes"
-  default_prompt: "Use $swiftui-change-review to review these SwiftUI changes by semantic diff before source diff."
+  short_description: "Run an explicit SwiftUI semantic review"
+  default_prompt: "Use $swiftui-change-review to run an explicitly requested indexed semantic review before source-diff analysis."
+policy:
+  allow_implicit_invocation: false

@@ -1,9 +1,16 @@
 ---
 name: swiftui-semantic-audit
-description: Audit Swift and SwiftUI state/data-flow architecture with swiftui-audit before reading broad source. Use when Codex needs to investigate ownership, duplicated state, synchronization, callback plumbing, custom Binding effects, Observation tunnels, broad component inputs, derived state, or semantic findings in a SwiftUI codebase.
+description: Run an explicitly requested indexed SwiftUI semantic audit through findings and focused slices. Use only when the user invokes `$swiftui-semantic-audit`; ordinary diagnosis or code reading is out of scope.
 ---
 
 # SwiftUI Semantic Audit
+
+## Invocation boundary
+
+Run this workflow only after explicit `$swiftui-semantic-audit` invocation or
+an explicit handoff from `$swiftui-semantic`. Do not activate it merely because
+ordinary SwiftUI work involves state, ownership, Binding, architecture, or a
+diagnosis.
 
 ## Establish indexed analysis
 
@@ -69,7 +76,7 @@ Allow LLM reasoning to add intent, risk, classification, or remediation. Never l
 
 ## Failure policy
 
-Stop and report the exact command, exit status, stderr, and unresolved evidence when:
+Stop the explicitly requested semantic audit and report the exact command, exit status, stderr, and unresolved evidence when:
 
 - a command fails or stdout is not valid JSON for the requested format;
 - a finding or symbol is missing or ambiguous;

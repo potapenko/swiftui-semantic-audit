@@ -539,14 +539,23 @@ jobs:
             frontmatter = YAML.safe_load(match[1], permitted_classes: [], aliases: false)
             abort("wrong frontmatter keys in #{skill}") unless frontmatter.keys.sort == %w[description name]
             abort("name mismatch in #{skill}") unless frontmatter["name"] == name
+            description = frontmatter.fetch("description")
+            abort("description is not explicit-only in #{skill}") unless description.downcase.include?("explicit")
+            abort("description missing $#{name}") unless description.include?("$#{name}")
 
             metadata_path = root / "agents" / "openai.yaml"
             metadata_text = metadata_path.read(encoding: "UTF-8")
             metadata = YAML.safe_load(metadata_text, permitted_classes: [], aliases: false)
+            abort("wrong metadata keys in #{metadata_path}") unless metadata.keys.sort == %w[interface policy]
             interface = metadata.fetch("interface")
             required = %w[default_prompt display_name short_description]
             abort("wrong interface keys in #{metadata_path}") unless interface.keys.sort == required.sort
-            abort("unquoted interface string in #{metadata_path}") unless metadata_text.lines.drop(1).all? { |line| line.match?(/:\s+".*"\s*$/) }
+            required.each do |key|
+              abort("unquoted #{key} in #{metadata_path}") unless metadata_text.match?(/^  #{Regexp.escape(key)}:\s+".*"\s*$/)
+            end
+            policy = metadata.fetch("policy")
+            abort("wrong policy keys in #{metadata_path}") unless policy.keys == ["allow_implicit_invocation"]
+            abort("implicit invocation enabled in #{metadata_path}") unless policy.fetch("allow_implicit_invocation") == false
             length = interface.fetch("short_description").length
             abort("short description length #{length} in #{metadata_path}") unless (25..64).cover?(length)
             prompt = interface.fetch("default_prompt")

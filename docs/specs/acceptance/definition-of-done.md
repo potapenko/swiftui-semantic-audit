@@ -2,7 +2,7 @@
 
 - Node type: leaf
 - Status: Active
-- Contract revision: `spec-16`
+- Contract revision: `spec-17`
 - Authority: [Acceptance and QA contract](../acceptance.md)
 - Read when: selecting fixture, build, determinism, safety, dogfood, skill, CI, or completion obligations.
 - Do not read when: the task does not implement or verify accepted behavior.
@@ -48,3 +48,5 @@
 **ACC-DOD-018.** `RELEASE-0.6.1-001` is a complete local candidate only when the integrated watcher repair, exact 0.6.1 version/CI gates, compatible canonical baselines, router guidance, focused/full tests, Release build, executable help, indexed watcher dogfood, skill/docs validation, and protected website regressions are locally terminal. Hosted CI, tag/archive, upstream tap, website facts, and publication receipt remain explicitly nonterminal; installation and skill activation require separate authority.
 
 **ACC-DOD-019.** `LOCAL-0.6.1-ACTIVATION-001` is complete only when a checksum-pinned archive of the accepted checkpoint builds and functionally tests as Homebrew keg 0.6.1, the active executable reports 0.6.1 and exposes candidate help, all four validated skills resolve to one clean commit-pinned candidate checkout, released 0.6.0 rollback assets remain, no external release or consumer state changes, and a local receipt is checkpointed.
+
+**ACC-DOD-020.** `SKILL-NON-INTERFERENCE-001` is complete only when all four semantic skills are explicit-only in source and the active local bundle, descriptions and bodies exclude ordinary SwiftUI work from automatic routing, explicit invocations preserve every indexed/fact/artifact gate, repository validation passes, released bundles remain immutable, and the local activation receipt is checkpointed.

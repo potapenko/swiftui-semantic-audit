@@ -1,9 +1,16 @@
 ---
 name: swiftui-dataflow-refactor
-description: Refactor SwiftUI state ownership and data flow with snapshot, audit, slice, semantic diff, and check gates. Use when Codex needs to remove manual synchronization, collapse duplicated sources of truth, replace callback plumbing, correct derived state, or improve Binding, Bindable, Environment, or State architecture while preserving behavior.
+description: Run an explicitly requested indexed SwiftUI data-flow refactor with snapshot, slice, diff, and check gates. Use only when the user invokes `$swiftui-dataflow-refactor`.
 ---
 
 # SwiftUI Dataflow Refactor
+
+## Invocation boundary
+
+Run this workflow only after explicit `$swiftui-dataflow-refactor` invocation
+or an explicit handoff from `$swiftui-semantic`. Do not activate it merely
+because ordinary SwiftUI implementation or refactoring touches state,
+ownership, Binding, Observation, or derived data.
 
 ## Fix one semantic-value cluster
 
@@ -59,7 +66,7 @@ Treat JSON stdout as the machine contract. Keep stderr and exit status separate.
 
 Reject the refactor when it introduces a high-severity finding, increases manual synchronization, adds an unexplained mutable/write/call path, makes ownership ambiguous, broadens a component dependency without evidence, hides a Binding setter effect, weakens an invariant, or changes transaction/lifetime semantics. Treat a failed build or behavior test as a rejection, even when semantic metrics improve.
 
-Stop without editing further when a command fails, JSON is invalid, a slice is missing/ambiguous or cannot fit, a fresh explicit index cannot cover the project, any result is not indexed, resolutions differ, snapshot paths are unsafe, or intended ownership remains unknown. Report the exact failure and smallest missing evidence. Never fill deterministic AST/symbol/read/write/source facts with model guesses.
+Stop the explicitly requested semantic refactor without editing further when a command fails, JSON is invalid, a slice is missing/ambiguous or cannot fit, a fresh explicit index cannot cover the project, any result is not indexed, resolutions differ, snapshot paths are unsafe, or intended ownership remains unknown. Report the exact failure and smallest missing evidence. Never fill deterministic AST/symbol/read/write/source facts with model guesses or treat the semantic limitation as a blocker for unrelated work.
 
 ## Report the cluster outcome
 

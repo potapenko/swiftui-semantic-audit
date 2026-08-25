@@ -12,6 +12,9 @@ spelling with `/swiftui-semantic`. For the final long-running prompt, keep the
 `/goal` prefix in Codex; in Claude Code, remove the prefix and use the rest as a
 project task brief.
 
+All four semantic skills are explicit-only. Ordinary SwiftUI implementation,
+debugging, refactor, and review requests do not activate them.
+
 ## Before an agent workflow
 
 The audit, refactor, review, and migration prompts require:

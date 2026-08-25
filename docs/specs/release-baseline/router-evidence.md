@@ -2,7 +2,7 @@
 
 - Node type: leaf
 - Status: Active
-- Contract revision: `spec-11`
+- Contract revision: `spec-12`
 - Authority: [Release and publication baseline](../release-baseline.md)
 - Read when: checking acceptance evidence for an authorized addendum.
 - Do not read when: only platform, milestone, current-surface, or residual information is needed.
@@ -35,3 +35,5 @@
 **BASE-NEXT-012.** Skill/CLI ownership checkpoint `eea2bdff11f0d2db76ff51668c55477a7f24e1f9` gives all four skills one shared invocation matrix, proves live-source flags only on live analysis commands, validates fresh watcher receipt identity fields, rejects invalid doctor/persisted-input constructions, and adds CI guards for the matrix links and every command help surface.
 
 **BASE-NEXT-013.** Persisted-slice parser checkpoint `91860a1ac132b5941b5ee8527d7da64c7f103815` rejects `--syntax-only` and all live index/config/cache/job controls with usage status 64 and empty stdout. Accepted head/indexed-baseline checkpoint `9c8d5475fd6bace8d9ff607bd76250dcbfd1ff70` aligns the tracked project twin with that CLI contract; hosted CI `32624693470` passed the parser, baseline, skills, and docs gates.
+
+**BASE-NEXT-014.** `SKILL-NON-INTERFERENCE-001` source acceptance requires all four `agents/openai.yaml` files to set `policy.allow_implicit_invocation: false`, frontmatter and bodies to state the explicit boundary, ordinary SwiftUI work to remain outside routing, and explicit invocations to preserve indexed, fact, CLI-matrix, artifact, and failure gates. All four bundled validators, repository YAML/policy/link checks, documentation checks, and clean diff checks must pass before local activation.

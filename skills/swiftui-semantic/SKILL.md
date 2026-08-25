@@ -1,11 +1,18 @@
 ---
 name: swiftui-semantic
-description: Route SwiftUI semantic-twin evidence to audit, refactor, or change-review workflows, and set up continuous project state when the compatible watcher capability is present. Use when Codex needs one entry point for ownership investigation, synchronization or Binding fixes, semantic change review, or project-watcher setup.
+description: Explicitly route a requested SwiftUI semantic-twin workflow to watcher setup, audit, refactor, or change review. Use only when the user invokes `$swiftui-semantic`; ordinary SwiftUI work is out of scope.
 ---
 
 # SwiftUI Semantic Twin Router
 
-Treat the semantic twin as the deterministic fact source shared by every route.
+## Invocation boundary
+
+Run this router only after explicit `$swiftui-semantic` invocation. Do not
+activate it for ordinary SwiftUI implementation, debugging, architecture,
+refactor, or review work, even when that work mentions state, ownership,
+Binding, a diff, or a semantic concern.
+
+Within the explicitly requested workflow, treat the semantic twin as the deterministic fact source shared by every selected route.
 It preserves supported ownership and data-flow facts, evidence, compatible
 snapshots, and bounded slices. It is not an LLM summary; the selected specialist
 and surrounding agent supply judgment without rewriting those facts.
@@ -56,7 +63,7 @@ Keep these facts unchanged when moving between specialists:
 
 Never reinterpret missing deterministic evidence during a handoff. Return `unknown` or request the smallest missing evidence.
 
-Require every specialist result to report `resolution: "indexed"`. Stop the workflow when a fresh project-covering Index Store or compatible indexed snapshot is unavailable; do not weaken the workflow through automatic resolution fallback.
+Require every specialist result to report `resolution: "indexed"`. Stop the explicitly requested semantic workflow when a fresh project-covering Index Store or compatible indexed snapshot is unavailable; do not weaken the workflow through automatic resolution fallback or treat this semantic limitation as a blocker for unrelated work.
 
 ## Keep the semantic boundary
 

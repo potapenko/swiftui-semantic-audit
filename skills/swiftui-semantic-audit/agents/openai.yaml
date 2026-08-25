@@ -1,4 +1,6 @@
 interface:
   display_name: "SwiftUI Semantic Audit"
-  short_description: "Audit SwiftUI semantic data flow"
-  default_prompt: "Use $swiftui-semantic-audit to audit this SwiftUI codebase through semantic findings and focused slices."
+  short_description: "Run an explicit SwiftUI semantic audit"
+  default_prompt: "Use $swiftui-semantic-audit to run an explicitly requested indexed audit through findings and focused slices."
+policy:
+  allow_implicit_invocation: false

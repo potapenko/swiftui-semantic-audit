@@ -2,13 +2,13 @@
 
 - Node type: hybrid
 - Status: Active
-- Contract revision: `spec-20`
+- Contract revision: `spec-21`
 - Read when: tracing original sections or authorized addenda to stable clauses and evidence ownership.
 - Do not read when: the governing contract is already selected and traceability is not in question.
 - Maximum size: 100 physical lines.
 
-Revision: `spec-20`
-Authority: ТЗ epoch `tz-v1` plus user-authorized addenda through `UPDATE-UX-001`, combined epoch `tz-v26`
+Revision: `spec-21`
+Authority: ТЗ epoch `tz-v1` plus user-authorized addenda through `SKILL-NON-INTERFERENCE-001`, combined epoch `tz-v27`
 Purpose: route every source section to stable local clauses and evidence owners
 
 This map proves coverage; it does not create new requirements. Source and tests establish realization only after the normative contract is fixed.

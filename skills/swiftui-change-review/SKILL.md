@@ -1,9 +1,16 @@
 ---
 name: swiftui-change-review
-description: Review AI-generated or human SwiftUI changes through semantic diff and focused graph slices before raw Git diff. Use when Codex needs to assess state ownership, mutable representations, write paths, bindings, derived values, invariants, or lifetime changes and separate behavioral semantic risk from implementation-only edits.
+description: Run an explicitly requested indexed semantic review of SwiftUI changes through compatible snapshots, diff, and focused slices. Use only when the user invokes `$swiftui-change-review`.
 ---
 
 # SwiftUI Change Review
+
+## Invocation boundary
+
+Run this workflow only after explicit `$swiftui-change-review` invocation or an
+explicit handoff from `$swiftui-semantic`. Do not activate it merely because a
+SwiftUI diff, commit, changed worktree, ownership question, or ordinary code
+review exists.
 
 ## Review semantic change first
 
@@ -50,7 +57,7 @@ Never recommend “Use Binding everywhere,” “Minimize `@State`,” blanket m
 
 ## Failure policy
 
-Stop and report the exact command, exit status, stderr, and missing evidence when JSON is invalid, an indexed snapshot is missing or invalid, either input is not indexed, resolutions mismatch, a slice selector is unknown or ambiguous, a token budget is insufficient, or fresh indexed coverage is unavailable. Do not infer a clean review from an empty or failed diff.
+Stop the explicitly requested semantic review and report the exact command, exit status, stderr, and missing evidence when JSON is invalid, an indexed snapshot is missing or invalid, either input is not indexed, resolutions mismatch, a slice selector is unknown or ambiguous, a token budget is insufficient, or fresh indexed coverage is unavailable. Do not infer a clean review from an empty or failed diff or treat the semantic limitation as a blocker for unrelated work.
 
 Treat non-indexed or mixed resolution as a hard guard, not a warning. Request matching indexed snapshots. Return `unknown` for ownership or lifetime when evidence is insufficient.
 

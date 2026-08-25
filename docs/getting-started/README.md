@@ -25,7 +25,7 @@ After the agent returns the installation receipt:
    - Codex: `$swiftui-semantic`
    - Claude Code: `/swiftui-semantic`
 
-2. Ask for an audit, refactor, or review in ordinary language. The router selects the matching specialist workflow.
+2. Continue the explicitly invoked router request with an audit, refactor, or review outcome. The router selects the matching specialist workflow; unrelated SwiftUI work does not activate the bundle.
 
 Version `0.6.0` can set up continuous semantic analysis first. The router previews project writes, creates the project manifest, creates a baseline only when requested, starts the watcher, and returns only with a matching fresh indexed status receipt. See [Project watcher setup](project-watcher.md).
 

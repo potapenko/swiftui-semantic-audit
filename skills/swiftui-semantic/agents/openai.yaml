@@ -1,4 +1,6 @@
 interface:
   display_name: "SwiftUI Semantic"
-  short_description: "Route SwiftUI semantic-twin workflows"
-  default_prompt: "Use $swiftui-semantic to build and route deterministic semantic-twin evidence for this SwiftUI task."
+  short_description: "Run an explicit SwiftUI semantic workflow"
+  default_prompt: "Use $swiftui-semantic to run an explicitly requested deterministic semantic-twin workflow."
+policy:
+  allow_implicit_invocation: false

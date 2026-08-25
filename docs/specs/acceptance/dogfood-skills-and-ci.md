@@ -2,7 +2,7 @@
 
 - Node type: leaf
 - Status: Active
-- Contract revision: `spec-14`
+- Contract revision: `spec-15`
 - Authority: [Acceptance and QA contract](../acceptance.md)
 - Read when: selecting fixture, build, determinism, safety, dogfood, skill, CI, or completion obligations.
 - Do not read when: the task does not implement or verify accepted behavior.
@@ -36,19 +36,21 @@
 - `swiftui-dataflow-refactor`;
 - `swiftui-change-review`.
 
-**ACC-SKILL-002.** Each skill has frontmatter containing only `name` and trigger-complete `description`, an imperative body under 500 lines, one-level linked references, and generated `agents/openai.yaml` with quoted strings, a 25–64 character short description, and a one-sentence default prompt naming `$skill-name`.
+**ACC-SKILL-002.** Each skill has frontmatter containing only `name` and a concise discriminating `description`, an imperative body under 500 lines, one-level linked references, and `agents/openai.yaml` with quoted interface strings, a 25–64 character short description, a one-sentence default prompt naming `$skill-name`, and `policy.allow_implicit_invocation: false`.
 
 **ACC-SKILL-003.** Run the bundled `quick_validate.py` for all four; parse every YAML file; reject unfinished-marker placeholders and broken relative links.
 
 **ACC-SKILL-004.** Every skill preserves JSON stdout discipline, indexed-resolution consistency, exact failure policy, provider independence, topology-over-wrapper reasoning, and the deterministic/LLM fact boundary.
 
-**ACC-SKILL-005.** `swiftui-semantic` routes project setup/lifecycle to its bounded watcher reference, investigation or ambiguity to audit, requested state/data-flow implementation to refactor, and pre-existing changes to review. Mixed tasks use the smallest valid sequence, read the selected specialist completely, preserve handoff state, and never replace specialist acceptance gates with a shortened combined workflow.
+**ACC-SKILL-005.** After explicit `$swiftui-semantic` invocation, the router sends project setup/lifecycle to its bounded watcher reference, semantic investigation to audit, requested semantic state/data-flow implementation to refactor, and explicit semantic review of pre-existing changes to review. Mixed tasks use the smallest valid sequence, read the selected specialist completely, preserve handoff state, and never replace specialist acceptance gates with a shortened combined workflow.
 
-**ACC-SKILL-006.** Every router, specialist skill, and skill reference requires explicit indexed analysis for agent workflows. Skill Markdown contains no `syntax-only` guidance or examples, does not rely on automatic resolution fallback, validates `resolution: "indexed"`, and stops when a fresh project-covering Index Store or compatible indexed snapshot is unavailable. Change review uses indexed snapshots rather than Git-revision operands that cannot preserve indexed resolution.
+**ACC-SKILL-006.** Every explicitly invoked router, specialist skill, and skill reference requires explicit indexed analysis for its semantic result. Skill Markdown contains no `syntax-only` guidance or examples, does not rely on automatic resolution fallback, validates `resolution: "indexed"`, and stops that semantic workflow when a fresh project-covering Index Store or compatible indexed snapshot is unavailable. Change review uses indexed snapshots rather than Git-revision operands that cannot preserve indexed resolution.
 
 **ACC-SKILL-007.** Audit, refactor, and review guidance treats reusable-owner findings as candidates, checks instance count and lifetime, and protects explicit per-item models, screen/container ownership, focused values/bindings/actions, and passive Environment. It forbids blanket model removal, Binding-everywhere, and one-View-one-ViewModel prescriptions.
 
 **ACC-SKILL-008.** All four skills link the shared run-artifact policy directly. Auxiliary evidence uses task-scoped temporary storage outside source repositories, Codex configuration homes, and installed skill/package directories; permanent per-command files are not required to separate streams. Durable evidence is minimal, uses an explicit non-repository state root, and records retention. Explicit canonical snapshots keep `IR-SNAP-*` behavior and may use a workflow-selected destination.
+
+**ACC-SKILL-009.** All four skills are explicit-only. Ordinary SwiftUI implementation, debugging, layout, architecture, refactor, and review requests do not activate them. Explicit `$swiftui-semantic` and specialist invocations remain discoverable and retain complete indexed gates; missing semantic evidence cannot block or redefine unrelated task progress.
 
 ## CI
 
@@ -71,7 +73,7 @@
 9. run `check --fail-on-new high`;
 10. slice an emitted real finding;
 11. run doctor JSON;
-12. validate all skills, their shared artifact-hygiene link, and their YAML metadata without repository or global-environment mutation, and reject frontend-only resolution guidance anywhere under `skills/`;
+12. validate all explicit-only skills, their shared artifact-hygiene link, and their YAML metadata without repository or global-environment mutation, require `allow_implicit_invocation: false`, and reject frontend-only resolution guidance anywhere under `skills/`;
 13. parse JSON/YAML and check placeholders/links.
 14. preview project setup, run one indexed watcher generation, validate fresh status/live snapshot, and compare the tracked project baseline.
 

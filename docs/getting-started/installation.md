@@ -164,12 +164,12 @@ for skill in swiftui-semantic swiftui-semantic-audit swiftui-dataflow-refactor s
 done
 ```
 
-Use the router for normal work:
+Invoke the router only when you explicitly want a semantic workflow:
 
 - Codex: `$swiftui-semantic`
 - Claude Code: `/swiftui-semantic`
 
-The specialists remain directly invocable for advanced use, but installing only the router is incomplete.
+The specialists remain directly invocable for advanced use, but all four skills are explicit-only and installing only the router is incomplete.
 
 For project instructions, audits, focused refactors, change reviews, and staged migrations, continue with the [agent prompt library](agent-prompts.md).
 

@@ -2,11 +2,14 @@
 
 Read this reference when a request spans more than one specialist workflow or its starting state is unclear.
 
+This reference applies only after explicit `$swiftui-semantic` invocation. An
+ordinary SwiftUI task never enters this decision matrix automatically.
+
 ## Decision matrix
 
 | Request state and outcome | Select first | Continue when needed |
 | --- | --- | --- |
-| No trusted semantic evidence; investigate or explain | `swiftui-semantic-audit` | Stop after the report unless the user requested a change |
+| Explicit semantic investigation with no trusted evidence | `swiftui-semantic-audit` | Stop after the report unless the user requested a change |
 | User requests a state/data-flow change | `swiftui-dataflow-refactor` | Finish with `swiftui-change-review` when review is in scope |
 | A diff, commit, or changed worktree already exists | `swiftui-change-review` | Use refactor only when the user also requested remediation |
 | Analyze, fix, and verify | `swiftui-dataflow-refactor` | Its baseline/audit gates cover discovery; then run change review |
