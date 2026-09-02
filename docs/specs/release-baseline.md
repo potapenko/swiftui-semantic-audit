@@ -2,14 +2,14 @@
 
 - Node type: hybrid
 - Status: Active
-- Contract revision: `spec-24`
+- Contract revision: `spec-25`
 - Read when: checking the current 0.6.0 release, immutable earlier releases, dependencies, milestones, capabilities, residuals, or acceptance evidence.
 - Do not read when: the task concerns intended behavior without realization or release evidence.
 - Maximum size: 100 physical lines.
 
-Revision: `spec-24`
-Baseline state: `0.6.0 released and immutable; 0.6.1 CLI is an unpublished candidate active locally; cache schema 2 is a current-source-only evolution; explicit-only semantic skills are active locally through BASE-REL-018; canonical website carries verified 0.6.0 release facts; UPDATE-UX-001 is an unpublished local website candidate`
-Contract epoch: `tz-v28`
+Revision: `spec-25`
+Baseline state: `0.6.0 released and immutable; 0.6.1 CLI is an unpublished candidate active locally; cache schema 2 is a current-source-only evolution; balanced semantic skills are active locally through BASE-REL-019; canonical website carries verified 0.6.0 release facts; UPDATE-UX-001 is an unpublished local website candidate`
+Contract epoch: `tz-v29`
 Website contract epoch: `tz-v23`
 
 **BASE-REL-001 — Publication state.** Tool `0.6.0` is the current public release and `0.4.0`/`0.5.0` remain immutable earlier releases. Each is distributed from its own immutable Git tag and GitHub Release through the tested upstream tap formula; terminal receipts pin every external artifact.
@@ -45,8 +45,8 @@ Website contract epoch: `tz-v23`
 **BASE-REL-016 — 0.6.1 local candidate.** User-authorized `RELEASE-0.6.1-001` advances the combined contract to `tz-v24`; integration checkpoint `695038f1c76786c03d2751d7f3bc33315b070dcb` is contained in candidate checkpoint `2c07df251390cbda3fc3a277ce3d61fc897d4a44` on the operator-selected `master`. Local acceptance is terminal: 93 XCTest plus 15 Swift Testing cases, focused ProjectWorkspace/WatcherRuntime suites (8/7), locked Debug tests, Release build/version/help, safe setup preview, fresh 6,286-node/24,551-edge indexed watcher output with zero findings and empty baseline diff, RuleTests determinism/check/doctor, four skill validators plus repository YAML/link checks, 21 protected website tests plus build/deployment dry-run, and `git diff --check` passed. Hosted CI and every public-tag/release-archive/upstream-tap/site/publication receipt remain absent; later local activation is recorded separately by `BASE-REL-017` and must not be mistaken for publication.
 
 **BASE-REL-017 — 0.6.1 local activation receipt.** User-authorized `LOCAL-0.6.1-ACTIVATION-001` advances the combined contract to `tz-v25` for local installation state only. Checkpoint `fe50f872fcaccab3a71e9402bdb4558c64f0f13b` produced archive SHA-256 `440cd2f0ba6364b348d053f4d073a8fdf9be6bfe608badc3d9b2f364b7032fb0`; no-remote tap formula `local/swiftui-candidate/swiftui-semantic-audit-candidate` passed dry-run, checksum fetch, source build with automatic resolution disabled, and both unlinked and linked functional tests. `/opt/homebrew/bin/swiftui-audit` resolves to candidate keg 0.6.1, binary SHA-256 `74979afbb54c02592e5ac3d726609d93f0e7bab9e1d45fa9f8646f45caa7cff8`, reports 0.6.1, exposes both timeout help options, verifies its ad-hoc signature, and returns healthy doctor schema 2. All four validated `~/.codex/skills` links resolve to clean detached bundle `~/.local/share/swiftui-semantic-audit/0.6.1-candidate-fe50f87` at the exact checkpoint. Released 0.6.0 formula/keg and skill bundle remain clean and available for rollback but unlinked. No remote, upstream tap, tag, release, website, consumer repository, manifest, or watcher service was changed; public state remains 0.6.0.
-
 **BASE-REL-018 — Explicit-only local skill activation receipt.** User-authorized `SKILL-NON-INTERFERENCE-001` advances the combined contract to `tz-v27` for skill invocation behavior. Source checkpoint `04c8fb84ecc1021cc22853277049222348e03da0` produced clean detached bundle `~/.local/share/swiftui-semantic-audit/0.6.1-candidate-04c8fb8`. All four bundled validators and repository YAML/policy/prompt/link/CLI-matrix/artifact-hygiene checks passed; every active `~/.codex/skills/swiftui-*` link resolves to that bundle, reports `policy.allow_implicit_invocation: false`, and matches the checkpoint bytes. The `BASE-REL-017` CLI remains unchanged; prior candidate and released 0.6.0 skill bundles remain available for rollback. No remote, Homebrew, tag, release, website, consumer repository, manifest, watcher service, or public artifact changed.
+**BASE-REL-019 — Balanced local skill activation receipt.** User-authorized `SKILL-BALANCED-INVOCATION-001` advances the combined contract to `tz-v29`. Source checkpoint `c0d5ab499bbb4eab4353057af1440f6248406c57` produced clean detached bundle `~/.local/share/swiftui-semantic-audit/0.6.1-candidate-c0d5ab4`; all four validators, repository skill/docs/YAML/link checks, and fresh-context positive/negative routing scenarios passed. Every active `~/.codex/skills/swiftui-*` link matches that checkpoint: only the router permits implicit invocation and all three specialists remain explicit-only. The CLI, earlier rollback bundles, remotes, Homebrew, tags, releases, website, consumers, watcher services, and public artifacts remain unchanged.
 
 **BASE-WEB-001 — Initial website deployment receipt.** On 2026-08-19,
 DigitalOcean app `ed5742fe-8bca-444f-a55b-abb8d005ff55` reached ACTIVE deployment

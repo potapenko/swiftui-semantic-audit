@@ -9,7 +9,7 @@
 
 Revision: `spec-21`
 Authority: epoch `tz-v29`, pinned base digest and authorized addenda in the [registry](README.md)
-Status: active; 0.6.0 is the current public release and 0.4.0/0.5.0/0.6.0 artifacts are immutable; the compatible watcher repair CLI is active locally through `BASE-REL-017` and balanced skill activation is pending a new receipt after `BASE-REL-018`
+Status: active; 0.6.0 is the current public release and 0.4.0/0.5.0/0.6.0 artifacts are immutable; the compatible watcher repair CLI is active locally through `BASE-REL-017` and the balanced skill bundle through `BASE-REL-019`
 
 ## Choose the governing child
 

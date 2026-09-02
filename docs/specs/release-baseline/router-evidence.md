@@ -2,7 +2,7 @@
 
 - Node type: leaf
 - Status: Active
-- Contract revision: `spec-12`
+- Contract revision: `spec-13`
 - Authority: [Release and publication baseline](../release-baseline.md)
 - Read when: checking acceptance evidence for an authorized addendum.
 - Do not read when: only platform, milestone, current-surface, or residual information is needed.
@@ -37,3 +37,5 @@
 **BASE-NEXT-013.** Persisted-slice parser checkpoint `91860a1ac132b5941b5ee8527d7da64c7f103815` rejects `--syntax-only` and all live index/config/cache/job controls with usage status 64 and empty stdout. Accepted head/indexed-baseline checkpoint `9c8d5475fd6bace8d9ff607bd76250dcbfd1ff70` aligns the tracked project twin with that CLI contract; hosted CI `32624693470` passed the parser, baseline, skills, and docs gates.
 
 **BASE-NEXT-014.** `SKILL-NON-INTERFERENCE-001` checkpoint `04c8fb84ecc1021cc22853277049222348e03da0` sets `policy.allow_implicit_invocation: false` in all four metadata files, states the explicit boundary in frontmatter and bodies, keeps ordinary SwiftUI work outside routing, and preserves indexed, fact, CLI-matrix, artifact, and failure gates after explicit invocation. All four bundled validators, repository YAML/policy/link checks, documentation checks, and clean diff checks passed before the `BASE-REL-018` local activation.
+
+**BASE-NEXT-015.** `SKILL-BALANCED-INVOCATION-001` checkpoint `c0d5ab499bbb4eab4353057af1440f6248406c57` enables implicit invocation only for the router, adds a bounded non-blocking assist reference, and leaves the three strict specialist packages unchanged. Four validators, repository skill/docs/YAML/link checks, and four isolated fresh-context scenarios passed: relevant ownership work selected the router without infrastructure or blocking, layout work selected none, explicit invocation preserved strict indexed failure, and ordinary ownership review did not directly select a specialist. Clean local activation is recorded by `BASE-REL-019`.

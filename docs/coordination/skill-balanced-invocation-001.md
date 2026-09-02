@@ -32,4 +32,10 @@
 
 ## Local acceptance receipt
 
-Pending implementation checkpoint, validation, clean bundle construction, and activation.
+- Source checkpoint: `c0d5ab499bbb4eab4353057af1440f6248406c57` on the operator-selected `master`.
+- Built bundle: clean detached checkout `/Users/eugenepotapenko/.local/share/swiftui-semantic-audit/0.6.1-candidate-c0d5ab4` at the exact source checkpoint.
+- Validation: all four `quick_validate.py` runs passed; repository skill/YAML/policy/prompt/link checks, documentation/anchor checks, workflow YAML parsing, specification line limits, and diff hygiene passed.
+- Fresh-context behavior: relevant ownership/manual-sync work without indexed evidence selected only the router and continued without commands or infrastructure; layout/animation selected no semantic skill; explicit `$swiftui-semantic` selected strict audit and stopped without indexed evidence; ordinary ownership review selected the router without directly activating a specialist.
+- Activation: all four `/Users/eugenepotapenko/.codex/skills/swiftui-*` links resolve to the new bundle and match source bytes. `swiftui-semantic` reports `allow_implicit_invocation: true`; the three specialists report `false`.
+- Rollback: prior candidate `0.6.1-candidate-04c8fb8`, earlier `0.6.1-candidate-fe50f87`, and released `0.6.0` bundles remain unchanged and available.
+- External state: no CLI, Homebrew formula, Git remote, tag, release, website, consumer project, watcher service, or public artifact changed.

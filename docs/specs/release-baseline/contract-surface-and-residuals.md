@@ -2,7 +2,7 @@
 
 - Node type: leaf
 - Status: Active
-- Contract revision: `spec-17`
+- Contract revision: `spec-18`
 - Authority: [Release and publication baseline](../release-baseline.md)
 - Read when: checking realized behavior, canonical evidence hashes, or accepted product limits.
 - Do not read when: only dependency history, milestones, or addendum acceptance evidence is needed.
@@ -34,7 +34,7 @@
 
 **BASE-CAP-008.** The accepted value-setter evidence repair leaves counts and metrics unchanged while retaining each matching event-trigger edge in its finding. `LabeledSetter` is `finding:871672afc5e64d2` with `edge:df78fa011860918b`; `ValueSetterPair` is `finding:c988942f3dcf8158` with `edge:fec6154e7fee5d1f`. This records current evidence completeness and does not add another rule.
 
-**BASE-CAP-009.** The agent workflow surface contains one concise explicit-only user-facing router, `swiftui-semantic`, and three explicit-only specialist skills for audit, refactor, and change review. Ordinary SwiftUI work does not activate them; explicit invocation selects or sequences specialists without duplicating their workflow or weakening their gates.
+**BASE-CAP-009.** The agent workflow surface contains one implicitly discoverable router, `swiftui-semantic`, and three explicit-only specialist skills for audit, refactor, and change review. The router may provide bounded non-blocking assistance for material SwiftUI ownership or data-flow work; explicit invocation selects or sequences strict specialists without duplicating their workflow or weakening their gates.
 
 **BASE-CAP-010.** Once invoked, all agent-facing semantic workflows require an explicit validated compiler Index Store and accept only indexed results. They do not recommend frontend-only analysis or automatic fallback. Missing indexed evidence blocks only the requested semantic result. Change review requires compatible indexed snapshots; the CLI's build-free mode remains available outside the agent workflow and continues to support deterministic fixtures, baselines, and dogfood.
 
@@ -54,7 +54,7 @@
 
 **BASE-CAP-018.** Unpublished candidate 0.6.1 adds the schema-1-compatible `watch.buildAndAnalysisTimeoutSeconds` contract, legacy 300-second decode behavior, manifest-driven managed registration, explicit foreground override precedence, and root-then-selected-source analysis-configuration discovery. It does not change analysis schemas, rules, one-shot commands, or public 0.6.0 artifacts.
 
-**BASE-CAP-019.** On the operator machine only, active Homebrew command `swiftui-audit` remains the commit-pinned 0.6.1 candidate recorded by `BASE-REL-017`, while all four Codex skills resolve to the explicit-only checkpoint recorded by `BASE-REL-018`; released 0.6.0 CLI and skills remain retained rollback assets. This local activation is not an upstream Homebrew, tagged-skill, website, or public release state.
+**BASE-CAP-019.** On the operator machine only, active Homebrew command `swiftui-audit` remains the commit-pinned 0.6.1 candidate recorded by `BASE-REL-017`, while all four Codex skills resolve to the balanced checkpoint recorded by `BASE-REL-019`; released 0.6.0 CLI and skills plus prior candidate bundles remain retained rollback assets. This local activation is not an upstream Homebrew, tagged-skill, website, or public release state.
 
 **BASE-CAP-020.** Current-source cache schema 2 passed 99 XCTest plus 15 Swift Testing cases, a locked Release build, two byte-identical fresh RuleTests snapshots, and byte-exact comparison of all four semantic snapshot files with the committed baseline; only the permitted manifest repository revision normalization was needed. No installed or public artifact was changed.
 
