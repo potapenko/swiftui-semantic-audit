@@ -2,14 +2,14 @@
 
 - Node type: branch
 - Status: Active
-- Contract revision: `spec-21`
+- Contract revision: `spec-22`
 - Read when: selecting fixture, build, determinism, safety, dogfood, skill, CI, or completion obligations.
 - Do not read when: the task does not implement or verify accepted behavior.
 - Maximum size: 100 physical lines.
 
-Revision: `spec-21`
+Revision: `spec-22`
 Status: active  
-Release state: 0.6.0 is the current public release and 0.4.0/0.5.0/0.6.0 artifacts are immutable; the 0.6.1 CLI remains locally active through `BASE-REL-017` and the explicit-only four-skill bundle through `BASE-REL-018`, while hosted and public gates remain nonterminal
+Release state: 0.6.0 is the current public release and 0.4.0/0.5.0/0.6.0 artifacts are immutable; the 0.6.1 CLI remains locally active through `BASE-REL-017`, the explicit-only skill state is recorded by `BASE-REL-018`, and balanced local skill activation is pending, while hosted and public gates remain nonterminal
 
 ## Choose the governing child
 

@@ -12,8 +12,12 @@ spelling with `/swiftui-semantic`. For the final long-running prompt, keep the
 `/goal` prefix in Codex; in Claude Code, remove the prefix and use the rest as a
 project task brief.
 
-All four semantic skills are explicit-only. Ordinary SwiftUI implementation,
-debugging, refactor, and review requests do not activate them.
+Only the router may be selected automatically, and only when SwiftUI ownership
+or data flow materially affects the task. Its implicit assist mode reuses
+already-ready fresh indexed evidence, never creates semantic infrastructure,
+and never blocks the main task. The three specialist skills remain
+explicit-only. The prompts below invoke strict mode and therefore keep the full
+indexed workflow gates.
 
 ## Before an agent workflow
 

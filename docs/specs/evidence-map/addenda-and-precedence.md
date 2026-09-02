@@ -2,7 +2,7 @@
 
 - Node type: leaf
 - Status: Active
-- Contract revision: `spec-20`
+- Contract revision: `spec-21`
 - Authority: [Specification coverage and evidence map](../evidence-map.md)
 - Read when: tracing an authorized addendum or selecting evidence for a product decision.
 - Do not read when: only source-section coverage or ownership is needed.
@@ -15,6 +15,7 @@
 | `ROUTER-001` | One concise skill link that selects audit, refactor, review, or the smallest valid sequence | `PC-OPS-006`, `ACC-SKILL-001..005` | `skills/swiftui-semantic`, CI validation, forward tests |
 | `INDEXED-SKILLS-001` | Agent workflows require explicit indexed resolution and reject lower-resolution fallback | `PC-OPS-005`, `PC-OPS-007`, `ACC-SKILL-004..006` | all four skills, skill references, CI validation |
 | `SKILL-NON-INTERFERENCE-001` | All four semantic skills are explicit-only and never intercept ordinary SwiftUI work | `PC-OPS-005..007`, `ACC-SKILL-002..006/009`, `ACC-DOD-020` | four skill descriptions/bodies/metadata, router reference, CI policy checks, local activation receipt |
+| `SKILL-BALANCED-INVOCATION-001` | Router-only implicit assistance with bounded non-blocking evidence use; specialists remain explicit-only | `PC-OPS-005..007`, `ACC-SKILL-002..006/009`, `ACC-DOD-022` | router metadata and assist reference, strict specialist workflows, CI policy checks, routing scenarios, local activation receipt |
 | `BOUNDARY-001` | Custom Binding, Binding factory, observable tunnel/input rules, and logical source counting | `PC-OPS-008`, `PC-SCOPE-002/004`, `RULE-COMMAND/FACTORY/MODEL-TUNNEL/BROAD-INPUT`, `IR-GRAPH-007`, `IR-AUDIT-005`, `ACC-FIX-007..010` | frontend, AuditCore/AuditRules, diff, fixtures, indexed tests |
 | `ARCHITECTURE-001` | Collision-safe identity, exact project configuration, typed/feature topology, and nineteen architecture rules | `PC-OPS-009`, `PC-SAFE-002`, `IR-GRAPH-008/009`, `CFG-*`, architecture/layout/platform `RULE-*`, `ACC-FIX-011..015` | AuditCore configuration, frontend, SymbolResolution, AuditRules, architecture fixtures and indexed tests |
 | `REALISTIC-FIXTURES-001` | Compilable multi-file good/bad corpus, mixed-directory invariance, and syntax/indexed matrix parity | existing `RULE-*`, `ACC-FIX-016..017`, `ACC-TEST-008`, `ACC-DOD-009` | `RealProjectPatterns`, focused rule/indexed tests, CLI CI dogfood |

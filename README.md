@@ -69,10 +69,13 @@ Use $swiftui-semantic to audit this project's SwiftUI ownership and data flow
 without editing code.
 ```
 
-The router is explicit-only: ordinary SwiftUI tasks do not activate it. After
-`$swiftui-semantic` invocation it selects the audit, refactor, or change-review workflow. Those skills
-consume the semantic twin; they do not invent or rewrite its emitted records.
-Source edits produce a new twin.
+The router may assist automatically when SwiftUI ownership or data flow is
+material to the task and fresh indexed evidence is already ready. This assist
+mode remains bounded and never starts setup, watcher, indexing builds, or the
+full audit pipeline. `$swiftui-semantic` requests the strict audit, refactor, or
+change-review workflow; the three specialists remain explicit-only. Those
+skills consume the semantic twin rather than inventing or rewriting its emitted
+records. Source edits produce a new twin.
 
 ## What the semantic twin is
 

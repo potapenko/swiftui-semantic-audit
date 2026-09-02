@@ -514,6 +514,8 @@ jobs:
           abort("missing shared artifact policy") unless artifact_policy.file?
           invocation_matrix = Pathname("skills/swiftui-semantic/references/cli-invocation-matrix.md").expand_path
           abort("missing shared CLI invocation matrix") unless invocation_matrix.file?
+          assist_mode = Pathname("skills/swiftui-semantic/references/assist-mode.md").expand_path
+          abort("missing router assist-mode reference") unless assist_mode.file?
 
           Pathname("skills").glob("**/*.md").each do |path|
             content = path.read(encoding: "UTF-8")
@@ -540,8 +542,14 @@ jobs:
             abort("wrong frontmatter keys in #{skill}") unless frontmatter.keys.sort == %w[description name]
             abort("name mismatch in #{skill}") unless frontmatter["name"] == name
             description = frontmatter.fetch("description")
-            abort("description is not explicit-only in #{skill}") unless description.downcase.include?("explicit")
-            abort("description missing $#{name}") unless description.include?("$#{name}")
+            if name == "swiftui-semantic"
+              abort("router description is still explicit-only") if description.downcase.include?("use only")
+              abort("router description lacks ownership trigger") unless description.downcase.include?("ownership")
+              abort("router description lacks data-flow trigger") unless description.downcase.include?("data-flow")
+            else
+              abort("description is not explicit-only in #{skill}") unless description.downcase.include?("explicit")
+              abort("description missing $#{name}") unless description.include?("$#{name}")
+            end
 
             metadata_path = root / "agents" / "openai.yaml"
             metadata_text = metadata_path.read(encoding: "UTF-8")
@@ -555,7 +563,10 @@ jobs:
             end
             policy = metadata.fetch("policy")
             abort("wrong policy keys in #{metadata_path}") unless policy.keys == ["allow_implicit_invocation"]
-            abort("implicit invocation enabled in #{metadata_path}") unless policy.fetch("allow_implicit_invocation") == false
+            expected_implicit = name == "swiftui-semantic"
+            unless policy.fetch("allow_implicit_invocation") == expected_implicit
+              abort("wrong implicit-invocation policy in #{metadata_path}")
+            end
             length = interface.fetch("short_description").length
             abort("short description length #{length} in #{metadata_path}") unless (25..64).cover?(length)
             prompt = interface.fetch("default_prompt")
@@ -568,6 +579,9 @@ jobs:
             end
             abort("#{skill} does not link shared artifact policy") unless resolved_links.include?(artifact_policy)
             abort("#{skill} does not link shared CLI invocation matrix") unless resolved_links.include?(invocation_matrix)
+            if name == "swiftui-semantic"
+              abort("router does not link assist mode") unless resolved_links.include?(assist_mode)
+            end
             links.each do |target|
               next if target.match?(/\A(?:https?:|#)/)
               path = root / target.split("#", 2).first

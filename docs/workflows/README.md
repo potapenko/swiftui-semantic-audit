@@ -1,6 +1,12 @@
 # Workflows
 
-The explicit-only `$swiftui-semantic` router selects one of three specialist workflows after the user invokes it. Ordinary SwiftUI implementation, debugging, refactor, and review work does not activate this bundle. Each invoked workflow uses the same deterministic graph contract but has a different stopping condition.
+`swiftui-semantic` may assist automatically with a material SwiftUI ownership or
+data-flow question when fresh indexed evidence is already ready. That bounded
+assist mode does not enter the workflows below. Explicit `$swiftui-semantic` or
+an explicit semantic audit/refactor/review request enters strict mode and
+selects one of three explicit-only specialist workflows. Each strict workflow
+uses the same deterministic graph contract but has a different stopping
+condition.
 
 | Workflow | Starts from | Ends with |
 | --- | --- | --- |
@@ -10,7 +16,7 @@ The explicit-only `$swiftui-semantic` router selects one of three specialist wor
 
 Mixed work should use the smallest valid sequence. An ambiguous change may need audit before refactor. A refactor normally ends with review. A direct review request should not add an unnecessary investigation phase.
 
-Once explicitly invoked, all semantic agent workflows require indexed evidence. They may consume a watcher live
+In strict mode, all semantic agent workflows require indexed evidence. They may consume a watcher live
 snapshot only with its matching fresh indexed status receipt. Otherwise they
 wait boundedly for indexed status or use a fresh explicit validated Index Store;
 they never downgrade to lower-resolution evidence. Missing indexed evidence

@@ -2,7 +2,7 @@
 
 - Node type: leaf
 - Status: Active
-- Contract revision: `spec-18`
+- Contract revision: `spec-19`
 - Authority: [Product contract](../product-contract.md)
 - Read when: selecting the product goal, invariants, supported operations, scope, or release boundary.
 - Do not read when: a narrower linked domain contract fully governs the task.
@@ -17,11 +17,11 @@
 
 **PC-OPS-004 — Environment diagnosis.** Provide a non-mutating `doctor` command for Swift, Xcode/toolchain, project type, SwiftSyntax compatibility, Index Store readiness, and Git.
 
-**PC-OPS-005 — Specialist agent workflows.** Supply explicit-only audit, refactor, and change-review skills that use JSON first, slice before source, preserve indexed resolution, and enforce the LLM fact boundary after the user invokes the selected `$skill-name`. Ordinary SwiftUI implementation, debugging, architecture, refactor, and review work does not activate these specialist workflows implicitly.
+**PC-OPS-005 — Specialist agent workflows.** Supply explicit-only audit, refactor, and change-review skills that use JSON first, slice before source, preserve indexed resolution, and enforce the LLM fact boundary after explicit invocation or a strict router handoff. They never activate directly from an ordinary SwiftUI request.
 
-**PC-OPS-006 — Single routing entry point.** Supply `swiftui-semantic` as the concise explicit-only user-facing skill. After explicit `$swiftui-semantic` invocation it classifies the requested outcome, loads only the appropriate specialist workflow first, and sequences audit, refactor, and review only when the task crosses those phases. It must preserve deterministic facts, resolution, baseline identities, evidence, invariants, and failure state across handoffs rather than duplicating or weakening specialist gates. It must not intercept an ordinary SwiftUI task merely because the task mentions state, ownership, Binding, architecture, a diff, or a review.
+**PC-OPS-006 — Single routing entry point.** Supply `swiftui-semantic` as the only implicitly discoverable entry point. It selects implicit assist mode only when SwiftUI ownership, duplicated or derived state, manual synchronization, Binding/Observation/Environment flow, or component-boundary data flow materially affects the user's task. Assist mode stays subordinate to that task, consumes only already-ready fresh compatible indexed evidence or one bounded audit and optional focused slice against an already-available project-covering Index Store, and never performs setup, watcher lifecycle, a build solely for indexing, baseline promotion, snapshot creation, or a full specialist sequence. If qualifying evidence is unavailable, it continues the user's task without treating semantic verification as a blocker.
 
-**PC-OPS-007 — Indexed agent boundary.** Once explicitly invoked, agent-facing semantic audit, refactor, and review workflows require a fresh validated compiler Index Store, pass its path explicitly for live-source analysis, and accept only `resolution: "indexed"`. They must not recommend the build-free frontend mode, omit resolution flags in reliance on automatic discovery, or present a lower-resolution result as a semantic workflow result. Missing indexed coverage blocks the explicitly requested semantic result, not unrelated agent work, and is never permission to weaken the workflow. The standalone CLI retains its build-free fallback for non-agent uses and deterministic test/dogfood coverage.
+**PC-OPS-007 — Strict semantic boundary.** Explicit `$swiftui-semantic`, explicit specialist invocation, or an explicit request to run the semantic audit/refactor/review workflow enters strict mode. Strict mode loads the selected specialist and requires a fresh validated compiler Index Store, explicit live-source index selection, and `resolution: "indexed"`; it preserves deterministic facts, configuration, snapshot identities, evidence, invariants, and failure state across handoffs. Missing indexed coverage blocks only the strict semantic result. Assist mode may omit semantic evidence but may never present lower-resolution output as equivalent semantic proof. The standalone CLI retains its build-free fallback for non-agent uses and deterministic test/dogfood coverage.
 
 **PC-OPS-008 — Boundary analysis.** Represent explicit `Binding(get:set:)` construction and its getter/setter closures, detect command-shaped setters and Binding factories, identify the same observable model crossing multiple View boundaries, and emit a candidate when a leaf View directly depends on externally observed model members. Keep deterministic topology separate from the agent's decision about legitimate screen ownership or component isolation.
 

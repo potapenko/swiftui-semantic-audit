@@ -1,28 +1,39 @@
 ---
 name: swiftui-semantic
-description: Explicitly route a requested SwiftUI semantic-twin workflow to watcher setup, audit, refactor, or change review. Use only when the user invokes `$swiftui-semantic`; ordinary SwiftUI work is out of scope.
+description: Use indexed SwiftUI semantic evidence when ownership, duplicated or derived state, manual synchronization, Binding/Observation/Environment flow, or component-boundary data-flow materially affects a task. Explicit semantic workflow requests enter strict mode.
 ---
 
 # SwiftUI Semantic Twin Router
 
-## Invocation boundary
+## Select the operating mode
 
-Run this router only after explicit `$swiftui-semantic` invocation. Do not
-activate it for ordinary SwiftUI implementation, debugging, architecture,
-refactor, or review work, even when that work mentions state, ownership,
-Binding, a diff, or a semantic concern.
+An automatically selected invocation is **implicit assist mode** unless the
+user crosses the explicit boundary below. This remains true when the request
+mentions semantic evidence, a snapshot, an Index Store, or asks which skill is
+helping. Read and follow [assist mode](references/assist-mode.md). Do not load a
+specialist in this mode.
 
-Within the explicitly requested workflow, treat the semantic twin as the deterministic fact source shared by every selected route.
+Use **strict mode** only when the user invokes `$swiftui-semantic` or directly
+asks to run or perform the semantic audit, semantic data-flow refactor, semantic
+change review, or full semantic-twin workflow. A directly invoked specialist is
+already strict; follow its `SKILL.md` without routing back through this entry
+point.
+
+Do not infer strict mode merely because an automatically matched task mentions
+state, ownership, Binding, Observation, Environment, architecture, a diff, or
+a review.
+
+Whenever semantic evidence is used, treat the semantic twin as the deterministic fact source shared by every selected route.
 It preserves supported ownership and data-flow facts, evidence, compatible
 snapshots, and bounded slices. It is not an LLM summary; the selected specialist
 and surrounding agent supply judgment without rewriting those facts.
 
-Before forming any CLI command, read and follow the shared
-[CLI invocation matrix](references/cli-invocation-matrix.md). It assigns
-resolution and configuration flags by command and input kind; do not transfer a
-flag between commands merely because they belong to one workflow.
+Before forming any CLI command in either mode, read and follow the shared [CLI
+invocation matrix](references/cli-invocation-matrix.md). It assigns resolution
+and configuration flags by command and input kind; do not transfer a flag
+between commands merely because they belong to one workflow.
 
-## Choose the workflow
+## Choose the strict workflow
 
 Classify the requested outcome before reading broad Swift source:
 
@@ -31,11 +42,16 @@ Classify the requested outcome before reading broad Swift source:
 - Read and follow [swiftui-dataflow-refactor](../swiftui-dataflow-refactor/SKILL.md) when the user asks to change SwiftUI state ownership, remove manual synchronization, replace callback plumbing, or correct Binding, Observation, derived-state, or lifetime architecture.
 - Read and follow [swiftui-change-review](../swiftui-change-review/SKILL.md) when changes, commits, snapshots, or a diff already exist and the user asks whether they are safe or architecturally correct.
 
-For setup, read the watcher reference and execute only that bounded workflow. Otherwise read only the selected specialist `SKILL.md` first, then load the references that specialist requires. Do not merge shortened versions of all three workflows or skip a specialist's gates.
+For setup, read the watcher reference and execute only that bounded workflow.
+Otherwise read only the selected specialist `SKILL.md` first, then load the
+references that specialist requires. Do not merge shortened versions of all
+three workflows or skip a specialist's gates.
 
 Before the selected workflow emits command output or snapshots, read and apply [run artifact hygiene](references/artifact-hygiene.md). Stream separation does not require permanent per-command files.
 
-Use [references/routing.md](references/routing.md) when the request combines phases, its starting state is unclear, or the workflow must hand evidence from one specialist to another.
+Use [references/routing.md](references/routing.md) when a strict request combines
+phases, its starting state is unclear, or the workflow must hand evidence from
+one specialist to another.
 
 ## Route mixed work deliberately
 
@@ -63,7 +79,11 @@ Keep these facts unchanged when moving between specialists:
 
 Never reinterpret missing deterministic evidence during a handoff. Return `unknown` or request the smallest missing evidence.
 
-Require every specialist result to report `resolution: "indexed"`. Stop the explicitly requested semantic workflow when a fresh project-covering Index Store or compatible indexed snapshot is unavailable; do not weaken the workflow through automatic resolution fallback or treat this semantic limitation as a blocker for unrelated work.
+Require every specialist result to report `resolution: "indexed"`. Stop the
+strict semantic workflow when a fresh project-covering Index Store or compatible
+indexed snapshot is unavailable; do not weaken the workflow through automatic
+resolution fallback or treat this semantic limitation as a blocker for
+unrelated work.
 
 ## Keep the semantic boundary
 
@@ -74,4 +94,7 @@ ownership, canonical source of truth, explicit dependencies, minimal manual
 synchronization, correct lifetime, and preserved transaction and
 transformation semantics.
 
-Report which specialist workflow was selected, why it fits the task, any later workflow transition, and the final verification evidence.
+In assist mode, report semantic evidence only when it changed or materially
+supported the task decision. In strict mode, report which specialist workflow
+was selected, why it fits the task, any later transition, and the final
+verification evidence.

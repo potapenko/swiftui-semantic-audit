@@ -2,7 +2,7 @@
 
 - Node type: leaf
 - Status: Active
-- Contract revision: `spec-18`
+- Contract revision: `spec-19`
 - Authority: [Acceptance and QA contract](../acceptance.md)
 - Read when: selecting fixture, build, determinism, safety, dogfood, skill, CI, or completion obligations.
 - Do not read when: the task does not implement or verify accepted behavior.
@@ -52,3 +52,5 @@
 **ACC-DOD-020.** `SKILL-NON-INTERFERENCE-001` is complete only when all four semantic skills are explicit-only in source and the active local bundle, descriptions and bodies exclude ordinary SwiftUI work from automatic routing, explicit invocations preserve every indexed/fact/artifact gate, repository validation passes, released bundles remain immutable, and the local activation receipt is checkpointed.
 
 **ACC-DOD-021.** `CACHE-HYGIENE-001` is complete only when current source uses cache schema 2, exact analysis scopes share compiler databases only by store/library identity, whole indexed history and total storage are bounded, busy databases and the seven-day schema-1 rollback window are preserved, focused/full deterministic verification passes, and no public or installed artifact changes.
+
+**ACC-DOD-022.** `SKILL-BALANCED-INVOCATION-001` is complete only when the router alone is implicitly discoverable, implicit assist remains bounded and non-blocking, all three specialists remain explicit-only, explicit strict workflows preserve indexed/fact/artifact gates, positive and negative routing scenarios pass, one clean commit-pinned local bundle is active, prior rollback bundles remain unchanged, and its activation receipt is checkpointed.

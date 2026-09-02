@@ -2,15 +2,15 @@
 
 - Node type: root
 - Status: Active
-- Contract revision: `spec-34`
-- Authority: epoch `tz-v28` and pinned digest declared below
+- Contract revision: `spec-35`
+- Authority: epoch `tz-v29` and pinned digest declared below
 - Read when: starting any product, behavior, compatibility, QA, release, or specification task in this repository.
 - Do not read when: the task is proven behavior-neutral and outside the specification system.
 - Maximum size: 100 physical lines.
 
 Status: active  
-Contract epoch: `tz-v28`
-Local specification revision: `spec-34`
+Contract epoch: `tz-v29`
+Local specification revision: `spec-35`
 Pinned authority digest: `sha256:68f8a43d924659024b7d29fabb9ad302817c271838a7919b24bd942626927cac`  
 Router addendum: user-authorized `ROUTER-001` on 2026-08-18
 Indexed-skills addendum: user-authorized `INDEXED-SKILLS-001` on 2026-08-18
@@ -30,8 +30,8 @@ Artifact-hygiene addendum: user-authorized [`ARTIFACT-HYGIENE-001`](../coordinat
 Project-watcher addendum: user-authorized [`PROJECT-WATCHER-001`](../coordination/project-watcher-001.md) on 2026-08-22; advances the combined contract to `tz-v17`
 Semantic-twin story addenda: user-authorized [`SEMANTIC-TWIN-STORY-001`](../coordination/semantic-twin-story-001.md) and capability-preservation correction [`SEMANTIC-TWIN-CAPABILITIES-001`](../coordination/semantic-twin-capabilities-001.md) on 2026-08-22; advance the combined contract to `tz-v19`
 Release addendum: user-authorized [`RELEASE-0.6.0-001`](../coordination/release-0.6.0.md) on 2026-08-23; advances the combined contract to `tz-v20`; copy-control addenda: user-authorized `COPY-CONTROLS-001` and placement correction `COPY-CONTROLS-RIGHT-001` on 2026-08-23; advance the website contract through `tz-v22`; compatible source repair: user-authorized [`PROJECT-WATCHER-INTEGRATION-001`](../coordination/project-watcher-integration-001.md) on 2026-08-23; advances the combined contract to `tz-v23`; patch-candidate addendum: user-authorized [`RELEASE-0.6.1-001`](../coordination/release-0.6.1.md) on 2026-08-23; advances the combined contract to `tz-v24` without publishing or changing website behavior; local activation addendum: user-authorized [`LOCAL-0.6.1-ACTIVATION-001`](../coordination/local-0.6.1-activation-001.md) on 2026-08-23; advances the combined contract to `tz-v25` for this machine only
-Update UX addendum: user-authorized `UPDATE-UX-001` on 2026-08-24; adds one short existing-installation prompt immediately after the setup prompt, advances the website contract to `tz-v23` and the combined contract to `tz-v26`, and does not publish or change release artifacts; skill non-interference addendum: user-authorized [`SKILL-NON-INTERFERENCE-001`](../coordination/skill-non-interference-001.md) on 2026-08-25; makes all four semantic skills explicit-only and advances the combined contract to `tz-v27`; cache hygiene addendum: user-authorized [`CACHE-HYGIENE-001`](../coordination/cache-hygiene-001.md) on 2026-09-02; advances current-source cache behavior to schema 2 and the combined contract to `tz-v28` without changing semantic outputs or any installed/public artifact
-Release baseline: `0.6.0 current public`; immutable release artifacts: `0.4.0`, `0.5.0`, and `0.6.0`; this machine's active CLI remains the unpublished 0.6.1 candidate through `BASE-REL-017`, while its explicit-only four-skill bundle is pinned through `BASE-REL-018`; website baseline: canonical domain carries verified 0.6.0 release facts; project-watcher 0.6.0 is Released through `BASE-REL-015`; semantic-twin story candidate remains separately evolving
+Update UX addendum: user-authorized `UPDATE-UX-001` on 2026-08-24; adds one short existing-installation prompt immediately after the setup prompt, advances the website contract to `tz-v23` and the combined contract to `tz-v26`, and does not publish or change release artifacts; skill non-interference addendum: user-authorized [`SKILL-NON-INTERFERENCE-001`](../coordination/skill-non-interference-001.md) on 2026-08-25; makes all four semantic skills explicit-only and advances the combined contract to `tz-v27`; cache hygiene addendum: user-authorized [`CACHE-HYGIENE-001`](../coordination/cache-hygiene-001.md) on 2026-09-02; advances current-source cache behavior to schema 2 and the combined contract to `tz-v28` without changing semantic outputs or any installed/public artifact; balanced skill invocation addendum: user-authorized [`SKILL-BALANCED-INVOCATION-001`](../coordination/skill-balanced-invocation-001.md) on 2026-09-02; restores bounded implicit assistance only for the router and advances the combined contract to `tz-v29`
+Release baseline: `0.6.0 current public`; immutable release artifacts: `0.4.0`, `0.5.0`, and `0.6.0`; this machine's active CLI remains the unpublished 0.6.1 candidate through `BASE-REL-017`, while the balanced local skill update is pending a new receipt after `BASE-REL-018`; website baseline: canonical domain carries verified 0.6.0 release facts; project-watcher 0.6.0 is Released through `BASE-REL-015`; semantic-twin story candidate remains separately evolving
 
 This directory is the self-contained active specification package for SwiftUI Semantic Audit. It faithfully restates the user-approved Russian ТЗ without expanding product semantics. Clause IDs are stable references for implementation, review, and QA.
 
@@ -39,7 +39,7 @@ This directory is the self-contained active specification package for SwiftUI Se
 
 When documents appear to disagree, apply this order:
 
-1. the user-approved ТЗ at epoch `tz-v1`, its pinned digest, the explicit addenda through `CACHE-HYGIENE-001` that advance the combined contract to `tz-v28`, and the behavior-preserving `REALISTIC-FIXTURES-001` acceptance addendum;
+1. the user-approved ТЗ at epoch `tz-v1`, its pinned digest, the explicit addenda through `SKILL-BALANCED-INVOCATION-001` that advance the combined contract to `tz-v29`, and the behavior-preserving `REALISTIC-FIXTURES-001` acceptance addendum;
 2. [`product-contract.md`](product-contract.md) for product boundaries and invariants;
 3. domain contracts (`semantic-ir.md`, `rules.md`, `cli.md`);
 4. [`acceptance.md`](acceptance.md) for proof obligations;
@@ -52,13 +52,13 @@ A local spec edit cannot authorize a semantic change. Any semantic delta require
 
 | Contract | Domain | Authority | Status/stability | Read when | Baseline |
 | --- | --- | --- | --- | --- | --- |
-| [`product-contract.md`](product-contract.md) | Goal, semantic-twin identity, scope, invariants, LLM boundary, operations, safety, non-goals, workflow routing | Normative restatement of ТЗ plus authorized addenda through `CACHE-HYGIENE-001` | active / 0.6.0 public plus current-source cache v2 and explicit-only local skills | Any product decision or behavior claim | 0.6.0 released through `BASE-REL-015`; local skill activation `BASE-REL-018` |
+| [`product-contract.md`](product-contract.md) | Goal, semantic-twin identity, scope, invariants, LLM boundary, operations, safety, non-goals, workflow routing | Normative restatement of ТЗ plus authorized addenda through `SKILL-BALANCED-INVOCATION-001` | active / 0.6.0 public plus current-source cache v2 and balanced skill routing | Any product decision or behavior claim | 0.6.0 released through `BASE-REL-015`; balanced local activation pending |
 | [`analysis-config.md`](analysis-config.md) | Explicit owner, View-role, feature, root, and environment classification | `ARCHITECTURE-001` plus `COMPONENT-SURFACE-001` | active / config schema 2, schema 1 accepted | Role-aware project analysis | 0.5.0 |
 | [`semantic-ir.md`](semantic-ir.md) | Graph, evidence, confidence, semantic values, snapshots, diff | Normative restatement of ТЗ plus `BOUNDARY-001` and `ARCHITECTURE-001` | active / released schema v2 | Reading/writing graph or snapshot contracts | 0.5.0 |
 | [`project-runtime.md`](project-runtime.md) | Project bootstrap, watcher freshness, lifecycle, runtime state, and baseline promotion | `PROJECT-WATCHER-001` plus `PROJECT-WATCHER-INTEGRATION-001` | active / Released schema 1 plus 0.6.1 repair candidate | Continuous project analysis | 0.6.0 public / 0.6.1 candidate |
 | [`rules.md`](rules.md) | Thirty rules, severities, exclusions, adjudication | Normative restatement plus boundary, architecture, and component addenda | active / released rule set | Auditing, classifying, refactoring | 0.5.0 |
 | [`cli.md`](cli.md) | Commands, flags, resolution, stdout/status, path/failure policy | Normative restatement plus authorized addenda | active / CLI 0.6.0 public plus 0.6.1 source candidate | Running or documenting commands | seven analysis commands plus project namespace |
-| [`acceptance.md`](acceptance.md) | Fixtures, determinism, skills, CI, Definition of Done | Normative acceptance map for ТЗ §§44–51 plus authorized addenda through `LOCAL-0.6.1-ACTIVATION-001` | active | Implementing or verifying | candidate tests and local activation terminal; public receipts remain `BASE-REL-015` |
+| [`acceptance.md`](acceptance.md) | Fixtures, determinism, skills, CI, Definition of Done | Normative acceptance map for ТЗ §§44–51 plus authorized addenda through `SKILL-BALANCED-INVOCATION-001` | active | Implementing or verifying | balanced skill acceptance pending local activation; public receipts remain `BASE-REL-015` |
 | [`evidence-map.md`](evidence-map.md) | Clause ownership and all-54-section plus authorized-addendum coverage | Governance map | active | Tracing authority to evidence | P1–P18 map |
 | [`release-baseline.md`](release-baseline.md) | Current realization, dependency pins, residuals | Descriptive evidence; never higher than normative contracts | active / 0.6.0 released plus locally activated 0.6.1 CLI and explicit-only skills | Release/readiness/status work | local skill activation `BASE-REL-018`; hosted and publication evidence pending |
 | [`website.md`](website.md) | English landing-page experience, claims, semantic-twin story, build, deployment, and QA | Website addenda through `RELEASE-0.6.0-001` | active / verified 0.6.0 release facts; corrected semantic-twin story evolving | Designing, implementing, publishing, or reviewing the website | canonical domain at `BASE-REL-015` |
@@ -96,5 +96,5 @@ The pinned base plus authorized addenda authorizes a Swift package and `swiftui-
 
 `SEMANTIC-TWIN-STORY-001` makes the deterministic semantic twin the primary public product object and moves skills to the consumer/router role; its original 0.5.0-versus-candidate split is superseded only for release state by `RELEASE-0.6.0-001` and `BASE-REL-015`. `SEMANTIC-TWIN-CAPABILITIES-001` restores the accepted landing capability surface and marketing hierarchy: semantic twin unifies the existing examples, tasks, diff, rule groups, and trust story; it does not replace them. Versions remain supporting release truth rather than the primary promise.
 
-`SKILL-NON-INTERFERENCE-001` makes the four semantic skills explicit-only without weakening their invoked indexed workflows or changing the CLI. `CACHE-HYGIENE-001` separates shared compiler databases from analysis-scope facts, bounds whole-result history and total cache storage, and adds a seven-day legacy grace period without changing semantic results, resolution, snapshots, or command output. Current authority is `tz-v28`; editorial clarification may advance only the local specification revision and must preserve every protected behavior and exception.
+`SKILL-NON-INTERFERENCE-001` established the prior explicit-only state. `SKILL-BALANCED-INVOCATION-001` supersedes only its router invocation boundary: the router may now assist implicitly without creating semantic infrastructure or blocking the user's task, while all three specialists and every explicit strict workflow remain gated. `CACHE-HYGIENE-001` continues to govern current-source cache behavior. Current authority is `tz-v29`; editorial clarification may advance only the local specification revision and must preserve every protected behavior and exception.
 Migration state: [Full-library Markdown migration](migration/README.md) completed structural reconciliation of the nine-document legacy package.
