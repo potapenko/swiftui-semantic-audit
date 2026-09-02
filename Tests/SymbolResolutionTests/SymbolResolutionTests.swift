@@ -285,10 +285,10 @@ final class SymbolResolutionTests: XCTestCase {
             selection: .explicit(fixture.store),
             cache: cache
         )
-        let databaseRoot = cache.projectDirectoryURL.appendingPathComponent("indexstoredb", isDirectory: true)
+        let databaseRoot = cache.sharedIndexStoreRootURL
         let firstDatabaseEntries = try FileManager.default.contentsOfDirectory(
             at: databaseRoot, includingPropertiesForKeys: [.isDirectoryKey]
-        ).filter { $0.pathExtension != "lock" }
+        ).filter { (try? $0.resourceValues(forKeys: [.isDirectoryKey]).isDirectory) == true }
         XCTAssertEqual(firstDatabaseEntries.count, 1)
         let changedGraph = SemanticGraph(
             resolution: syntax.resolution,
@@ -306,8 +306,26 @@ final class SymbolResolutionTests: XCTestCase {
         XCTAssertEqual(changed.configurationDigest, "parallel-index-cache-test")
         let reusedDatabaseEntries = try FileManager.default.contentsOfDirectory(
             at: databaseRoot, includingPropertiesForKeys: [.isDirectoryKey]
-        ).filter { $0.pathExtension != "lock" }
+        ).filter { (try? $0.resourceValues(forKeys: [.isDirectoryKey]).isDirectory) == true }
         XCTAssertEqual(reusedDatabaseEntries.map(\.lastPathComponent), firstDatabaseEntries.map(\.lastPathComponent))
+        let fileSource = fixture.source.appendingPathComponent("Writer.swift")
+        let fileSyntax = try GraphScanner().scan(path: fileSource.path)
+        let fileScopeCache = AnalysisCacheStore(
+            rootDirectory: fixture.container.appendingPathComponent("cache", isDirectory: true),
+            sourceRoot: fileSource
+        )
+        XCTAssertNotEqual(fileScopeCache.projectDirectoryURL, cache.projectDirectoryURL)
+        let indexedFile = try IndexEnrichmentCoordinator(helperExecutable: executable, timeout: 30).enrich(
+            graph: fileSyntax,
+            sourceRoot: fileSource,
+            selection: .explicit(fixture.store),
+            cache: fileScopeCache
+        )
+        XCTAssertEqual(indexedFile.resolution, "indexed")
+        let crossScopeDatabaseEntries = try FileManager.default.contentsOfDirectory(
+            at: databaseRoot, includingPropertiesForKeys: [.isDirectoryKey]
+        ).filter { (try? $0.resourceValues(forKeys: [.isDirectoryKey]).isDirectory) == true }
+        XCTAssertEqual(crossScopeDatabaseEntries.map(\.lastPathComponent), firstDatabaseEntries.map(\.lastPathComponent))
         let uncached = try IndexEnrichmentCoordinator(helperExecutable: executable, timeout: 30).enrich(
             graph: syntax,
             sourceRoot: fixture.source,
@@ -317,6 +335,41 @@ final class SymbolResolutionTests: XCTestCase {
         XCTAssertEqual(warm.resolution, "indexed")
         XCTAssertEqual(try cold.jsonData(), try warm.jsonData())
         XCTAssertEqual(try warm.jsonData(), try uncached.jsonData())
+    }
+
+    func testDifferentScopesSerializeSharedIndexDatabaseAccess() async throws {
+        let fixture = try makeIndexedFixture()
+        defer { try? FileManager.default.removeItem(at: fixture.container) }
+        let executable = projectRoot.appendingPathComponent(".build/debug/swiftui-audit")
+        let cacheRoot = fixture.container.appendingPathComponent("shared-cache", isDirectory: true)
+        let writerSource = fixture.source.appendingPathComponent("Writer.swift")
+        let settingsSource = fixture.source.appendingPathComponent("Settings.swift")
+        let writerGraph = try GraphScanner().scan(path: writerSource.path)
+        let settingsGraph = try GraphScanner().scan(path: settingsSource.path)
+        let writerCache = AnalysisCacheStore(rootDirectory: cacheRoot, sourceRoot: writerSource)
+        let settingsCache = AnalysisCacheStore(rootDirectory: cacheRoot, sourceRoot: settingsSource)
+
+        async let writer = IndexEnrichmentCoordinator(helperExecutable: executable, timeout: 30).enrich(
+            graph: writerGraph,
+            sourceRoot: writerSource,
+            selection: .explicit(fixture.store),
+            cache: writerCache
+        )
+        async let settings = IndexEnrichmentCoordinator(helperExecutable: executable, timeout: 30).enrich(
+            graph: settingsGraph,
+            sourceRoot: settingsSource,
+            selection: .explicit(fixture.store),
+            cache: settingsCache
+        )
+        let (indexedWriter, indexedSettings) = try await (writer, settings)
+
+        XCTAssertEqual(indexedWriter.resolution, "indexed")
+        XCTAssertEqual(indexedSettings.resolution, "indexed")
+        let databases = try FileManager.default.contentsOfDirectory(
+            at: writerCache.sharedIndexStoreRootURL,
+            includingPropertiesForKeys: [.isDirectoryKey]
+        ).filter { (try? $0.resourceValues(forKeys: [.isDirectoryKey]).isDirectory) == true }
+        XCTAssertEqual(databases.count, 1)
     }
 
     func testInvalidNoCoverageAndPackageLockTruth() throws {

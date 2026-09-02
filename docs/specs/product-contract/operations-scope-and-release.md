@@ -2,7 +2,7 @@
 
 - Node type: leaf
 - Status: Active
-- Contract revision: `spec-17`
+- Contract revision: `spec-18`
 - Authority: [Product contract](../product-contract.md)
 - Read when: selecting the product goal, invariants, supported operations, scope, or release boundary.
 - Do not read when: a narrower linked domain contract fully governs the task.
@@ -72,7 +72,7 @@
 **PC-SCOPE-005 — Fresh global result.** Incrementality may reuse deterministic extraction facts, but every invocation assembles a complete canonical graph and evaluates normalization and all rules against the current project state. Cache behavior must not alter graph, report, snapshot, diff, check, slice, resolution, or configuration semantics.
 
 **PC-SCOPE-006 — Deterministic parallel execution.** Eligible independent per-file frontend phases and independent audit rules may execute concurrently over immutable inputs. Order-dependent relationship resolution remains serial until it has an immutable fact/merge architecture. The public execution width is positive and bounded by the requested job count; its default follows the host's active processor count and `1` forces serial execution. Parallel and serial runs must produce byte-identical canonical graph and report output. IndexStoreDB access remains isolated behind the bounded helper and is not treated as a generally thread-safe shared database.
-
+**PC-SCOPE-007 — Bounded cache hygiene.** Cache schema 2 keeps analysis-scope facts isolated while sharing a locked persistent IndexStoreDB only across exact compiler store/library identities. Retain at most two whole indexed results per scope. Best-effort daily LRU maintenance bounds active v2 storage at a 2 GiB high watermark and 1.5 GiB target, skips busy databases, temporarily exempts schema 1 during a seven-day rollback grace after first v2 success, and never changes semantic output, resolution, failure policy, or machine streams.
 ## Non-goals
 
 **PC-NONGOAL-001.** Do not make SIL, a full Swift type checker, full interprocedural/alias/control-flow analysis, or generic support for every Swift framework part of the PoC foundation.

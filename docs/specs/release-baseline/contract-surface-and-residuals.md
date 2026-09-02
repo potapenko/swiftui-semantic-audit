@@ -2,7 +2,7 @@
 
 - Node type: leaf
 - Status: Active
-- Contract revision: `spec-16`
+- Contract revision: `spec-17`
 - Authority: [Release and publication baseline](../release-baseline.md)
 - Read when: checking realized behavior, canonical evidence hashes, or accepted product limits.
 - Do not read when: only dependency history, milestones, or addendum acceptance evidence is needed.
@@ -12,7 +12,7 @@
 
 **BASE-CAP-001.** Public commands are `scan`, `audit`, `snapshot`, `slice`, `diff`, `check`, and `doctor`, with syntax/index flags documented in [`cli.md`](../cli.md).
 
-**BASE-CAP-002.** Graph/audit/snapshot/diff/check/slice schemas are version 2, the current public tool version is `0.6.0`, the unpublished source candidate reports `0.6.1`, and the non-authoritative analysis-cache schema is version 1. Public releases 0.4.0, 0.5.0, and 0.6.0 remain immutable. Reports and snapshot manifests carry the canonical analysis-configuration digest or `none`.
+**BASE-CAP-002.** Graph/audit/snapshot/diff/check/slice schemas are version 2, the current public tool version is `0.6.0`, and current source reports `0.6.1`. Released and locally installed binaries retain non-authoritative cache schema 1; `CACHE-HYGIENE-001` advances only the uninstalled current source to cache schema 2. Public releases 0.4.0, 0.5.0, and 0.6.0 remain immutable. Reports and snapshot manifests carry the canonical analysis-configuration digest or `none`.
 
 **BASE-CAP-003.** The canonical RuleTests dogfood baseline is syntax-only and contains exactly five files under `Tests/Baselines/RuleTests`.
 
@@ -42,7 +42,7 @@
 
 **BASE-CAP-012.** `Tests/Fixtures/RealProjectPatterns` is a compilable configured SwiftUI corpus with bad/good pairs in twelve source files. Syntax-only and explicit indexed audits each emit the same 34-entry per-rule/per-file matrix spanning 24 rules, and no finding evidence points into `Good/`. The accepted repeated indexed audit SHA-256 is `bb03a5d3418a244fe66d8d7a3304a9e82b95dbd71daaf44e8c119466c123a96a`.
 
-**BASE-CAP-013.** Live-source commands persist integrity-checked frontend state and content-addressed indexed facts outside semantic snapshots. An exact warm frontend pass reparses zero files; add/delete/rename and declaration-bearing edits conservatively invalidate affected lexical dependents. Indexed facts include relative source path, source content, graph/tool/cache versions, compiler-unit digests, and the selected index-library identity. Every invocation still normalizes the complete current graph and evaluates all thirty rules.
+**BASE-CAP-013.** Live-source commands persist integrity-checked frontend state and content-addressed indexed facts outside semantic snapshots. An exact warm frontend pass reparses zero files; add/delete/rename and declaration-bearing edits conservatively invalidate affected lexical dependents. Indexed facts include relative source path, source content, graph/tool/cache versions, compiler-unit digests, and the selected index-library identity. Current-source cache schema 2 separates scope facts from a shared locked compiler database, retains two whole results per scope, and applies the authorized storage budget and legacy grace. Every invocation still normalizes the complete current graph and evaluates all thirty rules.
 
 **BASE-CAP-014.** Live-source commands accept positive `--jobs`; omission uses active processors and `1` is serial. Eligible declaration phases and all contextual rules use bounded workers over immutable inputs; all built-in rules share one graph index. On the accepted host, uncached Release Sources audit improved from 1.43s before this audit to 0.57s, with serial/12-job graph and report bytes exact. Indexed whole-result miss with an existing database improved from a 4.24s cold initialization to 2.22s; the following whole-result hit was 0.77s. Reused-database and uncached indexed reports matched at SHA-256 `1380ea9cca5deb609dd520056d5347834c4166e532941b2966223c2d976c9594`.
 
@@ -56,11 +56,13 @@
 
 **BASE-CAP-019.** On the operator machine only, active Homebrew command `swiftui-audit` remains the commit-pinned 0.6.1 candidate recorded by `BASE-REL-017`, while all four Codex skills resolve to the explicit-only checkpoint recorded by `BASE-REL-018`; released 0.6.0 CLI and skills remain retained rollback assets. This local activation is not an upstream Homebrew, tagged-skill, website, or public release state.
 
+**BASE-CAP-020.** Current-source cache schema 2 passed 99 XCTest plus 15 Swift Testing cases, a locked Release build, two byte-identical fresh RuleTests snapshots, and byte-exact comparison of all four semantic snapshot files with the committed baseline; only the permitted manifest repository revision normalization was needed. No installed or public artifact was changed.
+
 ## Accepted residuals and limits
 
 **BASE-LIM-001 — PoC extraction.** Syntax-only extraction remains intentionally bounded to the PoC vocabulary. A nested closure passed through an unregistered call can attach to an outer registered call, and receiver identity for same-named member calls is conservative. The frontend is not a full type checker, SIL pipeline, or full interprocedural/alias/control-flow analyzer.
 
-**BASE-LIM-002 — Conservative invalidation.** Live analysis still reads source bytes to establish content identity, and declaration-bearing edits may conservatively reparse unchanged lexical dependents. Normalization and all rules intentionally rerun over the complete current graph. The cache has no automatic garbage-collection policy in this PoC.
+**BASE-LIM-002 — Conservative invalidation.** Live analysis still reads source bytes to establish content identity, and declaration-bearing edits may conservatively reparse unchanged lexical dependents. Normalization and all rules intentionally rerun over the complete current graph. Released and installed cache-schema-1 binaries still have no automatic garbage collection; only the uninstalled current-source schema-2 implementation has bounded maintenance.
 
 **BASE-LIM-003 — Slice.** Token estimation is byte-based and graph depth is bounded.
 

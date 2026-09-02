@@ -2,7 +2,7 @@
 
 - Node type: leaf
 - Status: Active
-- Contract revision: `spec-19`
+- Contract revision: `spec-20`
 - Authority: [Specification coverage and evidence map](../evidence-map.md)
 - Read when: tracing an authorized addendum or selecting evidence for a product decision.
 - Do not read when: only source-section coverage or ownership is needed.
@@ -19,6 +19,7 @@
 | `ARCHITECTURE-001` | Collision-safe identity, exact project configuration, typed/feature topology, and nineteen architecture rules | `PC-OPS-009`, `PC-SAFE-002`, `IR-GRAPH-008/009`, `CFG-*`, architecture/layout/platform `RULE-*`, `ACC-FIX-011..015` | AuditCore configuration, frontend, SymbolResolution, AuditRules, architecture fixtures and indexed tests |
 | `REALISTIC-FIXTURES-001` | Compilable multi-file good/bad corpus, mixed-directory invariance, and syntax/indexed matrix parity | existing `RULE-*`, `ACC-FIX-016..017`, `ACC-TEST-008`, `ACC-DOD-009` | `RealProjectPatterns`, focused rule/indexed tests, CLI CI dogfood |
 | `INCREMENTAL-CACHE-001` | Persistent content-addressed frontend/indexed fact reuse with uncached byte equivalence | `PC-SCOPE-003/005`, `IR-CACHE-*`, `CLI-CACHE-*`, `ACC-CACHE-*`, `ACC-DOD-010` | AnalysisCache, GraphScanner, SymbolResolution, CLI, cache tests, CI |
+| `CACHE-HYGIENE-001` | Cache schema 2 shared compiler database, bounded histories/storage, and legacy grace | `PC-SCOPE-007`, `IR-CACHE-004..005`, `CLI-CACHE-003`, `ACC-CACHE-004`, `ACC-DOD-021` | AnalysisCache, SymbolResolution, focused cache/index tests, locked full verification |
 | `PARALLEL-EXECUTION-001` | CPU-scaled frontend/rule execution with explicit job control and serial/parallel equivalence | `PC-SCOPE-006`, `CLI-EXEC-001`, `ACC-PERF-001` | GraphScanner, AuditEngine, CLI live-source commands, determinism and Thread Sanitizer tests |
 | `HOMEBREW-RELEASE-001` | Stable 0.4.0 tag/release, version output, and upstream Homebrew tap distribution | `PC-REL-002..003`, `CLI-GEN-005`, `ACC-BREW-*`, `ACC-DOD-012` | `SwiftUIAuditCLI`, release documentation, `potapenko/homebrew-tap`, brew audit/install/test receipt |
 | `COMPONENT-SURFACE-001` | Exact reusable/screen/container roles, component-model lifetime boundary, and one candidate rule | `PC-OPS-010`, `CFG-*`, `IR-GRAPH-010`, `RULE-REUSABLE-OWNER-001`, `ACC-COMP-*` | AuditCore config, AuditRules, ContextSlicer, fixtures, skills, CI |

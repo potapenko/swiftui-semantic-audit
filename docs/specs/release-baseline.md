@@ -2,14 +2,14 @@
 
 - Node type: hybrid
 - Status: Active
-- Contract revision: `spec-23`
+- Contract revision: `spec-24`
 - Read when: checking the current 0.6.0 release, immutable earlier releases, dependencies, milestones, capabilities, residuals, or acceptance evidence.
 - Do not read when: the task concerns intended behavior without realization or release evidence.
 - Maximum size: 100 physical lines.
 
-Revision: `spec-23`
-Baseline state: `0.6.0 released and immutable; 0.6.1 CLI is an unpublished candidate active locally; explicit-only semantic skills are active locally through BASE-REL-018; canonical website carries verified 0.6.0 release facts; UPDATE-UX-001 is an unpublished local website candidate`
-Contract epoch: `tz-v27`
+Revision: `spec-24`
+Baseline state: `0.6.0 released and immutable; 0.6.1 CLI is an unpublished candidate active locally; cache schema 2 is a current-source-only evolution; explicit-only semantic skills are active locally through BASE-REL-018; canonical website carries verified 0.6.0 release facts; UPDATE-UX-001 is an unpublished local website candidate`
+Contract epoch: `tz-v28`
 Website contract epoch: `tz-v23`
 
 **BASE-REL-001 — Publication state.** Tool `0.6.0` is the current public release and `0.4.0`/`0.5.0` remain immutable earlier releases. Each is distributed from its own immutable Git tag and GitHub Release through the tested upstream tap formula; terminal receipts pin every external artifact.

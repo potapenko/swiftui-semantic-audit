@@ -254,6 +254,7 @@ public struct IndexEnrichmentCoordinator: Sendable {
         guard response.mappedSymbols > 0 || response.indexedFacts > 0,
               response.graph.resolution == "indexed"
         else { throw IndexResolutionError.noProjectCoverage(store.path) }
+        cache?.markSharedIndexStoreDatabaseUsed(databaseURL)
         return response.graph
     }
 
@@ -266,9 +267,7 @@ public struct IndexEnrichmentCoordinator: Sendable {
             "size:\(libraryValues.fileSize ?? 0)",
             "modified:\(libraryValues.contentModificationDate?.timeIntervalSince1970 ?? 0)",
         ].joined(separator: "|")
-        return cache.projectDirectoryURL
-            .appendingPathComponent("indexstoredb", isDirectory: true)
-            .appendingPathComponent(AnalysisCacheStore.digest(Data(identity.utf8)), isDirectory: true)
+        return cache.sharedIndexStoreDatabaseURL(identityData: Data(identity.utf8))
     }
 
     private func withDatabaseLock<Value>(

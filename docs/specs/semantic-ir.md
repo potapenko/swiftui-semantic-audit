@@ -2,12 +2,12 @@
 
 - Node type: hybrid
 - Status: Active
-- Contract revision: `spec-4`
+- Contract revision: `spec-5`
 - Read when: selecting semantic graph, evidence, normalization, finding, snapshot, cache, slice, diff, or resolution contracts.
 - Do not read when: the task does not read, write, compare, or transport semantic data.
 - Maximum size: 100 physical lines.
 
-Revision: `spec-4`
+Revision: `spec-5`
 Schema: `2`
 Status: active
 

@@ -2,7 +2,7 @@
 
 - Node type: leaf
 - Status: Active
-- Contract revision: `spec-7`
+- Contract revision: `spec-8`
 - Authority: [CLI contract](../cli.md)
 - Read when: selecting command syntax, flags, output, status, resolution, cache, failure, or timeout behavior.
 - Do not read when: the task does not invoke, document, or integrate the CLI.
@@ -37,7 +37,9 @@
 
 **CLI-CACHE-001.** Live-source `scan`, `audit`, `snapshot`, `slice`, and `check` use the persistent incremental cache by default. `--cache-directory <path>` selects an explicit cache root and `--no-cache` forces a full uncached rebuild. The options are mutually exclusive and never apply to an already-persisted snapshot or a Git-revision operand.
 
-**CLI-CACHE-002.** The default cache root is the user cache directory under a project-identity hash. Cache diagnostics stay off the default product stream. Invalid, incompatible, or incomplete entries are rebuilt without weakening resolution or changing requested JSON stdout.
+**CLI-CACHE-002.** The default cache root is the user cache directory with facts under an analyzed-file-or-directory scope identity. Cache diagnostics stay off the default product stream. Invalid, incompatible, or incomplete entries are rebuilt without weakening resolution or changing requested JSON stdout.
+
+**CLI-CACHE-003.** Cache schema 2 stores per-file or per-directory analysis scopes separately from shared compiler databases. Successful indexed use triggers silent best-effort maintenance no more than daily: retain two whole indexed results per scope, evict inactive least-recently-used data from 2 GiB to 1.5 GiB, skip locked databases, and preserve cache schema 1 for the authorized seven-day rollback grace. Maintenance and migration failures are cache misses only and never alter command output, status, or requested resolution.
 
 ## Execution options
 

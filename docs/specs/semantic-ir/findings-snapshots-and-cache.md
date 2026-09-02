@@ -2,7 +2,7 @@
 
 - Node type: leaf
 - Status: Active
-- Contract revision: `spec-4`
+- Contract revision: `spec-5`
 - Authority: [Semantic IR contract](../semantic-ir.md)
 - Read when: selecting semantic graph, evidence, normalization, finding, snapshot, cache, slice, diff, or resolution contracts.
 - Do not read when: the task does not read, write, compare, or transport semantic data.
@@ -50,3 +50,7 @@ summary.json
 **IR-CACHE-002 — File identity and invalidation.** Frontend entries are identified by normalized relative path, source SHA-256, module identity, tool version, graph schema, and cache schema. Declaration-surface changes conservatively invalidate files whose recorded lexical identifiers may depend on the changed names. Add, delete, rename, configuration, compiler, and index-unit changes must not leave stale nodes, edges, evidence, roles, features, or resolution.
 
 **IR-CACHE-003 — Equivalence and isolation.** Warm-cache and uncached graph/report bytes are identical. Cache artifacts live outside the five-file snapshot, store no source text, use relative source provenance, and use immutable or atomic writes safe against partial concurrent writers.
+
+**IR-CACHE-004 — Storage identities.** Cache schema 2 hashes the canonical analyzed file or directory into an isolated scope for frontend and indexed facts. Persistent IndexStoreDB storage instead uses the exact canonical compiler Index Store path plus index-library identity and may be shared across scopes behind the existing database lock.
+
+**IR-CACHE-005 — Retention and legacy safety.** Retain at most two recently used whole indexed graphs per scope. Daily best-effort LRU maintenance uses 2 GiB/1.5 GiB high/target watermarks, never removes a busy database, and cannot affect semantic behavior. Schema 1 remains isolated and eligible for removal only after both first successful schema-2 indexed use and seven days without schema-1 activity.

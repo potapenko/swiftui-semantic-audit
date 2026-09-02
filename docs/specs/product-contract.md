@@ -2,13 +2,13 @@
 
 - Node type: branch
 - Status: Active
-- Contract revision: `spec-19`
+- Contract revision: `spec-20`
 - Read when: selecting the product goal, invariants, supported operations, scope, or release boundary.
 - Do not read when: a narrower linked domain contract fully governs the task.
 - Maximum size: 100 physical lines.
 
-Revision: `spec-19`
-Authority: epoch `tz-v27`, pinned base digest and authorized addenda in the [registry](README.md)
+Revision: `spec-20`
+Authority: epoch `tz-v28`, pinned base digest and authorized addenda in the [registry](README.md)
 Status: active; 0.6.0 is the current public release and 0.4.0/0.5.0/0.6.0 artifacts are immutable; the compatible watcher repair CLI is active locally through `BASE-REL-017` and the explicit-only skill bundle through `BASE-REL-018`
 
 ## Choose the governing child

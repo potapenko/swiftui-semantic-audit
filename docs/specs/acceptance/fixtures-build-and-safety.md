@@ -2,7 +2,7 @@
 
 - Node type: leaf
 - Status: Active
-- Contract revision: `spec-9`
+- Contract revision: `spec-10`
 - Authority: [Acceptance and QA contract](../acceptance.md)
 - Read when: selecting fixture, build, determinism, safety, dogfood, skill, CI, or completion obligations.
 - Do not read when: the task does not implement or verify accepted behavior.
@@ -75,6 +75,7 @@ swift test --disable-automatic-resolution
 **ACC-TEST-010.** `PARALLEL-EXECUTION-001` advances the local suite to 88 passing tests. Frontend and rule-engine tests compare one worker with four workers byte for byte; CLI integration covers one/two jobs and rejects zero; focused Thread Sanitizer runs cover both parallel boundaries.
 
 **ACC-TEST-011.** `COMPONENT-SURFACE-001` advances the target suite to 92 passing tests with four focused configuration/rule/exception/slice cases while reusing the realistic syntax/indexed parity gate.
+**ACC-TEST-012.** `CACHE-HYGIENE-001` advances the current-source local suite to 99 XCTest plus 15 Swift Testing cases, with locked Debug tests, a Release build, and exact canonical snapshot determinism.
 
 ## Determinism and safety
 
@@ -83,6 +84,8 @@ swift test --disable-automatic-resolution
 **ACC-CACHE-002.** Add, delete, rename, declaration-surface change, dependency change, configuration change, tool/schema mismatch, compiler/index-unit change, corrupt entry, and concurrent writers cannot produce stale or malformed facts. Indexed warm runs retain `resolution: "indexed"` and remain byte-identical to uncached indexed enrichment.
 
 **ACC-CACHE-003.** CI proves operation-count hits/misses rather than a wall-clock ratio, preserves the exact five-file snapshot boundary, and runs the existing realistic syntax/indexed parity and full dogfood gates with cache enabled and disabled.
+
+**ACC-CACHE-004.** Cache-schema-2 tests prove scope isolation, one shared database for equal store/library identity, two-result whole-graph retention, deterministic LRU high/target-watermark eviction, busy-database preservation, daily maintenance throttling, and seven-day schema-1 rollback grace. Every eviction path remains a recoverable cache miss and preserves cached/uncached bytes.
 
 **ACC-PERF-001.** Frontend extraction and audit rule evaluation produce byte-identical graph/report output with one worker and multiple workers. Repeated multi-worker runs are deterministic, and focused Thread Sanitizer verification reports no race in either parallel boundary.
 
