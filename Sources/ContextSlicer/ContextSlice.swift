@@ -1,5 +1,43 @@
 import AuditCore
+import CryptoKit
 import Foundation
+import SnapshotStore
+
+public struct SliceProvenance: Codable, Equatable, Sendable {
+    public let schemaVersion: Int
+    public let toolVersion: String
+    /// Identifies full semantic evidence; not a hash of all source bytes.
+    public let inputDigest: String
+    public let snapshotManifest: SnapshotManifest?
+
+    init(graph: SemanticGraph, report: AuditReport, manifest: SnapshotManifest?) throws {
+        guard graph.schemaVersion == report.schemaVersion,
+              graph.resolution == report.resolution,
+              ["indexed", "syntax-only"].contains(graph.resolution),
+              graph.configurationDigest == report.configurationDigest else {
+            throw ContextSliceError.inconsistentInput("graph and report schema, resolution or configuration differ")
+        }
+        if let manifest {
+            guard manifest.schemaVersion == graph.schemaVersion,
+                  manifest.toolVersion == report.toolVersion,
+                  manifest.configurationDigest == graph.configurationDigest else {
+                throw ContextSliceError.inconsistentInput("snapshot manifest does not match graph and report")
+            }
+        }
+        struct Input: Encodable {
+            let graph: SemanticGraph
+            let report: AuditReport
+            let manifest: SnapshotManifest?
+        }
+        let encoder = JSONEncoder()
+        encoder.outputFormatting = [.sortedKeys, .withoutEscapingSlashes]
+        let data = try encoder.encode(Input(graph: graph, report: report, manifest: manifest))
+        schemaVersion = graph.schemaVersion
+        toolVersion = report.toolVersion
+        inputDigest = "sha256:" + SHA256.hash(data: data).map { String(format: "%02x", $0) }.joined()
+        snapshotManifest = manifest
+    }
+}
 
 public struct SliceMetadata: Codable, Equatable, Sendable {
     public let selection: String
@@ -16,6 +54,11 @@ public struct SliceMetadata: Codable, Equatable, Sendable {
 }
 
 public struct ContextSlice: Codable, Equatable, Sendable {
+    // Optional only for source compatibility and decoding legacy slices.
+    // Every newly generated slice supplies these; absence means unknown.
+    public let resolution: String?
+    public let configurationDigest: String?
+    public let provenance: SliceProvenance?
     public let finding: AuditFinding?
     public let semanticValues: [NormalizedSemanticValue]
     public let nodes: [SemanticNode]
@@ -31,8 +74,14 @@ public struct ContextSlice: Codable, Equatable, Sendable {
         edges: [SemanticEdge],
         sourceEvidence: [Evidence],
         questions: [String],
-        metadata: SliceMetadata
+        metadata: SliceMetadata,
+        resolution: String? = nil,
+        configurationDigest: String? = nil,
+        provenance: SliceProvenance? = nil
     ) {
+        self.resolution = resolution
+        self.configurationDigest = configurationDigest
+        self.provenance = provenance
         self.finding = finding
         self.semanticValues = semanticValues.sorted { $0.id < $1.id }
         self.nodes = nodes.sorted { $0.id < $1.id }
@@ -57,9 +106,12 @@ public enum ContextSliceError: Error, Equatable, LocalizedError {
     case ambiguousSymbol(String, [String])
     case invalidBudget(Int)
     case insufficientBudget(requested: Int, minimum: Int)
+    case inconsistentInput(String)
 
     public var errorDescription: String? {
         switch self {
+        case .inconsistentInput(let detail):
+            "inconsistent slice input: \(detail)"
         case .unknownFinding(let id):
             "unknown finding \(id)"
         case .unknownSymbol(let symbol):

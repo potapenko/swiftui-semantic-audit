@@ -16,7 +16,8 @@ public struct IndexStoreDBResolver: SymbolResolver, Sendable {
 
     public func enrich(_ request: IndexEnrichmentRequest) throws -> IndexEnrichmentResponse {
         let sourceRoot = URL(fileURLWithPath: request.sourceRoot).standardizedFileURL.resolvingSymlinksInPath()
-        let files = swiftFiles(at: sourceRoot)
+        let sourceState = try IndexSourceState(root: sourceRoot)
+        let files = sourceState.files
         guard !files.isEmpty else { throw IndexResolutionError.noProjectCoverage(request.indexStorePath) }
         let library = try IndexStoreLibrary(dylibPath: request.indexStoreLibraryPath)
         let database = try IndexStoreDB(
@@ -31,6 +32,18 @@ public struct IndexStoreDBResolver: SymbolResolver, Sendable {
         let coveredFiles = files.filter { !(unitNamesByPath[$0.path] ?? []).isEmpty }
         guard !coveredFiles.isEmpty else {
             throw IndexResolutionError.noProjectCoverage(request.indexStorePath)
+        }
+        let uncovered = files.filter { (unitNamesByPath[$0.path] ?? []).isEmpty }
+        guard uncovered.isEmpty else {
+            throw IndexResolutionError.incompleteCoverage(uncovered.map { relativePath(for: $0, root: sourceRoot) })
+        }
+        let stale = files.filter { file in
+            guard let indexedAt = database.dateOfLatestUnitFor(filePath: file.path),
+                  let changedAt = sourceState.latestChanges[file.path] else { return true }
+            return changedAt > indexedAt
+        }
+        guard stale.isEmpty else {
+            throw IndexResolutionError.staleSources(stale.map { relativePath(for: $0, root: sourceRoot) })
         }
         var knownPaths: [String: String] = [:]
         for file in coveredFiles {
@@ -65,6 +78,9 @@ public struct IndexStoreDBResolver: SymbolResolver, Sendable {
             throw IndexResolutionError.noProjectCoverage(request.indexStorePath)
         }
         let response = enrich(graph: request.graph, occurrences: occurrences, sourceLines: sourceLines)
+        guard try IndexSourceState(root: sourceRoot) == sourceState else {
+            throw IndexResolutionError.changedInputs
+        }
         return IndexEnrichmentResponse(
             graph: response.graph,
             mappedSymbols: response.mappedSymbols,
@@ -449,21 +465,6 @@ public struct IndexStoreDBResolver: SymbolResolver, Sendable {
         case .view, .type, .function, .property, .input, .derivedValue: 1
         default: 2
         }
-    }
-
-    private func swiftFiles(at root: URL) -> [URL] {
-        var isDirectory: ObjCBool = false
-        guard FileManager.default.fileExists(atPath: root.path, isDirectory: &isDirectory) else { return [] }
-        if !isDirectory.boolValue { return root.pathExtension.lowercased() == "swift" ? [root] : [] }
-        guard let enumerator = FileManager.default.enumerator(
-            at: root,
-            includingPropertiesForKeys: [.isRegularFileKey],
-            options: [.skipsHiddenFiles, .skipsPackageDescendants]
-        ) else { return [] }
-        return enumerator.compactMap { $0 as? URL }.filter {
-            $0.pathExtension.lowercased() == "swift" &&
-                (try? $0.resourceValues(forKeys: [.isRegularFileKey]).isRegularFile) == true
-        }.map { $0.standardizedFileURL.resolvingSymlinksInPath() }.sorted { $0.path < $1.path }
     }
 
     private func relativePath(for file: URL, root: URL) -> String {

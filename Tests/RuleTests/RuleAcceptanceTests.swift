@@ -314,6 +314,28 @@ final class RuleAcceptanceTests: XCTestCase {
         }
     }
 
+    func testTransactionCannotSuppressWritesOutsideCommitActions() throws {
+        let source = try String(contentsOf: fixtureURL("BindingTransactionalDraft")
+            .appendingPathComponent("Fixture.swift"), encoding: .utf8)
+        for leak in [
+            ".onChange(of: editableName) { _, value in profileName = value }",
+            ".onChange(of: editableName) { _, _ in applyEdits() }",
+            ".task { applyEdits() }",
+        ] {
+            let modified = source.replacingOccurrences(of: ".onAppear", with: leak + "\n        .onAppear")
+            let report = try auditTemporarySource(modified, moduleName: "LeakingDraft")
+            XCTAssertFalse(report.semanticValues.contains { $0.classification == .transactionalDraft }, leak)
+            XCTAssertTrue(Set(report.findings.map(\.rule)).isSuperset(of: [.mirroredState, .manualTwoWaySync]), leak)
+        }
+        let extraCommit = source.replacingOccurrences(
+            of: "Button(\"Primary\") { applyEdits() }",
+            with: "Button(\"Primary\") { applyEdits() }\n            Button(\"Also commit\") { applyEdits() }"
+        )
+        let valid = try auditTemporarySource(extraCommit, moduleName: "TwoCommitActions")
+        XCTAssertTrue(valid.findings.isEmpty)
+        XCTAssertTrue(valid.semanticValues.contains { $0.classification == .transactionalDraft })
+    }
+
     func testTunnelRequiresOneForwardedSemanticValueAndMinimumDepth() throws {
         let mismatch = try auditFixture("CallbackTunnelMismatch")
         let depthTwo = try auditFixture("TunnelDepthTwo")

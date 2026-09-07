@@ -2,7 +2,7 @@
 
 - Node type: leaf
 - Status: Active
-- Contract revision: `spec-4`
+- Contract revision: `spec-5`
 - Authority: [Semantic IR contract](../semantic-ir.md)
 - Read when: selecting semantic graph, evidence, normalization, finding, snapshot, cache, slice, diff, or resolution contracts.
 - Do not read when: the task does not read, write, compare, or transport semantic data.
@@ -11,7 +11,7 @@
 
 ## Context slice
 
-**IR-SLICE-001 — Envelope.** LLM JSON contains `finding`, `semanticValues`, `nodes`, `edges`, `sourceEvidence`, `questions`, and metadata.
+**IR-SLICE-001 — Envelope.** LLM JSON contains `finding`, `semanticValues`, `nodes`, `edges`, `sourceEvidence`, `questions`, and metadata. New slices also carry schema/tool versions, resolution, configuration digest, a SHA-256 identity of the full graph/report evidence and any supplied snapshot manifest. These fields remain inside every budgeted envelope. Legacy slices decode with unknown provenance, never an invented indexed identity.
 
 **IR-SLICE-002 — Selection.** Select exactly one finding ID or stable/qualified/unambiguous symbol. Reject unknown or ambiguous selectors.
 

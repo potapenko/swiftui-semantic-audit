@@ -2,7 +2,7 @@
 
 - Node type: root
 - Status: Active
-- Contract revision: `spec-36`
+- Contract revision: `spec-37`
 - Authority: epoch `tz-v29` and pinned digest declared below
 - Read when: starting any product, behavior, compatibility, QA, release, or specification task in this repository.
 - Do not read when: the task is proven behavior-neutral and outside the specification system.
@@ -10,7 +10,7 @@
 
 Status: active  
 Contract epoch: `tz-v29`
-Local specification revision: `spec-36`
+Local specification revision: `spec-37`
 Pinned authority digest: `sha256:68f8a43d924659024b7d29fabb9ad302817c271838a7919b24bd942626927cac`  
 Router addendum: user-authorized `ROUTER-001` on 2026-08-18
 Indexed-skills addendum: user-authorized `INDEXED-SKILLS-001` on 2026-08-18
@@ -33,7 +33,7 @@ Release addendum: user-authorized [`RELEASE-0.6.0-001`](../coordination/release-
 Update UX addendum: user-authorized `UPDATE-UX-001` on 2026-08-24; adds one short existing-installation prompt immediately after the setup prompt, advances the website contract to `tz-v23` and the combined contract to `tz-v26`, and does not publish or change release artifacts; skill non-interference addendum: user-authorized [`SKILL-NON-INTERFERENCE-001`](../coordination/skill-non-interference-001.md) on 2026-08-25; makes all four semantic skills explicit-only and advances the combined contract to `tz-v27`; cache hygiene addendum: user-authorized [`CACHE-HYGIENE-001`](../coordination/cache-hygiene-001.md) on 2026-09-02; advances current-source cache behavior to schema 2 and the combined contract to `tz-v28` without changing semantic outputs or any installed/public artifact; balanced skill invocation addendum: user-authorized [`SKILL-BALANCED-INVOCATION-001`](../coordination/skill-balanced-invocation-001.md) on 2026-09-02; restores bounded implicit assistance only for the router and advances the combined contract to `tz-v29`
 Release baseline: `0.6.0 current public`; immutable release artifacts: `0.4.0`, `0.5.0`, and `0.6.0`; this machine's active CLI remains the unpublished 0.6.1 candidate through `BASE-REL-017`, while its balanced four-skill bundle is pinned through `BASE-REL-019`; website baseline: canonical domain carries verified 0.6.0 release facts; project-watcher 0.6.0 is Released through `BASE-REL-015`; semantic-twin story candidate remains separately evolving
 
-This directory is the self-contained active specification package for SwiftUI Semantic Audit. It faithfully restates the user-approved Russian ТЗ without expanding product semantics. Clause IDs are stable references for implementation, review, and QA.
+This directory is the self-contained active specification package for SwiftUI Semantic Audit. It faithfully restates the user-approved Russian ТЗ without expanding product semantics. Clause IDs are stable references for implementation, review, and QA. Current-source evidence restoration: [EVIDENCE-INTEGRITY-001](../coordination/evidence-integrity-001.md) records the user-approved 2026-09-07 repair; public artifacts remain unchanged.
 
 ## Precedence
 

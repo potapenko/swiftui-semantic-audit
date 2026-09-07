@@ -79,6 +79,9 @@ final class ContextSlicerTests: XCTestCase {
         XCTAssertEqual(budgeted.finding?.id, finding.id)
         XCTAssertFalse(budgeted.questions.isEmpty)
         XCTAssertEqual(try budgeted.jsonData(), try repeated.jsonData())
+        XCTAssertEqual(budgeted.provenance, full.provenance)
+        XCTAssertEqual(budgeted.resolution, full.resolution)
+        XCTAssertEqual(budgeted.configurationDigest, full.configurationDigest)
         try assertValidReferences(budgeted)
 
         XCTAssertThrowsError(try slicer.slice(
@@ -209,6 +212,63 @@ final class ContextSlicerTests: XCTestCase {
             XCTAssertTrue(slice.questions.contains { $0.contains(phrase) }, phrase)
         }
         try assertValidReferences(slice)
+    }
+
+    func testSliceCarriesStableInputIdentityAndSnapshotOrigin() throws {
+        let (graph, report) = try mixedAudit()
+        let slicer = ContextSlicer()
+        let finding = try XCTUnwrap(report.findings.first)
+        let first = try slicer.slice(graph: graph, report: report, findingID: finding.id)
+        let symbol = try slicer.slice(graph: graph, report: report, symbol: finding.nodes[0])
+        XCTAssertEqual(first.resolution, graph.resolution)
+        XCTAssertEqual(first.configurationDigest, graph.configurationDigest)
+        XCTAssertEqual(first.provenance, symbol.provenance)
+        XCTAssertEqual(first.provenance?.schemaVersion, graph.schemaVersion)
+        XCTAssertEqual(first.provenance?.toolVersion, report.toolVersion)
+        XCTAssertTrue(first.provenance?.inputDigest.hasPrefix("sha256:") == true)
+        XCTAssertNil(first.provenance?.snapshotManifest)
+
+        let manifest = SnapshotManifest(swiftVersion: "test", repositoryRevision: "original", generatedFrom: ".")
+        let historical = try slicer.slice(graph: graph, report: report, findingID: finding.id, manifest: manifest)
+        XCTAssertEqual(historical.provenance?.snapshotManifest, manifest)
+        XCTAssertNotEqual(first.provenance?.inputDigest, historical.provenance?.inputDigest)
+        let changed = SnapshotManifest(swiftVersion: "test", repositoryRevision: "different", generatedFrom: ".")
+        let other = try slicer.slice(graph: graph, report: report, findingID: finding.id, manifest: changed)
+        XCTAssertNotEqual(historical.provenance?.inputDigest, other.provenance?.inputDigest)
+        XCTAssertEqual(try JSONDecoder().decode(ContextSlice.self, from: historical.jsonData()), historical)
+
+        var legacy = try XCTUnwrap(JSONSerialization.jsonObject(with: first.jsonData()) as? [String: Any])
+        for key in ["resolution", "configurationDigest", "provenance"] { legacy.removeValue(forKey: key) }
+        let decoded = try JSONDecoder().decode(ContextSlice.self, from: JSONSerialization.data(withJSONObject: legacy))
+        XCTAssertNil(decoded.resolution)
+        XCTAssertNil(decoded.configurationDigest)
+        XCTAssertNil(decoded.provenance)
+    }
+
+    func testSliceRejectsMismatchedEvidenceAndIncludesIndexedResolution() throws {
+        let (graph, _) = try mixedAudit()
+        let indexed = SemanticGraph(
+            schemaVersion: graph.schemaVersion, resolution: "indexed", configurationDigest: "configured",
+            nodes: graph.nodes, edges: graph.edges
+        )
+        let indexedReport = AuditEngine().audit(graph: indexed)
+        let symbol = try XCTUnwrap(indexed.nodes.first?.id)
+        let slice = try ContextSlicer().slice(graph: indexed, report: indexedReport, symbol: symbol)
+        XCTAssertEqual(slice.resolution, "indexed")
+        XCTAssertEqual(slice.configurationDigest, "configured")
+        let incompatible = [
+            AuditReport(resolution: "syntax-only", configurationDigest: "configured", metrics: indexedReport.metrics, semanticValues: indexedReport.semanticValues, findings: indexedReport.findings),
+            AuditReport(resolution: "indexed", configurationDigest: "other", metrics: indexedReport.metrics, semanticValues: indexedReport.semanticValues, findings: indexedReport.findings),
+        ]
+        for report in incompatible {
+            XCTAssertThrowsError(try ContextSlicer().slice(graph: indexed, report: report, symbol: symbol)) {
+                guard case ContextSliceError.inconsistentInput = $0 else { return XCTFail("unexpected error: \($0)") }
+            }
+        }
+        XCTAssertThrowsError(try ContextSlicer().slice(
+            graph: indexed, report: indexedReport, symbol: symbol,
+            manifest: SnapshotManifest(swiftVersion: "test", repositoryRevision: "original", generatedFrom: ".")
+        ))
     }
 
     private func mixedAudit() throws -> (SemanticGraph, AuditReport) {

@@ -100,7 +100,41 @@ public struct SemanticNormalizer: Sendable {
                 declarationOwner(of: $0.id, graph: graph, nodes: nodes) == localOwner
         }.sorted { $0.id < $1.id }.map { actionFlow(from: $0.id, graph: graph) }
 
-        for commit in actionFlows {
+        let commits = actionFlows.filter { flow in
+            identityEdges.contains { edge in
+                edge.from == local && upstreams.contains(edge.to) && actionContains(edge: edge, flow: flow)
+            }
+        }
+        let commitActors = Set(commits.flatMap(\.actors))
+        let commitWrites = commits.flatMap(\.writes)
+        let commitCalls = graph.edges.filter { $0.kind == .calls && commitActors.contains($0.from) }
+        // Only ingress to a path that reaches an upstream write matters. Shared
+        // compiler-generated getters are also called by unrelated read-only paths.
+        var commitWriteActors = Set(commitWrites.filter { upstreams.contains($0.to) }.map(\.from))
+        let commitTraversal = commits.flatMap(\.traversalEdges).filter { commitActors.contains($0.from) }
+        var expanded = true
+        while expanded {
+            expanded = false
+            for edge in commitTraversal where commitWriteActors.contains(edge.to) {
+                if commitWriteActors.insert(edge.from).inserted { expanded = true }
+            }
+        }
+        let upstreamWrites = graph.edges.filter {
+            $0.kind == .writes && upstreams.contains($0.to) &&
+                declarationOwner(of: $0.from, graph: graph, nodes: nodes) == localOwner
+        }
+        // A helper shared by Apply and onChange is still a write-through leak.
+        // Validate both the write actors and every call entering the commit flow.
+        guard upstreamWrites.allSatisfy({
+                  commitActors.contains($0.from) || isIndexedDuplicate($0, of: commitWrites)
+              }),
+              !graph.edges.contains(where: {
+                  $0.kind == .calls && commitWriteActors.contains($0.to) && !commitActors.contains($0.from) &&
+                      !isIndexedDuplicate($0, of: commitCalls)
+              })
+        else { return nil }
+
+        for commit in commits {
             guard let commitCopy = identityEdges.first(where: { edge in
                 edge.from == local && upstreams.contains(edge.to) && actionContains(edge: edge, flow: commit)
             }) else { continue }
@@ -138,6 +172,7 @@ public struct SemanticNormalizer: Sendable {
         }
         return ActionFlow(
             actionID: actionID,
+            actors: actors,
             traversalEdges: traversalEdges.sorted { $0.id < $1.id },
             writes: graph.edges.filter { $0.kind == .writes && actors.contains($0.from) }.sorted { $0.id < $1.id }
         )
@@ -146,6 +181,16 @@ public struct SemanticNormalizer: Sendable {
     private func actionContains(edge: SemanticEdge, flow: ActionFlow) -> Bool {
         let writeEvidence = Set(flow.writes.flatMap(\.evidence).map(EvidenceKey.init))
         return edge.evidence.contains { writeEvidence.contains(EvidenceKey($0)) }
+    }
+
+    /// Compiler occurrences can attribute a closure's operation to its enclosing
+    /// body accessor. Preserve the more precise syntax path for that same operation.
+    private func isIndexedDuplicate(_ edge: SemanticEdge, of operations: [SemanticEdge]) -> Bool {
+        guard !edge.evidence.isEmpty,
+              edge.evidence.allSatisfy({ ["index-write", "index-call"].contains($0.kind) }) else { return false }
+        let syntaxLocations = Set(operations.filter { $0.kind == edge.kind && $0.to == edge.to }
+            .flatMap(\.evidence).filter { ["assignment", "function-call"].contains($0.kind) }.map(EvidenceKey.init))
+        return edge.evidence.allSatisfy { syntaxLocations.contains(EvidenceKey($0)) }
     }
 
     private func declarationOwner(
@@ -176,6 +221,7 @@ private struct ClassificationMatch {
 
 private struct ActionFlow {
     let actionID: String
+    let actors: Set<String>
     let traversalEdges: [SemanticEdge]
     let writes: [SemanticEdge]
 }

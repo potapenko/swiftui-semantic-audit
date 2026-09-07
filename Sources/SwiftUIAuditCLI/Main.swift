@@ -123,6 +123,7 @@ struct Slice: ParsableCommand {
         let resolved = try SliceInputResolver().resolve(input: input, currentDirectory: currentDirectory)
         let graph: SemanticGraph
         let report: AuditReport
+        let manifest: SnapshotManifest?
         switch resolved {
         case .snapshot(let url):
             if resolution.syntaxOnly || resolution.indexStore != nil || resolution.config != nil ||
@@ -135,9 +136,11 @@ struct Slice: ParsableCommand {
             let snapshot = try SnapshotReader().read(from: url)
             graph = snapshot.graph
             report = snapshot.report
+            manifest = snapshot.manifest
         case .source(let url):
             graph = try loadResolvedGraph(path: url.path, options: resolution)
             report = AuditEngine(maximumParallelism: try resolution.maximumParallelism()).audit(graph: graph)
+            manifest = nil
         }
 
         let slicer = ContextSlicer()
@@ -147,14 +150,16 @@ struct Slice: ParsableCommand {
                 graph: graph,
                 report: report,
                 findingID: finding,
-                tokenBudget: tokenBudget
+                tokenBudget: tokenBudget,
+                manifest: manifest
             )
         } else {
             result = try slicer.slice(
                 graph: graph,
                 report: report,
                 symbol: symbol!,
-                tokenBudget: tokenBudget
+                tokenBudget: tokenBudget,
+                manifest: manifest
             )
         }
         if format == .llmJSON {

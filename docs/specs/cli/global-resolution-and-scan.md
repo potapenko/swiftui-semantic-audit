@@ -2,7 +2,7 @@
 
 - Node type: leaf
 - Status: Active
-- Contract revision: `spec-8`
+- Contract revision: `spec-9`
 - Authority: [CLI contract](../cli.md)
 - Read when: selecting command syntax, flags, output, status, resolution, cache, failure, or timeout behavior.
 - Do not read when: the task does not invoke, document, or integrate the CLI.
@@ -27,7 +27,7 @@
 
 **CLI-RES-002.** With neither flag, automatically search validated local `.build/**/debug/index/store` and release equivalents. Enrich only for one usable candidate; otherwise return syntax-only.
 
-**CLI-RES-003.** Explicit stores must have raw `vN/units` and `vN/records` shape, usable `libIndexStore.dylib`, executable helper, and project coverage. Explicit failure is terminal; automatic failure falls back.
+**CLI-RES-003.** Explicit stores must have raw `vN/units` and `vN/records` shape, usable `libIndexStore.dylib`, executable helper, and coverage of every analyzed Swift file. Reject missing coverage and source modification/change times newer than their index units, including on cache reuse; timestamp checks do not attest compiler source contents, so exact-state builds remain required. Explicit failure is terminal; automatic failure falls back.
 
 **CLI-RES-004.** Indexed enrichment is macOS-only. It is bounded by an external process timeout and marks an accepted graph `resolution: "indexed"`.
 

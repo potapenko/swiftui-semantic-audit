@@ -6,6 +6,9 @@ import Foundation
 public enum IndexResolutionError: Error, Equatable, LocalizedError {
     case invalidStore(String)
     case noProjectCoverage(String)
+    case incompleteCoverage([String])
+    case staleSources([String])
+    case changedInputs
     case unavailableLibrary(String)
     case invalidHelper(String)
     case helperFailed(Int32, String)
@@ -15,12 +18,20 @@ public enum IndexResolutionError: Error, Equatable, LocalizedError {
         switch self {
         case .invalidStore(let path): "invalid Index Store: \(path)"
         case .noProjectCoverage(let path): "Index Store has no coverage for analyzed Swift files: \(path)"
+        case .incompleteCoverage(let files): "Index Store does not cover every analyzed Swift file: \(Self.fileSummary(files)). Rebuild the full analysis scope."
+        case .staleSources(let files): "Swift sources are newer than their Index Store units: \(Self.fileSummary(files)). Rebuild the exact source state."
+        case .changedInputs: "Source or Index Store changed during analysis; rebuild and retry the exact source state."
         case .unavailableLibrary(let detail): "Index Store library unavailable: \(detail)"
         case .invalidHelper(let path): "index enrichment helper is not a regular executable file: \(path)"
         case .helperFailed(let status, let detail):
             "index enrichment helper failed with status \(status)\(detail.isEmpty ? "" : ": \(detail)")"
         case .invalidResponse(let detail): "invalid index enrichment response: \(detail)"
         }
+    }
+
+    private static func fileSummary(_ files: [String]) -> String {
+        let shown = files.sorted().prefix(5).joined(separator: ", ")
+        return files.count > 5 ? "\(shown) (+\(files.count - 5) more)" : shown
     }
 }
 
@@ -126,16 +137,22 @@ public struct IndexEnrichmentCoordinator: Sendable {
 
         do {
             let library = try indexStoreLibraryPath()
-            let cacheKey = try cache.map { _ in try indexedCacheKey(graph: graph, store: store, library: library) }
-            if let cache, let cacheKey, let cached = cache.loadIndexedGraph(key: cacheKey),
+            let cacheKey = try indexedCacheKey(graph: graph, sourceRoot: sourceRoot, store: store, library: library)
+            if let cache, let cached = cache.loadIndexedGraph(key: cacheKey),
                cached.resolution == "indexed",
                cached.configurationDigest == graph.configurationDigest {
+                guard try indexedCacheKey(graph: graph, sourceRoot: sourceRoot, store: store, library: library) == cacheKey else {
+                    throw IndexResolutionError.changedInputs
+                }
                 return cached
             }
             let enriched = try invokeHelper(
                 graph: graph, sourceRoot: sourceRoot, store: store, library: library, cache: cache
             )
-            if let cache, let cacheKey { try? cache.saveIndexedGraph(enriched, key: cacheKey) }
+            guard try indexedCacheKey(graph: graph, sourceRoot: sourceRoot, store: store, library: library) == cacheKey else {
+                throw IndexResolutionError.changedInputs
+            }
+            if let cache { try? cache.saveIndexedGraph(enriched, key: cacheKey) }
             return enriched
         } catch {
             if explicit { throw error }
@@ -143,9 +160,10 @@ public struct IndexEnrichmentCoordinator: Sendable {
         }
     }
 
-    private func indexedCacheKey(graph: SemanticGraph, store: URL, library: URL) throws -> String {
+    private func indexedCacheKey(graph: SemanticGraph, sourceRoot: URL, store: URL, library: URL) throws -> String {
         var data = try graph.jsonData()
-        data.append(Data("|cache:\(AnalysisCacheStore.schemaVersion)|tool:\(ToolMetadata.version)|".utf8))
+        let sources = try IndexSourceState(root: sourceRoot)
+        data.append(Data("|coverage-freshness:1|sources:\(sources.digest)|store:\(store.path)|cache:\(AnalysisCacheStore.schemaVersion)|tool:\(ToolMetadata.version)|".utf8))
         let fileManager = FileManager.default
         let unitURLs = (fileManager.enumerator(
             at: store,
@@ -160,6 +178,8 @@ public struct IndexEnrichmentCoordinator: Sendable {
             let relative = unit.path.hasPrefix(prefix) ? String(unit.path.dropFirst(prefix.count)) : unit.lastPathComponent
             data.append(Data(relative.utf8))
             data.append(try Data(contentsOf: unit))
+            let values = try unit.resourceValues(forKeys: [.contentModificationDateKey])
+            data.append(Data("|unit-date:\(values.contentModificationDate?.timeIntervalSince1970 ?? 0)|".utf8))
         }
         let libraryValues = try library.resourceValues(forKeys: [.fileSizeKey, .contentModificationDateKey])
         data.append(Data("|library:\(library.path)|\(libraryValues.fileSize ?? 0)|\(libraryValues.contentModificationDate?.timeIntervalSince1970 ?? 0)".utf8))

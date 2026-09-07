@@ -1,5 +1,6 @@
 import AuditCore
 import Foundation
+import SnapshotStore
 
 public struct ContextSlicer: Sendable {
     public init() {}
@@ -8,7 +9,8 @@ public struct ContextSlicer: Sendable {
         graph: SemanticGraph,
         report: AuditReport,
         findingID: String,
-        tokenBudget: Int? = nil
+        tokenBudget: Int? = nil,
+        manifest: SnapshotManifest? = nil
     ) throws -> ContextSlice {
         guard let finding = report.findings.first(where: { $0.id == findingID }) else {
             throw ContextSliceError.unknownFinding(findingID)
@@ -19,7 +21,8 @@ public struct ContextSlicer: Sendable {
             finding: finding,
             coreNodeIDs: Set(finding.nodes),
             selection: "finding:\(findingID)",
-            tokenBudget: tokenBudget
+            tokenBudget: tokenBudget,
+            manifest: manifest
         )
     }
 
@@ -27,7 +30,8 @@ public struct ContextSlicer: Sendable {
         graph: SemanticGraph,
         report: AuditReport,
         symbol: String,
-        tokenBudget: Int? = nil
+        tokenBudget: Int? = nil,
+        manifest: SnapshotManifest? = nil
     ) throws -> ContextSlice {
         let node = try resolve(symbol: symbol, in: graph)
         let value = report.semanticValues.first { $0.representations.contains(node.id) }
@@ -39,13 +43,19 @@ public struct ContextSlicer: Sendable {
             finding: finding,
             coreNodeIDs: [node.id],
             selection: "symbol:\(node.id)",
-            tokenBudget: tokenBudget
+            tokenBudget: tokenBudget,
+            manifest: manifest
         )
     }
 
     public func humanDescription(_ slice: ContextSlice) -> String {
         let nodeByID = Dictionary(uniqueKeysWithValues: slice.nodes.map { ($0.id, $0) })
         var lines: [String] = []
+        lines.append("ANALYSIS")
+        lines.append("  resolution: \(slice.resolution ?? "unknown")")
+        lines.append("  configuration: \(slice.configurationDigest ?? "unknown")")
+        lines.append("  input: \(slice.provenance?.inputDigest ?? "unknown")")
+        lines.append("")
         lines.append("OWNER")
         let ownerEdges = slice.edges.filter { [.owns, .binds, .injects, .observes].contains($0.kind) }
         if ownerEdges.isEmpty {
@@ -86,9 +96,11 @@ public struct ContextSlicer: Sendable {
         finding: AuditFinding?,
         coreNodeIDs: Set<String>,
         selection: String,
-        tokenBudget: Int?
+        tokenBudget: Int?,
+        manifest: SnapshotManifest?
     ) throws -> ContextSlice {
         if let tokenBudget, tokenBudget <= 0 { throw ContextSliceError.invalidBudget(tokenBudget) }
+        let provenance = try SliceProvenance(graph: graph, report: report, manifest: manifest)
         let nodeByID = Dictionary(uniqueKeysWithValues: graph.nodes.map { ($0.id, $0) })
         let edgeByID = Dictionary(uniqueKeysWithValues: graph.edges.map { ($0.id, $0) })
         var mandatoryNodes = coreNodeIDs
@@ -123,6 +135,7 @@ public struct ContextSlicer: Sendable {
             nodeIDs: expanded.nodes,
             edgeIDs: expanded.edges,
             graph: graph,
+            provenance: provenance,
             questions: questions,
             selection: selection,
             tokenBudget: tokenBudget,
@@ -141,6 +154,7 @@ public struct ContextSlicer: Sendable {
                 nodeIDs: selectedNodes,
                 edgeIDs: selectedEdges,
                 graph: graph,
+                provenance: provenance,
                 questions: questions,
                 selection: selection,
                 tokenBudget: budget,
@@ -172,6 +186,7 @@ public struct ContextSlicer: Sendable {
                 nodeIDs: candidateNodes,
                 edgeIDs: candidateEdges,
                 graph: graph,
+                provenance: provenance,
                 questions: questions,
                 selection: selection,
                 tokenBudget: tokenBudget,
@@ -237,6 +252,7 @@ public struct ContextSlicer: Sendable {
         nodeIDs: Set<String>,
         edgeIDs: Set<String>,
         graph: SemanticGraph,
+        provenance: SliceProvenance,
         questions: [String],
         selection: String,
         tokenBudget: Int?,
@@ -261,7 +277,10 @@ public struct ContextSlicer: Sendable {
                 tokenBudget: tokenBudget,
                 estimatedTokens: 0,
                 truncated: truncated
-            )
+            ),
+            resolution: graph.resolution,
+            configurationDigest: graph.configurationDigest,
+            provenance: provenance
         )
     }
 
@@ -281,7 +300,10 @@ public struct ContextSlicer: Sendable {
                     tokenBudget: slice.metadata.tokenBudget,
                     estimatedTokens: estimate,
                     truncated: slice.metadata.truncated
-                )
+                ),
+                resolution: slice.resolution,
+                configurationDigest: slice.configurationDigest,
+                provenance: slice.provenance
             )
             let bytes = (try? result.jsonData().count) ?? Int.max / 2
             let next = max(1, (bytes + 2) / 3)
@@ -300,7 +322,10 @@ public struct ContextSlicer: Sendable {
                 tokenBudget: result.metadata.tokenBudget,
                 estimatedTokens: estimate,
                 truncated: result.metadata.truncated
-            )
+            ),
+            resolution: result.resolution,
+            configurationDigest: result.configurationDigest,
+            provenance: result.provenance
         )
     }
 

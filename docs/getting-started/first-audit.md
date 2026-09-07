@@ -20,6 +20,8 @@ swiftui-audit doctor . --format json
 
 Use the target project's normal build command. The resulting compiler Index Store must cover the source being audited and must correspond to the current source state.
 
+Current-source 0.6.1 additionally rejects a partially covered source scope and files whose modification or filesystem change time is newer than their index units, even when a cached graph exists. These conservative checks do not attest compiler source contents; an exact-state build remains required. Immutable 0.6.0 does not include this repair.
+
 Record the raw Index Store path from the build system. SwiftPM and Xcode may place it in different build directories; do not select a directory from its name alone. An explicit `--index-store` request fails when the raw store, compiler library, helper, or project coverage is not valid.
 
 ## 3. Decide whether configuration is needed

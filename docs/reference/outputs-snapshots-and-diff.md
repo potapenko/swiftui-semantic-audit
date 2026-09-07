@@ -108,9 +108,12 @@ This distinction prevents a new commit hash from making unchanged semantic evide
 - semantic values;
 - relevant nodes and edges;
 - source evidence;
-- questions and metadata.
+- questions and metadata;
+- `resolution`, `configurationDigest`, and `provenance` (graph schema/tool versions, full-input SHA-256, and the snapshot manifest when slicing a snapshot).
 
-The mandatory envelope keeps the selected finding, affected values, ownership, read/write paths, and evidence. Traversal is bounded. Token estimation is conservative and byte-based; the command fails when a positive budget cannot fit the mandatory content.
+Current-source 0.6.1 candidate slices carry these additive provenance fields; immutable 0.6.0 output does not. Missing fields in older JSON mean unknown provenance. The digest identifies the complete graph/report evidence and optional manifest, not all source bytes; it is independent of selector and token budget. A snapshot slice retains the historical manifest rather than claiming the current checkout.
+
+The mandatory envelope keeps provenance, the selected finding, affected values, ownership, read/write paths, and evidence. Traversal is bounded. Token estimation is conservative and byte-based; the command fails when a positive budget cannot fit the mandatory content.
 
 ## Semantic diff
 

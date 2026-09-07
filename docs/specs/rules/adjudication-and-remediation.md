@@ -2,7 +2,7 @@
 
 - Node type: leaf
 - Status: Active
-- Contract revision: `spec-4`
+- Contract revision: `spec-5`
 - Authority: [Rule and adjudication contract](../rules.md)
 - Read when: selecting any of the thirty findings, exclusions, dominance, adjudication, or fixture expectations.
 - Do not read when: the task does not evaluate, interpret, or verify findings.
@@ -17,7 +17,7 @@
 
 **RULE-EXC-001 — Direct Binding.** A correctly owned direct Binding produces no violation merely for being mutable or externally owned.
 
-**RULE-EXC-002 — Transactional draft.** A local draft with real commit and discard topology is not automatically a Binding violation. Classify from actions/calls/copies, not names. Missing or fake discard must not suppress a mirror.
+**RULE-EXC-002 — Transactional draft.** A local draft with real commit and discard topology is not automatically a Binding violation. Classify from actions/calls/copies, not names. Missing or fake discard must not suppress a mirror. A commit/discard pair must not suppress other writes to the upstream value outside commit actions, including lifecycle paths that call the commit helper.
 
 **RULE-EXC-003 — Intentional transformation.** A bidirectional non-identity transformation such as Celsius/Fahrenheit is derivation, not direct identity synchronization, and must not produce a direct-Binding recommendation.
 

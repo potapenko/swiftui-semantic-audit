@@ -10,6 +10,88 @@ import SwiftSyntaxFrontend
 import XCTest
 
 final class SymbolResolutionTests: XCTestCase {
+    func testIndexedTransactionPreservesCommitBoundaryWithoutHidingLifecycleLeaks() throws {
+        let original = try String(contentsOf: projectRoot.appendingPathComponent(
+            "Tests/Fixtures/RuleTests/BindingTransactionalDraft/Fixture.swift"
+        ), encoding: .utf8)
+        for leak in ["", ".onChange(of: editableName) { _, value in profileName = value }",
+                     ".onChange(of: editableName) { _, _ in applyEdits() }", ".task { applyEdits() }"] {
+            let container = FileManager.default.temporaryDirectory
+                .appendingPathComponent("swiftui-audit-transaction-index-\(UUID().uuidString)", isDirectory: true)
+            defer { try? FileManager.default.removeItem(at: container) }
+            let source = container.appendingPathComponent("Editor", isDirectory: true)
+            try FileManager.default.createDirectory(at: source, withIntermediateDirectories: true)
+            try original.replacingOccurrences(of: ".onAppear", with: leak + "\n        .onAppear")
+                .write(to: source.appendingPathComponent("Fixture.swift"), atomically: true, encoding: .utf8)
+            let store = container.appendingPathComponent("index/store", isDirectory: true)
+            try buildIndex(source: source, store: store, output: container.appendingPathComponent("output"))
+            let syntax = try GraphScanner().scan(path: source.path)
+            let indexed = try directEnrichment(syntax, fixture: Fixture(container: container, source: source, store: store),
+                                               databaseName: "database").graph
+            let report = AuditEngine().audit(graph: indexed)
+            XCTAssertEqual(indexed.resolution, "indexed")
+            XCTAssertEqual(report.semanticValues.contains { $0.classification == .transactionalDraft }, leak.isEmpty, leak)
+            if leak.isEmpty {
+                XCTAssertTrue(report.findings.isEmpty)
+            } else {
+                XCTAssertTrue(Set(report.findings.map(\.rule)).isSuperset(of: [.mirroredState, .manualTwoWaySync]), leak)
+            }
+        }
+    }
+
+    func testPartialIndexFailsUntilEntireSourceScopeIsBuilt() throws {
+        let fixture = try makeIndexedFixture()
+        defer { try? FileManager.default.removeItem(at: fixture.container) }
+        let additional = fixture.source.appendingPathComponent("Unindexed.swift")
+        try "struct Unindexed { var value = 1 }\n".write(to: additional, atomically: true, encoding: .utf8)
+        let graph = try GraphScanner().scan(path: fixture.source.path)
+        XCTAssertThrowsError(try directEnrichment(graph, fixture: fixture, databaseName: "partial-db")) {
+            XCTAssertEqual($0 as? IndexResolutionError, .incompleteCoverage(["Unindexed.swift"]))
+        }
+        let coordinator = IndexEnrichmentCoordinator(
+            helperExecutable: projectRoot.appendingPathComponent(".build/debug/swiftui-audit"), timeout: 30
+        )
+        XCTAssertThrowsError(try coordinator.enrich(graph: graph, sourceRoot: fixture.source, selection: .explicit(fixture.store))) {
+            XCTAssertTrue($0.localizedDescription.contains("Unindexed.swift"))
+        }
+        XCTAssertEqual(try coordinator.enrich(graph: graph, sourceRoot: fixture.source, selection: .automatic), graph)
+        try buildIndex(source: fixture.source, store: fixture.store, output: fixture.container.appendingPathComponent("rebuilt"))
+        let repaired = try directEnrichment(graph, fixture: fixture, databaseName: "complete-db").graph
+        XCTAssertEqual(repaired.resolution, "indexed")
+        XCTAssertTrue(repaired.nodes.contains { $0.name == "Unindexed" && $0.evidence.contains { $0.kind == "indexed-occurrence" } })
+    }
+
+    func testStaleSourceCannotReuseWarmCacheEvenWithRestoredModificationDate() throws {
+        let fixture = try makeIndexedFixture()
+        defer { try? FileManager.default.removeItem(at: fixture.container) }
+        let cache = AnalysisCacheStore(rootDirectory: fixture.container.appendingPathComponent("cache"), sourceRoot: fixture.source)
+        let coordinator = IndexEnrichmentCoordinator(
+            helperExecutable: projectRoot.appendingPathComponent(".build/debug/swiftui-audit"), timeout: 30
+        )
+        let graph = try GraphScanner().scan(path: fixture.source.path)
+        let cold = try coordinator.enrich(graph: graph, sourceRoot: fixture.source, selection: .explicit(fixture.store), cache: cache)
+        XCTAssertEqual(cold.resolution, "indexed")
+        let file = fixture.source.appendingPathComponent("Writer.swift")
+        let previousDate = try XCTUnwrap(file.resourceValues(forKeys: [.contentModificationDateKey]).contentModificationDate)
+        let source = try String(contentsOf: file, encoding: .utf8)
+        try (source + "\n// Changed after the index build.\n").write(to: file, atomically: true, encoding: .utf8)
+        try FileManager.default.setAttributes([.modificationDate: previousDate], ofItemAtPath: file.path)
+        let changed = try GraphScanner().scan(path: fixture.source.path)
+        XCTAssertEqual(changed, graph, "comment edits must not accidentally validate by changing graph bytes")
+        for selectedCache in [cache, nil] {
+            XCTAssertThrowsError(try coordinator.enrich(
+                graph: changed, sourceRoot: fixture.source, selection: .explicit(fixture.store), cache: selectedCache
+            )) { XCTAssertTrue($0.localizedDescription.contains("newer than"), "\($0)") }
+        }
+        XCTAssertThrowsError(try directEnrichment(changed, fixture: fixture, databaseName: "stale-db")) {
+            XCTAssertEqual($0 as? IndexResolutionError, .staleSources(["Writer.swift"]))
+        }
+        try buildIndex(source: fixture.source, store: fixture.store, output: fixture.container.appendingPathComponent("rebuilt"))
+        let fresh = try coordinator.enrich(graph: changed, sourceRoot: fixture.source, selection: .explicit(fixture.store), cache: cache)
+        XCTAssertEqual(fresh.resolution, "indexed")
+        XCTAssertEqual(try fresh.jsonData(), try cold.jsonData())
+    }
+
     func testCollisionSafeFileLocalIdentitiesRemapToDistinctCompilerUSRs() throws {
         let fixture = try makeIndexedCollisionFixture()
         defer { try? FileManager.default.removeItem(at: fixture.container) }
@@ -137,6 +219,9 @@ final class SymbolResolutionTests: XCTestCase {
         let snapshot = try SnapshotReader().read(from: snapshotDirectory)
         XCTAssertEqual(snapshot.graph, first.graph)
         let slice = try ContextSlicer().slice(graph: snapshot.graph, report: snapshot.report, symbol: commit.id)
+        XCTAssertEqual(slice.resolution, "indexed")
+        XCTAssertEqual(slice.configurationDigest, snapshot.graph.configurationDigest)
+        XCTAssertNotNil(slice.provenance)
         XCTAssertTrue(slice.nodes.contains { $0.id == commit.id })
         XCTAssertTrue(slice.edges.allSatisfy { edge in
             slice.nodes.contains { $0.id == edge.from } && slice.nodes.contains { $0.id == edge.to }
@@ -526,6 +611,14 @@ final class SymbolResolutionTests: XCTestCase {
         XCTAssertEqual(persistedSliceWithLiveResolution.status, 64)
         XCTAssertTrue(persistedSliceWithLiveResolution.standardOutput.isEmpty)
         XCTAssertTrue(persistedSliceWithLiveResolution.errorString.contains("apply only when slicing live source"))
+
+        let indexedSymbol = try XCTUnwrap(indexed.nodes.first?.id)
+        let persistedSlice = try runner.runChecked(executable.path, arguments: [
+            "slice", indexedSnapshot.path, "--symbol", indexedSymbol, "--format", "llm-json",
+        ], timeout: 30)
+        let sliced = try JSONDecoder().decode(ContextSlice.self, from: persistedSlice.standardOutput)
+        XCTAssertEqual(sliced.resolution, "indexed")
+        XCTAssertEqual(sliced.provenance?.snapshotManifest, try SnapshotReader().read(from: indexedSnapshot).manifest)
 
         let revisionRepository = fixture.container.appendingPathComponent("Revision", isDirectory: true)
         try FileManager.default.createDirectory(at: revisionRepository, withIntermediateDirectories: true)
