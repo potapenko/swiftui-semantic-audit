@@ -81,7 +81,7 @@
         <div class="hero-copy">
           <p class="eyebrow">SwiftUI architecture evidence for coding agents</p>
           <h1 id="hero-title">Give coding agents a map of SwiftUI state before they edit.</h1>
-          <p class="hero-lede">SwiftUI Semantic Audit builds a deterministic semantic twin of ownership and data flow. Ask Codex or Claude to explain unfamiliar state, refactor a broken boundary, or review a change with evidence tied back to source.</p>
+          <p class="hero-lede">Find the local copy and the writes that keep it synchronized with its parent. SwiftUI Semantic Audit builds a deterministic semantic twin: a source-linked map of ownership, copies, and calls that Codex or Claude can inspect before choosing a change.</p>
 
           <div class="hero-actions">
             <a class="button button-primary" href="#install">
@@ -132,7 +132,7 @@
         <div class="section-heading section-heading-inverse">
           <p class="eyebrow">Inside the semantic twin</p>
           <h2 id="xray-title">The agent sees ownership and data flow before it edits.</h2>
-          <p>This X-ray uses accepted fixture evidence from the deterministic graph. It is not a product GUI or an LLM summary.</p>
+          <p>The editor below keeps two copies of the same name and synchronizes every change. The graph identifies both copy paths; the agent still needs to establish whether edits should be immediate or deferred.</p>
         </div>
 
         <div class="xray-grid">
@@ -141,7 +141,7 @@
             <div class="code-panel code-panel-tall">
               <div class="code-panel-heading">
                 <span>BindingMirroredLocally</span>
-                <span class="status status-risk">two owners</span>
+                <span class="status status-risk">local mirror</span>
               </div>
               <pre tabindex="0" aria-label="SwiftUI code with a Binding mirrored into local State"><code><span class="syntax-keyword">struct</span> BindingMirrorEditor: <span class="syntax-type">View</span> {
     <span class="syntax-attribute">@Binding</span> <span class="syntax-keyword">var</span> profileName: <span class="syntax-type">String</span>
@@ -171,7 +171,7 @@
               <ol class="evidence-list">
                 <li>
                   <img src="assets/icons/user.svg" alt="" aria-hidden="true">
-                  <span><strong>Owner</strong><code>profileName</code> is borrowed from the parent.</span>
+                  <span><strong>Access</strong><code>profileName</code> is a Binding to external state; its owner is outside this excerpt.</span>
                 </li>
                 <li>
                   <img src="assets/icons/user.svg" alt="" aria-hidden="true">
@@ -195,6 +195,23 @@
                 <code>mirrored-state</code>
                 <code>manual-two-way-sync</code>
               </div>
+              <details class="finding-block">
+                <summary>Inspect the JSON evidence</summary>
+                <pre tabindex="0" aria-label="Selected fields from a real indexed finding"><code>{
+  "rule": "mirrored-state",
+  "severity": "high",
+  "confidence": "strong-inference",
+  "evidence": [
+    { "file": "Fixture.swift", "kind": "assignment",
+      "startLine": 10, "endLine": 10 },
+    { "file": "Fixture.swift", "kind": "assignment",
+      "startLine": 13, "endLine": 13 },
+    { "file": "Fixture.swift", "kind": "assignment",
+      "startLine": 16, "endLine": 16 }
+  ]
+}</code></pre>
+                <p>Selected fields from <code>slice.finding</code>; IDs and other fields omitted. Locations refer to the <a href="https://github.com/potapenko/swiftui-semantic-audit/blob/0.6.0/Tests/Fixtures/RuleTests/BindingMirroredLocally/Fixture.swift">full source example</a>.</p>
+              </details>
             </div>
           </article>
 
@@ -202,19 +219,19 @@
             <p class="code-kicker">Direct Binding</p>
             <div class="code-panel code-panel-tall">
               <div class="code-panel-heading">
-                <span>GoodDirectBinding</span>
-                <span class="status status-clean">one owner</span>
+                <span>BindingMirrorEditor</span>
+                <span class="status status-clean">direct input</span>
               </div>
-              <pre tabindex="0" aria-label="SwiftUI code with a direct Binding"><code><span class="syntax-keyword">struct</span> DirectBindingField: <span class="syntax-type">View</span> {
-    <span class="syntax-attribute">@Binding</span> <span class="syntax-keyword">var</span> name: <span class="syntax-type">String</span>
+              <pre tabindex="0" aria-label="SwiftUI code with a direct Binding"><code><span class="syntax-keyword">struct</span> BindingMirrorEditor: <span class="syntax-type">View</span> {
+    <span class="syntax-attribute">@Binding</span> <span class="syntax-keyword">var</span> profileName: <span class="syntax-type">String</span>
 
     <span class="syntax-keyword">var</span> body: <span class="syntax-keyword">some</span> <span class="syntax-type">View</span> {
-        <span class="syntax-call">TextField</span>(<span class="syntax-string">"Name"</span>, text: $name)
+        <span class="syntax-call">TextField</span>(<span class="syntax-string">"Name"</span>, text: $profileName)
     }
 }</code></pre>
               <div class="code-note code-note-clean">
                 <img src="assets/icons/check.svg" alt="" aria-hidden="true">
-                <span>No mirror finding is expected. The parent remains the owner and the field receives direct write authority.</span>
+                <span>For immediate editing, the same field writes through profileName. If Save/Cancel is required, keep a local draft and remove the premature write instead.</span>
               </div>
             </div>
           </article>
@@ -242,7 +259,7 @@
 
             <div class="mini-example">
               <div class="mini-example-heading">
-                <span>Accepted fixture excerpt</span>
+                <span>Command in the setter</span>
                 <code>command-shaped-binding</code>
               </div>
               <pre tabindex="0"><code><span class="syntax-attribute">@Bindable</span> <span class="syntax-keyword">var</span> model: <span class="syntax-type">CommandPagerModel</span>
@@ -260,17 +277,14 @@ selection: <span class="syntax-type">Binding</span>(
 
             <div class="mini-example mini-example-safer">
               <div class="mini-example-heading">
-                <span>Accepted clean fixture</span>
-                <span class="plain-status">no finding</span>
+                <span>Same model, direct write</span>
+                <span class="plain-status">no command wrapper</span>
               </div>
-              <pre tabindex="0"><code><span class="syntax-attribute">@Binding</span> <span class="syntax-keyword">var</span> value: <span class="syntax-type">Int</span>
+              <pre tabindex="0"><code><span class="syntax-attribute">@Bindable</span> <span class="syntax-keyword">var</span> model: <span class="syntax-type">CommandPagerModel</span>
 
-selection: <span class="syntax-type">Binding</span>(
-    get: { value },
-    set: { next <span class="syntax-keyword">in</span> value = next }
-)</code></pre>
+selection: $model.page</code></pre>
             </div>
-            <p class="example-caveat">A method with validation or side effects needs an explicit action boundary, not deletion.</p>
+            <p class="example-caveat">Keep validation and side effects if selectPage performs them. Direct projection is appropriate only when the method does nothing beyond assigning page.</p>
           </article>
 
           <article class="example-card">
@@ -278,13 +292,13 @@ selection: <span class="syntax-type">Binding</span>(
               <span class="step-number">2</span>
               <div>
                 <h3>Narrow the component boundary</h3>
-                <p>Passing one model through extracted views keeps every layer coupled to the owner.</p>
+                <p>A reusable leaf that needs a title and a reload action also receives the model that owns them.</p>
               </div>
             </header>
 
             <div class="mini-example">
               <div class="mini-example-heading">
-                <span>Representative accepted topology</span>
+                <span>Model forwarded to a leaf</span>
                 <code>depth 2</code>
               </div>
               <pre tabindex="0"><code><span class="syntax-keyword">struct</span> Middle: <span class="syntax-type">View</span> {
@@ -296,24 +310,29 @@ selection: <span class="syntax-type">Binding</span>(
 
 <span class="syntax-keyword">struct</span> Leaf: <span class="syntax-type">View</span> {
     <span class="syntax-attribute">@Bindable</span> <span class="syntax-keyword">var</span> model: <span class="syntax-type">FeatureModel</span>
+    <span class="syntax-keyword">var</span> body: <span class="syntax-keyword">some</span> <span class="syntax-type">View</span> {
+        Text(model.title)
+        Button("Reload") { model.reload() }
+    }
 }</code></pre>
             </div>
 
             <div class="example-shift">
               <img src="assets/icons/arrow-right.svg" alt="" aria-hidden="true">
-              <span>Give a reusable leaf the value and action it actually consumes.</span>
+              <span>Keep Middle as the adapter: Leaf(title: model.title, reload: { model.reload() }).</span>
             </div>
 
             <div class="mini-example mini-example-safer">
               <div class="mini-example-heading">
-                <span>Accepted clean boundary</span>
+                <span>Same leaf, focused inputs</span>
                 <span class="plain-status">focused input</span>
               </div>
-              <pre tabindex="0"><code><span class="syntax-keyword">struct</span> GoodFocusedLeaf: <span class="syntax-type">View</span> {
+              <pre tabindex="0"><code><span class="syntax-keyword">struct</span> Leaf: <span class="syntax-type">View</span> {
     <span class="syntax-keyword">let</span> title: <span class="syntax-type">String</span>
     <span class="syntax-keyword">let</span> reload: () -&gt; <span class="syntax-type">Void</span>
 
     <span class="syntax-keyword">var</span> body: <span class="syntax-keyword">some</span> <span class="syntax-type">View</span> {
+        Text(title)
         <span class="syntax-call">Button</span>(<span class="syntax-string">"Reload"</span>, action: reload)
     }
 }</code></pre>
@@ -332,7 +351,7 @@ selection: <span class="syntax-type">Binding</span>(
 
             <div class="mini-example">
               <div class="mini-example-heading">
-                <span>Accepted fixture excerpt</span>
+                <span>Flag stored alongside its inputs</span>
                 <code>stored-derived-state</code>
               </div>
               <pre tabindex="0"><code><span class="syntax-attribute">@State</span> <span class="syntax-keyword">private var</span> username = <span class="syntax-string">""</span>
@@ -351,7 +370,7 @@ selection: <span class="syntax-type">Binding</span>(
 
             <div class="mini-example mini-example-safer">
               <div class="mini-example-heading">
-                <span>Safer shape, pending behavior tests</span>
+                <span>Same inputs, computed flag</span>
                 <span class="plain-status">computed</span>
               </div>
               <pre tabindex="0"><code><span class="syntax-attribute">@State</span> <span class="syntax-keyword">private var</span> username = <span class="syntax-string">""</span>
@@ -378,7 +397,7 @@ selection: <span class="syntax-type">Binding</span>(
 
         <div class="code-panel protected-code">
           <div class="code-panel-heading">
-            <span>Representative protected transaction</span>
+            <span>Edits stay local until Apply</span>
             <span class="status status-clean">no finding expected</span>
           </div>
           <pre tabindex="0"><code><span class="syntax-attribute">@Binding</span> <span class="syntax-keyword">var</span> name: <span class="syntax-type">String</span>
@@ -491,9 +510,9 @@ selection: <span class="syntax-type">Binding</span>(
             </thead>
             <tbody>
               <tr>
-                <th scope="row">Canonical owner</th>
-                <td>Parent Binding</td>
-                <td>Parent Binding</td>
+                <th scope="row">Write access</th>
+                <td>Binding to external state</td>
+                <td>Binding to external state</td>
                 <td><span class="ledger-status ledger-stable">Preserved</span></td>
               </tr>
               <tr>
@@ -635,7 +654,7 @@ selection: <span class="syntax-type">Binding</span>(
           </article>
           <article>
             <img src="assets/icons/scale.svg" alt="" aria-hidden="true">
-            <div><h3>Deterministic, not prescriptive</h3><p>Extracted records are deterministic evidence; source remains authoritative and architectural judgment stays separate.</p></div>
+            <div><h3>Facts and assessments</h3><p>Read/write paths are extracted facts. Findings are rule assessments; product intent and behavior still need review.</p></div>
           </article>
           <article>
             <img src="assets/icons/cube.svg" alt="" aria-hidden="true">
@@ -645,7 +664,7 @@ selection: <span class="syntax-type">Binding</span>(
 
         <div class="limit-note">
           <img src="assets/icons/info-circle.svg" alt="" aria-hidden="true">
-          <p>The bounded analysis is not a full type checker, control-flow engine, security audit, or performance profiler. A clean report or semantic diff does not prove runtime behavior.</p>
+          <p>The analysis does not cover every runtime, control-flow, security, or performance defect. A clean report does not prove behavior, and a JSON slice is not guaranteed to be smaller than source. Builds, source review, and behavior tests remain necessary.</p>
         </div>
       </div>
     </section>
@@ -757,7 +776,7 @@ https://github.com/potapenko/swiftui-semantic-audit/blob/0.6.0/docs/getting-star
           </details>
           <details>
             <summary>Are local drafts reported as duplicate state?</summary>
-            <p>Not when the graph proves a real transaction with commit and discard behavior. Missing or fake discard topology does not receive that protection.</p>
+            <p>A real Apply/Discard boundary can justify local state. Check every write to the external value: finding a pair of buttons alone does not establish that edits remain private.</p>
           </details>
           <details>
             <summary>Does a clean semantic diff prove the refactor is correct?</summary>

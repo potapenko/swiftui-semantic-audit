@@ -2,15 +2,15 @@
 
 - Node type: root
 - Status: Active
-- Contract revision: `spec-37`
-- Authority: epoch `tz-v29` and pinned digest declared below
+- Contract revision: `spec-38`
+- Authority: epoch `tz-v30` and pinned digest declared below
 - Read when: starting any product, behavior, compatibility, QA, release, or specification task in this repository.
 - Do not read when: the task is proven behavior-neutral and outside the specification system.
 - Maximum size: 100 physical lines.
 
 Status: active  
-Contract epoch: `tz-v29`
-Local specification revision: `spec-37`
+Contract epoch: `tz-v30`
+Local specification revision: `spec-38`
 Pinned authority digest: `sha256:68f8a43d924659024b7d29fabb9ad302817c271838a7919b24bd942626927cac`  
 Router addendum: user-authorized `ROUTER-001` on 2026-08-18
 Indexed-skills addendum: user-authorized `INDEXED-SKILLS-001` on 2026-08-18
@@ -33,13 +33,13 @@ Release addendum: user-authorized [`RELEASE-0.6.0-001`](../coordination/release-
 Update UX addendum: user-authorized `UPDATE-UX-001` on 2026-08-24; adds one short existing-installation prompt immediately after the setup prompt, advances the website contract to `tz-v23` and the combined contract to `tz-v26`, and does not publish or change release artifacts; skill non-interference addendum: user-authorized [`SKILL-NON-INTERFERENCE-001`](../coordination/skill-non-interference-001.md) on 2026-08-25; makes all four semantic skills explicit-only and advances the combined contract to `tz-v27`; cache hygiene addendum: user-authorized [`CACHE-HYGIENE-001`](../coordination/cache-hygiene-001.md) on 2026-09-02; advances current-source cache behavior to schema 2 and the combined contract to `tz-v28` without changing semantic outputs or any installed/public artifact; balanced skill invocation addendum: user-authorized [`SKILL-BALANCED-INVOCATION-001`](../coordination/skill-balanced-invocation-001.md) on 2026-09-02; restores bounded implicit assistance only for the router and advances the combined contract to `tz-v29`
 Release baseline: `0.6.0 current public`; immutable release artifacts: `0.4.0`, `0.5.0`, and `0.6.0`; this machine's active CLI remains the unpublished 0.6.1 candidate through `BASE-REL-017`, while its balanced four-skill bundle is pinned through `BASE-REL-019`; website baseline: canonical domain carries verified 0.6.0 release facts; project-watcher 0.6.0 is Released through `BASE-REL-015`; semantic-twin story candidate remains separately evolving
 
-This directory is the self-contained active specification package for SwiftUI Semantic Audit. It faithfully restates the user-approved Russian ТЗ without expanding product semantics. Clause IDs are stable references for implementation, review, and QA. Current-source evidence restoration: [EVIDENCE-INTEGRITY-001](../coordination/evidence-integrity-001.md) records the user-approved 2026-09-07 repair; public artifacts remain unchanged.
+This directory is the self-contained active specification package for SwiftUI Semantic Audit. It faithfully restates the user-approved Russian ТЗ without expanding product semantics. Clause IDs are stable references for implementation, review, and QA. [AUDIT-FOLLOWTHROUGH-001](../coordination/audit-followthrough-001.md) authorizes platform assessment and evidence-led copy at `tz-v30`. Current-source evidence restoration: [EVIDENCE-INTEGRITY-001](../coordination/evidence-integrity-001.md) records the user-approved 2026-09-07 repair; public artifacts remain unchanged.
 
 ## Precedence
 
 When documents appear to disagree, apply this order:
 
-1. the user-approved ТЗ at epoch `tz-v1`, its pinned digest, the explicit addenda through `SKILL-BALANCED-INVOCATION-001` that advance the combined contract to `tz-v29`, and the behavior-preserving `REALISTIC-FIXTURES-001` acceptance addendum;
+1. the user-approved ТЗ at epoch `tz-v1`, its pinned digest, the explicit addenda through `SKILL-BALANCED-INVOCATION-001` that advance the combined contract to `tz-v29`, the `AUDIT-FOLLOWTHROUGH-001` delta at `tz-v30`, and the behavior-preserving `REALISTIC-FIXTURES-001` acceptance addendum;
 2. [`product-contract.md`](product-contract.md) for product boundaries and invariants;
 3. domain contracts (`semantic-ir.md`, `rules.md`, `cli.md`);
 4. [`acceptance.md`](acceptance.md) for proof obligations;
@@ -96,5 +96,5 @@ The pinned base plus authorized addenda authorizes a Swift package and `swiftui-
 
 `SEMANTIC-TWIN-STORY-001` makes the deterministic semantic twin the primary public product object and moves skills to the consumer/router role; its original 0.5.0-versus-candidate split is superseded only for release state by `RELEASE-0.6.0-001` and `BASE-REL-015`. `SEMANTIC-TWIN-CAPABILITIES-001` restores the accepted landing capability surface and marketing hierarchy: semantic twin unifies the existing examples, tasks, diff, rule groups, and trust story; it does not replace them. Versions remain supporting release truth rather than the primary promise.
 
-`SKILL-NON-INTERFERENCE-001` established the prior explicit-only state. `SKILL-BALANCED-INVOCATION-001` supersedes only its router invocation boundary: the router may now assist implicitly without creating semantic infrastructure or blocking the user's task, while all three specialists and every explicit strict workflow remain gated. `CACHE-HYGIENE-001` continues to govern current-source cache behavior. Current authority is `tz-v29`; editorial clarification may advance only the local specification revision and must preserve every protected behavior and exception.
+`SKILL-NON-INTERFERENCE-001` established the prior explicit-only state. `SKILL-BALANCED-INVOCATION-001` supersedes only its router invocation boundary: the router may now assist implicitly without creating semantic infrastructure or blocking the user's task, while all three specialists and every explicit strict workflow remain gated. `CACHE-HYGIENE-001` continues to govern current-source cache behavior. Current authority is `tz-v30`; editorial clarification may advance only the local specification revision and must preserve every protected behavior and exception.
 Migration state: [Full-library Markdown migration](migration/README.md) completed structural reconciliation of the nine-document legacy package.

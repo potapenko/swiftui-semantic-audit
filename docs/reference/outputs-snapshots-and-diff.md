@@ -113,7 +113,7 @@ This distinction prevents a new commit hash from making unchanged semantic evide
 
 Current-source 0.6.1 candidate slices carry these additive provenance fields; immutable 0.6.0 output does not. Missing fields in older JSON mean unknown provenance. The digest identifies the complete graph/report evidence and optional manifest, not all source bytes; it is independent of selector and token budget. A snapshot slice retains the historical manifest rather than claiming the current checkout.
 
-The mandatory envelope keeps provenance, the selected finding, affected values, ownership, read/write paths, and evidence. Traversal is bounded. Token estimation is conservative and byte-based; the command fails when a positive budget cannot fit the mandatory content.
+The mandatory envelope keeps provenance, the selected finding, affected values, ownership, read/write paths, and evidence. A budget is a ceiling, not a promise that every finding fits; an unbudgeted slice can exceed the full graph on small inputs. Prefer the exact finding or symbol ID from an audit/scan: a bare name may identify a module when the module and View share that name. Traversal is bounded. Token estimation is conservative and byte-based; the command fails when a positive budget cannot fit the mandatory content.
 
 ## Semantic diff
 

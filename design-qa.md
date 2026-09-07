@@ -1,5 +1,18 @@
 # Landing page design QA
 
+## Audit follow-through copy and evidence (2026-09-07)
+
+- Authority: `AUDIT-FOLLOWTHROUGH-001`, epoch `tz-v30`. The existing visual system and capability sections remain; copy now follows consistent component names and distinguishes external write access from ownership. The new disclosure shows selected fields from a real indexed finding with its source link.
+- Flow: landing → mirrored-state example → open JSON evidence → inspect the source link → installation/update copy. Secondary flow: mobile navigation → Examples → menu closes.
+- Environment: generated local artifact at `http://127.0.0.1:4177/`, Chromium through Playwright. Browser skill absent; no dependency installation. Local QA is not a deployment receipt.
+- Page identity, meaningful initial content, no error overlay, and console health passed; no console errors or warnings. All 21 website/build/publisher tests passed, as did deterministic artifact building and JavaScript syntax checking.
+- Responsive checks passed at 1280, 1024, 768, 390 and 320 CSS pixels with 2x device scale. Page scroll width equals viewport width. A 640 × 450 CSS / 4x layout reproduces the effective viewport of a 1280 × 900 / 2x page at 200% zoom without overflow. A native browser zoom shortcut was not tested; an earlier CSS `zoom` probe was not used as browser-zoom proof.
+- Visual inspection covered the hero, before/after code, the open evidence disclosure and mobile reading order. Lossless PNG captures used verified 2x device scale (desktop 2560 × 1800 and mobile 640 × 1800), with no resizing of source captures. Run-owned captures were temporary and removed after acceptance; no screenshot asset was published.
+- An actual clipping defect in the new disclosure was fixed: its inherited grid layout let the open JSON exceed the panel. The disclosure now uses block layout and a bounded horizontal scroll area. At 320 px the code viewport is 231 px, content is 351 px, and scrolling reaches the remaining 119.5 px; surrounding prose stays within its panel.
+- Keyboard Enter toggles the disclosure with visible 3 px focus. Native details work with JavaScript disabled; install/update content stays visible and enhancement-only copy buttons are hidden. Reduced-motion context preserves readable content. Mobile navigation opens/closes correctly. Update copy exactly matches visible text and announces success.
+- Existing assets, navigation targets, six copy controls, public release metadata, installation commands and separate CLI/skills ownership remain intact. Prose lint was reviewed: its remaining flags are navigation/table fragments, technical enumerations and intentional user instructions/FAQ wording, not unsupported claims.
+- Limits: no screen-reader session, cross-browser comparison, native zoom shortcut, hosted CI or public deployment was performed. The same-browser rendered and interaction checks required for this local copy change passed.
+
 ## Install and update prompts
 
 - Contract epoch: `tz-v26`, user-authorized `UPDATE-UX-001`.

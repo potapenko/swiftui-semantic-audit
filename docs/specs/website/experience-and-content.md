@@ -2,7 +2,7 @@
 
 - Node type: leaf
 - Status: Active
-- Contract revision: `spec-10`
+- Contract revision: `spec-11`
 - Authority: [Website contract](../website.md)
 - Maximum size: 100 physical lines.
 ## Audience and outcome
@@ -28,7 +28,7 @@ external Binding, local State, lifecycle copy, reciprocal synchronization,
 
 **WEB-STORY-003.** Preserve both use-case layers: fixture-backed command-shaped
 Binding, component-boundary, and derived-state examples, plus task-shaped audit,
-refactor, and review prompts. The full catalog supplements these examples.
+refactor, and review prompts. The full catalog supplements these examples. `AUDIT-FOLLOWTHROUGH-001` keeps the same component, names and user intent across each before/evidence/after comparison; output excerpts must identify their reproducible source and omitted fields.
 
 **WEB-STORY-004.** The protected case shows a real local transactional draft
 with explicit Apply and Discard. It must state that no finding is expected and
@@ -85,7 +85,7 @@ tracking, a new route, or a second author surface elsewhere on the page.
 
 **WEB-COPY-001.** English copy is factual, concise, and edited with the
 `de-ai-writing` landing rules. Ban rhetorical questions, urgency, fake empathy,
-vague authority, lifestyle theater, and unsupported qualitative outcomes.
+vague authority, lifestyle theater, and unsupported qualitative outcomes. Use concrete flow descriptions instead of internal acceptance labels. A Binding grants access to externally owned state; do not call the Binding itself the canonical owner.
 
 **WEB-CLAIM-001.** Before the terminal receipt, supported claims remain release
 0.5.0, an on-demand deterministic twin, 30 bounded rules, and seven analysis commands.

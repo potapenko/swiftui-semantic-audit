@@ -2,7 +2,7 @@
 
 - Node type: leaf
 - Status: Active
-- Contract revision: `spec-4`
+- Contract revision: `spec-5`
 - Authority: [Rule and adjudication contract](../rules.md)
 - Read when: selecting any of the thirty findings, exclusions, dominance, adjudication, or fixture expectations.
 - Do not read when: the task does not evaluate, interpret, or verify findings.
@@ -47,7 +47,7 @@
 
 **RULE-GESTURE-BUTTON-001 — `gesture-button-emulation`.** Detect a tap gesture combined with manual button accessibility traits/action on the same View chain. Severity `medium`; confidence `strong-inference`; pattern `Button`.
 
-**RULE-PLATFORM-UPDATE-001 — `imperative-platform-view-update`.** Detect `updateNSView`/`updateUIView` that pushes presentation values, callbacks, request counters, or commands into an existing native view. An empty update method is clean. Severity `high`; confidence `strong-inference`.
+**RULE-PLATFORM-UPDATE-001 — `imperative-platform-view-update`.** Detect `updateNSView`/`updateUIView` that pushes presentation values, callbacks, request counters, or commands into an existing native view. An empty update method is clean. Nonempty native updating is a review signal, not proof of a violation: the platform requires native state synchronization. Severity `medium`; confidence `candidate`; no automatic immutable/coordinator recommendation. Inspect repeatability, command side effects and writes back to application state before remediation. This current-source policy is authorized by `AUDIT-FOLLOWTHROUGH-001`; immutable 0.6.0 retains its historical high/strong-inference output.
 
 **RULE-GLOBAL-PLATFORM-001 — `direct-global-platform-command`.** Detect a non-root View directly invoking bounded global AppKit/UIKit application, responder-chain, or event-monitor commands. Severity `high`; confidence `strong-inference`.
 

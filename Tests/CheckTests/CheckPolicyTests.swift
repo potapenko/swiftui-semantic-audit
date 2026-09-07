@@ -7,6 +7,29 @@ import SwiftSyntaxFrontend
 import XCTest
 
 final class CheckPolicyTests: XCTestCase {
+    func testNativeUpdateIsAReviewSignalWithoutBlockingDefaultPolicy() throws {
+        let source = """
+        import SwiftUI
+        import AppKit
+        struct NativeCaption: NSViewRepresentable {
+            let caption: String
+            func makeNSView(context: Context) -> NSTextField { NSTextField(labelWithString: caption) }
+            func updateNSView(_ view: NSTextField, context: Context) { UPDATE }
+        }
+        """
+        let clean = try scan(source.replacingOccurrences(of: "UPDATE", with: ""))
+        let current = try scan(source.replacingOccurrences(of: "UPDATE", with: "view.stringValue = caption"))
+        let update = try XCTUnwrap(current.report.findings.first { $0.rule == .imperativePlatformViewUpdate })
+        XCTAssertEqual(update.severity, .medium)
+        XCTAssertEqual(update.confidence, .candidate)
+        XCTAssertTrue(update.suggestedPatterns.isEmpty)
+        XCTAssertFalse(update.edges.isEmpty)
+        XCTAssertTrue(current.graph.edges.contains { $0.kind == .writes })
+        let diff = SemanticDiffEngine().compare(base: clean, current: current)
+        XCTAssertTrue(CheckPolicy().evaluate(diff: diff, failOnNew: .high).passed)
+        XCTAssertFalse(CheckPolicy().evaluate(diff: diff, failOnNew: .medium).passed)
+    }
+
     func testNewHighFailsButLegacyBaselineAlonePasses() throws {
         let clean = try scan(Self.bindingSource)
         let violating = try scan(Self.mirroredSource)

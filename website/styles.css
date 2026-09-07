@@ -754,6 +754,24 @@ pre {
   font-size: 0.7rem;
 }
 
+details.finding-block {
+  display: block;
+  min-width: 0;
+  font-size: 0.75rem;
+}
+
+details.finding-block pre {
+  min-width: 0;
+  max-width: 100%;
+  overflow-x: auto;
+}
+
+details.finding-block p {
+  margin: 0;
+  color: var(--analysis-muted);
+  font-size: 0.7rem;
+}
+
 .examples,
 .workflow,
 .rules,

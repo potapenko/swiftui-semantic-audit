@@ -351,6 +351,12 @@ public struct ContextSlicer: Sendable {
     private func questionsFor(finding: AuditFinding?, selection: String) -> [String] {
         if let finding {
             switch finding.rule {
+            case .imperativePlatformViewUpdate:
+                return [
+                    "Does this update only synchronize SwiftUI inputs into the native view, as the representable contract requires?",
+                    "Can repeated updates with the same inputs trigger commands or write back into application state?",
+                    "Which native behavior and lifetime must remain intact if this boundary changes?",
+                ]
             case .commandShapedBinding:
                 return [
                     "Does the setter represent value mutation, or an application command/effect that should remain explicit?",

@@ -164,12 +164,12 @@ for skill in swiftui-semantic swiftui-semantic-audit swiftui-dataflow-refactor s
 done
 ```
 
-Invoke the router only when you explicitly want a semantic workflow:
+For the 0.6.0 tagged skills installed by this guide, invoke the router explicitly:
 
 - Codex: `$swiftui-semantic`
 - Claude Code: `/swiftui-semantic`
 
-The specialists remain directly invocable for advanced use, but all four skills are explicit-only and installing only the router is incomplete.
+Explicit invocation makes the requested workflow unambiguous; installing only the router is incomplete. The 0.6.0 tagged metadata does not include the later implicit-invocation restrictions, so this guide must not promise that all four installed skills are explicit-only. Current-source skills differ: only the router may assist implicitly when suitable fresh indexed evidence is already available. That later policy is not installed by following this release guide. The three specialists remain explicit-only in current source too.
 
 For project instructions, audits, focused refactors, change reviews, and staged migrations, continue with the [agent prompt library](agent-prompts.md).
 

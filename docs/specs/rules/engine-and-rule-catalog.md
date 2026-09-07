@@ -2,7 +2,7 @@
 
 - Node type: leaf
 - Status: Active
-- Contract revision: `spec-4`
+- Contract revision: `spec-5`
 - Authority: [Rule and adjudication contract](../rules.md)
 - Read when: selecting any of the thirty findings, exclusions, dominance, adjudication, or fixture expectations.
 - Do not read when: the task does not evaluate, interpret, or verify findings.
@@ -11,7 +11,7 @@
 
 ## Engine
 
-**RULE-ENGINE-001 — Input/output.** Evaluate every rule over the canonical semantic graph plus normalization result and return zero or more evidence-backed findings.
+**RULE-ENGINE-001 — Input/output.** Evaluate every rule over the canonical semantic graph plus normalization result and return zero or more evidence-backed findings. A finding is a rule assessment over facts, not an independently proven bug. Confidence and severity remain distinct; candidate means adjudication is required.
 
 **RULE-ENGINE-002 — Topology.** No rule may be based only on a property-wrapper name. Use ownership, identity/derivation, read/write/copy, forwarding, observation, and event topology.
 

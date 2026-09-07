@@ -1,0 +1,65 @@
+[
+  {
+    "name": "LiveRename",
+    "problem": false,
+    "expectedRules": [],
+    "decision": "Keep the direct Binding. The owner declaration is outside this excerpt.",
+    "scope": "supported"
+  },
+  {
+    "name": "DeferredRename",
+    "problem": false,
+    "expectedRules": [],
+    "decision": "Keep pending state and explicit Save/Cancel; replacing it with the Binding changes deferred-write behavior.",
+    "scope": "supported"
+  },
+  {
+    "name": "LeakingRename",
+    "problem": true,
+    "expectedRules": [
+      "mirrored-state",
+      "manual-two-way-sync"
+    ],
+    "decision": "Remove the lifecycle write-through while preserving Save/Cancel; do not replace pending state with a direct Binding.",
+    "scope": "supported"
+  },
+  {
+    "name": "StatusLabel",
+    "problem": false,
+    "expectedRules": [],
+    "decision": "Keep native input projection. Repeated assignment is normal; no evidence warrants a Coordinator or immutable adapter.",
+    "scope": "supported"
+  },
+  {
+    "name": "SummaryFlag",
+    "problem": true,
+    "expectedRules": [
+      "stored-derived-state"
+    ],
+    "decision": "Compute hasMessage from message if the stated immediate-display intent holds; check initial and empty states.",
+    "scope": "supported"
+  },
+  {
+    "name": "ComputedFlag",
+    "problem": false,
+    "expectedRules": [],
+    "decision": "Keep the computed property; no independent state lifetime is required.",
+    "scope": "supported"
+  },
+  {
+    "name": "CallbackEffect",
+    "problem": true,
+    "expectedRules": [
+      "command-shaped-binding"
+    ],
+    "decision": "Preserve notification and its timing; do not delete notify merely to remove the finding. Inspect intent before choosing an explicit action.",
+    "scope": "supported"
+  },
+  {
+    "name": "StaleCapture",
+    "problem": true,
+    "expectedRules": [],
+    "decision": "Runtime requirement: changing selectedTitle while this view retains identity must update its text. State initialization alone does not do that; the bounded analyzer is not expected to prove this defect.",
+    "scope": "runtime-control"
+  }
+]

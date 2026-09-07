@@ -46,7 +46,7 @@ The CLI establishes and serializes:
 - rule identifier, severity, confidence, and referenced topology;
 - snapshots, semantic changes, and policy results.
 
-These are machine facts. An agent may quote, group, and reason from them. It may not change them in its explanation.
+These records have different meanings. Declarations and read/write edges are extracted facts; findings, severity and suggested patterns are deterministic rule assessments over those facts. Repeating an assessment does not prove that the code is wrong. An agent may quote and interpret the records, but may not silently change their contents.
 
 ## What the agent may add
 
@@ -73,14 +73,34 @@ These conclusions should remain visibly separate from deterministic output.
 
 A likely remediation does not justify upgrading confidence. Confidence describes the evidence that exists, not how strongly an agent prefers a design.
 
+## Signals, defects, and policy gates
+
+A native adapter must update its platform view when SwiftUI inputs change.
+Current-source `imperative-platform-view-update` therefore reports a
+`medium / candidate` boundary to inspect, with no prescribed rewrite. Look for
+non-repeatable commands or feedback into application state before calling it a
+defect. Keep ordinary native synchronization when that is all the evidence shows.
+Immutable 0.6.0 retains its earlier `high / strong-inference` assessment.
+
+Severity controls the CLI policy threshold; confidence describes the assessment's
+basis. The default `check --fail-on-new high` does not block solely for the
+current-source native-update signal. Choosing `medium` or `low` deliberately
+includes it. Other rules retain their documented severities and confidence.
+
+A useful agent answer states the observed path, the supplied product invariant,
+its assessment (including `unknown`), and a conditional change with the behavior
+it must preserve. A general preference for declarative code is insufficient.
+
 ## Why slices come before source
 
 An audit report can contain many nodes and findings. `slice` selects one finding or symbol and keeps its semantic values, ownership, relevant paths, evidence, and questions inside a bounded envelope.
 
-This gives the agent a concrete starting point and reduces two common errors:
+This gives the agent a concrete starting point for avoiding two common errors:
 
 - reconstructing architecture from an arbitrary subset of files;
 - reading so much source that the decisive path is lost among unrelated details.
+
+The [ownership pilot](../../evaluation/ownership-pilot/results.md) found that mandatory JSON evidence can outweigh a short source file and sometimes the full graph. A slice is a selection mechanism, not a guaranteed token saving.
 
 The slice is not the end of investigation. It routes source reading to the evidence locations and directly required declarations.
 

@@ -59,7 +59,7 @@ Configuration does not guess. If a required type, feature, or View role is absen
 | `geometry-triggered-model-effect` | high | strong-inference | Geometry flow reaching a configured model, service, repository, network, pagination, or playback command. |
 | `manual-positioning-as-layout` | medium | candidate | `offset` or `position` derived from container or sibling geometry. |
 | `gesture-button-emulation` | medium | strong-inference | A tap gesture combined with manual button accessibility traits/action on the same View chain. |
-| `imperative-platform-view-update` | high | strong-inference | `updateNSView` or `updateUIView` pushing presentation values, callbacks, counters, or commands into an existing native view. |
+| `imperative-platform-view-update` | medium | candidate | Native-view update boundary to review for command side effects or feedback into application state. Ordinary input projection is a normal platform responsibility. |
 | `direct-global-platform-command` | high | strong-inference | A non-root View invoking bounded global AppKit/UIKit application, responder, or event-monitor commands. |
 | `preview-requires-app-composition` | medium | candidate | A reusable non-root preview constructing application composition or configured owner/service inputs. |
 
@@ -108,3 +108,5 @@ Suggested patterns are candidates, not edits. Before accepting a remediation, es
 The agent may classify intent and explain risk. It must not change graph facts or claim that a candidate is a defect without the missing product context.
 
 Normative detail and fixture mapping: [`docs/specs/rules.md`](../specs/rules.md).
+
+Current-source policy: native update boundaries are `medium / candidate`; immutable 0.6.0 reports `high / strong-inference`. The default high threshold no longer blocks a change solely for this signal. An explicit medium or low threshold still includes it. See the [assessment boundary](../concepts/deterministic-facts-and-agent-judgment.md).

@@ -432,11 +432,11 @@ private struct ArchitectureFacts {
             guard !operations.isEmpty else { return nil }
             return finding(
                 .imperativePlatformViewUpdate,
-                .high,
-                .strongInference,
+                .medium,
+                .candidate,
                 [function.id] + operations.flatMap { [$0.from, $0.to] },
                 operations,
-                ["immutable-representable", "coordinator"]
+                []
             )
         }
     }
