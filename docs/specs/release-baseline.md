@@ -8,9 +8,9 @@
 - Maximum size: 100 physical lines.
 
 Revision: `spec-25`
-Baseline state: `0.6.0 released and immutable; 0.6.1 CLI is an unpublished candidate active locally; cache schema 2 is a current-source-only evolution; balanced semantic skills are active locally through BASE-REL-019; canonical website carries verified 0.6.0 release facts; UPDATE-UX-001 is an unpublished local website candidate`
+Baseline state: `0.6.0 released and immutable; 0.6.1 CLI is an unpublished candidate active locally; cache schema 2 is a current-source-only evolution; balanced semantic skills are active locally through BASE-REL-019; canonical website carries verified 0.6.0 release facts; UPDATE-UX-001 is published with WEBSITE-ANALYTICS-001; GA4 ingestion acceptance remains pending`
 Contract epoch: `tz-v29`
-Website contract epoch: `tz-v23`
+Website contract epoch: `tz-v31`; [GA4 publication and pending ingestion acceptance](website/analytics.md#publication).
 
 **BASE-REL-001 — Publication state.** Tool `0.6.0` is the current public release and `0.4.0`/`0.5.0` remain immutable earlier releases. Each is distributed from its own immutable Git tag and GitHub Release through the tested upstream tap formula; terminal receipts pin every external artifact.
 

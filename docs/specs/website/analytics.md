@@ -37,4 +37,20 @@ DebugView. A network request alone is not receipt of data in the property.
 
 ## Publication
 
-Pending deployment and live GA4 receipt; a local checkpoint alone is not public acceptance.
+On 2026-09-08, source checkpoint `783d2f9` added GA4; `88155d6` removed the
+obsolete footer claim. DigitalOcean deployment
+`365c1ac9-00c7-4896-941b-011a68af3444` reached ACTIVE for
+`88155d618123932167bfdacd01e1c63a19191684` on the canonical domain.
+The 22 focused build/publisher checks passed; the footer correction passed the
+10 website checks. Syntax, changed-spec links/size, and diff checks passed.
+Public verification covered exact build markers, metadata routes, 404, GA4 ID,
+and origin guard. The Codex browser observed the final marker, exactly one
+Google tag, no obsolete claim, no console errors/warnings, and working copy
+feedback. The hosted website job passed for the initial analytics checkpoint.
+
+GA4 Realtime/DebugView ingestion remains unverified: Safari interaction was
+interrupted by tab changes/closure. The operator was asked to release Safari
+for the final check. Resume by selecting the existing `SwiftUI Semantic Audit`
+property and Web stream above; do not create another property. A real canonical
+page visit has already been made. This residual prevents claiming end-to-end
+GA4 acceptance; the public installation itself is verified.
