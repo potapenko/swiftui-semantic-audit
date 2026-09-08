@@ -113,3 +113,16 @@ second prompt for existing installations uses the stable website installation
 anchor to resolve the current guide. Both keep Homebrew's CLI ownership
 separate from the four sibling agent-skill links and require same-release
 verification.
+
+## Google Analytics
+
+The GA4 property is `SwiftUI Semantic Audit` (Montenegro reporting time zone,
+EUR). Web stream `SwiftUI Audit Website` (`15740007709`) measures
+`https://swiftui-audit.dev` with public measurement ID `G-P4CWE2XWMB`.
+`index.html` owns the ID on the deferred script element; `script.js` initializes
+one asynchronous Google tag only on the exact canonical HTTPS origin.
+Local previews and the technical DigitalOcean ingress do not send analytics.
+Enhanced measurement is off, with no custom events, Google Signals, or advertising
+personalization. GA4 records standard page views and automatic session events.
+Blocking Google must leave the existing navigation and copy controls usable.
+After publication, verify the build marker and a page view in GA4 Realtime.

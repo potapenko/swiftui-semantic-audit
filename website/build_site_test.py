@@ -4,6 +4,7 @@ import binascii
 import hashlib
 import re
 import struct
+import subprocess
 import tempfile
 import unittest
 import zlib
@@ -405,6 +406,86 @@ class ProductionPageContractTests(unittest.TestCase):
             "fully deterministic recommendations",
         ):
             self.assertNotIn(forbidden, lowered)
+
+    def test_analytics_origin_and_blocked_tag_behavior(self) -> None:
+        website = Path(__file__).resolve().parent
+        source = (website / "index.html").read_text(encoding="utf-8")
+        measurement_id = re.findall(r'data-ga-measurement-id="(G-[A-Z0-9]+)"', source)
+        self.assertEqual(measurement_id, ["G-P4CWE2XWMB"])
+        with tempfile.TemporaryDirectory() as temporary:
+            output = Path(temporary) / "public"
+            build_site.build_site(website, output, site_url="https://swiftui-audit.dev/",
+                                 build_marker="analytics-test")
+            self.assertIn('data-ga-measurement-id="G-P4CWE2XWMB"',
+                          (output / "index.html").read_text(encoding="utf-8"))
+        result = subprocess.run(
+            ["node", "-", str(website / "script.js")],
+            input=r"""
+const assert = require("node:assert/strict");
+const fs = require("node:fs");
+const vm = require("node:vm");
+const source = fs.readFileSync(process.argv[2], "utf8");
+async function check(origin, expected) {
+  const tags = [], handlers = {}, attributes = { "aria-expanded": "false" };
+  const menu = {
+    addEventListener: (name, handler) => { handlers.menu = handler; },
+    getAttribute: name => attributes[name],
+    setAttribute: (name, value) => { attributes[name] = value; },
+    focus() {},
+  };
+  const status = { textContent: "" };
+  const copy = {
+    dataset: { copyTarget: "prompt" },
+    addEventListener: (name, handler) => { handlers.copy = handler; },
+    getAttribute: () => "status",
+    querySelector: () => null,
+  };
+  let copied;
+  const document = {
+    currentScript: { dataset: { gaMeasurementId: "G-P4CWE2XWMB" } },
+    documentElement: { classList: { add() {} } },
+    querySelector: selector => selector === ".menu-toggle" ? menu : {
+      addEventListener() {}, classList: { remove() {}, toggle() {} },
+    },
+    querySelectorAll: () => [copy],
+    getElementById: id => id === "prompt" ? { textContent: "Install prompt" } : status,
+    addEventListener() {},
+    createElement: tag => ({ tag }),
+    // The remote tag never executes: this models a blocked or offline Google tag.
+    head: { appendChild: tag => tags.push(tag) },
+  };
+  const window = { location: { origin }, isSecureContext: true, setTimeout() {} };
+  vm.runInNewContext(source, { document, window,
+    navigator: { clipboard: { writeText: async text => { copied = text; } } } });
+  assert.equal(tags.length, expected ? 1 : 0);
+  if (expected) {
+    assert.equal(tags[0].async, true);
+    assert.equal(tags[0].src, "https://www.googletagmanager.com/gtag/js?id=G-P4CWE2XWMB");
+    assert.equal(window.dataLayer.length, 2);
+    assert.equal(window.dataLayer[0][0], "js");
+    const config = window.dataLayer[1];
+    assert.equal(config[0], "config");
+    assert.equal(config[1], "G-P4CWE2XWMB");
+    assert.equal(config[2].allow_google_signals, false);
+    assert.equal(config[2].allow_ad_personalization_signals, false);
+  } else { assert.equal(window.dataLayer, undefined); }
+  handlers.menu();
+  assert.equal(attributes["aria-expanded"], "true");
+  await handlers.copy();
+  assert.equal(copied, "Install prompt");
+  assert.equal(status.textContent, "Copied to the clipboard.");
+}
+(async () => {
+  await check("https://swiftui-audit.dev", true);
+  for (const origin of ["http://localhost:4173", "http://127.0.0.1:4173",
+    "https://swiftui-semantic-audit-nuhky.ondigitalocean.app",
+    "http://swiftui-audit.dev", "https://swiftui-audit.dev.example.com"]) {
+    await check(origin, false);
+  }
+})().catch(error => { console.error(error); process.exitCode = 1; });
+""", text=True, capture_output=True, timeout=20,
+        )
+        self.assertEqual(result.returncode, 0, result.stdout + result.stderr)
 
     def test_rejects_invalid_site_url_and_marker(self) -> None:
         with self.assertRaisesRegex(build_site.SiteBuildError, "absolute HTTPS"):

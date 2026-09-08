@@ -2,15 +2,15 @@
 
 - Node type: root
 - Status: Active
-- Contract revision: `spec-38`
-- Authority: epoch `tz-v30` and pinned digest declared below
+- Contract revision: `spec-39`
+- Authority: epoch `tz-v31` and pinned digest declared below
 - Read when: starting any product, behavior, compatibility, QA, release, or specification task in this repository.
 - Do not read when: the task is proven behavior-neutral and outside the specification system.
 - Maximum size: 100 physical lines.
 
 Status: active  
-Contract epoch: `tz-v30`
-Local specification revision: `spec-38`
+Contract epoch: `tz-v31`
+Local specification revision: `spec-39`
 Pinned authority digest: `sha256:68f8a43d924659024b7d29fabb9ad302817c271838a7919b24bd942626927cac`  
 Router addendum: user-authorized `ROUTER-001` on 2026-08-18
 Indexed-skills addendum: user-authorized `INDEXED-SKILLS-001` on 2026-08-18
@@ -39,7 +39,7 @@ This directory is the self-contained active specification package for SwiftUI Se
 
 When documents appear to disagree, apply this order:
 
-1. the user-approved ТЗ at epoch `tz-v1`, its pinned digest, the explicit addenda through `SKILL-BALANCED-INVOCATION-001` that advance the combined contract to `tz-v29`, the `AUDIT-FOLLOWTHROUGH-001` delta at `tz-v30`, and the behavior-preserving `REALISTIC-FIXTURES-001` acceptance addendum;
+1. the user-approved ТЗ at epoch `tz-v1`, its pinned digest, the explicit addenda through `SKILL-BALANCED-INVOCATION-001` that advance the combined contract to `tz-v29`, the `AUDIT-FOLLOWTHROUGH-001` delta at `tz-v30`, `WEBSITE-ANALYTICS-001` at `tz-v31`, and the behavior-preserving `REALISTIC-FIXTURES-001` acceptance addendum;
 2. [`product-contract.md`](product-contract.md) for product boundaries and invariants;
 3. domain contracts (`semantic-ir.md`, `rules.md`, `cli.md`);
 4. [`acceptance.md`](acceptance.md) for proof obligations;
@@ -86,7 +86,7 @@ A local spec edit cannot authorize a semantic change. Any semantic delta require
 
 The pinned base plus authorized addenda authorizes a Swift package and `swiftui-audit` CLI with deterministic syntax extraction, optional indexed enrichment, incremental caching, bounded parallel execution, thirty rules, snapshot/slice/diff/check/doctor, exact project classification, agent skills, fixtures, CI, immutable 0.4.0/0.5.0/0.6.0 artifacts, and the Released 0.6.0 project watcher recorded by `BASE-REL-015`. `COMPONENT-SURFACE-001` adds config schema 2 View roles, `component-model`, and one exact-config candidate for reusable components while preserving schema 1, graph schema 2, the prior twenty-nine rules, the 34-finding realistic total, and agent adjudication. `RELEASE-0.5.0-001` publishes that accepted candidate without changing analysis semantics. `ARTIFACT-HYGIENE-001` makes auxiliary agent evidence temporary by default, keeps durable evidence outside source/config/skill repositories with explicit retention, and preserves explicitly requested canonical snapshots. `PROJECT-WATCHER-001` adds opt-in safe setup and freshness-qualified continuous indexed state without changing analysis facts. `RELEASE-0.6.0-001` publishes its immutable tag/archive, source-built formula, separately installed tagged skills, and factual public release updates without changing analysis semantics. `PROJECT-WATCHER-INTEGRATION-001` adds a schema-1-compatible managed timeout and deterministic root/source configuration precedence. `RELEASE-0.6.1-001` assigns that current-source repair an unpublished 0.6.1 candidate identity without authorizing distribution; `LOCAL-0.6.1-ACTIVATION-001` separately permits its pinned local CLI/skill activation while preserving every public 0.6.0 surface. The contract still forbids automatic rewriting, provider-specific LLM calls, SIL/full type checking, name-based role inference, generic AppKit/UIKit linting, and broad non-SwiftUI analysis.
 
-`WEBSITE-001` adds one English static landing page without changing CLI, graph, rule, skill, release, or installation semantics. It authorizes an original visual system, selected fixture-backed examples, initially truthful 0.4.0 claims later advanced to 0.5.0 by `RELEASE-0.5.0-001`, and HoldType-derived static deployment mechanics. It does not authorize automatic-fix claims, a theme switcher, localization, analytics, a backend, or a new product GUI.
+`WEBSITE-001` adds one English static landing page without changing CLI, graph, rule, skill, release, or installation semantics. It authorizes an original visual system, selected fixture-backed examples, initially truthful 0.4.0 claims later advanced to 0.5.0 by `RELEASE-0.5.0-001`, and HoldType-derived static deployment mechanics. It does not authorize automatic-fix claims, a theme switcher, localization, a backend, or a new product GUI. Analytics is separately authorized only by `WEBSITE-ANALYTICS-001`.
 
 `WEBSITE-PUBLISH-001` authorizes the first DigitalOcean App Platform deployment, push-triggered publication from `master`, and the staged canonical-domain cutover to `swiftui-audit.dev` with `www` redirecting to the apex. Technical ingress must pass before domain attachment; readiness also requires registry delegation, managed TLS, and public verification.
 
@@ -96,5 +96,5 @@ The pinned base plus authorized addenda authorizes a Swift package and `swiftui-
 
 `SEMANTIC-TWIN-STORY-001` makes the deterministic semantic twin the primary public product object and moves skills to the consumer/router role; its original 0.5.0-versus-candidate split is superseded only for release state by `RELEASE-0.6.0-001` and `BASE-REL-015`. `SEMANTIC-TWIN-CAPABILITIES-001` restores the accepted landing capability surface and marketing hierarchy: semantic twin unifies the existing examples, tasks, diff, rule groups, and trust story; it does not replace them. Versions remain supporting release truth rather than the primary promise.
 
-`SKILL-NON-INTERFERENCE-001` established the prior explicit-only state. `SKILL-BALANCED-INVOCATION-001` supersedes only its router invocation boundary: the router may now assist implicitly without creating semantic infrastructure or blocking the user's task, while all three specialists and every explicit strict workflow remain gated. `CACHE-HYGIENE-001` continues to govern current-source cache behavior. Current authority is `tz-v30`; editorial clarification may advance only the local specification revision and must preserve every protected behavior and exception.
+`SKILL-NON-INTERFERENCE-001` established the prior explicit-only state. `SKILL-BALANCED-INVOCATION-001` supersedes only its router invocation boundary: the router may now assist implicitly without creating semantic infrastructure or blocking the user's task, while all three specialists and every explicit strict workflow remain gated. `CACHE-HYGIENE-001` continues to govern current-source cache behavior. `WEBSITE-ANALYTICS-001`, approved on 2026-09-08, advances current authority to `tz-v31` and permits the bounded GA4 integration in [website analytics](website/analytics.md); editorial clarification may advance only the local specification revision and must preserve every protected behavior and exception.
 Migration state: [Full-library Markdown migration](migration/README.md) completed structural reconciliation of the nine-document legacy package.

@@ -2,8 +2,8 @@
 
 - Node type: hybrid
 - Status: Active
-- Contract revision: `spec-15`
-- Authority: user-authorized website addenda through `UPDATE-UX-001` on 2026-08-24
+- Contract revision: `spec-16`
+- Authority: user-authorized website addenda through `WEBSITE-ANALYTICS-001` on 2026-09-08
 - Stability: verified 0.6.0 release facts; update UX is an unpublished local candidate
 - Read when: designing, implementing, publishing, or verifying the product website.
 - Do not read when: work is limited to the Swift package, CLI, rules, or agent skills.
@@ -97,4 +97,4 @@ corner while preserving the accepted size, styling, targets, and feedback.
 
 - [Experience and Content](website/experience-and-content.md) — audience, narrative, examples, visual system, claims, and accessibility.
 - [Delivery and Acceptance](website/delivery-and-acceptance.md) — source/build
-  boundaries, DigitalOcean deployment, metadata, interactions, and QA.
+  boundaries, DigitalOcean deployment, metadata, interactions, QA, and the [GA4 analytics contract](website/analytics.md).

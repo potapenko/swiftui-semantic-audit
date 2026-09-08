@@ -80,4 +80,22 @@
       }
     });
   });
+
+  // Keep previews and the technical ingress out of production analytics.
+  const measurementId = document.currentScript?.dataset.gaMeasurementId;
+  if (window.location.origin === "https://swiftui-audit.dev" &&
+      /^G-[A-Z0-9]+$/.test(measurementId || "")) {
+    window.dataLayer = window.dataLayer || [];
+    window.gtag = function () { window.dataLayer.push(arguments); };
+    window.gtag("js", new Date());
+    window.gtag("config", measurementId, {
+      allow_google_signals: false,
+      allow_ad_personalization_signals: false,
+    });
+
+    const googleTag = document.createElement("script");
+    googleTag.async = true;
+    googleTag.src = `https://www.googletagmanager.com/gtag/js?id=${measurementId}`;
+    document.head.appendChild(googleTag);
+  }
 })();

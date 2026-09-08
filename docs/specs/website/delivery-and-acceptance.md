@@ -2,7 +2,7 @@
 
 - Node type: leaf
 - Status: Active
-- Contract revision: `spec-5`
+- Contract revision: `spec-6`
 - Authority: [Website contract](../website.md)
 - Maximum size: 100 physical lines.
 
@@ -11,7 +11,7 @@
 **WEB-TECH-001.** Keep the site under `website/` as semantic HTML, one CSS file,
 minimal vanilla JavaScript, local assets, and a Python-standard-library builder.
 Do not add a frontend framework, package manager, localization layer, backend,
-analytics, cookie layer, or runtime external font dependency.
+cookie layer, or runtime external font dependency. The sole analytics exception is [GA4](analytics.md), authorized by `WEBSITE-ANALYTICS-001`.
 
 **WEB-BUILD-001.** Generate only the explicit public allowlist into an empty
 `website/public/` boundary. Reject symlinked or unsafe sources and nonempty
