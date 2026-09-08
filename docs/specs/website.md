@@ -4,7 +4,7 @@
 - Status: Active
 - Contract revision: `spec-16`
 - Authority: user-authorized website addenda through `WEBSITE-ANALYTICS-001` on 2026-09-08
-- Stability: public 0.6.0 release facts and update UX; GA4 installed publicly, ingestion acceptance pending in [analytics](website/analytics.md)
+- Stability: public 0.6.0 release facts and update UX; GA4 publicly installed and Realtime ingestion verified in [analytics](website/analytics.md)
 - Read when: designing, implementing, publishing, or verifying the product website.
 - Do not read when: work is limited to the Swift package, CLI, rules, or agent skills.
 - Maximum size: 100 physical lines.

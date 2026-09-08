@@ -15,7 +15,7 @@ production-only Google tag integration, focused checks, a checkpoint on master,
 and publication including the 12 already-local commits. CLI, rules, releases,
 layout, navigation, copy feedback, and build allowlist stay protected. Content changes only to remove the obsolete footer claim `No analytics`.
 
-**WEB-GA-001.** The property is `SwiftUI Semantic Audit`, reporting country
+**WEB-GA-001.** The property is `SwiftUI Semantic Audit` (`553133223`), reporting country
 Montenegro and currency EUR. The Web stream is `SwiftUI Audit Website` for
 `https://swiftui-audit.dev`, stream ID `15740007709`, measurement ID
 `G-P4CWE2XWMB`. Enhanced measurement is off; collect standard page views and
@@ -48,9 +48,14 @@ and origin guard. The Codex browser observed the final marker, exactly one
 Google tag, no obsolete claim, no console errors/warnings, and working copy
 feedback. The hosted website job passed for the initial analytics checkpoint.
 
-GA4 Realtime/DebugView ingestion remains unverified: Safari interaction was
-interrupted by tab changes/closure. The operator was asked to release Safari
-for the final check. Resume by selecting the existing `SwiftUI Semantic Audit`
-property and Web stream above; do not create another property. A real canonical
-page visit has already been made. This residual prevents claiming end-to-end
-GA4 acceptance; the public installation itself is verified.
+On 2026-09-08, after a real Safari visit to the canonical root, the
+[Realtime report](https://analytics.google.com/analytics/web/?authuser=0&hl=en#/a56061701p553133223/realtime/overview)
+showed one active user, one view titled `SwiftUI Semantic Audit — A semantic
+twin for SwiftUI coding agents`, and one each of `page_view`, `session_start`,
+and `first_visit`. This completes `WEB-GA-003` ingestion acceptance and
+supersedes the earlier Safari interruption residual. No duplicate property or
+synthetic Measurement Protocol events were created.
+
+Hosted website artifact checks passed at `fe65199` (run `34228355814`). The
+separate Swift/semantic dogfood job failed at `Prove project watcher dogfood`;
+that result is not a website analytics failure and is outside this change.
