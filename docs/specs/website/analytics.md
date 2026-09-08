@@ -13,7 +13,7 @@
 The user approved one GA4 property and Web stream for the current site,
 production-only Google tag integration, focused checks, a checkpoint on master,
 and publication including the 12 already-local commits. CLI, rules, releases,
-content, layout, navigation, copy feedback, and build allowlist stay protected.
+layout, navigation, copy feedback, and build allowlist stay protected. Content changes only to remove the obsolete footer claim `No analytics`.
 
 **WEB-GA-001.** The property is `SwiftUI Semantic Audit`, reporting country
 Montenegro and currency EUR. The Web stream is `SwiftUI Audit Website` for

@@ -412,6 +412,7 @@ class ProductionPageContractTests(unittest.TestCase):
         source = (website / "index.html").read_text(encoding="utf-8")
         measurement_id = re.findall(r'data-ga-measurement-id="(G-[A-Z0-9]+)"', source)
         self.assertEqual(measurement_id, ["G-P4CWE2XWMB"])
+        self.assertNotIn("No analytics", source)
         with tempfile.TemporaryDirectory() as temporary:
             output = Path(temporary) / "public"
             build_site.build_site(website, output, site_url="https://swiftui-audit.dev/",
